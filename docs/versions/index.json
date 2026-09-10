@@ -1,10 +1,24 @@
 {
-  "current": "v0.1.0",
+  "current": "v0.1.1",
   "releases": [
+    {
+      "version": "v0.1.1",
+      "date": "2026-09-10",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the delivery pages stop printing the page navigation twice",
+      "summary": "the delivery pages stop printing the page navigation twice",
+      "changes": [
+        "build.py",
+        "data"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.0",
       "date": "2026-09-10",
-      "commit": "",
+      "commit": "3779062835292198a7b6c3d7f8c36bda6cd59d75",
       "site": "store.sgit.ai",
       "title": "the offer page, the four codes, the two rails and the pack",
       "summary": "The first release. The offer page with four tiers and two add-ons, a delivery page per offer, the booking flow for the two tiers that are a booking, the two payment rails kept strictly apart, the audience routing, the claim ledger, and the store pack published raw at /dev-packs/store/. The pipeline is the estate's: validate, tag, deploy.",

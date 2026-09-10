@@ -912,9 +912,8 @@ def delivery_pages(out_dir, ctx_shared):
             'Where a finding reaches you, it has been reproduced first: '
             'recall-optimised agents run at 0.388 precision, so what is sold is triage '
             'and never raw findings. {{claim:precision-0388}}</p></div>'
-            '<p class="pagenav"><a href="/offers/">All six offers, side by side &rarr;</a>'
-            '<a href="/paying/">How paying works &rarr;</a>'
-            '<a href="/ledger/">Every claim on this site, with its state &rarr;</a></p>'
+            # No pagenav here: page_html already appends one, and two identical
+            # rows of arrows at the foot of a page is the shell showing through.
         )
         body = shortcodes_inline(body, ctx)
         page = {

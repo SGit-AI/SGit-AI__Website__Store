@@ -10,10 +10,13 @@ Does three things and stops:
   3. prints the commit subject CI requires
 
 The release history table, the per-version pages and /versions/index.json are all
-rendered from that one record, so they cannot disagree. The commit is filled in
-afterwards by `bin/bump.py --commit <sha>`, because the sha does not exist until
-the release is committed — and check_version_agreement fails the build while any
-release still has no commit, so it cannot be forgotten.
+rendered from that one record, so they cannot disagree. The commit is filled in by
+`bin/bump.py --commit <sha>` at the START of the NEXT release, because the sha does
+not exist until the release is committed and amending the commit to record it would
+change the very sha being recorded. This script refuses to bump while the previous
+release still has none, and check_version_agreement fails the build for any release
+that is not the newest and has no commit — so it cannot be forgotten and it cannot
+be wrong.
 
 The pipeline enforces all of this from the other side: tag-release reads
 version.txt, finds the commit whose subject carries the same version, and refuses
@@ -97,14 +100,18 @@ def main() -> int:
     print("  python3 build.py")
     print("  admin/build/validate.sh")
     print(f'  git commit -am "site {new}: {summary}"')
-    print(f"  bin/bump.py --commit $(git rev-parse HEAD)   # then rebuild and amend")
-    print("  git push origin dev")
+    print("  git push -u origin dev")
+    print()
+    print(f"then, at the start of the NEXT release (never by amending this one —")
+    print(f"an amend changes the sha you are trying to record):")
+    print(f"  bin/bump.py --commit $(git rev-parse HEAD)")
     return 0
 
 
 def set_commit(sha):
-    """Record the sha the current release was built from. Separate from the bump
-    because the commit does not exist until the release is committed."""
+    """Record the sha a release was built from. Separate from the bump because the
+    commit does not exist until the release is committed, and an amend to add it
+    would change the sha it is adding."""
     if not re.fullmatch(r"[0-9a-f]{40}", sha):
         print(f"not a full git sha: {sha!r}", file=sys.stderr)
         return 1
@@ -115,7 +122,7 @@ def set_commit(sha):
             r["commit"] = sha
             RELEASES.write_text(json.dumps(data, indent=2) + "\n")
             print(f"{cur} -> commit {sha[:10]}")
-            print("next: python3 build.py && git commit -a --amend --no-edit")
+            print("next: bin/bump.py \"what changed in the release you are starting\"")
             return 0
     print(f"no record for {cur} in data/releases.json", file=sys.stderr)
     return 1
