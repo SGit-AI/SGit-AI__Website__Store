@@ -1,0 +1,225 @@
+{
+  "pack": {
+    "id": "store",
+    "title": "The store pack",
+    "version": "v0.33.69",
+    "date": "10 September 2026",
+    "documents": 19,
+    "bytes": 392982,
+    "zip_bytes": 152404,
+    "zip_sha256": "c162e944a53aff6db37c6de89316ef278d1f1d9f946d71d6c920711d0ae26136",
+    "licence": "CC BY 4.0",
+    "state": "held",
+    "state_note": "The area is built. The documents are held pending the five checks in 04__THE-DEV-PACKS-AREA.md, none of which has been run by a person."
+  },
+  "checks": [
+    {
+      "n": 1,
+      "check": "Audit every named third party for adjectives",
+      "why": "Hard rule 8, the ruling of 20 August: publish the record, never the verdict. These were written for an internal reader, and internal briefs are blunt.",
+      "who": "A person reading for tone. A script cannot do this one.",
+      "state": "not run"
+    },
+    {
+      "n": 2,
+      "check": "Mark each document as model generated, on its face",
+      "why": "Hard rule 5. The transparency article has applied since 2 August 2026 and reaches a third-country party whose output is used in the Union. The disclosure belongs on the document, not only in a site footer.",
+      "who": "Mechanical, once the documents are cleared to publish.",
+      "state": "not run"
+    },
+    {
+      "n": 3,
+      "check": "Verify or remove every unverified claim that names a company",
+      "why": "A note saying unverified is honest inside a working document and a liability on a public page beside a company's name.",
+      "who": "A person, with the sources open.",
+      "state": "not run"
+    },
+    {
+      "n": 4,
+      "check": "Re-read the two documents with unresolved legal exposure",
+      "why": "The parody research in the printed-surfaces brief, and any passage describing what a competitor's security does or does not do \u2014 marketing copy read on one day, not measurements.",
+      "who": "A person, and probably not only a person here.",
+      "state": "not run"
+    },
+    {
+      "n": 5,
+      "check": "Hold anything touching the open naming collision",
+      "why": "Two phrases in this vocabulary mean opposite things and both are in use. Ruled on 8 September to block any public page until the collision is closed, and a published dev pack is a public page.",
+      "who": "Measured below: 4 documents carry it. Closing the collision is a ruling, not an edit.",
+      "state": "measured, not resolved"
+    }
+  ],
+  "documents": [
+    {
+      "seq": "00",
+      "kind": "pack file",
+      "subject": "The domain question, the boundaries, and what may not be invented",
+      "bytes": 4184,
+      "sha256": "893d49b1d87a7d5825cb183eda1c730f9d2168250ec0390a47405b7645ca0d45",
+      "barred_word": 1,
+      "collision": 0
+    },
+    {
+      "seq": "01",
+      "kind": "pack file",
+      "subject": "The pages, the offers, the codes, and the two payment rails",
+      "bytes": 7629,
+      "sha256": "4fb4083e2d58ac9c9f4dfa87db7be5cb3bcde137ac86f6bcd34182fea87b96e0",
+      "barred_word": 1,
+      "collision": 0
+    },
+    {
+      "seq": "02",
+      "kind": "pack file",
+      "subject": "Fifteen rules that constrain the page, each with a reason",
+      "bytes": 5984,
+      "sha256": "990171d4aaee2bedf58f458701b162ff978f13012d333e5837b36e030038930c",
+      "barred_word": 1,
+      "collision": 0
+    },
+    {
+      "seq": "03",
+      "kind": "pack file",
+      "subject": "Every naming ruling in force, and the one collision that is open",
+      "bytes": 5466,
+      "sha256": "0c85b33c1cf82f56f848a9318639d666051e037c565ae046c340d1c7586d832f",
+      "barred_word": 2,
+      "collision": 5
+    },
+    {
+      "seq": "04",
+      "kind": "pack file",
+      "subject": "The instruction to publish this area, and the five checks first",
+      "bytes": 6955,
+      "sha256": "dc7e16b89c3b0378529674add1f3f13733da03dd48e7687e56c46e90543efc84",
+      "barred_word": 0,
+      "collision": 1
+    },
+    {
+      "seq": "1",
+      "kind": "brief",
+      "subject": "The payment rail, the four tiers and the deadline",
+      "bytes": 27235,
+      "sha256": "4b50983481e40ae4b4e1ef5c66345e8dc14fc97babebf84da3482b72eff50a9d",
+      "barred_word": 8,
+      "collision": 0
+    },
+    {
+      "seq": "2",
+      "kind": "brief",
+      "subject": "The second rail, the registration path, and the correction",
+      "bytes": 28749,
+      "sha256": "a74d9176577f9ff2b59c38c66fcfe8cde9c9bc1b0e7bdcce87589bd3b33f86b6",
+      "barred_word": 0,
+      "collision": 0
+    },
+    {
+      "seq": "3",
+      "kind": "brief",
+      "subject": "What is actually sold, and why a store does not contradict the published argument",
+      "bytes": 15689,
+      "sha256": "1b946cdcea89b8a048d88b112ca15c01bd9bc08727c6a4b18c9db0bf54bcef1d",
+      "barred_word": 0,
+      "collision": 0
+    },
+    {
+      "seq": "4",
+      "kind": "brief",
+      "subject": "Every name, every site, every domain, and the open collision",
+      "bytes": 19604,
+      "sha256": "40731e79e27e036e0a4815b551b90da2b3cd4d0ebc47bac57a99718b30b13e0d",
+      "barred_word": 7,
+      "collision": 8
+    },
+    {
+      "seq": "5",
+      "kind": "brief",
+      "subject": "The catalogue, and the eight further offers",
+      "bytes": 16191,
+      "sha256": "e0d67b54b5cd3e797e65ee16a1060edaedac3f200bd244e377272294cd999ec0",
+      "barred_word": 0,
+      "collision": 0
+    },
+    {
+      "seq": "6",
+      "kind": "brief",
+      "subject": "What is free and what is paid, on two orthogonal axes",
+      "bytes": 23702,
+      "sha256": "4a29aa0aad48bec1320cbb019f5a899defea0244994ef69a9d0b3eb3f3636da2",
+      "barred_word": 0,
+      "collision": 0
+    },
+    {
+      "seq": "7",
+      "kind": "brief",
+      "subject": "The naming resolution and the licence matrix",
+      "bytes": 26817,
+      "sha256": "d20ff06a8e0a1f3561e5113b18c8217883ad90d87ba1b48956b56fda9c213b71",
+      "barred_word": 6,
+      "collision": 0
+    },
+    {
+      "seq": "8",
+      "kind": "brief",
+      "subject": "The product, the competitors and the brand split",
+      "bytes": 23894,
+      "sha256": "035dc3363a26713967bf6e048b8fe670e7ab37c35a3baa92dd99fbef85068257",
+      "barred_word": 1,
+      "collision": 0
+    },
+    {
+      "seq": "9",
+      "kind": "brief",
+      "subject": "The three audiences, and the conflict that two industries regulated",
+      "bytes": 24933,
+      "sha256": "9c5becb2882090743f56f64372675dd5d3ea4a38143e28ac9ac735ccddab7673",
+      "barred_word": 0,
+      "collision": 0
+    },
+    {
+      "seq": "10",
+      "kind": "brief",
+      "subject": "Who signs, and why a named opinion is a legal act",
+      "bytes": 24112,
+      "sha256": "0d951d6535e3dc402efe80e7d8cb06ea07227c96cb14e6b84942c99f3e51d88c",
+      "barred_word": 5,
+      "collision": 0
+    },
+    {
+      "seq": "11",
+      "kind": "brief",
+      "subject": "What must be disclosed on the page, and why triage is sold rather than raw findings",
+      "bytes": 17953,
+      "sha256": "e3db0211508e68cae0bbb4f45348a22267278465a721f7618c1fbd159c6e3f44",
+      "barred_word": 0,
+      "collision": 0
+    },
+    {
+      "seq": "12",
+      "kind": "brief",
+      "subject": "The name to lead with",
+      "bytes": 28764,
+      "sha256": "0fc75b8e4a5fb71c41f5bd57c428b7a45fef731ab7c1b2b2baba922ae4d753b8",
+      "barred_word": 22,
+      "collision": 4
+    },
+    {
+      "seq": "13",
+      "kind": "brief",
+      "subject": "The sentence, the three terms ruled out, and the competitive scan",
+      "bytes": 41025,
+      "sha256": "9ad8a0af786ae1544bacab453b3dadb25688e934a592cd4d6af372837f31231e",
+      "barred_word": 0,
+      "collision": 0
+    },
+    {
+      "seq": "14",
+      "kind": "brief",
+      "subject": "The printed surfaces, the merchandise line and the question mechanic",
+      "bytes": 44096,
+      "sha256": "2dd04c35f28646ff58679ee2bc1a8916a061d93da6fa2235e6767c779eedfd98",
+      "barred_word": 4,
+      "collision": 0
+    }
+  ]
+}

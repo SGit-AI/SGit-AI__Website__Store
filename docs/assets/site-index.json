@@ -1,0 +1,337 @@
+{
+ "version": "v0.1.0",
+ "domain": "store.sgit.ai",
+ "licence": "CC BY 4.0",
+ "pages": [
+  {
+   "url": "/",
+   "title": "Every agent needs a licence to operate",
+   "description": "Six offers, four with a price and a printed code. What is sold here is an instance: your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by security professionals. The paid thing is not access and it is not customisation. It is independence.",
+   "lead": "The paid thing is not access, and it is not customisation. It is independence. The library is free and public and it stays that way. What is priced here is an instance: your situation, computed against it, in a vault you hold the keys to. Four tiers, from \u00a310 to \u00a310,000, and two add-ons. Two of the six do not exist yet \u2014 they say so on their own row, because a store that edits its gaps out is a marketing page wearing a lab coat.",
+   "headings": [
+    "The four, and the two",
+    "What the ladder is actually for",
+    "What is true of each of these today",
+    "How paying works, in one paragraph",
+    "Who this is for",
+    "What this site will not tell you"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/audiences/",
+   "title": "Who each one is for",
+   "description": "Three audiences, ordered by opportunity rather than treated as equal: the corporate user assessing an agent they already run, the investor buying a signed review, and the founder \u2014 who is a reverse sale, and the hardest of the three.",
+   "lead": "Order matters here, and the page reflects it. Three audiences, and they are not equally served by what is on this site. One of them has a market above it and nothing underneath it. One of them has nothing at any price. One of them has two funded incumbents and a free tier, and is on this page only as a reverse sale.",
+   "headings": [
+    "1. The corporate user, assessing an agent they already run",
+    "2. The investor, buying a signed review of a company they are backing",
+    "3. The founder, and only as the reverse sale",
+    "What none of the three is buying"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/booking/",
+   "title": "Booking a person",
+   "description": "Two of the four tiers are a booking rather than a download: a person reviewing your situation, and an assessment by a team. What a booking commits, what it does not, and why a signature is a separate thing you cannot buy yet.",
+   "lead": "Tier 3 and tier 4 are bookings. What is bought is a person's time, and in tier 4's case a team's. That changes what the page can promise, so this one says what a booking commits us to, what it does not, and the one thing it is often mistaken for.",
+   "headings": [
+    "What a booking is",
+    "Tier 4 starts with a conversation, and the reason is arithmetic",
+    "What a booking does not buy",
+    "What comes out of a booking",
+    "How to book"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/catalogue/",
+   "title": "What is not for sale yet",
+   "description": "Eight further offers are specified and none of them is for this week. They are listed so that nobody proposes them as new, and so that the four that are for sale are not quietly widened to include them.",
+   "lead": "Eight further offers exist as specifications and none of them is on the offer page. They are listed here for one reason: so that nobody proposes them as new. A catalogue that only shows what is buyable today loses the work that went into deciding what is not.",
+   "headings": [
+    "The eight",
+    "And two surfaces, neither of which is this site",
+    "Why this page exists at all"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/dev-packs/",
+   "title": "The dev packs",
+   "description": "The area is built and the documents are held. Nineteen documents, every one of them hashed and listed, none of them published \u2014 because five checks run before anything opens, none has been run by a person, and two of them a script can already show would fail.",
+   "lead": "The instruction was to publish these documents on the site. The same document that gave the instruction named five checks that run first, called every one of them \"a real edit or a real hold\", and recorded that who runs them is not decided. So this area exists, its manifest is published, and its documents are not. Two of the five checks are measurable and are measured below: 11 of the 19 documents would break a hard rule on contact with this site.",
+   "headings": [
+    "What is published here today",
+    "Why nothing is published yet",
+    "What is not being asked for here",
+    "The structure it will open into",
+    "One thing this area is not sure about"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/disclosures/",
+   "title": "What we do not say, and why",
+   "description": "The words this site does not use, the sentence it does not print, the claims it does not make, and the reason for each one. Every entry has a source, and most of them have an enforcement precedent behind them.",
+   "lead": "A store's disclosures page is usually a list of things it is allowed to say. This one is a list of things it is not, and why. Four of the entries are words. One is a whole sentence that a reader might reasonably expect to find on a page like this, and it is missing on purpose \u2014 because six questions have not been answered.",
+   "headings": [
+    "The sentence that is not on this site",
+    "The words this site does not use",
+    "The claims this site does not make",
+    "What is disclosed, rather than withheld"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/ledger/",
+   "title": "Every claim on this site, with its state",
+   "description": "One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first.",
+   "lead": "Every factual claim this site makes lives here once, with the state it earned and the date it earned it. Pages cite a claim rather than restating it, so the same fact cannot be strong on one page and hedged on another. The rightmost column is joined at build time: it shows where each claim is actually said, and it is not editable by hand.",
+   "headings": [
+    "The ledger",
+    "What the states mean",
+    "Why a store publishes one of these"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/offers/",
+   "title": "All six, side by side",
+   "description": "The four tiers and the two add-ons in one table: the question each answers, its price, what is true of the thing behind it today, how it is paid, and the stable offer identifier a printed code redirects to.",
+   "lead": "Four tiers and two add-ons. Four prices are set, one range is deliberately wide, and the add-ons are banded rather than priced. Every number on this page comes from one file, and a build check holds each of them against the pack that set it \u2014 because these prices go onto printed cards, and a printed price cannot be corrected from a conference floor.",
+   "headings": [
+    "The table",
+    "The six, in full",
+    "Why each number is that number",
+    "The offer identifier is the stable part",
+    "What is not on this page"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/paying/",
+   "title": "The two rails, and why they never meet",
+   "description": "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, and the separation is a rule rather than a preference.",
+   "lead": "Both rails exist. They must never appear as a choice on one transaction. One is a payment link with a printed code beside it. The other is a cloud marketplace, above roughly a thousand pounds, after a conversation. The reason they are kept apart is not taste \u2014 it is that the marketplace's seller terms say a seller is not permitted to collect customer payment information at any time.",
+   "headings": [
+    "The two rails",
+    "Why a link, and not a card reader",
+    "Why the marketplace is a conversation and not a button",
+    "One correction, carried here rather than dropped",
+    "Where each code lands",
+    "What this site does with a payment"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/versions/",
+   "title": "Release history",
+   "description": "Every release of this site, what changed in it, and the commit it was built from. The version is owned by one file, the release commit's subject repeats it, and the pipeline refuses to tag if the two disagree.",
+   "lead": "Every push to the release branch is a release, and every release is tagged. The version is owned by admin/build/version.txt, moved only by bin/bump.py, repeated in the release commit's subject, and CI refuses to tag if the two disagree. The same records are served as JSON.",
+   "headings": [
+    "Releases",
+    "The pipeline that gates each one",
+    "What this site's gate checks that a sibling's does not"
+   ],
+   "kind": "page"
+  }
+ ],
+ "offers": [
+  {
+   "id": "t1",
+   "tier": "1",
+   "question": "What did I actually grant it?",
+   "price": "\u00a310",
+   "rail": "link",
+   "state": "unlocated",
+   "delivery": "/d/t1/"
+  },
+  {
+   "id": "t2",
+   "tier": "2",
+   "question": "Which parts of the regulation actually reach me?",
+   "price": "\u00a350 to \u00a3100",
+   "rail": "link",
+   "state": "spec",
+   "delivery": "/d/t2/"
+  },
+  {
+   "id": "t3",
+   "tier": "3",
+   "question": "Will somebody look at my situation with me?",
+   "price": "\u00a3150 to \u00a31,000",
+   "rail": "link",
+   "state": "booking",
+   "delivery": "/d/t3/"
+  },
+  {
+   "id": "t4",
+   "tier": "4",
+   "question": "What would a team of security professionals find?",
+   "price": "\u00a35,000 to \u00a310,000",
+   "rail": "invoice",
+   "state": "unrun",
+   "delivery": "/d/t4/"
+  },
+  {
+   "id": "add-formats",
+   "tier": "add-on",
+   "question": "Can I have the same result in a form the board will read?",
+   "price": "By depth band",
+   "rail": "link",
+   "state": "partial",
+   "delivery": "/d/add-formats/"
+  },
+  {
+   "id": "add-opinion",
+   "tier": "add-on",
+   "question": "Will somebody put their name to it?",
+   "price": "By depth band",
+   "rail": "none",
+   "state": "absent",
+   "delivery": null
+  }
+ ],
+ "claims": [
+  {
+   "id": "t1-app-not-located",
+   "state": "unlocated",
+   "date": "10 Sep 2026",
+   "claim": "The application that would compute tier 1's delta was built in August and has not been located. Until it is, tier 1 is a questions page, and this site says so on the offer, on the delivery page and here."
+  },
+  {
+   "id": "t2-pipeline-absent",
+   "state": "spec",
+   "date": "28 Jul 2026",
+   "claim": "Tier 2 was specified on 28 July. The graph it selects from exists at 1,523 nodes with amendments applied. The pipeline that turns a situation into a vault does not exist."
+  },
+  {
+   "id": "t3-collision-open",
+   "state": "booking",
+   "date": "10 Sep 2026",
+   "claim": "Tier 3 is a booking, and it overlaps the signed-opinion add-on. The overlap is recorded and unresolved, so the two are sold separately and neither page implies the other."
+  },
+  {
+   "id": "t4-team-never-run",
+   "state": "unrun",
+   "date": "10 Sep 2026",
+   "claim": "Tier 4 is a booking with a deposit. The seven-role team is specified and has never run. A first buyer would be the first run, and the page says so before the conversation, not after it."
+  },
+  {
+   "id": "fact-diff-absent",
+   "state": "absent",
+   "date": "10 Sep 2026",
+   "claim": "The multi-format add-on's generator exists. The check that every variant renders the same fact set \u2014 the diff that must be empty \u2014 does not exist, and hard rule 6 forbids printing the guarantee before the check is built. So the guarantee is not printed."
+  },
+  {
+   "id": "opinion-wording-absent",
+   "state": "absent",
+   "date": "10 Sep 2026",
+   "claim": "The signed-opinion add-on's wording does not exist, and it must before a first signature. The offer is listed and cannot be bought: there is no code behind it."
+  },
+  {
+   "id": "card-reader-refused",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "A United Kingdom card account cannot tap in Portugal: the provider declines the transaction on detecting a different country, and says so in those words. A payment link is an online payment, so no cross-border rule applies to it. The conclusion the pack draws: no card reader should be bought."
+  },
+  {
+   "id": "card-fee-floor",
+   "state": "projected",
+   "date": "10 Sep 2026",
+   "claim": "At \u00a35 the fixed card fee alone is about four per cent of the transaction, which is why \u00a310 is the floor rather than \u00a35. At \u00a310,000 a card costs up to about \u00a3250, which is why the top tier goes by invoice and bank transfer. Arithmetic, not an invoice."
+  },
+  {
+   "id": "pricing-in-pounds",
+   "state": "projected",
+   "date": "10 Sep 2026",
+   "claim": "Prices are in pounds. Pricing in euros while settling in pounds adds about two per cent."
+  },
+  {
+   "id": "marketplace-no-customer-payment",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "The cloud marketplace's seller terms state that a seller is not permitted to collect customer payment information at any time. The two rails are therefore strictly separated: the marketplace is not a second button beside the card button, it is a different conversation with a different threshold."
+  },
+  {
+   "id": "marketplace-fee",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "The marketplace listing fee is 0.5 per cent, and falls to zero inside a qualifying multi-product solution. The pitch is procurement, not discount: the buyer already holds the marketplace's legal terms, so there is no master agreement, no vendor onboarding and no new purchase order."
+  },
+  {
+   "id": "no-committed-spend",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "Professional services listings do not draw down committed spend on the cloud provider. Three independent sources state the exclusion. An earlier version of this claim said the opposite; the correction is recorded here rather than quietly dropped, and the old version appears on no page of this site."
+  },
+  {
+   "id": "marketplace-registration",
+   "state": "spec",
+   "date": "10 Sep 2026",
+   "claim": "Marketplace registration is the long pole: four to eight weeks. The listing is therefore a November surface, not an event surface, and nothing on this site depends on it."
+  },
+  {
+   "id": "precision-0388",
+   "state": "measured",
+   "date": "10 Sep 2026",
+   "claim": "Recall-optimised agents run at 0.388 precision \u2014 about three findings in five are wrong. This is the reason the product is triage and never raw findings, and the reason every finding that reaches a buyer has been reproduced rather than reviewed."
+  },
+  {
+   "id": "transparency-article",
+   "state": "docs",
+   "date": "2 Aug 2026",
+   "claim": "The transparency article has applied since 2 August 2026 and reaches a third-country party whose output is used in the Union. Outputs here are model generated and are marked as such on the face of the artefact, not only in a footer."
+  },
+  {
+   "id": "graph-nodes",
+   "state": "exists",
+   "date": "10 Sep 2026",
+   "claim": "The regulation graph exists at 1,523 nodes, with amendments applied. It is the launch catalogue because the European regulation is expressly reusable commercially, including adaptation."
+  },
+  {
+   "id": "standards-not-adaptable",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "The international management standards are not adapted, translated, resold as a derivative, or fed to a model here \u2014 prohibited twice over, once as a derivative and once as a model input. The same prohibition covers the payment card standard and the centre's controls. Nothing on this site is derived from any of them."
+  },
+  {
+   "id": "tamper-evident-witness",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "Tamper evident, given a witness \u2014 never the absolute form of that claim, which is false. A rewritten hash chain verifies against itself; tampering is detectable only when another party already holds an older hash. The witness is a second clone, which makes handing somebody a read key the act that makes the claim true. Append-only is stated as a policy, not a property."
+  },
+  {
+   "id": "cannot-read-unanswered",
+   "state": "absent",
+   "date": "10 Sep 2026",
+   "claim": "The sentence a reader expects from an encryption product \u2014 the one about what its operator can and cannot see \u2014 is not printed on this site in any form, because six questions about what leaks (filenames, directory structure, object sizes, commit timing, recovery or escrow, support access) have not been answered. In November 2020 a regulator acted against a company for claiming end-to-end encryption while its servers held the keys; the settlement imposed twenty years of third-party assessments."
+  },
+  {
+   "id": "naming-collision-open",
+   "state": "absent",
+   "date": "10 Sep 2026",
+   "claim": "Licence to operate \u2014 a permission granted by an authority, ruled 3 September \u2014 collides with a second phrase in the same vocabulary, written 17 July, which describes exposure already carried. They mean opposite things and both are in use. The collision was recorded on 8 September and is still open, so the second phrase appears on no page of this site and a build check keeps it off."
+  },
+  {
+   "id": "three-banned-words",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "Three contested terms \u2014 one for encryption, one for recall, one for autonomy \u2014 do not appear anywhere on this site. What is used instead: end-to-end encrypted as the primary term, client-side encryption as the mechanical one, and durable for the property that resumes losslessly. The build fails if any of the three reaches a page. [Each is described on the disclosures page](/disclosures/)."
+  },
+  {
+   "id": "event-dates",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "The event is 17 and 18 September 2026, in Lisbon. The offer page and the payment codes are the only parts of this with a hard date. The merchandise surface, the catalogue of eight further offers and the marketplace listing do not depend on it."
+  },
+  {
+   "id": "domain-ruling-overruled",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "A ruling of 10 September placed a storefront under the risk product rather than on the platform domain. The instruction in hand overrode it and named this host. The ruling stands on the record, unedited, in the pack \u2014 and the build treats the host as moveable: every internal link is relative, the host appears in no copy, and the offer identifiers are stable."
+  }
+ ]
+}

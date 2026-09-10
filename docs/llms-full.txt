@@ -1,0 +1,750 @@
+# store.sgit.ai — the whole site as markdown
+site v0.1.0 · every claim's verification state is at /ledger/
+
+Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.
+
+The gaps are deliberate and they are the point. Two of the six offers do not exist yet; the
+documents area is built and holds its own documents pending five checks that have not been
+run; and the sentence about what a provider can and cannot read is absent from this site
+because six questions about what leaks have not been answered.
+
+This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0).
+
+
+==============================================================================
+PAGE /  —  Every agent needs a licence to operate
+==============================================================================
+
+---
+title: Every agent needs a licence to operate
+description: "Six offers, four with a price and a printed code. What is sold here is an instance: your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by security professionals. The paid thing is not access and it is not customisation. It is independence."
+lead: "**The paid thing is not access, and it is not customisation. It is independence.** The library is free and public and it stays that way. What is priced here is an **instance**: your situation, computed against it, in a vault you hold the keys to. **Four tiers, from £10 to £10,000, and two add-ons.** Two of the six do not exist yet — [they say so on their own row](/offers/), because a store that edits its gaps out is a marketing page wearing a lab coat."
+order: 1
+toc: true
+---
+
+## The four, and the two
+
+{{offers}}
+
+## What the ladder is actually for
+
+A buyer moving up this ladder is not buying more access, and not buying a
+customised version of a thing everybody else has. **They are buying independence
+from us.**
+
+At £10 you answer questions and keep the file. At £50 you get a vault you hold
+the keys to, that you can clone, and that we can be removed from. At £150 a person
+reads your situation with you. At £5,000 a team does. The direction of travel is
+the same at every rung: **more of the result is yours, and less of it depends on
+us still being here.**
+
+That is why the free public library is not on this page and is not for sale. The
+library belongs to the registry and it is free {{claim:graph-nodes}}. **Every paid
+thing here is an instance.** The line between the two is the argument the platform
+publishes, and a checkout does not move it.
+
+## What is true of each of these today
+
+**Two of the six do not exist yet.** They are on the page because the pack that
+specified this store lists them, and listing a thing that does not exist is only
+dishonest if you take the price.
+
+- The **signed-opinion add-on has no wording**, and wording has to exist before a first signature. It has no code behind it and it cannot be bought. {{claim:opinion-wording-absent}}
+- The **multi-format add-on's generator runs**, but the check that proves every variant carries the same facts does not. **That check is the whole guarantee**, it is mechanically checkable, and until it is built the guarantee is not printed here. {{claim:fact-diff-absent}}
+- **Tier 1's application was built in August and has not been located.** Until it is found, tier 1 is a questions page and this site does not promise more. {{claim:t1-app-not-located}}
+- **Tier 2's graph exists at 1,523 nodes with amendments applied. The pipeline does not exist.** {{claim:t2-pipeline-absent}}
+- **Tier 4's seven-role team is specified and has never run.** A first buyer would be the first run, and the conversation says so before the deposit, not after it. {{claim:t4-team-never-run}}
+
+Every one of those sentences is in [the ledger](/ledger/) with the state it
+earned. None of them is softened anywhere on this site, and a build check holds
+that line.
+
+## How paying works, in one paragraph
+
+**Four codes, one per tier, each a payment link with a printed code beside it.**
+A payment link is an online payment, so no cross-border rule applies to it — which
+matters, because a United Kingdom card account cannot tap in Portugal and the
+provider says so in those words. **No card reader was bought.**
+{{claim:card-reader-refused}} Above about a thousand pounds a card stops making
+sense, so [tier 4](/d/t4/) goes by invoice and bank transfer, or through the cloud
+marketplace after a conversation. **The two rails never appear as a choice on one
+transaction**, and [the paying page](/paying/) explains why that is a rule rather
+than a preference. {{claim:marketplace-no-customer-payment}}
+
+## Who this is for
+
+**In this order, because this is the order of the opportunity** — not because the
+three are equally served. [The full routing is here](/audiences/).
+
+1. **The corporate user** assessing an agent they already run. The market anchors between eight and one hundred and fifty thousand dollars and nothing sits underneath it.
+2. **The investor** buying a signed review of a company they are backing. No productised, affordable, signed investor security review exists at any price, and every component of one is already written.
+3. **The founder**, and only as the reverse sale: telling a founder what diligence will find, before it runs. Two funded incumbents and a free tier sit under everything else here, and both already publish the answer.
+
+## What this site will not tell you
+
+Nothing here is a compliance assessment, and nothing here is a mark of conformity
+to a standard. Neither describes this, and the language of conformity marking
+appears on no deliverable and on no page. **The company issues every
+opinion**, with an express non-assumption of personal responsibility on its face,
+and **the person who sells is never the person who signs.**
+
+Outputs are model generated and marked as such {{claim:transparency-article}}.
+Findings are triaged, never raw: recall-optimised agents run at 0.388 precision,
+which is about three findings in five wrong, so **every finding that reaches you
+has been reproduced rather than reviewed** {{claim:precision-0388}}.
+
+And one sentence that a reader might expect on a page like this **is not here on
+purpose**: we do not tell you what we can and cannot read, because six questions
+about what leaks have not been answered yet. [The disclosures page says which six](/disclosures/).
+{{claim:cannot-read-unanswered}}
+
+==============================================================================
+PAGE /audiences/  —  Who each one is for
+==============================================================================
+
+---
+title: Who each one is for
+description: "Three audiences, ordered by opportunity rather than treated as equal: the corporate user assessing an agent they already run, the investor buying a signed review, and the founder — who is a reverse sale, and the hardest of the three."
+lead: "**Order matters here, and the page reflects it.** Three audiences, and they are not equally served by what is on this site. One of them has a market above it and nothing underneath it. One of them has nothing at any price. One of them has two funded incumbents and a free tier, and is on this page only as a **reverse sale**."
+order: 3
+toc: true
+---
+
+## 1. The corporate user, assessing an agent they already run
+
+**The market anchors between eight and one hundred and fifty thousand dollars, and
+nothing sits underneath it.**
+
+That gap is the whole opportunity. Somebody running an agent today, who wants to
+know what they actually granted it, has a choice between a five-figure engagement
+and nothing. [Tier 1](/d/t1/) is ten pounds and answers the smaller version of the
+question; [tier 2](/d/t2/) is the version with the regulation attached.
+
+**What they are buying is the delta**: the union of what a credential permits,
+against what the holder is authorised and expected to do, and the excess authority
+between the two. **That delta is computed and never stored.** It is not a thing we
+keep about you.
+
+## 2. The investor, buying a signed review of a company they are backing
+
+**No productised, affordable, signed investor security review exists at any price
+— and every component of one is already written.**
+
+That is the emptiest quadrant on this page, and the one the top two tiers point
+at. [Tier 3](/d/t3/) is a person reading a situation. [Tier 4](/d/t4/) is a team.
+
+**It is also where the constraint bites hardest.** Selling buyers the question,
+selling suppliers the answer, and selling an opinion that vouches for the
+suppliers is the combination two industries have already regulated. So:
+
+- **The company issues every opinion**, with an express non-assumption of personal responsibility on its face. A product sold on a named individual's judgement runs at the test for assumed personal responsibility.
+- **The people who sell do not sign.** That constrains this site's own layout: the signature block and the checkout must not name the same person, and on this site neither names anyone at all.
+- The **signed opinion is a separate add-on with separate wording**, and that wording does not exist yet. {{claim:opinion-wording-absent}}
+
+## 3. The founder, and only as the reverse sale
+
+**Two funded incumbents, a free tier beneath them, and both already publish the
+answer.** Selling a founder a security posture document is selling into a
+commoditised tier.
+
+**The unoccupied offer is the reverse one: telling a founder what diligence will
+find, before it runs.** Same components, opposite direction, and it is the only
+version of this that is not already free somewhere.
+
+## What none of the three is buying
+
+**Raw findings.** Recall-optimised agents run at 0.388 precision — about three
+findings in five are wrong {{claim:precision-0388}}. A list of findings at that
+precision is not a product, it is a homework assignment with a bill attached.
+**What is sold is triage**: every finding that reaches a buyer has been reproduced
+first, not reviewed.
+
+**A verdict about a third party.** Where this estate names a competitor, a vendor,
+a standards body or a platform, it publishes the record — facts, dates, sources —
+and never the verdict, with no evaluative adjective attached to anybody's name.
+That rule holds on the pages you can read and it is [the reason the documents area
+is still closed](/dev-packs/).
+
+**A mark of conformity to a standard.** Nothing here is one, nothing here claims to
+be one, and the language of conformity marking is kept off this site entirely —
+it raises the standard of care beyond ordinary negligence for no benefit to a
+buyer.
+
+==============================================================================
+PAGE /booking/  —  Booking a person
+==============================================================================
+
+---
+title: Booking a person
+description: "Two of the four tiers are a booking rather than a download: a person reviewing your situation, and an assessment by a team. What a booking commits, what it does not, and why a signature is a separate thing you cannot buy yet."
+lead: "**[Tier 3](/d/t3/) and [tier 4](/d/t4/) are bookings.** What is bought is a person's time, and in tier 4's case a team's. That changes what the page can promise, so this one says what a booking commits us to, what it does not, and the one thing it is often mistaken for."
+order: 5
+toc: true
+---
+
+## What a booking is
+
+**A time, confirmed, and a scope in writing.** For [tier 3](/d/t3/) that is a
+person reading your situation and running a vault for you. For [tier 4](/d/t4/) it
+is an assessment by security professionals, with a deposit against a written
+scope.
+
+**Neither is a file you download.** {{claim:t3-collision-open}}
+
+## Tier 4 starts with a conversation, and the reason is arithmetic
+
+**Above about a thousand pounds a card stops making sense.** At £10,000 the card
+fee alone reaches roughly £250 {{claim:card-fee-floor}}. So tier 4 goes by invoice
+and bank transfer, or through [the cloud marketplace](/paying/) if the buyer would
+rather have it inside terms they already hold.
+
+There is a second reason, and it is the more important one. **The seven-role team
+is specified and has never run.** {{claim:t4-team-never-run}} A first buyer would
+be the first run. That belongs in a conversation before a deposit, not in a
+paragraph after one.
+
+## What a booking does not buy
+
+**A signature.** A reviewed opinion, issued by the company and signed by a named
+professional, is [a separate add-on](/offers/#offer-add-opinion) — and it cannot be
+bought at all right now, because **its wording does not exist and has to before a
+first signature.** {{claim:opinion-wording-absent}}
+
+This overlap is recorded and unresolved: tier 3 and the opinion add-on sit close
+enough together that a buyer could reasonably assume one includes the other.
+**It does not.** Until the overlap is closed, the two are sold separately and
+neither page implies the other. {{claim:t3-collision-open}}
+
+**A compliance assessment, or a mark of conformity.** Neither describes a booking
+here, and neither appears on anything that comes out of one. The family of words
+around conformity marking is avoided outright: it raises the standard of care
+beyond ordinary negligence and buys a buyer nothing.
+
+**A named individual's professional responsibility.** The **company** issues every
+opinion, with an express non-assumption of personal responsibility on its face.
+And **the person who sells is not the person who signs** — which is why no
+individual is named on this page, on the checkout, or beside a price anywhere on
+this site.
+
+## What comes out of a booking
+
+**Triage, not raw findings.** Every finding that reaches you has been **reproduced**,
+not reviewed. Recall-optimised agents run at 0.388 precision — about three findings
+in five are wrong — and passing that list on unfiltered would be selling somebody
+their own homework. {{claim:precision-0388}}
+
+**Marked outputs.** Anything model generated says so on its face, not only in a
+footer. {{claim:transparency-article}}
+
+**A record, never a verdict.** Where the work names a third party — a vendor, a
+platform, a standards body, a competitor — what is written down is facts, dates
+and sources, with no evaluative adjective attached to anybody's name.
+
+## How to book
+
+**At the event**: the code on the card. It redirects to the delivery page for that
+tier, which says what the booking covers before you commit to it.
+
+**Otherwise**: use the same code, or start the conversation for tier 4. There is
+no form on this site — it does not collect anything, from anybody, ever.
+
+==============================================================================
+PAGE /catalogue/  —  What is not for sale yet
+==============================================================================
+
+---
+title: What is not for sale yet
+description: "Eight further offers are specified and none of them is for this week. They are listed so that nobody proposes them as new, and so that the four that are for sale are not quietly widened to include them."
+lead: "**Eight further offers exist as specifications and none of them is on the offer page.** They are listed here for one reason: so that nobody proposes them as new. A catalogue that only shows what is buyable today loses the work that went into deciding what is not."
+order: 6
+---
+
+## The eight
+
+| | The offer | Why it is not on the offer page |
+|---|---|---|
+| **1** | **The amendment subscription** | The graph carries amendments today; a subscription to the deltas is a recurring product, and nothing recurring is being sold this week |
+| **2** | **The divergence report** | Depends on two vaults being comparable over time, which is a property the pipeline does not have yet |
+| **3** | **The rendering diff, as a verification service** | It is the same missing check that holds the multi-format add-on. Sell it as a service and you are selling the thing you have not built twice {{claim:fact-diff-absent}} |
+| **4** | **Crosswalk resolution** | Between which instruments, on whose licence terms, is a licence question before it is a product question |
+| **5** | **The write-only vault link** | A sharing primitive, not an offer. It becomes an offer when somebody is buying the workflow around it |
+| **6** | **The vault as a data room** | The closest of the eight to sellable, and the one most likely to be sold as a promise about what a provider can read. That sentence is not printable yet {{claim:cannot-read-unanswered}} |
+| **7** | **The threat-model estate** | Specified. It is an estate-wide surface rather than a single purchase |
+| **8** | **The infographic generator, with a purchase page** | The generator exists. The purchase page is the easy half; the guarantee is the hard half, and it is the same missing diff as row 3 |
+
+## And two surfaces, neither of which is this site
+
+**The merchandise page.** Ruled to be a page under the risk product, **not a
+separate site** and not a page here. November.
+
+**The marketplace listing**, as a second purchase path. Registration is four to
+eight weeks, which makes it the long pole and makes November the earliest honest
+date. {{claim:marketplace-registration}} [What that rail is and why it is separate](/paying/).
+
+## Why this page exists at all
+
+Because the alternative is that one of these eight gets proposed in three weeks as
+a fresh idea, and the reasoning that put it here has to be rebuilt from nothing.
+
+And because a store's real risk is not that it sells too little — it is that the
+four things it does sell quietly grow to cover the eight it does not. Every one of
+[the four delivery pages](/offers/) says **what does not arrive**, and this page is
+the same discipline pointed one level up.
+
+==============================================================================
+PAGE /dev-packs/  —  The dev packs
+==============================================================================
+
+---
+title: The dev packs
+description: "The area is built and the documents are held. Nineteen documents, every one of them hashed and listed, none of them published — because five checks run before anything opens, none has been run by a person, and two of them a script can already show would fail."
+lead: "**The instruction was to publish these documents on the site. The same document that gave the instruction named five checks that run first, called every one of them \"a real edit or a real hold\", and recorded that who runs them is not decided.** So this area exists, its manifest is published, and its documents are not. Two of the five checks are measurable and are measured below: **11 of the 19 documents would break a hard rule on contact with this site.**"
+order: 10
+toc: true
+wide: true
+---
+
+## What is published here today
+
+**The manifest, and nothing else.** Every document, its kind, its size and its
+sha256. That is enough for somebody holding the pack to check their copy against
+this page, and not enough to read a word of it here.
+
+That is deliberate, and it is the same discipline the pack asks of everything
+else: **checkable by a reader who does not trust the page.** A documents area that
+published its own text but not its own hashes would be arguing against the product
+it sits beside.
+
+{{pack-manifest}}
+
+## Why nothing is published yet
+
+**Publishing is not a formatting change.** The five checks below are quoted from
+the instruction itself, and each of them is a real edit or a real hold.
+
+{{pack-checks}}
+
+**Two of the five can be measured by a script, and the script has run:**
+
+- **Hard rule 1** — the word that may never appear anywhere on a site carrying prices — appears in **11 of the 19 documents**, including in the title of one of them. The rule's stated reason is that a positioning phrase is a claim but a priced checkout is an offer, and **an offer is what the regulated perimeter is about**. There is no page of this site where the word is safe, and a published document is a page.
+- **Check 5** — the open naming collision, ruled on 8 September to block any public page — appears in **4 of the 19**.
+
+**The other three need a person.** Auditing every named third party for adjectives
+is the check most likely to fail, because these were written for an internal
+reader and internal briefs are blunt — and no script reads for tone. Verifying or
+cutting every unverified claim that names a company needs the sources open.
+Re-reading the two documents with unresolved legal exposure needs somebody who is
+not only a builder.
+
+## What is not being asked for here
+
+**Not permission to soften them.** The gaps in these documents are the point. A
+document that says a pipeline does not exist, or that an application built in
+August cannot be located, is doing exactly what the method is for, and **a dev
+packs area whose uncertainty has been edited out is a marketing page wearing a lab
+coat.** Nothing in the manifest above has been rewritten and nothing will be.
+
+**What is being asked for is two rulings and three reads.** The word: does hard
+rule 1 reach a republished working document, or only original copy? The collision:
+close it, or hold the four documents that carry it. Then the three checks a person
+has to run.
+
+Until those happen, this page is what the area is.
+
+## The structure it will open into
+
+The shape is already specified and the build already follows half of it: one index,
+one folder per pack, a `pack.json` manifest with hashes, and **compiled files
+rather than one file per record** — because the published performance cliffs
+punish thousands of small objects, and a cold open of 2,375 objects was measured at
+over three minutes.
+
+```
+  /dev-packs/
+    index.html          this page — the list of packs, with date, count and state
+    pack.json           the manifest, machine-readable      ← published today
+    llms.txt            per the estate convention
+    llms-full.txt       the quotation set, the gaps, the open questions
+    /store/             this pack — held
+```
+
+**Two things are already decided and neither is a formatting question.** A
+published pack is **frozen, not maintained**: a dated document with hashes is a
+promise about a moment, and a pack that gets quietly updated breaks that promise —
+so new versions are added beside, never over. And whether packs from other days
+and other subjects follow this one is **a separate decision with a much larger
+surface**, not an extension of this instruction.
+
+## One thing this area is not sure about
+
+**Whether it belongs on this site at all.** The instruction said "the site", and
+this pack was written for this one. The reasonable alternative is that a dev packs
+area belongs on the platform domain and indexes packs for every site, with each
+pack linked from the site it concerns — which fits the convention that **every site
+in the network is named for an argument**, and a documents index is not an
+argument.
+
+It is built here, every internal link is relative, and the folder is self-contained
+**so it can be moved without rewriting it.** Same as [the host question](/offers/#the-offer-identifier-is-the-stable-part),
+and for the same reason. {{claim:domain-ruling-overruled}}
+
+==============================================================================
+PAGE /disclosures/  —  What we do not say, and why
+==============================================================================
+
+---
+title: What we do not say, and why
+description: "The words this site does not use, the sentence it does not print, the claims it does not make, and the reason for each one. Every entry has a source, and most of them have an enforcement precedent behind them."
+lead: "**A store's disclosures page is usually a list of things it is allowed to say.** This one is a list of things it is not, and why. Four of the entries are words. One is a whole sentence that a reader might reasonably expect to find on a page like this, and it is missing on purpose — because six questions have not been answered."
+order: 7
+toc: true
+---
+
+## The sentence that is not on this site
+
+**We do not tell you what we can and cannot read.**
+
+It is the sentence a reader expects from an encryption product, and it is absent
+here because it is **a factual claim about system architecture, and it is
+enforceable**. In November 2020 a regulator acted against a company for claiming
+end-to-end encryption while its servers held the keys. The settlement imposed
+**twenty years of third-party assessments**.
+
+**Six questions have to be answered before the sentence can be printed:**
+
+1. Are filenames encrypted?
+2. Is directory structure encrypted?
+3. What do object sizes reveal?
+4. What does commit timing reveal?
+5. Is there any recovery or escrow path?
+6. Is there any support access mechanism?
+
+**If anything leaks, the sentence gets a carve-out — not a softer adjective.**
+Until then it is not on this site in any form. {{claim:cannot-read-unanswered}}
+
+## The words this site does not use
+
+**This page does not print them either**, and that is not an oversight. An
+exception for the page that explains the rule is exactly how a rule stops applying:
+one section becomes one page becomes "in context". Each is described closely enough
+that anybody in the field will know which term is meant.
+
+| The term that is not used | What is used instead | Why it was rejected |
+|---|---|---|
+| **The contested encryption term** — two words, the first of them a number, widely used in storage marketing | **End-to-end encrypted** as the primary term, **client-side encryption** as the mechanical one | The company that popularised it in storage marketing retired it, a widely cited cryptographer's critique calls the usage actively harmful, and as a search term it is dominated by an unrelated meaning from cryptography |
+| **The contested recall term** — the human faculty, borrowed | **Durable** — resumes exactly where it left off, losslessly | Eight or more funded vendors contest it, two claim it as a category rather than a feature, the consumer meaning was captured by the largest model providers this year and carries a privacy connotation that fights an encryption product, and it implies **lossy summarisation of a lossless product** |
+| **The contested autonomy term** — the adjective everyone reached for in 2025 | Say what the thing actually does | The analyst forecast since June 2025 is that over forty per cent of such projects will be cancelled by end 2027, the practice of applying it loosely reached corporate governance disclosure commentary in April 2026, and the closest competitor pointedly avoids it |
+| **The absolute form of the tamper claim** | **Tamper evident, given a witness** | A rewritten hash chain verifies against itself. Tampering is detectable only when another party already holds an older hash — **the witness is a second clone**, which makes handing somebody a read key the act that makes the claim true. Append-only is stated as a policy, not a property |
+
+All four are checked mechanically on every build: **if any of them reaches a page
+of this site, the release stops.** {{claim:three-banned-words}}
+{{claim:tamper-evident-witness}}
+
+**This is a judgement and it is reversible.** The rule's own scope is copy that
+faces a customer, and a page about vocabulary is arguably not that. If naming them
+here is preferred, it is one edit in one place — on somebody's ruling, not on a
+builder's preference.
+
+## The claims this site does not make
+
+**It is not a compliance assessment.** Presenting it as one would be dishonest, and
+no page here does.
+
+**No claim of conformity to any standard is made, sought or implied**, and the
+whole family of words around conformity marking is avoided outright on this site —
+not softened, avoided. That language raises the standard of care beyond ordinary
+negligence, and it buys a reader nothing. A build check keeps it off every page.
+
+**No opinion here is personal.** The **company** issues every opinion, with an
+express non-assumption of personal responsibility on its face. A product sold on a
+named individual's judgement runs at the test for assumed personal responsibility.
+
+**The people who sell do not sign.** Selling buyers the question, suppliers the
+answer, and an opinion vouching for the suppliers is the combination two industries
+have already regulated. On this site that shows up as an absence: **no individual
+is named beside a price anywhere.**
+
+**Nothing here is derived from the international management standards.** They are
+not adapted, not translated, not resold as a derivative and **not fed to a model** —
+prohibited twice over. The same prohibition covers the payment card standard and
+the centre's controls. **The launch catalogue is the European regulation**, which
+is expressly reusable commercially including adaptation. {{claim:standards-not-adaptable}}
+{{claim:graph-nodes}}
+
+**Every derived instrument carries the unofficial banner, the attribution string
+and the not-responsible line on its face**, and no institutional logos, crests or
+original identifiers. That is licence terms, not caution.
+
+## What is disclosed, rather than withheld
+
+**Outputs are model generated.** The transparency article has applied since
+**2 August 2026** and reaches a third-country party whose output is used in the
+Union. The disclosure is on the face of each artefact, not only in a site footer,
+and it is at the top of every page here. {{claim:transparency-article}}
+
+**Findings are triaged, never raw.** Recall-optimised agents run at **0.388
+precision** — about three findings in five are wrong. Every finding that reaches a
+buyer has been **reproduced**, not reviewed. {{claim:precision-0388}}
+
+**Where a third party is named, what is published is the record and never the
+verdict** — facts, dates, sources, and no evaluative adjective attached to
+anybody's name. That rule is [why the documents area is built and still closed](/dev-packs/).
+
+**One phrase is held, and it is ours.** *Licence to operate* means a permission
+granted by an authority. A second phrase in this vocabulary means a description of
+exposure already carried. **They mean opposite things, both are in use, and the
+collision has been open since 8 September** — so the second one appears nowhere on
+this site, and a build check keeps it that way. {{claim:naming-collision-open}}
+
+==============================================================================
+PAGE /ledger/  —  Every claim on this site, with its state
+==============================================================================
+
+---
+title: Every claim on this site, with its state
+description: "One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first."
+lead: "**Every factual claim this site makes lives here once, with the state it earned and the date it earned it.** Pages cite a claim rather than restating it, so the same fact cannot be strong on one page and hedged on another. The rightmost column is joined at build time: it shows where each claim is actually said, and it is not editable by hand."
+order: 8
+toc: true
+wide: true
+---
+
+## The ledger
+
+{{ledger}}
+
+## What the states mean
+
+**Four of the ten states are ways of saying "not yet"**, and that proportion is the
+point rather than an embarrassment.
+
+| State | What it means |
+|---|---|
+| **exists and runs** | Built, and it runs today |
+| **measured** | Measured by our own pipeline, on a named workload and date |
+| **read, not run** | Read from a published source on this date. Never executed by us |
+| **projected** | Arithmetic, not an invoice. The workings are shown |
+| **specified, not built** | A specification. The thing it specifies does not exist |
+| **specified, never run** | Specified in full, and never executed once |
+| **built, not located** | It was built. It has not been found since, and nothing here promises it until it is |
+| **a booking, not a download** | What is bought is a person's time, not a file |
+| **part exists** | One half runs. The half carrying the guarantee does not |
+| **does not exist yet** | It does not exist. It is listed so nobody proposes it as new |
+
+## Why a store publishes one of these
+
+Because **checkability is the thing being sold.** An offer page that cannot be
+checked is arguing against the product sitting beside it.
+
+And because the alternative is worse in a specific, predictable way: without a
+ledger, the sentence "the pipeline does not exist" survives one draft, gets softened
+to "the pipeline is in development" in the next, and is gone by the third. Here it
+is a row with a state, cited from the page that makes the claim, and **the build
+fails if a page cites a claim that is not in this table.**
+
+==============================================================================
+PAGE /offers/  —  All six, side by side
+==============================================================================
+
+---
+title: All six, side by side
+description: "The four tiers and the two add-ons in one table: the question each answers, its price, what is true of the thing behind it today, how it is paid, and the stable offer identifier a printed code redirects to."
+lead: "**Four tiers and two add-ons.** Four prices are set, one range is deliberately wide, and the add-ons are banded rather than priced. Every number on this page comes from one file, and a build check holds each of them against the pack that set it — because these prices go onto **printed cards**, and a printed price cannot be corrected from a conference floor."
+order: 2
+toc: true
+wide: true
+---
+
+## The table
+
+{{offer-table}}
+
+## The six, in full
+
+{{offers}}
+
+## Why each number is that number
+
+**No price on this site was invented, and none of them is positioning.** Three of
+the six are arithmetic and the workings are here.
+
+{{prices-why}}
+
+The floor is the clearest of them: **at £5 the fixed card fee alone is about four
+per cent of the transaction**, so £10 is the floor and £5 is not a cheaper version
+of it — it is a worse one. At the other end, **at £10,000 a card costs up to about
+£250**, which is why tier 4 does not take one. {{claim:card-fee-floor}}
+
+**Prices are in pounds.** Pricing in euros while settling in pounds adds about two
+per cent, and that two per cent buys nothing. {{claim:pricing-in-pounds}}
+
+## The offer identifier is the stable part
+
+A printed code redirects to `/d/<id>/` and nothing else about it is load-bearing.
+Not the host, not the path above it, not a word of the copy.
+
+That is deliberate, and it is the one piece of engineering this site does purely
+because of a disagreement. **A ruling of 10 September placed a storefront under the
+risk product rather than on the platform domain.** The instruction in hand
+overrode it and named this host. The ruling stands on the record, unedited, and
+the build treats the host as moveable: every internal link here is relative, the
+host appears in no sentence of copy, and the identifiers above do not change.
+**If the site moves, it costs a DNS record and no reprinting.**
+{{claim:domain-ruling-overruled}}
+
+## What is not on this page
+
+**Eight further offers are specified and none of them is for this week.** The
+amendment subscription, the divergence report, the rendering diff as a
+verification service, crosswalk resolution, the write-only vault link, the vault
+as a data room, the threat-model estate, and the infographic generator with a
+purchase page. [They are listed here](/catalogue/) so that nobody proposes them as
+new.
+
+==============================================================================
+PAGE /paying/  —  The two rails, and why they never meet
+==============================================================================
+
+---
+title: The two rails, and why they never meet
+description: "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, and the separation is a rule rather than a preference."
+lead: "**Both rails exist. They must never appear as a choice on one transaction.** One is a payment link with a printed code beside it. The other is a cloud marketplace, above roughly a thousand pounds, after a conversation. The reason they are kept apart is not taste — it is that the marketplace's seller terms say a seller is **not permitted to collect customer payment information at any time**."
+order: 4
+toc: true
+---
+
+## The two rails
+
+| | **Payment link, with a printed code** | **The cloud marketplace** |
+|---|---|---|
+| **For** | Everything at the event, and everything below about £1,000 | Business buyers above roughly £1,000, after a conversation |
+| **Why** | A payment link is an online payment, so no cross-border rule applies | The buyer already holds the marketplace's legal terms |
+| **What it removes** | The card reader, and the declined tap | The master agreement, the vendor onboarding, the new purchase order |
+| **What it costs** | The provider's ordinary card fee | **0.5 per cent**, falling to zero inside a qualifying multi-product solution |
+| **State** | {{claim:card-reader-refused}} | {{claim:marketplace-registration}} |
+
+## Why a link, and not a card reader
+
+**A United Kingdom card account cannot tap in Portugal.** The provider declines the
+transaction on detecting a different country, and says so in those words. A card
+reader bought for the event would have been a box that says no, in public, to the
+first person who tried to pay with it.
+
+**A payment link is an online payment.** No cross-border rule applies to it. The
+buyer opens their own phone, on the provider's own page, and pays. Nothing on this
+site ever sees a card number, because nothing on this site ever handles one.
+
+**So no card reader was bought**, and the four codes on the cards are four links.
+{{claim:card-reader-refused}}
+
+## Why the marketplace is a conversation and not a button
+
+**The marketplace's seller terms state that a seller is not permitted to collect
+customer payment information at any time.** {{claim:marketplace-no-customer-payment}}
+
+A checkout button beside a marketplace button, on one page, for one transaction,
+is a design that walks straight into that. So the marketplace is not a second
+payment option here. **It is a different route with a different threshold**, and
+you reach it by talking to somebody, not by clicking something.
+
+**The pitch is procurement, not discount.** A buyer who already has the
+marketplace's legal terms does not need a master agreement, a vendor onboarding
+round, or a new purchase order. That is worth more than a percentage to the person
+who has to get the purchase through, and it is the actual reason to use the rail.
+The fee is **0.5 per cent**, and falls to zero inside a qualifying multi-product
+solution. {{claim:marketplace-fee}}
+
+**Registration is the long pole: four to eight weeks.** The listing is a November
+surface. Nothing on this site depends on it. {{claim:marketplace-registration}}
+
+### One correction, carried here rather than dropped
+
+**Professional services listings do not draw down committed spend on the cloud
+provider.** Three independent sources state the exclusion.
+
+An earlier version of the marketplace argument said the opposite. That version is
+on no page of this site, and this paragraph exists so that if somebody repeats the
+old claim in a room, the correction is findable rather than remembered.
+{{claim:no-committed-spend}}
+
+## Where each code lands
+
+Four codes, one per tier. Each is a payment link, and each redirects after payment
+to a delivery page that says **what arrives and what does not**:
+
+- [`t1`](/d/t1/) — £10
+- [`t2`](/d/t2/) — £50 to £100
+- [`t3`](/d/t3/) — £150 to £1,000
+- [`t4`](/d/t4/) — £5,000 to £10,000, and this one starts with [a conversation](/booking/)
+
+The cards the codes are printed on differ only in **the question on the front** and
+**the destination of the code**, which makes the fact set identical across every
+variant by construction rather than by checking.
+
+**The codes are the only part of this with a hard date.** The event is **17 and 18
+September 2026, in Lisbon**. The merchandise surface, [the eight further
+offers](/catalogue/) and the marketplace listing do not depend on it, and nothing
+on this site pretends otherwise. {{claim:event-dates}}
+
+## What this site does with a payment
+
+Nothing. It is a static site: **no page here opens a network connection at all**,
+there is no form, no cookie, no analytics, and no card number ever reaches it.
+Paying happens on the payment provider's own pages, which is the only place a card
+number should ever be typed. A build check holds that line on every release.
+
+==============================================================================
+PAGE /versions/  —  Release history
+==============================================================================
+
+---
+title: Release history
+description: "Every release of this site, what changed in it, and the commit it was built from. The version is owned by one file, the release commit's subject repeats it, and the pipeline refuses to tag if the two disagree."
+lead: "**Every push to the release branch is a release**, and every release is tagged. The version is owned by `admin/build/version.txt`, moved only by `bin/bump.py`, repeated in the release commit's subject, and **CI refuses to tag if the two disagree**. The same records are served as [JSON](/versions/index.json)."
+order: 9
+toc: true
+---
+
+## Releases
+
+{{releases}}
+
+## The pipeline that gates each one
+
+Three jobs, in this order, the same order as every sibling site in this estate.
+
+**1 · validate.** `admin/build/validate.sh` — the build is reproducible against the
+committed output, the version agrees everywhere it appears, internal links
+resolve, every canonical URL is on the host in `CNAME`, the credential tripwire is
+clean, every inline script parses, and this site's own acceptance assertions hold.
+**A failure stops the release: no tag, no publish.** It runs on pull requests too,
+so branch work is gated before it ever reaches the release branch.
+
+**2 · tag-release.** The version file is read, the release commit is found by its
+subject line, and the two must agree. The tag must be the next minor — or a
+deliberate major — after the previous latest. Historical tags missing from the
+remote are backfilled, idempotently. Then the tag is pushed.
+
+**3 · deploy.** The site is rebuilt from `content/` and published. It never runs
+when validation failed, and never from a pull request.
+
+## What this site's gate checks that a sibling's does not
+
+This is the first site in the estate that carries a price, and **a page with a
+price is an offer.** So the gate carries the rules that constrain an offer, as
+machine assertions rather than as advice in a document:
+
+- **The word that may never appear on a site carrying prices** appears on no page, in no heading, in no filename, and in no built artefact.
+- **No conformity-marking language in any form**, and no claim to be a compliance assessment.
+- **The three terms ruled out on 10 September** — one for encryption, one for recall, one for autonomy — reach no page, [including the page that explains why](/disclosures/). {{claim:three-banned-words}}
+- **The sentence about what a provider can read** is absent until six questions about what leaks are answered. {{claim:cannot-read-unanswered}}
+- **The absolute form of the tamper claim** never appears, and the honest form never appears without its witness in sight. {{claim:tamper-evident-witness}}
+- **The open naming collision** reaches no page. {{claim:naming-collision-open}}
+- **Every price** matches the pack that set it, to the penny.
+- **Committed spend** is never mentioned without the negation in sight: professional services do not draw down committed spend, and the old version of that claim appears nowhere. {{claim:no-committed-spend}}
+- **The model-generated disclosure** is above the fold on every page, not in a footer. {{claim:transparency-article}}
+
+**A rule that only lives in a document gets broken by the next person who has not
+read it.** These live in `tools/check_site.py`, and each one names the rule it
+enforces.

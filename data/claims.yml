@@ -1,0 +1,177 @@
+# The ledger. Every factual claim this site makes lives here once, with the state
+# it earned and the date it earned it. Pages cite a claim with {{claim:id}}, which
+# renders the chip and links back to /ledger/. The "where it is said" column is
+# joined at build time, so a claim cannot quietly appear on a page unbadged.
+#
+# States: exists · spec · unrun · unlocated · booking · partial · absent · docs ·
+#         measured · projected   (see build.py STATES)
+#
+# The pack's rule, and the reason this file is the first thing written rather than
+# the last: two of the six things on the offer list do not exist yet, and a store
+# whose gaps are edited out is a marketing page wearing a lab coat.
+
+# ---------------------------------------------------------- what is being sold
+- id: t1-app-not-located
+  state: unlocated
+  date: 10 Sep 2026
+  group: The state of each thing on the offer list
+  claim: "The application that would compute tier 1's delta **was built in August and has not been located**. Until it is, tier 1 is a questions page, and this site says so on the offer, on the delivery page and here."
+  source: "01__WHAT-TO-BUILD.md, the tier table"
+
+- id: t2-pipeline-absent
+  state: spec
+  date: 28 Jul 2026
+  group: The state of each thing on the offer list
+  claim: "Tier 2 was **specified on 28 July**. The graph it selects from **exists at 1,523 nodes with amendments applied**. The pipeline that turns a situation into a vault **does not exist**."
+  source: "01__WHAT-TO-BUILD.md, the tier table"
+
+- id: t3-collision-open
+  state: booking
+  date: 10 Sep 2026
+  group: The state of each thing on the offer list
+  claim: "Tier 3 is **a booking**, and it **overlaps the signed-opinion add-on**. The overlap is recorded and unresolved, so the two are sold separately and neither page implies the other."
+  source: "01__WHAT-TO-BUILD.md, the tier table"
+
+- id: t4-team-never-run
+  state: unrun
+  date: 10 Sep 2026
+  group: The state of each thing on the offer list
+  claim: "Tier 4 is **a booking with a deposit**. The **seven-role team is specified and has never run**. A first buyer would be the first run, and the page says so before the conversation, not after it."
+  source: "01__WHAT-TO-BUILD.md, the tier table"
+
+- id: fact-diff-absent
+  state: absent
+  date: 10 Sep 2026
+  group: The state of each thing on the offer list
+  claim: "The multi-format add-on's generator **exists**. The check that every variant renders the same fact set — **the diff that must be empty** — **does not exist**, and hard rule 6 forbids printing the guarantee before the check is built. So the guarantee is not printed."
+  source: "02__THE-HARD-RULES.md, rule 6"
+
+- id: opinion-wording-absent
+  state: absent
+  date: 10 Sep 2026
+  group: The state of each thing on the offer list
+  claim: "The signed-opinion add-on's **wording does not exist**, and it must before a first signature. The offer is listed and cannot be bought: there is no code behind it."
+  source: "01__WHAT-TO-BUILD.md, the add-on rows"
+
+# ------------------------------------------------------------------ the rails
+- id: card-reader-refused
+  state: docs
+  date: 10 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "A United Kingdom card account **cannot tap in Portugal**: the provider declines the transaction on detecting a different country, and says so in those words. **A payment link is an online payment**, so no cross-border rule applies to it. The conclusion the pack draws: **no card reader should be bought**."
+  source: "The payment-rail brief, in the pack at /dev-packs/store/"
+
+- id: card-fee-floor
+  state: projected
+  date: 10 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "**At £5 the fixed card fee alone is about four per cent** of the transaction, which is why £10 is the floor rather than £5. **At £10,000 a card costs up to about £250**, which is why the top tier goes by invoice and bank transfer. Arithmetic, not an invoice."
+  source: "01__WHAT-TO-BUILD.md, the price paragraph"
+
+- id: pricing-in-pounds
+  state: projected
+  date: 10 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "Prices are **in pounds**. Pricing in euros while settling in pounds adds **about two per cent**."
+  source: "01__WHAT-TO-BUILD.md, the price paragraph"
+
+- id: marketplace-no-customer-payment
+  state: docs
+  date: 10 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "The cloud marketplace's seller terms state that a seller is **not permitted to collect customer payment information at any time**. The two rails are therefore **strictly separated**: the marketplace is not a second button beside the card button, it is a different conversation with a different threshold."
+  source: "The marketplace brief, in the pack at /dev-packs/store/"
+
+- id: marketplace-fee
+  state: docs
+  date: 10 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "The marketplace listing fee is **0.5 per cent**, and **falls to zero inside a qualifying multi-product solution**. The pitch is **procurement, not discount**: the buyer already holds the marketplace's legal terms, so there is no master agreement, no vendor onboarding and no new purchase order."
+  source: "The marketplace brief, in the pack at /dev-packs/store/"
+
+- id: no-committed-spend
+  state: docs
+  date: 10 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "**Professional services listings do not draw down committed spend** on the cloud provider. Three independent sources state the exclusion. An earlier version of this claim said the opposite; **the correction is recorded here rather than quietly dropped**, and the old version appears on no page of this site."
+  source: "The marketplace brief, correction carried in brief 2 of the pack"
+
+- id: marketplace-registration
+  state: spec
+  date: 10 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "Marketplace registration is **the long pole: four to eight weeks**. The listing is therefore **a November surface**, not an event surface, and nothing on this site depends on it."
+  source: "01__WHAT-TO-BUILD.md, the surface table"
+
+# ------------------------------------------------------- what may be promised
+- id: precision-0388
+  state: measured
+  date: 10 Sep 2026
+  group: What a finding is worth, and what may be promised
+  claim: "Recall-optimised agents run at **0.388 precision** — about **three findings in five are wrong**. This is the reason the product is **triage and never raw findings**, and the reason every finding that reaches a buyer has been **reproduced rather than reviewed**."
+  source: "The disclaimer brief, in the pack at /dev-packs/store/"
+
+- id: transparency-article
+  state: docs
+  date: 2 Aug 2026
+  group: What a finding is worth, and what may be promised
+  claim: "The transparency article **has applied since 2 August 2026** and reaches a third-country party whose output is used in the Union. Outputs here are **model generated** and are marked as such on the face of the artefact, not only in a footer."
+  source: "The disclaimer brief, in the pack at /dev-packs/store/"
+
+- id: graph-nodes
+  state: exists
+  date: 10 Sep 2026
+  group: What a finding is worth, and what may be promised
+  claim: "The regulation graph **exists at 1,523 nodes, with amendments applied**. It is the launch catalogue because the European regulation is **expressly reusable commercially, including adaptation**."
+  source: "01__WHAT-TO-BUILD.md and hard rule 10"
+
+- id: standards-not-adaptable
+  state: docs
+  date: 10 Sep 2026
+  group: What a finding is worth, and what may be promised
+  claim: "The international management standards are **not adapted, translated, resold as a derivative, or fed to a model** here — prohibited twice over, once as a derivative and once as a model input. The same prohibition covers the payment card standard and the centre's controls. Nothing on this site is derived from any of them."
+  source: "02__THE-HARD-RULES.md, rule 10"
+
+# ---------------------------------------------------------------- the wording
+- id: tamper-evident-witness
+  state: docs
+  date: 10 Sep 2026
+  group: The words this site uses, and the words it does not
+  claim: "**Tamper evident, given a witness** — never the absolute form of that claim, which is false. A rewritten hash chain verifies against itself; tampering is detectable only when another party already holds an older hash. **The witness is a second clone**, which makes handing somebody a read key the act that makes the claim true. Append-only is stated as **a policy, not a property**."
+  source: "02__THE-HARD-RULES.md, rule 14"
+
+- id: cannot-read-unanswered
+  state: absent
+  date: 10 Sep 2026
+  group: The words this site uses, and the words it does not
+  claim: "The sentence a reader expects from an encryption product — the one about what its operator can and cannot see — **is not printed on this site in any form**, because six questions about what leaks (filenames, directory structure, object sizes, commit timing, recovery or escrow, support access) **have not been answered**. In November 2020 a regulator acted against a company for claiming end-to-end encryption while its servers held the keys; the settlement imposed **twenty years of third-party assessments**."
+  source: "02__THE-HARD-RULES.md, rule 13"
+
+- id: naming-collision-open
+  state: absent
+  date: 10 Sep 2026
+  group: The words this site uses, and the words it does not
+  claim: "**Licence to operate** — a permission granted by an authority, ruled 3 September — collides with a second phrase in the same vocabulary, written 17 July, which describes exposure already carried. **They mean opposite things and both are in use.** The collision was recorded on 8 September and **is still open**, so the second phrase appears on no page of this site and a build check keeps it off."
+  source: "03__THE-NAMES.md, the open collision"
+
+- id: three-banned-words
+  state: docs
+  date: 10 Sep 2026
+  group: The words this site uses, and the words it does not
+  claim: "**Three contested terms** — one for encryption, one for recall, one for autonomy — do not appear anywhere on this site. What is used instead: **end-to-end encrypted** as the primary term, **client-side encryption** as the mechanical one, and **durable** for the property that resumes losslessly. The build fails if any of the three reaches a page. [Each is described on the disclosures page](/disclosures/)."
+  source: "02__THE-HARD-RULES.md, rule 12"
+
+# --------------------------------------------------------------- the deadline
+- id: event-dates
+  state: docs
+  date: 10 Sep 2026
+  group: The deadline, and what actually depends on it
+  claim: "The event is **17 and 18 September 2026, in Lisbon**. **The offer page and the payment codes are the only parts of this with a hard date.** The merchandise surface, the catalogue of eight further offers and the marketplace listing do not depend on it."
+  source: "00__START-HERE.md, the deadline"
+
+- id: domain-ruling-overruled
+  state: docs
+  date: 10 Sep 2026
+  group: The deadline, and what actually depends on it
+  claim: "A ruling of 10 September placed a storefront **under the risk product rather than on the platform domain**. The instruction in hand overrode it and named this host. The ruling **stands on the record, unedited**, in the pack — and the build treats the host as moveable: every internal link is relative, the host appears in no copy, and the offer identifiers are stable."
+  source: "00__START-HERE.md and 03__THE-NAMES.md"

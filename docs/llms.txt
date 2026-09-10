@@ -1,0 +1,46 @@
+# store.sgit.ai
+> site v0.1.0
+
+> Every agent needs a licence to operate. This is where you buy one.
+> Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
+> The paid thing is not access and it is not customisation. It is independence.
+
+What is sold here is an instance. The free public library lives on the platform site and is
+not sold. Prices are in pounds. Two of the six offers do not exist yet and say so on their
+own row: the signed-opinion wording has not been written, and the check that proves every
+rendered variant carries the same facts has not been built, so the guarantee that would make
+the multi-format add-on worth buying is not printed anywhere on this site.
+
+Nothing here is a compliance assessment and no page claims conformity to any standard. Outputs
+are model generated and marked as such. Every finding that reaches a buyer has been reproduced rather
+than reviewed: recall-optimised agents run at 0.388 precision, so what is sold is triage and
+never raw findings.
+
+Every factual claim on this site carries one of ten states — exists, measured, read-not-run,
+projected, specified-not-built, specified-never-run, built-not-located, a-booking, part-exists,
+does-not-exist-yet. The full list is at /ledger/. Every page is also served as markdown at
+<page>/index.md. No page on this site opens a network connection.
+
+Offer identifiers are stable and the host is not: a payment code redirects to /d/<id>/, so this
+site can move host without reprinting a card or reissuing a link.
+Licence: This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0).
+
+## Pages
+- [Every agent needs a licence to operate](https://store.sgit.ai/): Six offers, four with a price and a printed code. What is sold here is an instance: your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by security professionals. The paid thing is not access and it is not customisation. It is independence.
+- [Who each one is for](https://store.sgit.ai/audiences/): Three audiences, ordered by opportunity rather than treated as equal: the corporate user assessing an agent they already run, the investor buying a signed review, and the founder — who is a reverse sale, and the hardest of the three.
+- [Booking a person](https://store.sgit.ai/booking/): Two of the four tiers are a booking rather than a download: a person reviewing your situation, and an assessment by a team. What a booking commits, what it does not, and why a signature is a separate thing you cannot buy yet.
+- [What is not for sale yet](https://store.sgit.ai/catalogue/): Eight further offers are specified and none of them is for this week. They are listed so that nobody proposes them as new, and so that the four that are for sale are not quietly widened to include them.
+- [The dev packs](https://store.sgit.ai/dev-packs/): The area is built and the documents are held. Nineteen documents, every one of them hashed and listed, none of them published — because five checks run before anything opens, none has been run by a person, and two of them a script can already show would fail.
+- [What we do not say, and why](https://store.sgit.ai/disclosures/): The words this site does not use, the sentence it does not print, the claims it does not make, and the reason for each one. Every entry has a source, and most of them have an enforcement precedent behind them.
+- [Every claim on this site, with its state](https://store.sgit.ai/ledger/): One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first.
+- [All six, side by side](https://store.sgit.ai/offers/): The four tiers and the two add-ons in one table: the question each answers, its price, what is true of the thing behind it today, how it is paid, and the stable offer identifier a printed code redirects to.
+- [The two rails, and why they never meet](https://store.sgit.ai/paying/): Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, and the separation is a rule rather than a preference.
+- [Release history](https://store.sgit.ai/versions/): Every release of this site, what changed in it, and the commit it was built from. The version is owned by one file, the release commit's subject repeats it, and the pipeline refuses to tag if the two disagree.
+
+## Offers, and where each code lands
+- `t1` — £10 — What did I actually grant it? — https://store.sgit.ai/d/t1/
+- `t2` — £50 to £100 — Which parts of the regulation actually reach me? — https://store.sgit.ai/d/t2/
+- `t3` — £150 to £1,000 — Will somebody look at my situation with me? — https://store.sgit.ai/d/t3/
+- `t4` — £5,000 to £10,000 — What would a team of security professionals find? — https://store.sgit.ai/d/t4/
+- `add-formats` — By depth band — Can I have the same result in a form the board will read? — https://store.sgit.ai/d/add-formats/
+- `add-opinion` — By depth band — Will somebody put their name to it? — no code behind it yet

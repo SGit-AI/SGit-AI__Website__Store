@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Release history &mdash; the store</title>
+<meta name="description" content="Every release of this site, what changed in it, and the commit it was built from. The version is owned by one file, the release commit&#x27;s subject repeats it, and the pipeline refuses to tag if the two disagree.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://store.sgit.ai/versions/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="store.sgit.ai">
+<meta property="og:url" content="https://store.sgit.ai/versions/">
+<meta property="og:title" content="Release history">
+<meta property="og:description" content="Every release of this site, what changed in it, and the commit it was built from. The version is owned by one file, the release commit&#x27;s subject repeats it, and the pipeline refuses to tag if the two disagree.">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<script src="../assets/site.js" defer></script>
+</head>
+<body>
+<nav class="site"><div class="row"><a class="brand" href="../index.html">store<span>.sgit.ai</span></a><a class="parent" href="https://sgit.ai/llms.txt" rel="noopener" title="sgit.ai — the platform this sells instances of. The free public library lives there">&#8599; part of <b>sgit.ai</b></a><span class="stage-pill">every offer here is an instance</span><a class="ver" href="../versions/v0.1.0/index.html" title="What changed in v0.1.0, and the commit it was built from">v0.1.0</a><button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">Menu</button><div class="nav-items"><div class="ni"><a class="nl" href="../index.html">What is for sale</a></div><div class="ni ni-has"><a class="nl" href="../offers/index.html">The offers<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../offers/index.html">All six, side by side</a><a class="sl" href="../audiences/index.html">Who each one is for</a><a class="sl" href="../catalogue/index.html">What is not for sale yet</a></div></div><div class="ni ni-has"><a class="nl" href="../paying/index.html">Paying<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../paying/index.html">The two rails</a><a class="sl" href="../booking/index.html">Booking a person</a></div></div><div class="ni ni-has"><a class="nl here" href="../ledger/index.html">Evidence<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../ledger/index.html">The claim ledger</a><a class="sl" href="../disclosures/index.html">What we do not say, and why</a><a class="sl" href="../dev-packs/index.html">The dev packs, published raw</a><a class="sl here" href="../versions/index.html">Release history</a></div></div></div><a class="gh" href="https://github.com/SGit-AI/SGit-AI__Website__Store" rel="noopener">&#9733; Source</a></div></nav>
+<div class="disclosure-strip"><div class="row"><b>Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.</b>
+Nothing on this site is a compliance assessment, and no page claims conformity to any standard.
+<a href="../disclosures/index.html">What we do not say, and why</a> &middot;
+<a href="../ledger/index.html">how every claim here is evidenced</a></div></div>
+<main class="doc">
+<p class="crumb"><a href="../index.html">store.sgit.ai</a> / Release history</p>
+<h1>Release history</h1>
+<p class="lead"><strong>Every push to the release branch is a release</strong>, and every release is tagged. The version is owned by <code>admin/build/version.txt</code>, moved only by <code>bin/bump.py</code>, repeated in the release commit's subject, and <strong>CI refuses to tag if the two disagree</strong>. The same records are served as <a href="../versions/index.json">JSON</a>.</p>
+<aside class="toc"><b>On this page</b><a class="lv2" href="#releases">Releases</a><a class="lv2" href="#the-pipeline-that-gates-each-one">The pipeline that gates each one</a><a class="lv2" href="#what-this-site-s-gate-checks-that-a-sibling-s-does-not">What this site&#x27;s gate checks that a sibling&#x27;s does not</a></aside>
+<h2 id="releases">Releases</h2>
+<div class="tablewrap"><table><thead><tr><th>Version</th><th>Released</th><th>What changed</th><th>Commit</th></tr></thead><tbody><tr><td><a href="../versions/v0.1.0/index.html"><code>v0.1.0</code></a> &mdash; <b>current</b></td><td class="small">2026-09-10</td><td>the offer page, the four codes, the two rails and the pack</td><td class="small"><code>—</code></td></tr></tbody></table></div>
+<h2 id="the-pipeline-that-gates-each-one">The pipeline that gates each one</h2>
+<p>Three jobs, in this order, the same order as every sibling site in this estate.</p>
+<p><strong>1 · validate.</strong> <code>admin/build/validate.sh</code> — the build is reproducible against the committed output, the version agrees everywhere it appears, internal links resolve, every canonical URL is on the host in <code>CNAME</code>, the credential tripwire is clean, every inline script parses, and this site's own acceptance assertions hold. <strong>A failure stops the release: no tag, no publish.</strong> It runs on pull requests too, so branch work is gated before it ever reaches the release branch.</p>
+<p><strong>2 · tag-release.</strong> The version file is read, the release commit is found by its subject line, and the two must agree. The tag must be the next minor — or a deliberate major — after the previous latest. Historical tags missing from the remote are backfilled, idempotently. Then the tag is pushed.</p>
+<p><strong>3 · deploy.</strong> The site is rebuilt from <code>content/</code> and published. It never runs when validation failed, and never from a pull request.</p>
+<h2 id="what-this-site-s-gate-checks-that-a-sibling-s-does-not">What this site's gate checks that a sibling's does not</h2>
+<p>This is the first site in the estate that carries a price, and <strong>a page with a price is an offer.</strong> So the gate carries the rules that constrain an offer, as machine assertions rather than as advice in a document:</p>
+<ul><li><strong>The word that may never appear on a site carrying prices</strong> appears on no page, in no heading, in no filename, and in no built artefact.</li><li><strong>No conformity-marking language in any form</strong>, and no claim to be a compliance assessment.</li><li><strong>The three terms ruled out on 10 September</strong> — one for encryption, one for recall, one for autonomy — reach no page, <a href="../disclosures/index.html">including the page that explains why</a>. <a class="chip st-d" href="../ledger/index.html#claim-three-banned-words" title="Read from a published source on this date. Never executed by us.">read, not run 10 Sep 2026</a></li><li><strong>The sentence about what a provider can read</strong> is absent until six questions about what leaks are answered. <a class="chip st-x" href="../ledger/index.html#claim-cannot-read-unanswered" title="It does not exist. It is listed so that nobody proposes it as new.">does not exist yet 10 Sep 2026</a></li><li><strong>The absolute form of the tamper claim</strong> never appears, and the honest form never appears without its witness in sight. <a class="chip st-d" href="../ledger/index.html#claim-tamper-evident-witness" title="Read from a published source on this date. Never executed by us.">read, not run 10 Sep 2026</a></li><li><strong>The open naming collision</strong> reaches no page. <a class="chip st-x" href="../ledger/index.html#claim-naming-collision-open" title="It does not exist. It is listed so that nobody proposes it as new.">does not exist yet 10 Sep 2026</a></li><li><strong>Every price</strong> matches the pack that set it, to the penny.</li><li><strong>Committed spend</strong> is never mentioned without the negation in sight: professional services do not draw down committed spend, and the old version of that claim appears nowhere. <a class="chip st-d" href="../ledger/index.html#claim-no-committed-spend" title="Read from a published source on this date. Never executed by us.">read, not run 10 Sep 2026</a></li><li><strong>The model-generated disclosure</strong> is above the fold on every page, not in a footer. <a class="chip st-d" href="../ledger/index.html#claim-transparency-article" title="Read from a published source on this date. Never executed by us.">read, not run 2 Aug 2026</a></li></ul>
+<p><strong>A rule that only lives in a document gets broken by the next person who has not read it.</strong> These live in <code>tools/check_site.py</code>, and each one names the rule it enforces.</p>
+<p class="pagenav"><a href="../offers/index.html">The six offers &rarr;</a>
+<a href="../ledger/index.html">Every claim on this site, with its state &rarr;</a>
+<a href="../disclosures/index.html">What we do not say &rarr;</a></p>
+</main>
+<footer class="site"><div class="cols">
+  <div>
+    <div class="brandline">store<span>.sgit.ai</span></div>
+    <p class="nonaff"><b>Every agent needs a licence to operate.</b> This is where you buy one.
+       Six offers, four of them with a price and a code, two of them listed and not yet buyable.
+       <b>The paid thing is not access and it is not customisation. It is independence.</b></p>
+    <p>Nothing here is a compliance assessment, nothing here is a mark of conformity to any standard, and no opinion here is
+       personal: <b>the company issues every opinion</b>, and the person who sells is never the
+       person who signs. Outputs are model generated and marked as such.</p>
+    <p class="licence">This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). The code that builds it is Apache-2.0.</p>
+    <p class="verline">site <a href="../versions/index.html">v0.1.0</a> &middot;
+       <a href="../ledger/index.html">the ledger</a> &middot; <a href="../disclosures/index.html">what we do not say</a> &middot;
+       <a href="index.md" title="The same page as plain markdown">this page as markdown</a></p>
+  </div>
+  <div>
+    <h4>The offers</h4>
+    <a href="../offers/index.html">All six, side by side</a>
+    <a href="../offers/index.html#the-two-add-ons">The two add-ons</a>
+    <a href="../audiences/index.html">Who each one is for</a>
+    <a href="../catalogue/index.html">What is not for sale yet</a>
+  </div>
+  <div>
+    <h4>Paying</h4>
+    <a href="../paying/index.html">The two rails</a>
+    <a href="../paying/index.html#why-a-link-and-not-a-card-reader">Why a link, not a reader</a>
+    <a href="../booking/index.html">Booking a person</a>
+  </div>
+  <div>
+    <h4>Evidence</h4>
+    <a href="../ledger/index.html">Every claim, with its state</a>
+    <a href="../disclosures/index.html">What we do not say, and why</a>
+    <a href="../dev-packs/index.html">The dev packs</a>
+    <a href="../versions/index.html">Release history</a>
+  </div>
+</div>
+<div class="footnote"><p>No analytics. No cookies. No third-party fonts, scripts or CDN &mdash; every byte of this
+site is served from this domain, and <b>no page here opens a network connection at all</b>. A build check holds that
+line. Paying happens on the payment provider&rsquo;s own pages, which is the only place a card number should ever be
+typed: nothing on this site collects one. Prices are in pounds &mdash; pricing in euros while settling in pounds adds
+about two per cent.</p></div>
+</footer>
+</body>
+</html>

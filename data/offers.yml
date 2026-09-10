@@ -1,0 +1,130 @@
+# The offers. THIS FILE IS THE ONLY PLACE A PRICE EXISTS.
+#
+# Four tiers and two add-ons, from 01__WHAT-TO-BUILD.md. Four prices are set, one
+# range is deliberately wide, and the add-ons are banded rather than priced. The
+# pack is explicit that a price is not the builder's to invent, so the gate in
+# tools/check_site.py holds every number below against the pack and fails the
+# release if one moves.
+#
+# `id` is the stable offer identifier. A payment link redirects to /d/<id>/ and
+# nothing else about it is load-bearing, so the site can move host without
+# reprinting a card or reissuing a link.
+#
+# `state` is what is true about the thing being sold TODAY. Two of the six do not
+# exist yet and the pack says so; those sentences are not marketing copy to be
+# softened, they are the reason the method is worth anything.
+
+- id: t1
+  tier: "1"
+  question: What did I actually grant it?
+  price_label: "£10"
+  price_min: 1000
+  price_max: 1000
+  price_why: "The floor is arithmetic, not positioning. At £5 the fixed card fee alone is about four per cent of the transaction"
+  gets: "Your own answers, your measured grant, and the delta between them, as a file you keep."
+  state_badge: unlocated
+  state: "An application built in August may exist and has not been located. Until it is found, this is a questions page, and this page does not promise more than that."
+  claim: t1-app-not-located
+  rail: link
+  delivery_says:
+    - "The questions, in the order they are asked."
+    - "Your answers, as you gave them."
+    - "The grant we measured, if the measurement ran."
+    - "The delta between the two, computed at the moment you open it and never stored."
+  not_promised:
+    - "That the measurement ran. If the August application cannot be located, what arrives is your answers and the questions, and the page says so before you pay."
+
+- id: t2
+  tier: "2"
+  question: Which parts of the regulation actually reach me?
+  price_label: "£50 to £100"
+  price_min: 5000
+  price_max: 10000
+  price_why: "A band, not a number. Where a case lands inside it depends on how much of the graph the situation touches"
+  gets: "Only the provisions of the regulation that reach your situation, with the fact that caused each provision to arrive visible beside it, as a vault you own."
+  state_badge: spec
+  state: "Specified 28 July. The graph exists at 1,523 nodes with amendments applied. The pipeline that turns a situation into a vault does not exist."
+  claim: t2-pipeline-absent
+  rail: link
+  delivery_says:
+    - "The provisions that reach you, and only those."
+    - "Beside each one, the fact about your situation that caused it to arrive."
+    - "The graph version and the amendment set the selection ran against."
+    - "A vault you hold the keys to, that you can clone, and that we can be removed from."
+  not_promised:
+    - "A compliance assessment. This is a selection from a published regulation, not a judgement about whether you meet it."
+    - "That the selection is complete. What arrives is a record of what the pipeline reached, with the version it reached it at."
+
+- id: t3
+  tier: "3"
+  question: Will somebody look at my situation with me?
+  price_label: "£150 to £1,000"
+  price_min: 15000
+  price_max: 100000
+  price_why: "The width is deliberate. It is a person's time, and the range covers an hour at one end and a working week at the other"
+  gets: "A person reviewing your situation, and running a vault for you."
+  state_badge: booking
+  state: "A booking, not a download. This tier overlaps the signed-opinion add-on, and the overlap is recorded and unresolved — so the two are sold separately and the page says which one you are buying."
+  claim: t3-collision-open
+  rail: link
+  delivery_says:
+    - "A time, confirmed, with a named person's role — not their name, because the person who sells is not the person who signs."
+    - "What they will read before the call."
+    - "What you get afterwards, in writing."
+  not_promised:
+    - "A signed opinion. That is a separate add-on with separate wording, and buying an hour of review does not buy a signature."
+
+- id: t4
+  tier: "4"
+  question: What would a team of security professionals find?
+  price_label: "£5,000 to £10,000"
+  price_min: 500000
+  price_max: 1000000
+  price_why: "Above about £1,000 a card stops making sense — at £10,000 the card fee alone reaches roughly £250 — so this tier goes by invoice and bank transfer, or through the cloud marketplace after a conversation"
+  gets: "An assessment by security professionals."
+  state_badge: unrun
+  state: "A booking with a deposit. The seven-role team is specified and has never run. You would be the first, and the price reflects it."
+  claim: t4-team-never-run
+  rail: invoice
+  delivery_says:
+    - "A conversation first, because nothing at this size should start with a card."
+    - "A scope in writing, and a deposit against it."
+    - "The seven roles that will run, and which of them has run before."
+  not_promised:
+    - "A mark of conformity to a standard, an accreditation, or an audit opinion. None of those describes this, and the language around them appears on no deliverable and on no page of this site."
+    - "Raw findings. What is delivered is triage: every finding that reaches you has been reproduced first."
+
+- id: add-formats
+  tier: add-on
+  question: Can I have the same result in a form the board will read?
+  price_label: "By depth band"
+  price_min: 0
+  price_max: 0
+  price_why: "Priced against the depth band of the offer it attaches to, because the work is the rendering and the rendering scales with what there is to render"
+  gets: "The same result as a document, a deck, an infographic, and in a second language."
+  state_badge: partial
+  state: "The generator exists. The check that proves every variant carries the same facts does not, so the guarantee that would make this worth buying is not printed here yet."
+  claim: fact-diff-absent
+  rail: link
+  delivery_says:
+    - "The same result, in the formats you chose."
+    - "The variant list, and the date each was rendered."
+  not_promised:
+    - "That the variants are fact-identical. That is the guarantee this add-on exists to make, it is mechanically checkable, and the check has not been built. Until it has, the claim is not on this page."
+
+- id: add-opinion
+  tier: add-on
+  question: Will somebody put their name to it?
+  price_label: "By depth band"
+  price_min: 0
+  price_max: 0
+  price_why: "Priced against the depth band of the offer it attaches to"
+  gets: "A reviewed opinion, issued by the company, signed by a named professional."
+  state_badge: absent
+  state: "The wording does not exist. It has to, before a first signature — so this add-on is listed and cannot yet be bought."
+  claim: opinion-wording-absent
+  rail: none
+  delivery_says:
+    - "Nothing yet. This offer has no delivery page because it has no wording, and it is listed here so that nobody proposes it as new."
+  not_promised:
+    - "Availability. There is no code for this one and no checkout behind it."

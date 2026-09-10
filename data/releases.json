@@ -1,0 +1,16 @@
+{
+  "current": "v0.1.0",
+  "releases": [
+    {
+      "version": "v0.1.0",
+      "date": "2026-09-10",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the offer page, the four codes, the two rails and the pack",
+      "summary": "The first release. The offer page with four tiers and two add-ons, a delivery page per offer, the booking flow for the two tiers that are a booking, the two payment rails kept strictly apart, the audience routing, the claim ledger, and the store pack published raw at /dev-packs/store/. The pipeline is the estate's: validate, tag, deploy.",
+      "changes": ["admin", "assets", "bin", "build.py", "content", "data", "packs", "tools"],
+      "reconstructed": false,
+      "basis": []
+    }
+  ]
+}

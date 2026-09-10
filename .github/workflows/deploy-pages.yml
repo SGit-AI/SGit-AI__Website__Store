@@ -1,0 +1,200 @@
+# Deploys store.sgit.ai to GitHub Pages, with the same pipeline order as every
+# sibling site in this estate — SGit-AI__Website__Provider__UnGovr, __Provider__ElevenLabs,
+# __PKI, __Graphs, __Wardley-Maps: validate → tag → publish.
+#
+# This site carries prices, so its gate carries more than the estate's usual checks.
+# admin/build/validate.sh runs the fifteen hard rules of the store pack as machine
+# assertions — the word that may never appear, the three words ruled out on
+# 10 September, the sentence that may not be printed until somebody has answered
+# what leaks, the naming collision that blocks any public page, and the claim about
+# committed spend that three sources contradict. A rule that only lives in a
+# document gets broken by the next person who has not read it.
+#
+#   1. validate     — the pre-release gate (admin/build/validate.sh): the build is
+#                     reproducible, the version agrees everywhere, internal links
+#                     resolve, every canonical URL is on the host in CNAME, the
+#                     key-leak tripwire is clean, and this site's own acceptance
+#                     assertions hold. A failure stops the release: no tag, no
+#                     publish. It also runs on pull requests, so branch work is
+#                     gated before it ever reaches the release branch.
+#   2. tag-release  — every push to the release branch is a minor release and ends
+#                     tagged v{release}.{major}.{minor}. The version is owned by
+#                     admin/build/version.txt (bumped exactly once per release, by
+#                     bin/bump.py) and must also appear in the release commit's
+#                     subject ("site vX.Y.Z: ..."). CI verifies the two agree and
+#                     that the bump is the next minor (or a deliberate major), then
+#                     tags the release commit — which is HEAD on a direct push and
+#                     HEAD's parent when a pull request lands as a merge commit.
+#   3. deploy       — builds the site from content/ and publishes docs/. Runs on
+#                     manual dispatch even without a tag, but never when validation
+#                     failed and never from a pull request.
+#
+# Branches: `dev` is this estate's release branch and this repository's default.
+name: deploy-pages
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: The pre-release gate (build, version, links, canonical, secrets)
+        run: admin/build/validate.sh
+
+  tag-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [validate]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tag this release (and backfill any missing historical tags)
+        run: |
+          set -euo pipefail
+          git fetch --tags --quiet
+          git config user.name  'GitHub Actions'
+          git config user.email 'actions@github.com'
+
+          # Read the history ONCE, into a variable. Piping `git log` straight into
+          # an early-exiting reader (grep -m1, head) makes git log die of SIGPIPE,
+          # and under `pipefail` that status propagates out of the command
+          # substitution and kills the job — after the variable has been assigned,
+          # which makes it look like the next line failed. It is a race against the
+          # pipe buffer, so it passes on a short history and starts failing once the
+          # log outgrows it. The herestrings below read from a file: nothing
+          # upstream to signal.
+          LOG=$(git log --format='%H;%s')
+
+          # Backfill: every release commit carries its version in the subject
+          # ("site vR.M.N: ..."). Tag any that are missing — idempotent, so this is
+          # a no-op on every run after the first.
+          while IFS=';' read -r h s; do
+            v=$(printf '%s' "$s" | grep -oP '^site v\K[0-9]+\.[0-9]+\.[0-9]+(?=:)' || true)
+            if [ -n "$v" ] && ! git rev-parse -q --verify "refs/tags/v$v" >/dev/null; then
+              git tag "v$v" "$h"
+              echo "backfilled v$v -> ${h:0:9}"
+            fi
+          done <<< "$LOG"
+
+          # The version of THIS release, from the file that owns it.
+          VER=$(grep -oP '^v\K[0-9]+\.[0-9]+\.[0-9]+' admin/build/version.txt)
+          TAG="v$VER"
+          echo "version.txt says $TAG"
+
+          # The release commit is the one whose SUBJECT carries the version. It is
+          # usually HEAD, but when the branch advances by a merge commit — which is
+          # how a pull request lands — HEAD is the merge and the release commit is
+          # its parent. So anchor every check to the newest release commit reachable
+          # from HEAD rather than to HEAD itself.
+          NEWEST=$(grep -oP '^[0-9a-f]+;site v\K[0-9]+\.[0-9]+\.[0-9]+(?=:)' <<< "$LOG" | head -1 || true)
+          if [ -z "$NEWEST" ]; then
+            echo "::error::no commit in this history carries a version in its subject (\"site vX.Y.Z: ...\")"
+            exit 1
+          fi
+          if [ "$NEWEST" != "$VER" ]; then
+            echo "::error::version.txt says $TAG but the newest release commit in this history is v$NEWEST — the two disagree"
+            exit 1
+          fi
+          REL=$(grep -m1 -F ";site v$VER:" <<< "$LOG" | cut -d';' -f1 || true)
+          echo "release commit is ${REL:0:9}"
+
+          # The backfill above tags it. If the tag exists on an EARLIER commit than
+          # this one, the version was reused rather than bumped.
+          if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "::error::$TAG was not created — version.txt and the release commit disagree"
+            exit 1
+          fi
+          if [ "$(git rev-parse "refs/tags/$TAG^{commit}")" != "$REL" ]; then
+            echo "::error::$TAG already exists on an earlier commit — version.txt was not bumped for this release"
+            exit 1
+          fi
+
+          # Every push to the release branch is a minor: the new tag must be the
+          # next minor after the previous latest (or a deliberate major bump to .0).
+          # `|| true` catches the very first release, where grep -v empties the pipe
+          # and would otherwise kill the job under pipefail.
+          PREV=$(git tag --list 'v*' | grep -v "^$TAG$" | sort -V | tail -1 || true)
+          if [ -n "$PREV" ]; then
+            NEXT_MINOR=$(echo "$PREV" | awk -F. '{printf "%s.%s.%d", $1, $2, $3+1}')
+            NEXT_MAJOR=$(echo "$PREV" | awk -F. '{split($1,a,"v"); printf "v%s.%d.0", a[2], $2+1}')
+            if [ "$TAG" != "$NEXT_MINOR" ] && [ "$TAG" != "$NEXT_MAJOR" ]; then
+              echo "::error::latest tag is $PREV; expected $NEXT_MINOR (minor) or $NEXT_MAJOR (major), got $TAG"
+              exit 1
+            fi
+          fi
+
+          # The load-bearing push: THIS release's tag, on the release commit.
+          git push origin "refs/tags/$TAG"
+          echo "tagged ${REL:0:9} as $TAG"
+
+          # Best-effort: the backfilled historical tags. GITHUB_TOKEN cannot push a
+          # ref to a commit whose tree carries a DIFFERENT .github/workflows blob,
+          # so releases predating a workflow change may be rejected. Push what is
+          # accepted, report what is not.
+          MISSED=0
+          for t in $(git tag --list 'v*'); do
+            [ "$t" = "$TAG" ] && continue
+            if git push origin "refs/tags/$t" >/dev/null 2>&1; then
+              echo "backfill ok: $t"
+            else
+              echo "::warning::could not push backfill tag $t (GITHUB_TOKEN workflow-file limit)"
+              MISSED=$((MISSED+1))
+            fi
+          done
+          if [ "$MISSED" -gt 0 ]; then
+            echo "::notice::$MISSED historical tag(s) still need a human push: git push origin --tags"
+          fi
+          true
+
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [validate, tag-release]
+    # Publish even when tag-release is skipped (manual dispatch) — never when
+    # validation failed, and never from a pull request.
+    if: always() && github.event_name != 'pull_request' && needs.validate.result == 'success' && (needs.tag-release.result == 'success' || needs.tag-release.result == 'skipped')
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build the site from content/
+        # validate has already proved this is a no-op against the committed docs/;
+        # building again means the artifact is what the sources say, not what a
+        # stale commit happened to hold.
+        run: python3 build.py
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4
