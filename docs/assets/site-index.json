@@ -1,5 +1,5 @@
 {
- "version": "v0.1.2",
+ "version": "v0.1.3",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -84,6 +84,21 @@
     "The words this site does not use",
     "The claims this site does not make",
     "What is disclosed, rather than withheld"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/lab/",
+   "title": "Five prototypes of one purchase",
+   "description": "Five interfaces over the same configurator for the grant-and-mandate mapping work: an interview, a ladder, an estate board, a delta matrix and a scenario start. Each produces the same JSON brief. Nothing on any of them can be bought.",
+   "lead": "Nothing in this area can be bought. These are five prototypes of a purchase flow for work that is fulfilled by people \u2014 mapping what the agents a company already runs were granted, what they are expected to do, and writing the policies that would close the gap. Five interfaces, one model, and one JSON brief that every one of them produces identically. The interface is the variable. The document is not.",
+   "headings": [
+    "What is actually being sold here",
+    "The same question, from three sides",
+    "The five",
+    "The model all five render",
+    "What a brief carries, including what it does not know",
+    "What happens to it"
    ],
    "kind": "page"
   },
@@ -350,6 +365,36 @@
    "state": "absent",
    "date": "11 Sep 2026",
    "claim": "Nothing on the offer list was built pointing at a startup. The startup group is assembled entirely from tiers built for somebody else, run in the opposite direction \u2014 it is a framing of tiers 3, 4 and 2, not a seventh thing on the price list. The reverse-direction offer does not exist as a separate purchase and is not sold as one."
+  },
+  {
+   "id": "lab-is-a-prototype",
+   "state": "spec",
+   "date": "11 Sep 2026",
+   "claim": "The five pages at /lab/ are prototypes of a purchase flow, not a purchase flow. Nothing on them can be bought, no brief reaches us, no payment link sits behind anything on them, and which of the five (if any) becomes the real one is not decided. A build check fails the release if any of them stops saying so."
+  },
+  {
+   "id": "lab-fulfilment-is-people",
+   "state": "unrun",
+   "date": "11 Sep 2026",
+   "claim": "The mapping and policy work these briefs configure is done by people. Nothing in it is automated today, the team specified for it has never run, and which parts could later be done without them is a decision nobody has taken. A brief is the thing a team would otherwise spend a first call assembling \u2014 it is not a delivery."
+  },
+  {
+   "id": "lab-price-is-a-band",
+   "state": "exists",
+   "date": "11 Sep 2026",
+   "claim": "The configurator does not compute a price. Weighted selections add up, the total lands in one of four bands, and each band names one of the four tiers that already exist and its price. A configurator that emitted a number would be inventing a price, which is the first thing the pack says may not be invented \u2014 so the build fails if a band names an offer that is not on the list."
+  },
+  {
+   "id": "lab-scenarios-are-hypotheses",
+   "state": "spec",
+   "date": "11 Sep 2026",
+   "claim": "The five prebaked scenarios are shapes somebody might arrive in, not counted frequencies. Nobody has measured how common any of them is. Each brief records which scenario it started from, so that what was assumed stays separable from what was answered \u2014 which is the only thing that makes starting from a guess safe."
+  },
+  {
+   "id": "lab-brief-stays-local",
+   "state": "exists",
+   "date": "11 Sep 2026",
+   "claim": "A brief is written to the browser's own local storage and reaches nothing else. There is no form, input, textarea or select anywhere in this site's output and no page here opens a network connection \u2014 both held by build checks \u2014 so exporting a brief hands the file to the reader rather than to us."
   },
   {
    "id": "card-reader-refused",

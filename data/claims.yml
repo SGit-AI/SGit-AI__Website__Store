@@ -86,6 +86,46 @@
   claim: "**Nothing on the offer list was built pointing at a startup.** The startup group is assembled entirely from tiers built for somebody else, run in the opposite direction — **it is a framing of tiers 3, 4 and 2, not a seventh thing on the price list.** The reverse-direction offer does not exist as a separate purchase and is not sold as one."
   source: "data/buyers.yml, where the startup group's primary list is empty and the gate checks that it is"
 
+# ---------------------------------------------- the lab, and what it is not
+# Five prototypes of a purchase flow live at /lab/. A page that looks like a
+# checkout and is not one is the most dangerous thing this site could publish, so
+# what each of them is NOT is in the ledger before it is on the page.
+- id: lab-is-a-prototype
+  state: spec
+  date: 11 Sep 2026
+  group: The lab, and what it is not
+  claim: "The five pages at `/lab/` are **prototypes of a purchase flow, not a purchase flow**. **Nothing on them can be bought**, no brief reaches us, no payment link sits behind anything on them, and **which of the five (if any) becomes the real one is not decided.** A build check fails the release if any of them stops saying so."
+  source: "build.py, LAB_VIEWS and check_lab_is_marked in tools/check_site.py"
+
+- id: lab-fulfilment-is-people
+  state: unrun
+  date: 11 Sep 2026
+  group: The lab, and what it is not
+  claim: "The mapping and policy work these briefs configure is **done by people**. Nothing in it is automated today, **the team specified for it has never run**, and which parts could later be done without them is a decision nobody has taken. A brief is the thing a team would otherwise spend a first call assembling — it is not a delivery."
+  source: "01__WHAT-TO-BUILD.md, the tier 4 row, read against what /lab/ configures"
+
+- id: lab-price-is-a-band
+  state: exists
+  date: 11 Sep 2026
+  group: The lab, and what it is not
+  claim: "The configurator **does not compute a price.** Weighted selections add up, the total lands in one of four bands, and **each band names one of the four tiers that already exist and its price**. A configurator that emitted a number would be inventing a price, which is the first thing the pack says may not be invented — so the build fails if a band names an offer that is not on the list."
+  source: "data/brief.yml, the bands table, and check_lab_bands in tools/check_site.py"
+
+- id: lab-scenarios-are-hypotheses
+  state: spec
+  date: 11 Sep 2026
+  group: The lab, and what it is not
+  claim: "The five prebaked scenarios are **shapes somebody might arrive in, not counted frequencies.** **Nobody has measured how common any of them is.** Each brief records which scenario it started from, so that what was assumed stays separable from what was answered — which is the only thing that makes starting from a guess safe."
+  source: "data/brief.yml, the scenarios list"
+
+- id: lab-brief-stays-local
+  state: exists
+  date: 11 Sep 2026
+  group: The lab, and what it is not
+  claim: "A brief is written to **the browser's own local storage and reaches nothing else.** There is **no form, input, textarea or select anywhere in this site's output** and **no page here opens a network connection** — both held by build checks — so exporting a brief hands the file to the reader rather than to us."
+  source: "check_no_forms and check_no_network in tools/check_site.py"
+
+
 # ------------------------------------------------------------------ the rails
 - id: card-reader-refused
   state: docs

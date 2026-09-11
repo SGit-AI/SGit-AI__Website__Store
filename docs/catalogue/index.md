@@ -2,7 +2,7 @@
 title: What is not for sale yet
 description: "Eight further offers are specified and none of them is for this week. They are listed so that nobody proposes them as new, and so that the four that are for sale are not quietly widened to include them."
 lead: "**Eight further offers exist as specifications and none of them is on the offer page.** They are listed here for one reason: so that nobody proposes them as new. A catalogue that only shows what is buyable today loses the work that went into deciding what is not."
-order: 6
+order: 7
 ---
 
 ## The eight

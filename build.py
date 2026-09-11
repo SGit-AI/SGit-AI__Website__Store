@@ -102,6 +102,14 @@ NAV = [
         ("You are backing a company", "/for/investors/"),
         ("You are a startup", "/for/startups/"),
     ]),
+    # The lab. It sells nothing and it is in the nav anyway: five prototypes that
+    # only their author can find are five prototypes nobody can disagree with.
+    ("The lab", "/lab/", [
+        ("All five, compared", "/lab/"),
+    ] + [(v_name, f"/lab/{v_id}/") for v_id, v_name in (
+        ("interview", "The interview"), ("ladder", "The ladder"),
+        ("board", "The estate board"), ("delta", "The delta"),
+        ("scenario", "The scenario"))]),
     ("Paying", "/paying/", [
         ("The two rails", "/paying/"),
         ("Booking a person", "/booking/"),
@@ -861,6 +869,59 @@ def block_offers_by_buyer(ctx):
     )
 
 
+def block_lab_views(ctx):
+    """The five prototypes, with what each one is testing and what is wrong with
+    it. The third column is the load-bearing one: five options presented with only
+    their strengths is a menu, not an experiment."""
+    rows = []
+    for v in LAB_VIEWS:
+        rows.append(
+            f'<tr><td><a href="/lab/{v["id"]}/"><b>{html.escape(v["name"])}</b></a>'
+            f'<br><span class="small dim">{html.escape(v["one_line"])}</span></td>'
+            f'<td class="small">{html.escape(v["tests"])}</td>'
+            f'<td class="small">{html.escape(v["risk"])}</td></tr>')
+    return ('<div class="tablewrap"><table><thead><tr><th>The prototype</th>'
+            '<th>What it is testing</th><th>What is wrong with it</th>'
+            '</tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>")
+
+
+def block_brief_model(ctx):
+    """The option model itself, rendered from the same file the configurator reads.
+    Published because a page that asks somebody twenty questions owes them the list
+    of questions before they start, and because the weights are what move the
+    price — a weighting a reader cannot see is a price a reader cannot check."""
+    rows = []
+    for s in BRIEF["sections"]:
+        rows.append(
+            f'<tr><td><b>{s["n"]}. {html.escape(s["title"])}</b>'
+            f'<br><span class="small dim">{html.escape(s["question"])}</span></td>'
+            f'<td class="num">{len(s["options"])}</td>'
+            f'<td class="num">{"pick one" if s["kind"] == "single" else "×" + str(s["weight"])}</td>'
+            f'<td class="small">{html.escape(s["why"])}</td></tr>')
+    bands = "".join(
+        f'<tr><td class="num">{("up to " + str(b["up_to"])) if b["up_to"] < 999 else "above that"}</td>'
+        f'<td><code>{b["offer"]}</code> &mdash; <b>{html.escape(OFFERS_BY_ID[b["offer"]]["price_label"])}</b></td>'
+        f'<td class="small">{html.escape(b["says"])}</td></tr>' for b in BRIEF["bands"])
+    scen = "".join(
+        f'<tr><td><b>{html.escape(s["label"])}</b><br>'
+        f'<span class="small dim">{html.escape(s["note"])}</span></td>'
+        f'<td class="small">{html.escape(BUYERS_BY_ID[s["track"]]["short"])}</td>'
+        f'<td class="small num">{len(s["surfaces"])} / {len(s["grants"])} / {len(s["mandates"])}</td></tr>'
+        for s in BRIEF["scenarios"])
+    return (
+        '<div class="tablewrap"><table><thead><tr><th>Section</th><th class="num">Options</th>'
+        '<th class="num">Weight</th><th>Why it is asked</th></tr></thead><tbody>'
+        + "".join(rows) + "</tbody></table></div>"
+        '<h3 id="where-a-total-lands">Where a total lands</h3>'
+        '<div class="tablewrap"><table><thead><tr><th class="num">Weighted total</th>'
+        '<th>The tier it names</th><th>What that band is</th></tr></thead><tbody>'
+        + bands + "</tbody></table></div>"
+        '<h3 id="the-five-prebaked-starts">The five prebaked starts</h3>'
+        '<div class="tablewrap"><table><thead><tr><th>Scenario</th><th>Track</th>'
+        '<th class="num">Surfaces / grants / mandates</th></tr></thead><tbody>'
+        + scen + "</tbody></table></div>")
+
+
 def block_ledger(ctx):
     groups = {}
     for c in ctx["claims"]:
@@ -916,6 +977,8 @@ BLOCKS = {
     "offer-table": block_offer_table,
     "buyers": block_buyers,
     "offers-by-buyer": block_offers_by_buyer,
+    "lab-views": block_lab_views,
+    "brief-model": block_brief_model,
     "prices-why": block_prices_why,
     "ledger": block_ledger,
     "releases": block_releases,
@@ -1105,6 +1168,235 @@ def delivery_pages(out_dir, ctx_shared):
             twin += f"\n---\n\n{LICENCE_STAMP}\n"
         (target.parent / "index.md").write_text(twin)
         made[url] = page["fm"]["title"]
+    return made
+
+
+# ------------------------------------------------------------------- the lab ----
+# Five prototypes of one purchase flow, at /lab/<id>/.
+#
+# WHAT IS BEING CONFIGURED. The consulting work is two things: a map of the grants
+# and mandates of the agents a company already runs, and the policy set that would
+# close the gap between them. A team fulfils it — none of it is automated today.
+# What these pages do is take the half a buyer already knows and turn it into a
+# brief that team can start from, rather than spending a first call assembling it.
+#
+# SO THE OUTPUT IS A FILE, AND THE FILE IS THE POINT. Everything on these pages
+# exists to make one JSON document specific enough to be worth handing over. The
+# checkout is downstream of it.
+#
+# FIVE INTERFACES, ONE MODEL. Every view renders data/brief.yml, runs the same
+# arithmetic and emits the same document, which is what makes them an experiment
+# rather than five drafts: what is learned from one transfers, and choosing
+# between them is choosing an interface rather than a product.
+#
+# AND NONE OF THEM SELLS ANYTHING. A page that looks like a checkout and is not
+# one is the single most dangerous thing this site could publish, so every lab
+# page opens by saying what it is, the ledger carries it, and check_lab_is_marked
+# fails the release if that sentence goes missing from any of them.
+
+BRIEF = yaml_load((DATA / "brief.yml").read_text())
+
+# Checked at load, like the buyer groups, and for the same reason: every `offer:`
+# in the model — in a band, on a deliverable — points at the frozen offer list, and
+# an id that does not stops the build with a sentence rather than a KeyError from
+# whichever renderer happened to reach it first. This is the one that matters most
+# on this site: a band naming an offer nobody priced is a configurator quoting a
+# number that exists in no file.
+for _sec in BRIEF["sections"] + BRIEF["bands"]:
+    for _o in (_sec.get("options") or [_sec]):
+        _oid = _o.get("offer")
+        if _oid and _oid not in OFFERS_BY_ID:
+            raise SystemExit(
+                f"build: data/brief.yml refers to offer {_oid!r}, which is not in "
+                "data/offers.yml. The configurator prices against the offer list and may not "
+                "add to it: a band or a deliverable names a price that was set elsewhere, or "
+                "it names nothing.")
+for _sc in BRIEF["scenarios"]:
+    if _sc["track"] not in BUYERS_BY_ID:
+        raise SystemExit(f"build: scenario {_sc['id']!r} is on track {_sc['track']!r}, which is "
+                         "not one of the three buyers in data/buyers.yml")
+    for _sec in BRIEF["sections"]:
+        _known = {_o["id"] for _o in _sec["options"]}
+        _named = [_sc[_sec["id"]]] if _sec["kind"] == "single" else (_sc.get(_sec["id"]) or [])
+        _bad = [x for x in _named if x not in _known]
+        if _bad:
+            raise SystemExit(f"build: scenario {_sc['id']!r} selects {', '.join(_bad)} in "
+                             f"{_sec['id']!r}, which is not an option there")
+
+LAB_VIEWS = [
+    {
+        "id": "interview",
+        "n": 1,
+        "name": "The interview",
+        "one_line": "One question per screen, in the order somebody would ask them out loud.",
+        "tests": "Whether the story carries. The estate is described in the order a person "
+                 "would actually describe it, and the price moves while they talk.",
+        "risk": "Five screens is five chances to leave. It hides how much is left, and a buyer "
+                "who cannot see the whole shape cannot tell whether it is worth starting.",
+    },
+    {
+        "id": "ladder",
+        "n": 2,
+        "name": "The ladder",
+        "one_line": "Everything on one page, in order, with the ticket pinned beside it.",
+        "tests": "Whether seeing the whole thing at once beats being walked through it. "
+                 "Closest to an ordinary cart, and the cheapest to be wrong about.",
+        "risk": "It looks like a form, and a long page of choices is a page people skim to "
+                "the bottom of and price without reading.",
+    },
+    {
+        "id": "board",
+        "n": 3,
+        "name": "The estate board",
+        "one_line": "One card per surface, each carrying what it permits and what it is expected to do.",
+        "tests": "Whether the map is the sale. This is the only view where the deliverable and "
+                 "the configurator are the same object, so the buyer is already holding a "
+                 "rough version of what they would be buying.",
+        "risk": "It is the most work to fill in, and an empty board is a worse first screen "
+                "than an empty list.",
+    },
+    {
+        "id": "delta",
+        "n": 4,
+        "name": "The delta",
+        "one_line": "Permitted on the left, expected on the right, and the gap filling itself in between.",
+        "tests": "Whether the product explains itself. The middle column is the thing being "
+                 "sold, computed live from two lists the buyer ticks, so nobody has to be told "
+                 "what excess authority means.",
+        "risk": "It asks for both halves before it shows anything, and the honest answer to the "
+                "right-hand column is often that nothing is written down.",
+    },
+    {
+        "id": "scenario",
+        "n": 5,
+        "name": "The scenario",
+        "one_line": "Start from the shape that looks most like you, then correct it.",
+        "tests": "Whether starting from a guess beats starting from nothing. The corrections "
+                 "are the signal: what somebody removes from a prefilled estate says more than "
+                 "what they add to an empty one.",
+        "risk": "A scenario that is nearly right gets accepted whole. The brief records which "
+                "one it started from for exactly that reason, and it is still a risk.",
+    },
+]
+
+
+def lab_model(prefix):
+    """The model the browser gets: the sections, the tracks, the bands, the
+    scenarios, and the six offers a band can point at. Compiled here so the page
+    and the configurator cannot disagree about what is on sale — and with every
+    URL already relative to the page, because the site has to work on a project
+    path and inside a frame with no origin."""
+    offers = {}
+    for o in OFFERS:
+        caveat = ""
+        if o["state_badge"] in ("absent", "partial", "spec", "unrun", "unlocated"):
+            caveat = f'"{o["question"]}" — {o["state"]}'
+        offers[o["id"]] = {
+            "label": f"Tier {o['tier']}" if o["tier"] != "add-on" else "Add-on",
+            "price": o["price_label"],
+            "rail": o["rail"],
+            "state": o["state_badge"],
+            "chip": STATES[o["state_badge"]][0],
+            "caveat": caveat,
+            "delivery": f"d/{o['id']}/index.html" if o["rail"] != "none" else None,
+        }
+    return {
+        "version": SITE["version"],
+        "root": prefix,
+        "meta": BRIEF["meta"],
+        "tracks": BRIEF["tracks"],
+        "sections": BRIEF["sections"],
+        "bands": BRIEF["bands"],
+        "scenarios": BRIEF["scenarios"],
+        "offers": offers,
+    }
+
+
+# The sentence every lab page has to carry, above the tool. check_lab_is_marked
+# holds each page to it: a page that looks like a checkout and takes no money has
+# to say which of the two it is before anybody reads further.
+LAB_WARNING = "Nothing on this page can be bought"
+
+
+def lab_note():
+    return (
+        '<div class="labnote">'
+        f'<p><b>{LAB_WARNING}.</b> This is a prototype of a purchase flow, not a purchase '
+        'flow. No brief reaches us, no payment link is behind anything here, and which of '
+        'the five (if any) becomes the real one is not decided. {{claim:lab-is-a-prototype}}</p>'
+        '<p>The work it configures is done by <b>people</b>, and the team specified for it '
+        'has never run. Which parts of it could later be done without them is a decision '
+        'nobody has taken. {{claim:lab-fulfilment-is-people}}</p>'
+        "</div>"
+    )
+
+
+def lab_pages(out_dir, ctx_shared):
+    made = {}
+
+    # --- the five prototypes
+    for v in LAB_VIEWS:
+        url = f"/lab/{v['id']}/"
+        prefix = rel_prefix(url)
+        ctx = dict(ctx_shared)
+        ctx.update({"page": f"lab/{v['id']}", "page_url": url, "fm": {}, "toc": []})
+        others = "".join(
+            f'<a href="/lab/{x["id"]}/">{html.escape(x["name"])} &rarr;</a>'
+            for x in LAB_VIEWS if x["id"] != v["id"])
+        body = (
+            f'<p class="lead">{html.escape(v["one_line"])}</p>'
+            + shortcodes_inline(lab_note(), ctx) +
+            '<div class="tablewrap"><table><tbody>'
+            f'<tr><th>What it is testing</th><td>{html.escape(v["tests"])}</td></tr>'
+            f'<tr><th>What is wrong with it</th><td>{html.escape(v["risk"])}</td></tr>'
+            '<tr><th>What it produces</th><td>One JSON brief, identical across all five '
+            'prototypes. The interface is the variable; the document is not.</td></tr>'
+            "</tbody></table></div>"
+            f'<script type="application/json" id="lab-model">'
+            f'{json.dumps(lab_model(prefix), separators=(",", ":"))}</script>'
+            f'<div id="lab" data-view="{v["id"]}">'
+            '<p class="dim">This prototype needs JavaScript. Everything it does happens in '
+            'this browser: there is no form on this site and no page here opens a network '
+            'connection, so with scripting off there is nothing to fall back to except '
+            '<a href="/lab/">the description of what it would do</a>.</p></div>'
+            f'<p class="pagenav">{others}<a href="/lab/">All five, compared &rarr;</a></p>'
+        )
+        page = {
+            "fm": {"title": f"{v['name']} — a purchase prototype",
+                   "description": f"{v['one_line']} A prototype of the purchase flow for the "
+                                  f"grant-and-mandate mapping work. Nothing on it can be bought.",
+                   "head_css": "/assets/lab.css", "head_js": "/assets/lab.js",
+                   "wide": True},
+            "url": url,
+            "crumb": f' / <a href="/lab/">lab</a> / {html.escape(v["id"])}',
+            "nav_match": "/lab/",
+            "src_md": (
+                f"# {v['name']}\n\n{v['one_line']}\n\n"
+                f"**{LAB_WARNING}.** This is a prototype of a purchase flow, not a purchase "
+                "flow. The work it configures is done by people, and the team specified for it "
+                "has never run.\n\n"
+                f"- What it is testing: {v['tests']}\n- What is wrong with it: {v['risk']}\n"
+                "- What it produces: one JSON brief, identical across all five prototypes\n\n"
+                "## The model behind all five\n\n"
+                + "".join(
+                    f"- **{s['title']}** ({s['kind']}, weight {s['weight']}): {s['question']} "
+                    f"{len(s['options'])} options\n" for s in BRIEF["sections"])
+                + "\n## Where a total lands\n\n"
+                + "".join(
+                    f"- up to {b['up_to']} weighted: `{b['offer']}` "
+                    f"{OFFERS_BY_ID[b['offer']]['price_label']} — {b['says']}\n"
+                    for b in BRIEF["bands"])
+            ),
+        }
+        target = out_dir / url.strip("/") / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(page_html(page, ctx, body))
+        twin = page["src_md"]
+        if LICENCE_STAMP not in twin:
+            twin += f"\n---\n\n{LICENCE_STAMP}\n"
+        (target.parent / "index.md").write_text(twin)
+        made[url] = page["fm"]["title"]
+
     return made
 
 
@@ -1398,8 +1690,10 @@ def page_html(page, ctx, body):
 <meta name="twitter:card" content="summary">
 <link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
 <link rel="stylesheet" href="/assets/site.css">
+{f'<link rel="stylesheet" href="{fm["head_css"]}">' if fm.get('head_css') else ''}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <script src="/assets/site.js" defer></script>
+{f'<script src="{fm["head_js"]}" defer></script>' if fm.get('head_js') else ''}
 </head>
 <body>
 {nav_html(page['nav_match'])}
@@ -1501,6 +1795,7 @@ def build(out_dir):
 
     extra = delivery_pages(out_dir, ctx_shared)
     extra.update(buyer_pages(out_dir, ctx_shared))
+    extra.update(lab_pages(out_dir, ctx_shared))
     extra.update(release_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The

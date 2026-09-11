@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.1.2
+> site v0.1.3
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
@@ -32,6 +32,7 @@ Licence: This document is released under the Creative Commons Attribution 4.0 In
 - [What is not for sale yet](https://store.sgit.ai/catalogue/): Eight further offers are specified and none of them is for this week. They are listed so that nobody proposes them as new, and so that the four that are for sale are not quietly widened to include them.
 - [The dev packs](https://store.sgit.ai/dev-packs/): The area is built and the documents are held. Nineteen documents, every one of them hashed and listed, none of them published — because five checks run before anything opens, none has been run by a person, and two of them a script can already show would fail.
 - [What we do not say, and why](https://store.sgit.ai/disclosures/): The words this site does not use, the sentence it does not print, the claims it does not make, and the reason for each one. Every entry has a source, and most of them have an enforcement precedent behind them.
+- [Five prototypes of one purchase](https://store.sgit.ai/lab/): Five interfaces over the same configurator for the grant-and-mandate mapping work: an interview, a ladder, an estate board, a delta matrix and a scenario start. Each produces the same JSON brief. Nothing on any of them can be bought.
 - [Every claim on this site, with its state](https://store.sgit.ai/ledger/): One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first.
 - [All six, side by side](https://store.sgit.ai/offers/): The four tiers and the two add-ons in one table: the question each answers, its price, what is true of the thing behind it today, how it is paid, and the stable offer identifier a printed code redirects to.
 - [The two rails, and why they never meet](https://store.sgit.ai/paying/): Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, the separation is a rule rather than a preference, and no link has been issued yet.

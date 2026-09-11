@@ -1,10 +1,28 @@
 {
-  "current": "v0.1.2",
+  "current": "v0.1.3",
   "releases": [
+    {
+      "version": "v0.1.3",
+      "date": "2026-09-11",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "five prototypes of the purchase flow for the grant and mandate mapping work",
+      "summary": "/lab/ \u2014 five interfaces over one configurator for the consulting work this store exists to sell: mapping what the agents a company already runs were granted, what they are expected to do, and the policies that would close the gap. An interview, a ladder, an estate board, a delta matrix and a scenario start, all rendering data/brief.yml and all emitting the same JSON brief, so the interface is the variable and the document is not. Nothing in the area can be bought and every page says so above the tool; the work is done by people and the team specified for it has never run. The brief carries excess_authority, computed from justification edges published in the model, and unknowns, which is what the brief could not establish. The price is not computed: options add up, the total lands in a band, and the band names one of the four existing tiers and its price, with the deliverable setting a floor. All five were driven in a real browser, which is how the missing track selector on two of them was found.",
+      "changes": [
+        "README.md",
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.2",
       "date": "2026-09-11",
-      "commit": "",
+      "commit": "daf6d3069695f15b078d47d728c021d24e8a454b",
       "site": "store.sgit.ai",
       "title": "the six offers are grouped by which of three buyers each was built for, and the checkout is wired to payment links",
       "summary": "The offer list gains a second index: three buyers \u2014 a team running agents, an investor backing a company, a startup about to meet diligence \u2014 with a page each at /for/<id>/, rendered from data/buyers.yml. It adds no offer and no price, and the gate holds it to that: a group may name offer ids only, every tier belongs to exactly one group, and the one group with nothing built for it says so above its offers rather than below them. The checkout is wired at the same time \u2014 a checkout_url per offer, a live button where a link exists and a sentence where one does not, every URL pinned to the payment provider's own hosts, and the mode of each checkout frozen against the price it follows from. No payment link has been issued for any offer, which is what the site now says. Plus tools/refs.py and data/refs.yml: the sgit.ai guidance and briefs this site is built against, fetched as their markdown twins, hashed, dated, and re-checkable when one moves.",

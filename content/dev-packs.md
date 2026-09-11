@@ -2,7 +2,7 @@
 title: The dev packs
 description: "The area is built and the documents are held. Nineteen documents, every one of them hashed and listed, none of them published — because five checks run before anything opens, none has been run by a person, and two of them a script can already show would fail."
 lead: "**The instruction was to publish these documents on the site. The same document that gave the instruction named five checks that run first, called every one of them \"a real edit or a real hold\", and recorded that who runs them is not decided.** So this area exists, its manifest is published, and its documents are not. Two of the five checks are measurable and are measured below: **11 of the 19 documents would break a hard rule on contact with this site.**"
-order: 10
+order: 11
 toc: true
 wide: true
 ---

@@ -2,7 +2,7 @@
 title: Every claim on this site, with its state
 description: "One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first."
 lead: "**Every factual claim this site makes lives here once, with the state it earned and the date it earned it.** Pages cite a claim rather than restating it, so the same fact cannot be strong on one page and hedged on another. The rightmost column is joined at build time: it shows where each claim is actually said, and it is not editable by hand."
-order: 8
+order: 9
 toc: true
 wide: true
 ---

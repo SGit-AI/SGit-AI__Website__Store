@@ -2,7 +2,7 @@
 title: What we do not say, and why
 description: "The words this site does not use, the sentence it does not print, the claims it does not make, and the reason for each one. Every entry has a source, and most of them have an enforcement precedent behind them."
 lead: "**A store's disclosures page is usually a list of things it is allowed to say.** This one is a list of things it is not, and why. Four of the entries are words. One is a whole sentence that a reader might reasonably expect to find on a page like this, and it is missing on purpose — because six questions have not been answered."
-order: 7
+order: 8
 toc: true
 ---
 

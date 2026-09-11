@@ -35,7 +35,19 @@ if [ -n "$pages" ]; then
   done < <(python3 tools/extract_inline_js.py "$tmp" $pages)
 fi
 
+# The data islands the extractor skips. They are not JavaScript, but they ARE
+# parsed by a browser, and a page that ships a broken model renders a configurator
+# with nothing in it. check_site.py parses the /lab/ model properly; this catches
+# any other JSON island on any page.
+json_blocks=0
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  json_blocks=$((json_blocks+1))
+  python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$f" \
+    || { echo "check-js: JSON island $f does not parse"; fail=1; }
+done < <(python3 tools/extract_inline_json.py "$tmp" $pages)
+
 if [ "$fail" = 0 ]; then
-  echo "check-js: all $found script(s) parse — files and inline blocks."
+  echo "check-js: all $found script(s) and $json_blocks JSON island(s) parse."
 fi
 exit $fail

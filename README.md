@@ -72,14 +72,53 @@ are different products with different obligations.
   bin/                 bump.py — the only thing that moves the version
   content/             the markdown sources, with YAML front-matter
   data/                offers.yml (the ONLY place a price exists), buyers.yml (a second
-                       index over it, and no prices), claims.yml, pack.yml (the dev-pack
-                       manifest), refs.yml (the guidance this is built against),
-                       releases.json
+                       index over it, and no prices), brief.yml (the /lab/ option
+                       model), claims.yml, pack.yml (the dev-pack manifest),
+                       refs.yml (the guidance this is built against), releases.json
   docs/                THE BUILT OUTPUT. GitHub Pages serves this. COMMITTED
   refs/                fetched reference docs. NOT committed, NOT under docs/
   tools/               check_site.py, refs.py, secret-scan.sh, check-js.sh
   build.py             the whole build system. No dependencies
 ```
+
+## The lab: five prototypes of one purchase
+
+`/lab/` is five interfaces over one configurator for the consulting work — mapping
+what the agents a company already runs were **granted**, what they are **expected**
+to do, and writing the **policies** that close the gap. **Nothing in it can be
+bought**, and every page says so above the tool.
+
+| | Prototype | The hypothesis |
+|---|---|---|
+| 1 | **The interview** | One question per screen, in the order somebody would say it out loud |
+| 2 | **The ladder** | Everything at once, ticket pinned beside it. Closest to an ordinary cart |
+| 3 | **The estate board** | One card per surface. The only view where the configurator and the deliverable are the same object |
+| 4 | **The delta** | Permitted left, expected right, the gap filling itself in between. The product explains itself |
+| 5 | **The scenario** | Start from the shape that looks most like you, then correct it. **The corrections are the signal** |
+
+Each carries a column saying what is **wrong** with it — five options presented
+with only their strengths is a menu, not an experiment.
+
+**One model, one output.** All five render `data/brief.yml` and emit the same JSON
+brief, so the interface is the variable and the document is not. Two fields most
+configurators would not emit:
+
+- **`excess_authority`** — grants ticked that no selected mandate would need, computed from `justified_by` edges published in the model. A reader can disagree with a specific edge rather than with a verdict.
+- **`unknowns`** — what the brief could not establish: an empty expected column, a deliverable whose thing does not exist yet, a grant a named surface normally carries that somebody removed.
+
+**The price is not computed.** Options add up, the total lands in a band, and the
+band names one of the four **existing** tiers and its price — with a floor: asking
+for a team assessment cannot land below the tier that is one. A configurator that
+emitted `£347` would be inventing a price with extra steps. The build fails if a
+band, a deliverable or a scenario names anything not on the offer list.
+
+**Nothing leaves the browser.** State is in `localStorage`, every control is a
+`<button>` (there is no `<input>` in `docs/` and a check keeps it that way), and no
+page opens a network connection. Exporting hands the file to the reader.
+
+Driven in a real browser rather than read: all five render, price, persist across
+reload and emit a valid brief with no console errors — which is how the missing
+track selector on two of them was found.
 
 ## The reference docs this is built against
 
@@ -165,6 +204,10 @@ rule it enforces:
 - **The buyer groups are an index and not a range**: a group names offer ids only, every
   tier belongs to exactly one group, and the group whose list is empty says so on its
   own page.
+- **Every prototype in `/lab/` says it cannot be bought**, and says the team behind the
+  work it configures has never run. No lab page links to a checkout, every band names an
+  offer that exists, the bands ascend, and the model shipped to each page prices against
+  the same list the site publishes.
 
 Each of those checks has been run against a deliberate break — a checkout pointed off
 host, a band silently turned into a fixed price, a tier dropped out of every group, an

@@ -690,6 +690,105 @@ def check_buyer_groups():
             fail(f"offer {o['id']}: buyer {o['buyer']!r} is not one of the three")
 
 
+# ------------------------------------------- the lab is a prototype, and says so ---
+# Five pages at /lab/ look like a checkout and are not one. That is the single most
+# dangerous thing this site could publish — a page carrying prices, option lists and
+# a running total, for work that is done by people and that nobody has run yet.
+#
+# So the marking is a gate rather than a paragraph somebody remembers to keep. Every
+# prototype page says what it is above the tool, no lab page carries a payment
+# destination, and the bands the configurator prices against may only name offers
+# that are on the frozen offer list. A configurator that could name an offer nobody
+# priced would be inventing a price with extra steps, which is the first thing the
+# pack says may not be invented.
+LAB_WARNING = "Nothing on this page can be bought"
+EXPECTED_LAB_VIEWS = {"interview", "ladder", "board", "delta", "scenario"}
+
+
+def lab_pages_built():
+    return sorted((OUT / "lab").glob("*/index.html")) if (OUT / "lab").exists() else []
+
+
+def check_lab_is_marked():
+    built = {p.parent.name for p in lab_pages_built()}
+    if built != EXPECTED_LAB_VIEWS:
+        fail(f"the prototype set changed: expected {sorted(EXPECTED_LAB_VIEWS)}, built {sorted(built)}")
+    for p in lab_pages_built():
+        rel = f"lab/{p.parent.name}/index.html"
+        flat = strip_tags(p.read_text())
+        if LAB_WARNING not in flat:
+            fail(f"{rel}: does not say {LAB_WARNING!r} — a page that looks like a checkout and "
+                 "takes no money has to say which of the two it is before anybody reads on")
+        if "has never run" not in flat:
+            fail(f"{rel}: does not say the team behind this work has never run. The prototype "
+                 "configures consulting that people do, and the state of that team is the "
+                 "first thing a buyer is owed")
+        for m in re.finditer(r'href="(https?://[^"]*stripe[^"]*)"', p.read_text(), re.I):
+            fail(f"{rel}: carries a payment destination {m.group(1)!r}. Nothing in the lab is "
+                 "buyable, so nothing in it may link to a checkout")
+        if not (p.parent / "index.md").exists():
+            fail(f"{rel}: no markdown twin")
+
+
+def check_lab_bands():
+    """Every band the configurator can land in names an offer that exists and is
+    priced elsewhere, and the bands ascend. A gap or an overlap here is a price
+    that depends on which row was written first."""
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offer_ids = {o["id"] for o in index["offers"]}
+    src = (ROOT / "data" / "brief.yml").read_text()
+    bands = re.findall(r"^  - id: (\S+)\n    up_to: (\d+)\n    offer: (\S+)$", src, re.M)
+    if not bands:
+        fail("data/brief.yml: no bands found — the configurator has nothing to price against")
+        return
+    last = -1
+    for bid, up_to, offer in bands:
+        if offer not in offer_ids:
+            fail(f"brief.yml band {bid}: names offer {offer!r}, which is not on the offer list. "
+                 "A band may point at a price that was set elsewhere; it may not invent one")
+        if int(up_to) <= last:
+            fail(f"brief.yml band {bid}: up_to {up_to} does not ascend past the band before it")
+        last = int(up_to)
+    # Every `offer:` anywhere in the model, not only in the bands.
+    for m in re.finditer(r"^\s*offer: (\S+)$", src, re.M):
+        if m.group(1) not in offer_ids:
+            fail(f"brief.yml: references offer {m.group(1)!r}, which is not on the offer list")
+
+
+def check_lab_model_is_shipped():
+    """The configurator renders from a model written into the page by the build. If
+    the page and the model could disagree about what is on sale, the running total
+    beside somebody's estate would be priced against a list nobody published."""
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offer_ids = {o["id"] for o in index["offers"]}
+    prices = {o["id"]: o["price"] for o in index["offers"]}
+    for p in lab_pages_built():
+        rel = f"lab/{p.parent.name}/index.html"
+        text = p.read_text()
+        m = re.search(r'<script type="application/json" id="lab-model">(.*?)</script>', text, re.S)
+        if not m:
+            fail(f"{rel}: ships no model, so the configurator on it has nothing to render")
+            continue
+        try:
+            model = json.loads(m.group(1))
+        except ValueError as e:
+            fail(f"{rel}: the model is not valid JSON ({e})")
+            continue
+        if set(model.get("offers", {})) != offer_ids:
+            fail(f"{rel}: the model's offer set {sorted(model.get('offers', {}))} differs from "
+                 f"the site's {sorted(offer_ids)}")
+        for oid, o in model.get("offers", {}).items():
+            if oid in prices and o.get("price") != prices[oid]:
+                fail(f"{rel}: the model prices {oid} at {o.get('price')!r}, the site at "
+                     f"{prices[oid]!r} — a running total priced against a second list")
+        for key in ("sections", "tracks", "bands", "scenarios"):
+            if not model.get(key):
+                fail(f"{rel}: the model carries no {key}")
+        if model.get("root") is None:
+            fail(f"{rel}: the model carries no root prefix, so every link the configurator "
+                 "builds would be root-absolute and break off the custom domain")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -705,6 +804,7 @@ def main():
         check_naming_collision, check_prices, check_delivery_pages,
         check_committed_spend_correction, check_rails_not_a_choice,
         check_checkout_links, check_no_forms, check_buyer_groups,
+        check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,
     ]:

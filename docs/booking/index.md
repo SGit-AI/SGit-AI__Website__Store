@@ -2,7 +2,7 @@
 title: Booking a person
 description: "Two of the four tiers are a booking rather than a download: a person reviewing your situation, and an assessment by a team. What a booking commits, what it does not, and why a signature is a separate thing you cannot buy yet."
 lead: "**[Tier 3](/d/t3/) and [tier 4](/d/t4/) are bookings.** What is bought is a person's time, and in tier 4's case a team's. That changes what the page can promise, so this one says what a booking commits us to, what it does not, and the one thing it is often mistaken for."
-order: 5
+order: 6
 toc: true
 ---
 
