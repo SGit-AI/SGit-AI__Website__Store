@@ -674,3 +674,10 @@ a.buy:hover{text-decoration:none;filter:brightness(1.08)}
 a.buy-alt{background:transparent;color:var(--accent);border-color:var(--accent)}
 .buy-off{background:transparent;color:var(--dim2);border:1px dashed var(--line2);font-weight:500;
          font-size:.78rem;line-height:1.4}
+/* The deposit line on an offer card. Only tier 4 has one, and it needs its own
+   row rather than a clause in the rail sentence: the card then carries TWO
+   amounts, and a reader who cannot tell at a glance which of them the button
+   takes is a reader who pays £500 believing they bought a £10,000 assessment. */
+.offer-deposit{margin:-.4rem 0 .9rem;font-size:.78rem;color:var(--dim);line-height:1.55;
+  padding-left:.6rem;border-left:2px solid var(--line2)}
+.offer-deposit b{color:var(--ink);display:block}

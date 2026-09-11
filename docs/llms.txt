@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.1.4
+> site v0.1.5
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
@@ -50,7 +50,7 @@ grouping is a second index over the same six offers: it adds no offer and no pri
 - `t1` — £10 — What did I actually grant it? — for: agents — https://store.sgit.ai/d/t1/ — checkout: no payment link (fixed) — One price means one standing payment link, printable on a card.
 - `t2` — £50 to £100 — Which parts of the regulation actually reach me? — for: agents — https://store.sgit.ai/d/t2/ — checkout: no payment link (banded) — A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
 - `t3` — £150 to £1,000 — Will somebody look at my situation with me? — for: investors — https://store.sgit.ai/d/t3/ — checkout: no payment link (banded) — A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
-- `t4` — £5,000 to £10,000 — What would a team of security professionals find? — for: investors — https://store.sgit.ai/d/t4/ — checkout: no payment link (conversation) — Above about £1,000 a card stops making sense, so this one goes by invoice and bank transfer after a conversation.
+- `t4` — £5,000 to £10,000 — What would a team of security professionals find? — for: investors — https://store.sgit.ai/d/t4/ — checkout: no payment link (deposit) — The engagement goes by invoice and bank transfer, because above about £1,000 a card stops making sense. The deposit is below that threshold, so the deposit is a payment link and the balance is not. — deposit: £500 by payment link, balance invoiced
 - `add-formats` — By depth band — Can I have the same result in a form the board will read? — for: any — https://store.sgit.ai/d/add-formats/ — checkout: no payment link (attached) — This attaches to another offer and is priced against its depth band, so it has no checkout of its own.
 - `add-opinion` — By depth band — Will somebody put their name to it? — for: investors — no code behind it yet — checkout: no payment link (none) — There is no code behind this one.
 

@@ -54,13 +54,15 @@ host appears in no sentence of copy, and the identifiers above do not change.
 
 ## How each one is paid for
 
-**A standing payment link carries exactly one price, and only one offer on this
-page has one.** Tier 1 is £10 and could hold a link tomorrow. Tiers 2 and 3 are
-bands, so their link is issued once the band is fixed for the case; tier 4 is
-above the threshold where a card makes sense at all; and the two add-ons are
-priced against the depth band of whatever they attach to. **That is arithmetic
-about how a fixed-price link works, not a policy about who may pay.**
+**A standing payment link carries exactly one price, and two offers on this page
+have one.** Tier 1 is £10 and could hold a link tomorrow. Tiers 2 and 3 are bands,
+so their link is issued once the band is fixed for the case. **Tier 4 carries two
+amounts**: the engagement is above the threshold where a card makes sense and is
+invoiced, while its **£500 deposit is below it and is a standing link**. The two
+add-ons are priced against the depth band of whatever they attach to. **That is
+arithmetic about how a fixed-price link works, not a policy about who may pay.**
 {{claim:checkout-bands-have-no-standing-link}}
+{{claim:t4-deposit-below-threshold}}
 
 **No link has been created for any of them.** Every offer carries an empty
 checkout field, so every card above shows its code and its delivery page rather

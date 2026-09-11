@@ -667,8 +667,9 @@ for _b in BUYERS:
 RAILS = {
     "link": ("Payment link", "A link, and a printed code beside it. An online payment, "
                              "so no cross-border rule applies to it."),
-    "invoice": ("Invoice and bank transfer", "Above about £1,000 a card stops making sense. "
-                                             "This one starts with a conversation."),
+    "invoice": ("Deposit by link, balance by invoice", "Above about £1,000 a card stops making "
+                                             "sense, so the engagement is invoiced. The deposit "
+                                             "is below that threshold. It starts with a conversation."),
     "none": ("Not for sale yet", "There is no code behind this one."),
 }
 
@@ -690,6 +691,7 @@ CHECKOUT = {
     "fixed": ("Pay {price}", "The payment link has not been issued yet"),
     "banded": ("Pay {price}", "A link is issued once the band is fixed"),
     "attached": (None, "Priced against the offer it attaches to"),
+    "deposit": ("Pay the {deposit} deposit", "The deposit link has not been issued yet"),
     "conversation": (None, "Start with a conversation"),
     "none": (None, "No code behind this one yet"),
 }
@@ -710,6 +712,9 @@ CHECKOUT_WHY = {
               "issued once the band is fixed for the case.",
     "attached": "This attaches to another offer and is priced against its depth band, so it has "
                 "no checkout of its own.",
+    "deposit": "The engagement goes by invoice and bank transfer, because above about £1,000 a "
+               "card stops making sense. The deposit is below that threshold, so the deposit is a "
+               "payment link and the balance is not.",
     "conversation": "Above about £1,000 a card stops making sense, so this one goes by invoice "
                     "and bank transfer after a conversation.",
     "none": "There is no code behind this one.",
@@ -718,13 +723,19 @@ CHECKOUT_WHY = {
 
 def checkout_html(o, ctx):
     """The checkout control for one offer: a live button where a link exists, and
-    a sentence saying which of the five reasons there is no button where it does
-    not. Never both, and never an empty element pretending to be a button."""
+    a sentence saying which of the six reasons there is no button where it does
+    not. Never both, and never an empty element pretending to be a button.
+
+    A deposit offer is the only one where the button's amount is NOT the offer's
+    price, and that is the whole point of the mode: the engagement is invoiced and
+    the deposit is a link. The label has to say which of the two it is taking, or
+    somebody pays £500 believing they have bought a £10,000 assessment."""
     live, dead = CHECKOUT[o["checkout_mode"]]
     url = (o.get("checkout_url") or "").strip()
     if url and live:
+        label = live.format(price=o["price_label"], deposit=o.get("deposit_label", ""))
         return (f'<a class="buy" href="{html.escape(url)}" rel="noopener">'
-                f'{html.escape(live.format(price=o["price_label"]))} &rarr;</a>')
+                f'{html.escape(label)} &rarr;</a>')
     if o["checkout_mode"] == "conversation":
         return f'<a class="buy buy-alt" href="/booking/">{html.escape(dead)} &rarr;</a>'
     return f'<span class="buy buy-off">{html.escape(dead)}</span>'
@@ -747,7 +758,9 @@ def offer_card(o, ctx, link=True, anchor_prefix=""):
         f'<p class="offer-state">{chip(o["state_badge"], claim_id=o["claim"])} '
         f'{inline(o["state"], ctx)}</p>'
         f'<p class="offer-rail"><b>{html.escape(rail_name)}.</b> {html.escape(rail_why)}</p>'
-        f'<p class="offer-foot">{checkout_html(o, ctx)}{cta}</p>'
+        + (f'<p class="offer-deposit"><b>{html.escape(o["deposit_label"])} deposit</b> '
+           f'{html.escape(o["deposit_why"])}.</p>' if o.get("deposit_label") else "")
+        + f'<p class="offer-foot">{checkout_html(o, ctx)}{cta}</p>'
         "</div>"
     )
 
@@ -1125,8 +1138,20 @@ def delivery_pages(out_dir, ctx_shared):
             '<h2 id="what-arrives">What arrives</h2>'
             f"<ul>{arrives}</ul>"
             '<h2 id="what-this-is-not">What this is not, and will not become</h2>'
-            f"<ul>{withheld}</ul>"
-            '<h2 id="how-to-buy-this">How to buy this</h2>'
+            + f"<ul>{withheld}</ul>"
+            # The deposit is a SECOND amount on this page, so it gets a section of
+            # its own with both halves. A page that takes £500 against a £10,000
+            # engagement and only says what the deposit buys is the half that gets
+            # somebody into trouble — the same rule the offer body already follows.
+            + ('' if not o.get("deposit_label") else
+               '<h2 id="the-deposit">The deposit</h2>'
+               f'<p><b>{html.escape(o["deposit_label"])}, by payment link.</b> '
+               f'{inline(o["deposit_why"], ctx)}. The rest is invoiced.</p>'
+               '<h3 id="what-the-deposit-does">What the deposit does</h3><ul>'
+               + "".join(f"<li>{inline(x, ctx)}</li>" for x in o["deposit_says"]) + "</ul>"
+               '<h3 id="what-it-does-not-do">What it does not do</h3><ul>'
+               + "".join(f"<li>{inline(x, ctx)}</li>" for x in o["deposit_not"]) + "</ul>")
+            + '<h2 id="how-to-buy-this">How to buy this</h2>'
             f'<p class="offer-foot">{checkout_html(o, ctx)}</p>'
             f'<p class="small dim">The code on the card redirects here, and this page says what '
             f'arrives before anything is paid. {html.escape(CHECKOUT_WHY[o["checkout_mode"]])} '
@@ -1154,7 +1179,9 @@ def delivery_pages(out_dir, ctx_shared):
                 f"- Offer id: `{o['id']}`\n- Price: {o['price_label']}\n"
                 f"- How it is paid: {rail_name}\n"
                 f"- Checkout: {(o.get('checkout_url') or '').strip() or CHECKOUT_WHY[o['checkout_mode']]}\n"
-                f"- What is true of it today: {o['state']}\n\n"
+                + (f"- Deposit: {o['deposit_label']} by payment link, balance invoiced\n"
+                   if o.get("deposit_label") else "")
+                + f"- What is true of it today: {o['state']}\n\n"
                 "## What arrives\n\n" + "".join(f"- {x}\n" for x in o["delivery_says"]) +
                 "\n## What this is not, and will not become\n\n" +
                 "".join(f"- {x}\n" for x in o["not_promised"])
@@ -1299,6 +1326,10 @@ def lab_model(prefix):
             "chip": STATES[o["state_badge"]][0],
             "caveat": caveat,
             "delivery": f"d/{o['id']}/index.html" if o["rail"] != "none" else None,
+            # The one offer where the first payable amount is not the price. A brief
+            # that lands in the top band should say what actually gets paid first,
+            # or the number in the ticket reads as the number on the card.
+            "deposit": o.get("deposit_label") or None,
         }
     return {
         "version": SITE["version"],
@@ -1852,6 +1883,11 @@ def site_index(rendered, claims):
              # this index has to be able to tell "no checkout" from "a checkout
              # whose URL somebody typed the word TODO into".
              "checkout_url": (o.get("checkout_url") or "").strip() or None,
+             # Two amounts on one offer: the engagement, and the deposit that is
+             # payable by card because it sits below the threshold the other one
+             # does not. A consumer of this index has to be able to tell them apart.
+             "deposit": ({"label": o["deposit_label"], "amount": o["deposit_amount"]}
+                         if o.get("deposit_label") else None),
              "delivery": f"/d/{o['id']}/" if o["rail"] != "none" else None}
             for o in OFFERS
         ],
@@ -1918,8 +1954,10 @@ def llms_txt(rendered, extra):
         where = f"{SITE['base']}/d/{o['id']}/" if o["rail"] != "none" else "no code behind it yet"
         url = (o.get("checkout_url") or "").strip()
         pay = url or f"no payment link ({o['checkout_mode']}) — {CHECKOUT_WHY[o['checkout_mode']]}"
+        dep = (f" — deposit: {o['deposit_label']} by payment link, balance invoiced"
+               if o.get("deposit_label") else "")
         lines.append(f"- `{o['id']}` — {o['price_label']} — {o['question']} — for: {o['buyer']}"
-                     f" — {where} — checkout: {pay}")
+                     f" — {where} — checkout: {pay}{dep}")
     lines += [
         "",
         "No payment link has been created for any offer on this site: every checkout_url in",

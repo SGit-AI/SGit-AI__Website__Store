@@ -65,8 +65,10 @@ A payment link is an online payment, so no cross-border rule applies to it — w
 matters, because a United Kingdom card account cannot tap in Portugal and the
 provider says so in those words. **No card reader was bought.**
 {{claim:card-reader-refused}} Above about a thousand pounds a card stops making
-sense, so [tier 4](/d/t4/) goes by invoice and bank transfer, or through the cloud
-marketplace after a conversation. **The two rails never appear as a choice on one
+sense, so [tier 4](/d/t4/)'s **engagement** goes by invoice and bank transfer, or
+through the cloud marketplace after a conversation — while its **£500 deposit is a
+payment link**, because the threshold argument was always about the £10,000 and
+never about the deposit {{claim:t4-deposit-below-threshold}}. **The two rails never appear as a choice on one
 transaction**, and [the paying page](/paying/) explains why that is a rule rather
 than a preference. {{claim:marketplace-no-customer-payment}}
 

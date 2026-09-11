@@ -3,7 +3,7 @@
 assets/lab.js exposes window.SGitLab.setView, so a single page can host more than one prototype and a brief follows between them. On the site each prototype has its own URL and local storage already carries the brief across, so switching there is a link; this is for one page showing all five side by side, which is how they are compared before one of them is chosen.
 
 - Released: 2026-09-11
-- Built from commit: ``
+- Built from commit: `920f8f2a0a2820264c0f3554a1766e074fc284e9`
 - Reconstructed: no
 
 ---

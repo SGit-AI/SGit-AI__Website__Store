@@ -565,12 +565,31 @@ EXPECTED_CHECKOUT = {
     "t1": "fixed",            # £10, one price, one link
     "t2": "banded",           # £50 to £100
     "t3": "banded",           # £150 to £1,000
-    "t4": "conversation",     # at £10,000 the card fee alone reaches about £250
+    "t4": "deposit",          # the engagement is invoiced; the £500 deposit is a link
     "add-formats": "attached",
     "add-opinion": "none",
 }
 # The modes that cannot have a link at all, whatever anybody pastes into the file.
+# "deposit" is NOT among them: the whole point of that mode is that one part of the
+# offer is payable by card even though the offer is not.
 NO_LINK_MODES = ("attached", "conversation", "none")
+
+# ---------------------------------------------------------------- the deposit ---
+# Tier 4 is the one offer with TWO amounts: an engagement that is invoiced, and a
+# deposit against it that is payable by link. The deposit is frozen here exactly as
+# the prices are, and for the same reason — it goes onto the same printed cards and
+# a printed number cannot be corrected from a conference floor.
+#
+# Two further things are held, and both are the site's own published arithmetic
+# turned into an assertion rather than left as prose:
+#
+#   1. A deposit must sit BELOW the threshold this site's copy names as the point
+#      where a card stops making sense. If it ever rises above it, the page argues
+#      against its own checkout in the paragraph next to it.
+#   2. A deposit must be smaller than the thing it is a deposit against. A deposit
+#      at or above the engagement's floor is not a deposit, it is the price.
+EXPECTED_DEPOSITS = {"t4": ("£500", 50000)}
+CARD_THRESHOLD = 100000   # £1,000, the number the copy names on /paying/ and /booking/
 
 
 def check_checkout_links():
@@ -593,6 +612,10 @@ def check_checkout_links():
         if not url.startswith(CHECKOUT_HOSTS):
             fail(f"offer {oid}: checkout URL {url!r} is not on {' or '.join(CHECKOUT_HOSTS)} — "
                  "a printed code cannot be recalled, so the destination is pinned")
+        if (o.get("deposit") is not None) != (mode == "deposit"):
+            fail(f"offer {oid}: mode is {mode!r} and deposit is {o.get('deposit')!r} — a deposit "
+                 "offer carries a deposit and nothing else does, or the card shows an amount the "
+                 "button does not take")
         if mode in NO_LINK_MODES:
             fail(f"offer {oid}: mode {mode!r} carries a checkout URL. "
                  + {"attached": "An add-on is priced against the offer it attaches to and is not bought alone.",
@@ -789,6 +812,73 @@ def check_lab_model_is_shipped():
                  "builds would be root-absolute and break off the custom domain")
 
 
+def check_deposits():
+    """The deposit is a second amount on one offer, and the failure it guards is
+    specific: somebody paying the deposit while believing they bought the
+    engagement. So the amount is frozen, it is held below the threshold the copy
+    names, it is held below the price it is a deposit against, and the page has to
+    say both halves."""
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offers = {o["id"]: o for o in index["offers"]}
+    src = (ROOT / "data" / "offers.yml").read_text()
+
+    for oid, o in offers.items():
+        dep = o.get("deposit")
+        if dep is None:
+            if oid in EXPECTED_DEPOSITS:
+                fail(f"offer {oid}: the pack sets a deposit of {EXPECTED_DEPOSITS[oid][0]} and the "
+                     "built offer carries none")
+            continue
+        if oid not in EXPECTED_DEPOSITS:
+            fail(f"offer {oid}: carries a deposit of {dep['label']!r} that is not in the frozen "
+                 "table — a deposit is a number on a printed card and is not the builder's to invent")
+            continue
+        label, amount = EXPECTED_DEPOSITS[oid]
+        if dep["label"] != label or dep["amount"] != amount:
+            fail(f"offer {oid}: deposit is {dep['label']!r}/{dep['amount']}, the pack sets "
+                 f"{label!r}/{amount}")
+        if dep["amount"] >= CARD_THRESHOLD:
+            fail(f"offer {oid}: the deposit is {dep['label']} and this site's own copy says a card "
+                 f"stops making sense above about £{CARD_THRESHOLD // 100:,}. A deposit at or above "
+                 "that argues against the checkout in the paragraph beside it")
+        block = re.search(rf"(?ms)^- id: {re.escape(oid)}\n(.*?)(?=^- id: |\Z)", src)
+        m = re.search(r"^\s*price_min: (\d+)$", block.group(1), re.M) if block else None
+        if m and dep["amount"] >= int(m.group(1)):
+            fail(f"offer {oid}: the deposit ({dep['amount']}) is not smaller than the engagement's "
+                 f"floor ({m.group(1)}). A deposit that is not smaller than the thing is the price")
+
+        page = OUT / "d" / oid / "index.html"
+        if page.exists():
+            flat = strip_tags(page.read_text())
+            for needed in ("What the deposit does", "What it does not do"):
+                if needed not in flat:
+                    fail(f"/d/{oid}/: the deposit section does not say '{needed}' — a page that "
+                         "takes a deposit and only says what it buys is the half that gets "
+                         "somebody into trouble")
+            if dep["label"] not in flat:
+                fail(f"/d/{oid}/: does not name the deposit amount")
+
+
+def check_deposit_not_beside_the_marketplace():
+    """The marketplace's seller terms say a seller is not permitted to collect
+    customer payment information at any time. A card deposit and a marketplace
+    route are therefore ALTERNATIVES for one engagement and never a combination, so
+    neither an offer card nor a delivery page may present both."""
+    deposit_ids = set(EXPECTED_DEPOSITS)
+    for p in pages():
+        rel = str(p.relative_to(OUT)).replace(os.sep, "/")
+        text = p.read_text()
+        for oid in deposit_ids:
+            if not (rel == f"d/{oid}/index.html" or f'id="offer-{oid}"' in text
+                    or f'-offer-{oid}"' in text):
+                continue
+            if rel != f"d/{oid}/index.html":
+                continue
+            if re.search(r"marketplace", strip_tags(text), re.I):
+                fail(f"{rel}: presents the marketplace on a page that takes a card deposit. "
+                     "They are alternatives for one engagement, never a combination")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -804,6 +894,7 @@ def main():
         check_naming_collision, check_prices, check_delivery_pages,
         check_committed_spend_correction, check_rails_not_a_choice,
         check_checkout_links, check_no_forms, check_buyer_groups,
+        check_deposits, check_deposit_not_beside_the_marketplace,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,

@@ -375,6 +375,13 @@
     head.appendChild(el('span', 'ticket-tier', offer.label));
     t.appendChild(head);
     t.appendChild(el('p', 'ticket-says', b.says));
+    if (offer.deposit) {
+      var dep = el('p', 'ticket-says');
+      dep.appendChild(el('b', null, offer.deposit + ' deposit'));
+      dep.appendChild(document.createTextNode(
+        ' is the first payable amount. The balance is invoiced after a conversation.'));
+      t.appendChild(dep);
+    }
 
     var meter = el('div', 'meter');
     var fill = el('i');

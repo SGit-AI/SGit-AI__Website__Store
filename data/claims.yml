@@ -190,6 +190,20 @@
   claim: "**A standing payment link carries one price, and three of the six offers do not have one.** Tier 2 and tier 3 are bands and tier 4 is a conversation, so **only tier 1 can ever have a standing link**; the banded tiers take a link issued once the band is fixed for the case. That is a property of a fixed-price link, not a policy, and it is why the checkout is not simply four buttons."
   source: "01__WHAT-TO-BUILD.md, the price paragraph, read against how a fixed-price payment link works"
 
+- id: t4-deposit-below-threshold
+  state: projected
+  date: 11 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "**Tier 4's deposit is £500, and it is payable by link.** The fee argument that put tier 4 on the invoice rail was always about the £10,000 and never about the deposit: at £10,000 a card costs up to about £250, and **on the same rate £500 costs about £12**. So **the deposit is a payment link and the balance is not** — two amounts, two rails, one offer. Arithmetic, not an invoice."
+  source: "01__WHAT-TO-BUILD.md, the price paragraph, applied to the deposit the same document already describes"
+
+- id: t4-deposit-terms-absent
+  state: absent
+  date: 11 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "**What happens to a deposit against an engagement that cannot be scheduled is not written down.** Until it is, **the deposit follows the conversation and a written scope and is never taken before one** — which is a change to the flow rather than a promise on a page, because a promise about somebody's money that nobody has agreed is worse than an admission that the wording does not exist."
+  source: "data/offers.yml, the t4 deposit record, and the same rule that holds the signed-opinion add-on off sale"
+
 # ------------------------------------------------------- what may be promised
 - id: precision-0388
   state: measured

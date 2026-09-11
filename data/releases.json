@@ -1,10 +1,27 @@
 {
-  "current": "v0.1.4",
+  "current": "v0.1.5",
   "releases": [
+    {
+      "version": "v0.1.5",
+      "date": "2026-09-11",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "tier four takes a \u00a3500 deposit by payment link, and the balance stays on the invoice rail",
+      "summary": "The pack already called tier 4 a booking with a deposit; the deposit was simply not payable. It is now \u00a3500 by payment link, with the \u00a35,000 to \u00a310,000 balance still invoiced \u2014 because the fee arithmetic that put tier 4 on the invoice rail was always about the \u00a310,000 and never about the deposit. Two amounts and two rails on one offer, with the card, the offer page and the delivery page each naming which of the two the button takes. The deposit amount is frozen against the pack exactly as the six prices are, and three further checks hold it: below the threshold this site's own copy names, below the engagement it is a deposit against, and never on a page that also presents the marketplace. The deposit follows the conversation and a written scope, because what happens to a deposit for an engagement that cannot be scheduled is not written down \u2014 and that gap is in the ledger rather than papered over with a term nobody agreed.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.4",
       "date": "2026-09-11",
-      "commit": "",
+      "commit": "920f8f2a0a2820264c0f3554a1766e074fc284e9",
       "site": "store.sgit.ai",
       "title": "a prototype can switch view in place, so one page can host all five",
       "summary": "assets/lab.js exposes window.SGitLab.setView, so a single page can host more than one prototype and a brief follows between them. On the site each prototype has its own URL and local storage already carries the brief across, so switching there is a link; this is for one page showing all five side by side, which is how they are compared before one of them is chosen.",

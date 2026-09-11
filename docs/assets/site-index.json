@@ -1,5 +1,5 @@
 {
- "version": "v0.1.4",
+ "version": "v0.1.5",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -139,6 +139,7 @@
     "The two rails",
     "Who takes the card, and where",
     "Only one of the six can ever hold a standing link",
+    "The one offer with two amounts",
     "Why a link, and not a card reader",
     "Why the marketplace is a conversation and not a button",
     "One correction, carried here rather than dropped",
@@ -172,6 +173,7 @@
    "also_for": [],
    "checkout_mode": "fixed",
    "checkout_url": null,
+   "deposit": null,
    "delivery": "/d/t1/"
   },
   {
@@ -187,6 +189,7 @@
    ],
    "checkout_mode": "banded",
    "checkout_url": null,
+   "deposit": null,
    "delivery": "/d/t2/"
   },
   {
@@ -202,6 +205,7 @@
    ],
    "checkout_mode": "banded",
    "checkout_url": null,
+   "deposit": null,
    "delivery": "/d/t3/"
   },
   {
@@ -215,8 +219,12 @@
    "also_for": [
     "startups"
    ],
-   "checkout_mode": "conversation",
+   "checkout_mode": "deposit",
    "checkout_url": null,
+   "deposit": {
+    "label": "\u00a3500",
+    "amount": 50000
+   },
    "delivery": "/d/t4/"
   },
   {
@@ -234,6 +242,7 @@
    ],
    "checkout_mode": "attached",
    "checkout_url": null,
+   "deposit": null,
    "delivery": "/d/add-formats/"
   },
   {
@@ -247,6 +256,7 @@
    "also_for": [],
    "checkout_mode": "none",
    "checkout_url": null,
+   "deposit": null,
    "delivery": null
   }
  ],
@@ -449,6 +459,18 @@
    "state": "docs",
    "date": "11 Sep 2026",
    "claim": "A standing payment link carries one price, and three of the six offers do not have one. Tier 2 and tier 3 are bands and tier 4 is a conversation, so only tier 1 can ever have a standing link; the banded tiers take a link issued once the band is fixed for the case. That is a property of a fixed-price link, not a policy, and it is why the checkout is not simply four buttons."
+  },
+  {
+   "id": "t4-deposit-below-threshold",
+   "state": "projected",
+   "date": "11 Sep 2026",
+   "claim": "Tier 4's deposit is \u00a3500, and it is payable by link. The fee argument that put tier 4 on the invoice rail was always about the \u00a310,000 and never about the deposit: at \u00a310,000 a card costs up to about \u00a3250, and on the same rate \u00a3500 costs about \u00a312. So the deposit is a payment link and the balance is not \u2014 two amounts, two rails, one offer. Arithmetic, not an invoice."
+  },
+  {
+   "id": "t4-deposit-terms-absent",
+   "state": "absent",
+   "date": "11 Sep 2026",
+   "claim": "What happens to a deposit against an engagement that cannot be scheduled is not written down. Until it is, the deposit follows the conversation and a written scope and is never taken before one \u2014 which is a change to the flow rather than a promise on a page, because a promise about somebody's money that nobody has agreed is worse than an admission that the wording does not exist."
   },
   {
    "id": "precision-0388",

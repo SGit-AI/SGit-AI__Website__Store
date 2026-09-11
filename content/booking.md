@@ -18,14 +18,24 @@ scope.
 ## Tier 4 starts with a conversation, and the reason is arithmetic
 
 **Above about a thousand pounds a card stops making sense.** At £10,000 the card
-fee alone reaches roughly £250 {{claim:card-fee-floor}}. So tier 4 goes by invoice
-and bank transfer, or through [the cloud marketplace](/paying/) if the buyer would
-rather have it inside terms they already hold.
+fee alone reaches roughly £250 {{claim:card-fee-floor}}. So the **engagement** goes
+by invoice and bank transfer, or through [the cloud marketplace](/paying/) if the
+buyer would rather have it inside terms they already hold.
+
+**The deposit is the exception, and it is the same arithmetic.** The threshold was
+never about the deposit: **£500 costs about £12 on a card**, so the **£500 deposit
+is a payment link and the balance is not.** Two amounts, two rails, one offer —
+and [the delivery page](/d/t4/) says which of them the button takes.
+{{claim:t4-deposit-below-threshold}}
 
 There is a second reason, and it is the more important one. **The seven-role team
 is specified and has never run.** {{claim:t4-team-never-run}} A first buyer would
 be the first run. That belongs in a conversation before a deposit, not in a
-paragraph after one.
+paragraph after one — **which is why the deposit follows the conversation rather
+than starting it**, and not only because it reads better. What happens to a deposit
+against an engagement that cannot be scheduled has not been written down, and
+taking money before that exists would be a promise nobody has agreed.
+{{claim:t4-deposit-terms-absent}}
 
 ## What a booking does not buy
 

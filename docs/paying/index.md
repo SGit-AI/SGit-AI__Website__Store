@@ -47,7 +47,7 @@ offers do not have one:
 | [`t1`](/d/t1/) | £10 | **A standing link.** One price, one URL, printable on a card |
 | [`t2`](/d/t2/) | £50 to £100 | A link **issued once the band is fixed** for the case |
 | [`t3`](/d/t3/) | £150 to £1,000 | A link **issued once the band is fixed** — it is a person's time, and the range covers an hour at one end and a working week at the other |
-| [`t4`](/d/t4/) | £5,000 to £10,000 | **No card.** Invoice and bank transfer, after [a conversation](/booking/) |
+| [`t4`](/d/t4/) | £5,000 to £10,000 | **Two amounts, two rails.** The **£500 deposit** is a standing link, because £500 is below the threshold. The balance is invoiced, after [a conversation](/booking/) {{claim:t4-deposit-below-threshold}} |
 | `add-formats` | By depth band | **Not bought alone.** It attaches to one of the above and is priced against its band |
 | `add-opinion` | By depth band | **No code behind it.** The wording does not exist {{claim:opinion-wording-absent}} |
 
@@ -55,6 +55,27 @@ That is a property of how a fixed-price link works rather than a decision about
 who may pay, and it is on this page because the alternative — four buttons, two of
 which take the wrong amount — is the kind of thing that gets discovered by a buyer.
 {{claim:checkout-bands-have-no-standing-link}}
+
+### The one offer with two amounts
+
+**Tier 4 is invoiced and its deposit is not.** The threshold argument was always
+about the £10,000: at £10,000 a card costs up to about £250, and on the same rate
+£500 costs about £12. So **the deposit is a payment link and the balance is a bank
+transfer**, and the card and the delivery page both name which of the two amounts
+the button takes. A build check holds the deposit below the threshold this page
+names — **if it ever rose above it, this paragraph would be arguing against the
+button beside it.** {{claim:t4-deposit-below-threshold}}
+
+**The deposit follows the conversation.** It is against a written scope and is
+never taken before one, because what happens to a deposit for an engagement that
+cannot be scheduled **is not written down yet** and this site does not print a
+term nobody has agreed. {{claim:t4-deposit-terms-absent}}
+
+**And the deposit and the marketplace are alternatives, never a combination.** A
+buyer taking the marketplace route does not pay a card deposit here first — that
+would be collecting customer payment information for a marketplace transaction,
+which is the one thing the seller terms rule out. A build check keeps the two off
+the same page. {{claim:marketplace-no-customer-payment}}
 
 There is no form on this site and there will not be one, so a banded link is
 requested the same way tier 4 starts: by talking to somebody. **Nothing here
@@ -112,7 +133,7 @@ to a delivery page that says **what arrives and what does not**:
 - [`t1`](/d/t1/) — £10
 - [`t2`](/d/t2/) — £50 to £100
 - [`t3`](/d/t3/) — £150 to £1,000
-- [`t4`](/d/t4/) — £5,000 to £10,000, and this one starts with [a conversation](/booking/)
+- [`t4`](/d/t4/) — £5,000 to £10,000, with a **£500 deposit** by link and the balance invoiced. It starts with [a conversation](/booking/)
 
 The cards the codes are printed on differ only in **the question on the front** and
 **the destination of the code**, which makes the fact set identical across every
