@@ -96,6 +96,87 @@ sources:
     kind: guidance
     took: "Classify the credential before it touches anything, and give every credential test a negative control. Both are in tools/secret-scan.sh."
 
+  # ------------------------------------------ abp.sgit.ai, the product this sells
+  # Added 11 September 2026. The Agent Behaviour Policy is the thing this store
+  # actually sells, and until today it had no name here. abp.sgit.ai is the free
+  # library for it — its own home page says there is no checkout on it and there
+  # will not be one — which is the same free/paid line this site already draws.
+  #
+  # A WARNING ABOUT TWO OF THE URLS BELOW. The two strategy briefs carry, IN THEIR
+  # OWN URL, the word hard rule 1 bars from every byte of docs/. That is not a
+  # reason to leave them out of the manifest: they are the two documents that
+  # decide what this store sells, and a provenance chain missing its two
+  # load-bearing sources is worse than a manifest with an awkward string in it.
+  # It is a reason the cache was designed the way it was — refs/ is gitignored and
+  # sits OUTSIDE the build tree, so nothing fetched here can ever reach a page.
+  # The gate's scope is docs/, tools/check_site.py already carries the word in the
+  # comment explaining why it bars it, and this is the second such place.
+  - id: abp
+    title: "abp.sgit.ai — the Agent Behaviour Policy, the site index for agents"
+    url: https://abp.sgit.ai/llms.txt
+    kind: product
+    took: "The product this store sells and could not name until today: the grant, the mandate, the delta and the barrier, for one agent in one deployment, with no score."
+
+  - id: abp-home
+    title: "You know what you asked for. You do not know what it can do."
+    url: https://abp.sgit.ai/index.md
+    kind: product
+    took: "The four objects and how each is obtained: the mandate elicited, the grant measured, the delta derived, the barrier recorded. Also the guess-first mechanic — write down how many of 23 capabilities you think it has before you scroll — which is what the lab should ask before it shows anything."
+
+  - id: abp-what
+    title: "What an Agent Behaviour Policy is — the foundation document"
+    url: https://abp.sgit.ai/what-is-an-abp/index.md
+    kind: product
+    took: "The definition, the worked example with published numbers, and the list of what an ABP is not — which is nearly word for word the list this site already publishes on /disclosures/."
+
+  - id: abp-model
+    title: "The ABP model"
+    url: https://abp.sgit.ai/model/index.md
+    kind: product
+    took: "The four objects, the grammar, the graph rules and the schema. What data/brief.yml should have been reading instead of inventing its own."
+
+  - id: abp-capabilities
+    title: "The capability grammar — verb.object.reach"
+    url: https://abp.sgit.ai/model/capabilities/index.md
+    kind: product
+    took: "23 capability primitives, each with a reach and an undo class. The published vocabulary that replaces the 12 grants and 9 mandates this repository invented for /lab/."
+
+  - id: abp-barriers
+    title: "The barrier — four kinds, and only the fourth bounds anything"
+    url: https://abp.sgit.ai/model/barriers/index.md
+    kind: product
+    took: "The enforcer test: a control bounds a grant only if it is enforced by something the grant does not include. And the number that matters — the gap between excess and unbounded excess is the business case for a control, and it contains no verdict."
+
+  - id: abp-delta
+    title: "The delta — derived and never authored"
+    url: https://abp.sgit.ai/model/delta/index.md
+    kind: product
+    took: "The delta is stored with the versions of both inputs pinned and recomputed when either moves. A correction this site published against itself nine hours after stating the opposite."
+
+  - id: abp-examples
+    title: "Five worked Agent Behaviour Policies"
+    url: https://abp.sgit.ai/examples/index.md
+    kind: product
+    took: "The five deployment shapes a printed draft can be derived from, and the pair that makes the argument in one table: one setting moved, one barrier changed, not one number did."
+
+  - id: abp-data
+    title: "The published ABP vocabulary, as JSON"
+    url: https://abp.sgit.ai/data/index.json
+    kind: data
+    took: "A versioned pack at a stable address with cross origin access and a content hash. This site cannot fetch it at runtime — no page here opens a connection — so it is promoted at build time with its provenance, which is what abp.sgit.ai itself did to the map it was promoted from."
+
+  - id: abp-strategy-product
+    title: "Strategy brief — the behaviour policy is the document an underwriter already requires; sell the correction, not the draft"
+    url: https://abp.sgit.ai/docs/briefs/v0.33.70__strategy-brief__the-behaviour-policy-is-the-document-the-only-agent-insurer-already-requires-sell-the-correction-and-not-the-draft/index.md
+    kind: strategy
+    took: "The mapping of the ABP onto the four tiers WITHOUT changing a number, the draft-and-correction sales motion, the no-score rule, the naming hazards, and the correct regulatory citation for a United Kingdom buyer."
+
+  - id: abp-strategy-ladder
+    title: "Strategy brief — the prohibitions are the exclusions, and the ladder is forced rather than chosen"
+    url: https://abp.sgit.ai/docs/briefs/v0.33.70__strategy-brief__the-prohibitions-are-the-exclusions-your-own-demo-says-no-policy-covers-the-delta-and-the-insurance-act-says-how/index.md
+    kind: strategy
+    took: "Why the sequence is forced: the ABP is the label, the twin is the patient record, the score is the prescription. And the boundary this store must not cross — the estate sells the artefact the underwriter needs and never the instrument, because that is a regulated activity."
+
   # ------------------------------------ the rest of the answer, other domains
   - id: coding
     title: "coding.sgit.ai — how software actually gets written here"
