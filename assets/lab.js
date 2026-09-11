@@ -725,6 +725,22 @@
     root.appendChild(wrap);
   }
 
+  /* A second entry point, for a page that hosts more than one prototype in place.
+     On the site each prototype has its own URL and a brief follows between them
+     through local storage, so switching is just a link. In a single page — the
+     preview of all five, side by side — the view has to change without one. */
+  window.SGitLab = {
+    view: function () { return VIEW; },
+    views: Object.keys(VIEWS),
+    setView: function (v) {
+      if (!VIEWS[v]) return false;
+      VIEW = v;
+      root.setAttribute('data-view', v);
+      render();
+      return true;
+    }
+  };
+
   load();
   render();
 })();

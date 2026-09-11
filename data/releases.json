@@ -1,10 +1,24 @@
 {
-  "current": "v0.1.3",
+  "current": "v0.1.4",
   "releases": [
+    {
+      "version": "v0.1.4",
+      "date": "2026-09-11",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "a prototype can switch view in place, so one page can host all five",
+      "summary": "assets/lab.js exposes window.SGitLab.setView, so a single page can host more than one prototype and a brief follows between them. On the site each prototype has its own URL and local storage already carries the brief across, so switching there is a link; this is for one page showing all five side by side, which is how they are compared before one of them is chosen.",
+      "changes": [
+        "assets",
+        "data"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.3",
       "date": "2026-09-11",
-      "commit": "",
+      "commit": "1a860430b762071af8b9f5fce128bb04c8cb13cc",
       "site": "store.sgit.ai",
       "title": "five prototypes of the purchase flow for the grant and mandate mapping work",
       "summary": "/lab/ \u2014 five interfaces over one configurator for the consulting work this store exists to sell: mapping what the agents a company already runs were granted, what they are expected to do, and the policies that would close the gap. An interview, a ladder, an estate board, a delta matrix and a scenario start, all rendering data/brief.yml and all emitting the same JSON brief, so the interface is the variable and the document is not. Nothing in the area can be bought and every page says so above the tool; the work is done by people and the team specified for it has never run. The brief carries excess_authority, computed from justification edges published in the model, and unknowns, which is what the brief could not establish. The price is not computed: options add up, the total lands in a band, and the band names one of the four existing tiers and its price, with the deliverable setting a floor. All five were driven in a real browser, which is how the missing track selector on two of them was found.",
