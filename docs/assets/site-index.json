@@ -1,32 +1,35 @@
 {
- "version": "v0.1.1",
+ "version": "v0.1.2",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
   {
    "url": "/",
    "title": "Every agent needs a licence to operate",
-   "description": "Six offers, four with a price and a printed code. What is sold here is an instance: your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by security professionals. The paid thing is not access and it is not customisation. It is independence.",
-   "lead": "The paid thing is not access, and it is not customisation. It is independence. The library is free and public and it stays that way. What is priced here is an instance: your situation, computed against it, in a vault you hold the keys to. Four tiers, from \u00a310 to \u00a310,000, and two add-ons. Two of the six do not exist yet \u2014 they say so on their own row, because a store that edits its gaps out is a marketing page wearing a lab coat.",
+   "description": "Six offers grouped by who each was built for: a team running agents, an investor backing a company, a startup about to meet diligence. What is sold is an instance \u2014 your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by a team. The paid thing is not access and it is not customisation. It is independence.",
+   "lead": "The paid thing is not access, and it is not customisation. It is independence. The library is free and public and it stays that way. What is priced here is an instance: your situation, computed against it, in a vault you hold the keys to. Four tiers, from \u00a310 to \u00a310,000, and two add-ons, grouped below by which of three buyers each one was built for. Two of the six do not exist yet \u2014 they say so on their own row, because a store that edits its gaps out is a marketing page wearing a lab coat.",
    "headings": [
+    "Start with which one of these you are",
     "The four, and the two",
     "What the ladder is actually for",
     "What is true of each of these today",
     "How paying works, in one paragraph",
-    "Who this is for",
+    "Who this is for, with the evidence under each",
     "What this site will not tell you"
    ],
    "kind": "page"
   },
   {
    "url": "/audiences/",
-   "title": "Who each one is for",
-   "description": "Three audiences, ordered by opportunity rather than treated as equal: the corporate user assessing an agent they already run, the investor buying a signed review, and the founder \u2014 who is a reverse sale, and the hardest of the three.",
-   "lead": "Order matters here, and the page reflects it. Three audiences, and they are not equally served by what is on this site. One of them has a market above it and nothing underneath it. One of them has nothing at any price. One of them has two funded incumbents and a free tier, and is on this page only as a reverse sale.",
+   "title": "The three buyers, and what each one buys",
+   "description": "Three buyers, ordered by opportunity rather than presented as three equal doors: a team running agents they already granted credentials to, an investor backing a company, and a startup about to meet diligence. Which of the six offers each one is shown, which were actually built for them, and \u2014 for one of the three \u2014 that none were.",
+   "lead": "Order matters here, and the page reflects it. Three buyers, and they are not equally served by what is on this site. One has a market above it and nothing underneath. One has nothing at any price. One has two funded incumbents and a free tier already sitting under it, and is here only as a reverse sale. The grouping below adds no offer and no price: it is a second index over the same six, and the third group has nothing built pointing at it at all.",
    "headings": [
-    "1. The corporate user, assessing an agent they already run",
-    "2. The investor, buying a signed review of a company they are backing",
-    "3. The founder, and only as the reverse sale",
+    "The routing, in one table",
+    "1. You run agents today",
+    "2. You are backing a company, and want somebody to look",
+    "3. You are a startup, and only as the reverse sale",
+    "Why the groups are a view and not a range",
     "What none of the three is buying"
    ],
    "kind": "page"
@@ -103,9 +106,11 @@
    "lead": "Four tiers and two add-ons. Four prices are set, one range is deliberately wide, and the add-ons are banded rather than priced. Every number on this page comes from one file, and a build check holds each of them against the pack that set it \u2014 because these prices go onto printed cards, and a printed price cannot be corrected from a conference floor.",
    "headings": [
     "The table",
+    "The same six, by who each one was built for",
     "The six, in full",
     "Why each number is that number",
     "The offer identifier is the stable part",
+    "How each one is paid for",
     "What is not on this page"
    ],
    "kind": "page"
@@ -113,10 +118,12 @@
   {
    "url": "/paying/",
    "title": "The two rails, and why they never meet",
-   "description": "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, and the separation is a rule rather than a preference.",
+   "description": "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, the separation is a rule rather than a preference, and no link has been issued yet.",
    "lead": "Both rails exist. They must never appear as a choice on one transaction. One is a payment link with a printed code beside it. The other is a cloud marketplace, above roughly a thousand pounds, after a conversation. The reason they are kept apart is not taste \u2014 it is that the marketplace's seller terms say a seller is not permitted to collect customer payment information at any time.",
    "headings": [
     "The two rails",
+    "Who takes the card, and where",
+    "Only one of the six can ever hold a standing link",
     "Why a link, and not a card reader",
     "Why the marketplace is a conversation and not a button",
     "One correction, carried here rather than dropped",
@@ -146,6 +153,10 @@
    "price": "\u00a310",
    "rail": "link",
    "state": "unlocated",
+   "buyer": "agents",
+   "also_for": [],
+   "checkout_mode": "fixed",
+   "checkout_url": null,
    "delivery": "/d/t1/"
   },
   {
@@ -155,6 +166,12 @@
    "price": "\u00a350 to \u00a3100",
    "rail": "link",
    "state": "spec",
+   "buyer": "agents",
+   "also_for": [
+    "startups"
+   ],
+   "checkout_mode": "banded",
+   "checkout_url": null,
    "delivery": "/d/t2/"
   },
   {
@@ -164,6 +181,12 @@
    "price": "\u00a3150 to \u00a31,000",
    "rail": "link",
    "state": "booking",
+   "buyer": "investors",
+   "also_for": [
+    "startups"
+   ],
+   "checkout_mode": "banded",
+   "checkout_url": null,
    "delivery": "/d/t3/"
   },
   {
@@ -173,6 +196,12 @@
    "price": "\u00a35,000 to \u00a310,000",
    "rail": "invoice",
    "state": "unrun",
+   "buyer": "investors",
+   "also_for": [
+    "startups"
+   ],
+   "checkout_mode": "conversation",
+   "checkout_url": null,
    "delivery": "/d/t4/"
   },
   {
@@ -182,6 +211,14 @@
    "price": "By depth band",
    "rail": "link",
    "state": "partial",
+   "buyer": "any",
+   "also_for": [
+    "agents",
+    "investors",
+    "startups"
+   ],
+   "checkout_mode": "attached",
+   "checkout_url": null,
    "delivery": "/d/add-formats/"
   },
   {
@@ -191,7 +228,66 @@
    "price": "By depth band",
    "rail": "none",
    "state": "absent",
+   "buyer": "investors",
+   "also_for": [],
+   "checkout_mode": "none",
+   "checkout_url": null,
    "delivery": null
+  }
+ ],
+ "buyers": [
+  {
+   "id": "agents",
+   "order": 1,
+   "name": "You run agents today",
+   "question": "What did I actually grant it?",
+   "url": "/for/agents/",
+   "built_for_them": [
+    "t1",
+    "t2"
+   ],
+   "serves_them": [],
+   "addons": [
+    "add-formats"
+   ],
+   "entry": "t1",
+   "market_claim": "agent-market-gap"
+  },
+  {
+   "id": "investors",
+   "order": 2,
+   "name": "You are backing a company, and want somebody to look",
+   "question": "What would somebody who knows what they are doing find?",
+   "url": "/for/investors/",
+   "built_for_them": [
+    "t3",
+    "t4"
+   ],
+   "serves_them": [],
+   "addons": [
+    "add-opinion",
+    "add-formats"
+   ],
+   "entry": "t3",
+   "market_claim": "investor-review-absent"
+  },
+  {
+   "id": "startups",
+   "order": 3,
+   "name": "You are a startup, and diligence is coming",
+   "question": "What is diligence going to find before it finds it?",
+   "url": "/for/startups/",
+   "built_for_them": [],
+   "serves_them": [
+    "t3",
+    "t4",
+    "t2"
+   ],
+   "addons": [
+    "add-formats"
+   ],
+   "entry": "t3",
+   "market_claim": "founder-tier-commoditised"
   }
  ],
  "claims": [
@@ -230,6 +326,30 @@
    "state": "absent",
    "date": "10 Sep 2026",
    "claim": "The signed-opinion add-on's wording does not exist, and it must before a first signature. The offer is listed and cannot be bought: there is no code behind it."
+  },
+  {
+   "id": "agent-market-gap",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "For a team assessing an agent they already run, the market anchors between eight and one hundred and fifty thousand dollars, and nothing sits underneath it. The choice today is a five-figure engagement or nothing, and that gap is what tiers 1 and 2 are pointed at."
+  },
+  {
+   "id": "investor-review-absent",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "No productised, affordable, signed investor review exists at any price, and every component of one is already written. It is the emptiest quadrant on this site, and tiers 3 and 4 are what point at it \u2014 but the signature itself is a separate add-on whose wording does not exist."
+  },
+  {
+   "id": "founder-tier-commoditised",
+   "state": "docs",
+   "date": "10 Sep 2026",
+   "claim": "For a founder, two funded incumbents and a free tier beneath them already publish the answer. Selling a startup a posture document is selling into a commoditised tier, so no offer here does. The unoccupied direction is the reverse one: what diligence will find, before it runs."
+  },
+  {
+   "id": "startup-offer-is-reverse-only",
+   "state": "absent",
+   "date": "11 Sep 2026",
+   "claim": "Nothing on the offer list was built pointing at a startup. The startup group is assembled entirely from tiers built for somebody else, run in the opposite direction \u2014 it is a framing of tiers 3, 4 and 2, not a seventh thing on the price list. The reverse-direction offer does not exist as a separate purchase and is not sold as one."
   },
   {
    "id": "card-reader-refused",
@@ -272,6 +392,18 @@
    "state": "spec",
    "date": "10 Sep 2026",
    "claim": "Marketplace registration is the long pole: four to eight weeks. The listing is therefore a November surface, not an event surface, and nothing on this site depends on it."
+  },
+  {
+   "id": "checkout-links-not-issued",
+   "state": "absent",
+   "date": "11 Sep 2026",
+   "claim": "No payment link has been created for any offer on this site. Every offer carries a checkout_url in data/offers.yml and every one of them is empty, so each offer shows its code and its delivery page rather than a button. Issuing a checkout is one pasted line; the gate holds whatever lands there to buy.stripe.com or checkout.stripe.com over HTTPS, so a checkout cannot quietly become a redirect through somewhere else."
+  },
+  {
+   "id": "checkout-bands-have-no-standing-link",
+   "state": "docs",
+   "date": "11 Sep 2026",
+   "claim": "A standing payment link carries one price, and three of the six offers do not have one. Tier 2 and tier 3 are bands and tier 4 is a conversation, so only tier 1 can ever have a standing link; the banded tiers take a link issued once the band is fixed for the case. That is a property of a fixed-price link, not a policy, and it is why the checkout is not simply four buttons."
   },
   {
    "id": "precision-0388",

@@ -5,6 +5,7 @@ A person reviewing your situation, and running a vault for you.
 - Offer id: `t3`
 - Price: £150 to £1,000
 - How it is paid: Payment link
+- Checkout: A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
 - What is true of it today: A booking, not a download. This tier overlaps the signed-opinion add-on, and the overlap is recorded and unresolved — so the two are sold separately and the page says which one you are buying.
 
 ## What arrives

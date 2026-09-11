@@ -53,6 +53,39 @@
   claim: "The signed-opinion add-on's **wording does not exist**, and it must before a first signature. The offer is listed and cannot be bought: there is no code behind it."
   source: "01__WHAT-TO-BUILD.md, the add-on rows"
 
+# ------------------------------------------------ who each offer was built for
+# The three buyers are ordered by opportunity, and the ordering is evidenced here
+# rather than asserted on the page. The third row is the uncomfortable one and it
+# stays: a group that is presented as equally served when it is not is how an
+# offer page quietly widens.
+- id: agent-market-gap
+  state: docs
+  date: 10 Sep 2026
+  group: Who each offer was built for
+  claim: "For a team assessing an agent they already run, **the market anchors between eight and one hundred and fifty thousand dollars, and nothing sits underneath it.** The choice today is a five-figure engagement or nothing, and **that gap is what tiers 1 and 2 are pointed at**."
+  source: "The audiences brief, in the pack at /dev-packs/store/"
+
+- id: investor-review-absent
+  state: docs
+  date: 10 Sep 2026
+  group: Who each offer was built for
+  claim: "**No productised, affordable, signed investor review exists at any price**, and **every component of one is already written.** It is the emptiest quadrant on this site, and tiers 3 and 4 are what point at it — but the signature itself is a separate add-on whose wording does not exist."
+  source: "The audiences brief, in the pack at /dev-packs/store/"
+
+- id: founder-tier-commoditised
+  state: docs
+  date: 10 Sep 2026
+  group: Who each offer was built for
+  claim: "For a founder, **two funded incumbents and a free tier beneath them already publish the answer.** Selling a startup a posture document is selling into a commoditised tier, so **no offer here does**. The unoccupied direction is the reverse one: what diligence will find, before it runs."
+  source: "The audiences brief, in the pack at /dev-packs/store/"
+
+- id: startup-offer-is-reverse-only
+  state: absent
+  date: 11 Sep 2026
+  group: Who each offer was built for
+  claim: "**Nothing on the offer list was built pointing at a startup.** The startup group is assembled entirely from tiers built for somebody else, run in the opposite direction — **it is a framing of tiers 3, 4 and 2, not a seventh thing on the price list.** The reverse-direction offer does not exist as a separate purchase and is not sold as one."
+  source: "data/buyers.yml, where the startup group's primary list is empty and the gate checks that it is"
+
 # ------------------------------------------------------------------ the rails
 - id: card-reader-refused
   state: docs
@@ -102,6 +135,20 @@
   group: How paying works, and why it works that way
   claim: "Marketplace registration is **the long pole: four to eight weeks**. The listing is therefore **a November surface**, not an event surface, and nothing on this site depends on it."
   source: "01__WHAT-TO-BUILD.md, the surface table"
+
+- id: checkout-links-not-issued
+  state: absent
+  date: 11 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "**No payment link has been created for any offer on this site.** Every offer carries a `checkout_url` in `data/offers.yml` and **every one of them is empty**, so each offer shows its code and its delivery page rather than a button. Issuing a checkout is one pasted line; **the gate holds whatever lands there to `buy.stripe.com` or `checkout.stripe.com` over HTTPS**, so a checkout cannot quietly become a redirect through somewhere else."
+  source: "data/offers.yml, and check_checkout_links in tools/check_site.py"
+
+- id: checkout-bands-have-no-standing-link
+  state: docs
+  date: 11 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "**A standing payment link carries one price, and three of the six offers do not have one.** Tier 2 and tier 3 are bands and tier 4 is a conversation, so **only tier 1 can ever have a standing link**; the banded tiers take a link issued once the band is fixed for the case. That is a property of a fixed-price link, not a policy, and it is why the checkout is not simply four buttons."
+  source: "01__WHAT-TO-BUILD.md, the price paragraph, read against how a fixed-price payment link works"
 
 # ------------------------------------------------------- what may be promised
 - id: precision-0388

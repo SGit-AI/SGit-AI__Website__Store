@@ -1,0 +1,80 @@
+# The three buyers, and which of the six offers each one actually buys.
+#
+# THIS FILE ADDS NO OFFERS AND NO PRICES. It is a second index over the same six
+# records in data/offers.yml — the ladder read by who is climbing it rather than
+# by what it costs. The offer set is frozen by tools/check_site.py against the
+# pack, and a grouping that quietly invented a seventh thing to sell would be the
+# exact failure the ledger exists to catch.
+#
+# WHY THE ORDER IS THIS ORDER, AND NOT THE ORDER ANYBODY ASKS FOR
+#
+# The three are not equally served, and the page says so rather than presenting
+# three equal doors. One has a market above it and nothing underneath. One has
+# nothing at any price. One has two funded incumbents and a free tier already
+# sitting under it — and is here only as the reverse sale. Ordering them by
+# opportunity is the honest ordering; ordering them by how comfortable each group
+# is to talk to would be positioning.
+#
+# WHAT `primary` AND `also` MEAN, AND WHY ONE GROUP HAS NO `primary`
+#
+# `primary` is a tier built for this buyer's question. `also` is a tier that
+# serves them but was built for somebody else's. The startup group has an empty
+# `primary` list and that is a finding, not an oversight: nothing on the offer
+# page was built pointing that way. It is stated on the page, with a state in the
+# ledger, because a group presented as equally served when it is not is the kind
+# of quiet widening the catalogue page exists to prevent.
+#
+# One line per value: the YAML subset in build.py drops wrapped continuation lines.
+
+- id: agents
+  order: 1
+  short: You run agents
+  name: You run agents today
+  who: "A team with an agent already in production, holding the credential it runs on."
+  arrives_with: What did I actually grant it?
+  opportunity: "The market anchors between eight and one hundred and fifty thousand dollars, and nothing sits underneath it. That gap is the whole opportunity: somebody who wants to know what they granted an agent has a choice today between a five-figure engagement and nothing."
+  opportunity_claim: agent-market-gap
+  primary: [t1, t2]
+  also: []
+  addons: [add-formats]
+  entry: t1
+  buying: "The **delta**: the union of what a credential permits, against what its holder is authorised and expected to do, and the excess authority between the two. It is computed when you open it and never stored. It is not a thing we keep about you."
+  not_buying:
+    - "A judgement about whether you meet anything. Tier 2 selects from a published regulation; it does not grade you against it."
+    - "A promise that the measurement ran. Tier 1's application was built in August and has not been located, and until it is, what arrives is your answers and the questions. {{claim:t1-app-not-located}}"
+
+- id: investors
+  order: 2
+  short: You are an investor
+  name: You are backing a company, and want somebody to look
+  who: "An investor who needs a review of a company they are backing, and needs it to be somebody's work rather than a scan."
+  arrives_with: What would somebody who knows what they are doing find?
+  opportunity: "No productised, affordable, signed investor review exists at any price — and every component of one is already written. It is the emptiest quadrant on this site, and the two upper tiers point straight at it."
+  opportunity_claim: investor-review-absent
+  primary: [t3, t4]
+  also: []
+  addons: [add-opinion, add-formats]
+  entry: t3
+  buying: "**A person's time, and in tier 4 a team's.** A time confirmed, what they read before the call, and what you get afterwards in writing."
+  not_buying:
+    - "A signature. A reviewed opinion issued by the company and signed by a named professional is a separate add-on, its wording does not exist, and buying an hour of review does not buy one. {{claim:opinion-wording-absent}}"
+    - "Raw findings. Every finding that reaches you has been reproduced first, because recall-optimised agents run at 0.388 precision. What is sold is triage. {{claim:precision-0388}}"
+    - "A mark of conformity, an accreditation, or an audit opinion. None of those describes this, and that language appears on no deliverable here."
+
+- id: startups
+  order: 3
+  short: You are a startup
+  name: You are a startup, and diligence is coming
+  who: "A founder who will be asked these questions by somebody else, and would rather see the answers first."
+  arrives_with: What is diligence going to find before it finds it?
+  opportunity: "Two funded incumbents, a free tier beneath them, and both already publish the answer. Selling a founder a posture document is selling into a commoditised tier — so that is not what is here. The unoccupied offer is the reverse one: the same components, pointed the other way."
+  opportunity_claim: founder-tier-commoditised
+  primary: []
+  also: [t3, t4, t2]
+  addons: [add-formats]
+  entry: t3
+  buying: "**The investor's review, run early, and run for you.** There is no separate product behind that sentence: you buy tier 3 or tier 4 and say which direction you want it run in."
+  not_buying:
+    - "A distinct offer. The reverse direction is a framing of tiers 3 and 4, not a seventh thing on the price list, and this site does not pretend otherwise. {{claim:startup-offer-is-reverse-only}}"
+    - "A posture document. That tier is already free from two funded incumbents, and buying one here would be paying for something published."
+    - "A guarantee about what a particular investor will ask. What is run is the review; which questions a given firm asks is theirs."

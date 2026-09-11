@@ -11,6 +11,14 @@ wide: true
 
 {{offer-table}}
 
+## The same six, by who each one was built for
+
+**This page is the price ladder. [The other way in](/audiences/) is by who is
+climbing it** — which is the question somebody actually arrives with, and the
+reason the home page asks it first.
+
+{{offers-by-buyer}}
+
 ## The six, in full
 
 {{offers}}
@@ -43,6 +51,24 @@ the build treats the host as moveable: every internal link here is relative, the
 host appears in no sentence of copy, and the identifiers above do not change.
 **If the site moves, it costs a DNS record and no reprinting.**
 {{claim:domain-ruling-overruled}}
+
+## How each one is paid for
+
+**A standing payment link carries exactly one price, and only one offer on this
+page has one.** Tier 1 is £10 and could hold a link tomorrow. Tiers 2 and 3 are
+bands, so their link is issued once the band is fixed for the case; tier 4 is
+above the threshold where a card makes sense at all; and the two add-ons are
+priced against the depth band of whatever they attach to. **That is arithmetic
+about how a fixed-price link works, not a policy about who may pay.**
+{{claim:checkout-bands-have-no-standing-link}}
+
+**No link has been created for any of them.** Every offer carries an empty
+checkout field, so every card above shows its code and its delivery page rather
+than a button, and this page says which of the five reasons applies to each.
+Issuing one is a single pasted line, and the build holds whatever lands there to
+the payment provider's own checkout hosts over HTTPS.
+{{claim:checkout-links-not-issued}} [How the rails work, and why they never
+meet](/paying/).
 
 ## What is not on this page
 

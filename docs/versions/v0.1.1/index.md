@@ -3,7 +3,7 @@
 the delivery pages stop printing the page navigation twice
 
 - Released: 2026-09-10
-- Built from commit: ``
+- Built from commit: `14b96dbada2ed3aa1f6d6f42ad589fb113899972`
 - Reconstructed: no
 
 ---

@@ -226,3 +226,7 @@ __marimo__/
 # contents — git needs both, in this order.
 !admin/build/
 !admin/build/**
+
+# Reference documents fetched from elsewhere by tools/refs.py. Never committed:
+# they move upstream, and a vendored copy becomes a lie on a schedule.
+refs/

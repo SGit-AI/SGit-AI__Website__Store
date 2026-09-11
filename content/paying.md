@@ -1,6 +1,6 @@
 ---
 title: The two rails, and why they never meet
-description: "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, and the separation is a rule rather than a preference."
+description: "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, the separation is a rule rather than a preference, and no link has been issued yet."
 lead: "**Both rails exist. They must never appear as a choice on one transaction.** One is a payment link with a printed code beside it. The other is a cloud marketplace, above roughly a thousand pounds, after a conversation. The reason they are kept apart is not taste — it is that the marketplace's seller terms say a seller is **not permitted to collect customer payment information at any time**."
 order: 4
 toc: true
@@ -15,6 +15,50 @@ toc: true
 | **What it removes** | The card reader, and the declined tap | The master agreement, the vendor onboarding, the new purchase order |
 | **What it costs** | The provider's ordinary card fee | **0.5 per cent**, falling to zero inside a qualifying multi-product solution |
 | **State** | {{claim:card-reader-refused}} | {{claim:marketplace-registration}} |
+
+## Who takes the card, and where
+
+**The payment links are Stripe payment links, and the card number is typed on
+Stripe's own pages.** That is the whole of the integration, and it is deliberately
+the smallest one available: there is no payment form here, no script from anywhere
+else, and no key of any kind in this repository or in what it publishes. A
+[build check](/versions/) holds every page to it — **no page on this site opens a
+network connection at all**, so there is nothing here for a card number to travel
+through.
+
+A checkout is therefore one field in one file. `data/offers.yml` carries a
+`checkout_url` per offer; the build renders a live button where a URL exists, and
+the sentence explaining why there is no button where it does not. **Every one of
+those fields is empty today.** {{claim:checkout-links-not-issued}}
+
+**And the URL is pinned.** Whatever lands in that field has to be on
+`buy.stripe.com` or `checkout.stripe.com`, over HTTPS, or the release stops. A
+checkout that can be edited into a redirect through somewhere else is a phishing
+page with our prices on it, and a printed code makes that permanent — the card
+cannot be recalled from a conference floor either.
+
+### Only one of the six can ever hold a standing link
+
+**A fixed-price payment link carries one price.** Three of the four link-rail
+offers do not have one:
+
+| Offer | Price | What its checkout can be |
+|---|---|---|
+| [`t1`](/d/t1/) | £10 | **A standing link.** One price, one URL, printable on a card |
+| [`t2`](/d/t2/) | £50 to £100 | A link **issued once the band is fixed** for the case |
+| [`t3`](/d/t3/) | £150 to £1,000 | A link **issued once the band is fixed** — it is a person's time, and the range covers an hour at one end and a working week at the other |
+| [`t4`](/d/t4/) | £5,000 to £10,000 | **No card.** Invoice and bank transfer, after [a conversation](/booking/) |
+| `add-formats` | By depth band | **Not bought alone.** It attaches to one of the above and is priced against its band |
+| `add-opinion` | By depth band | **No code behind it.** The wording does not exist {{claim:opinion-wording-absent}} |
+
+That is a property of how a fixed-price link works rather than a decision about
+who may pay, and it is on this page because the alternative — four buttons, two of
+which take the wrong amount — is the kind of thing that gets discovered by a buyer.
+{{claim:checkout-bands-have-no-standing-link}}
+
+There is no form on this site and there will not be one, so a banded link is
+requested the same way tier 4 starts: by talking to somebody. **Nothing here
+collects anything, from anybody, ever.**
 
 ## Why a link, and not a card reader
 

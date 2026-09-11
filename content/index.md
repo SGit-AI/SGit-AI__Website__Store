@@ -1,10 +1,25 @@
 ---
 title: Every agent needs a licence to operate
-description: "Six offers, four with a price and a printed code. What is sold here is an instance: your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by security professionals. The paid thing is not access and it is not customisation. It is independence."
-lead: "**The paid thing is not access, and it is not customisation. It is independence.** The library is free and public and it stays that way. What is priced here is an **instance**: your situation, computed against it, in a vault you hold the keys to. **Four tiers, from £10 to £10,000, and two add-ons.** Two of the six do not exist yet — [they say so on their own row](/offers/), because a store that edits its gaps out is a marketing page wearing a lab coat."
+description: "Six offers grouped by who each was built for: a team running agents, an investor backing a company, a startup about to meet diligence. What is sold is an instance — your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by a team. The paid thing is not access and it is not customisation. It is independence."
+lead: "**The paid thing is not access, and it is not customisation. It is independence.** The library is free and public and it stays that way. What is priced here is an **instance**: your situation, computed against it, in a vault you hold the keys to. **Four tiers, from £10 to £10,000, and two add-ons**, grouped below by which of three buyers each one was built for. Two of the six do not exist yet — [they say so on their own row](/offers/), because a store that edits its gaps out is a marketing page wearing a lab coat."
 order: 1
 toc: true
 ---
+
+## Start with which one of these you are
+
+**Three buyers, and they are not equally served.** The order below is the order of
+the opportunity, not the order of the pitch: one group has a market above it and
+nothing underneath, one has nothing at any price, and one has two funded
+incumbents and a free tier already sitting under it. **Everything on this site is
+six offers. These are three ways in.**
+
+{{buyers}}
+
+**Nothing in that grouping is a new product.** It is a second index over the same
+six offers below — which is also why the third door says, on its own face, that
+nothing here was built pointing that way. [The routing, with the evidence under
+each](/audiences/). {{claim:startup-offer-is-reverse-only}}
 
 ## The four, and the two
 
@@ -55,14 +70,23 @@ marketplace after a conversation. **The two rails never appear as a choice on on
 transaction**, and [the paying page](/paying/) explains why that is a rule rather
 than a preference. {{claim:marketplace-no-customer-payment}}
 
-## Who this is for
+**And no payment link has been created yet.** Every offer card above shows its
+code and its delivery page instead of a button, because the field that would hold
+the link is empty for all six. That is one pasted line away from being a live
+checkout and it is not pretended otherwise: **a greyed-out button is a lie about
+which half of the work is done.** {{claim:checkout-links-not-issued}} Only
+[tier 1](/d/t1/) can ever carry a standing link at all — the other two link-rail
+offers are bands, and **a fixed-price link cannot carry a range.**
+{{claim:checkout-bands-have-no-standing-link}}
+
+## Who this is for, with the evidence under each
 
 **In this order, because this is the order of the opportunity** — not because the
 three are equally served. [The full routing is here](/audiences/).
 
-1. **The corporate user** assessing an agent they already run. The market anchors between eight and one hundred and fifty thousand dollars and nothing sits underneath it.
-2. **The investor** buying a signed review of a company they are backing. No productised, affordable, signed investor security review exists at any price, and every component of one is already written.
-3. **The founder**, and only as the reverse sale: telling a founder what diligence will find, before it runs. Two funded incumbents and a free tier sit under everything else here, and both already publish the answer.
+1. **[You run agents today](/for/agents/).** The market anchors between eight and one hundred and fifty thousand dollars and nothing sits underneath it. Two tiers were built for that gap. {{claim:agent-market-gap}}
+2. **[You are backing a company](/for/investors/)** and want somebody to look. No productised, affordable, signed investor review exists at any price, and every component of one is already written. {{claim:investor-review-absent}}
+3. **[You are a startup](/for/startups/)**, and only as the reverse sale: what diligence will find, before it runs. Two funded incumbents and a free tier sit under everything else, and both already publish the answer — so **nothing here was built pointing that way**, and that page says so above its offers rather than below them. {{claim:founder-tier-commoditised}}
 
 ## What this site will not tell you
 

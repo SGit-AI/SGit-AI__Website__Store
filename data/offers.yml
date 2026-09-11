@@ -10,6 +10,31 @@
 # nothing else about it is load-bearing, so the site can move host without
 # reprinting a card or reissuing a link.
 #
+#
+# `buyer` is which of the three in data/buyers.yml this offer was BUILT for, and
+# `also_for` is who else it serves. The grouping is a second index over these same
+# six records — it adds nothing to the price list, which is frozen by the gate.
+#
+# `checkout_mode` is how this offer can be paid for, and it is derived from the
+# price rather than chosen:
+#
+#   fixed         one price, so one standing payment link. Only tier 1.
+#   banded        the price lands inside a band, so a link is issued once the band
+#                 is fixed for the case. A standing link cannot carry a range.
+#   attached      priced against the depth band of the offer it attaches to, and
+#                 never bought on its own.
+#   conversation  above about £1,000 a card stops making sense. Invoice and bank
+#                 transfer, or the cloud marketplace, after a conversation.
+#   none          there is no code behind it.
+#
+# `checkout_url` is the payment link itself. EVERY ONE IS EMPTY, and that is the
+# state of this rail rather than a placeholder somebody forgot: no payment link
+# has been created for any offer on this site. The build renders a live button
+# where a URL exists and says the link has not been issued where it does not, so
+# pasting one line here is the whole of turning a checkout on. The gate holds each
+# URL to the payment provider's own host, so a link cannot quietly become a
+# redirect through anything else.
+#
 # `state` is what is true about the thing being sold TODAY. Two of the six do not
 # exist yet and the pack says so; those sentences are not marketing copy to be
 # softened, they are the reason the method is worth anything.
@@ -26,6 +51,10 @@
   state: "An application built in August may exist and has not been located. Until it is found, this is a questions page, and this page does not promise more than that."
   claim: t1-app-not-located
   rail: link
+  buyer: agents
+  also_for: []
+  checkout_mode: fixed
+  checkout_url: ""
   delivery_says:
     - "The questions, in the order they are asked."
     - "Your answers, as you gave them."
@@ -46,6 +75,10 @@
   state: "Specified 28 July. The graph exists at 1,523 nodes with amendments applied. The pipeline that turns a situation into a vault does not exist."
   claim: t2-pipeline-absent
   rail: link
+  buyer: agents
+  also_for: [startups]
+  checkout_mode: banded
+  checkout_url: ""
   delivery_says:
     - "The provisions that reach you, and only those."
     - "Beside each one, the fact about your situation that caused it to arrive."
@@ -67,6 +100,10 @@
   state: "A booking, not a download. This tier overlaps the signed-opinion add-on, and the overlap is recorded and unresolved — so the two are sold separately and the page says which one you are buying."
   claim: t3-collision-open
   rail: link
+  buyer: investors
+  also_for: [startups]
+  checkout_mode: banded
+  checkout_url: ""
   delivery_says:
     - "A time, confirmed, with a named person's role — not their name, because the person who sells is not the person who signs."
     - "What they will read before the call."
@@ -86,6 +123,10 @@
   state: "A booking with a deposit. The seven-role team is specified and has never run. You would be the first, and the price reflects it."
   claim: t4-team-never-run
   rail: invoice
+  buyer: investors
+  also_for: [startups]
+  checkout_mode: conversation
+  checkout_url: ""
   delivery_says:
     - "A conversation first, because nothing at this size should start with a card."
     - "A scope in writing, and a deposit against it."
@@ -106,6 +147,10 @@
   state: "The generator exists. The check that proves every variant carries the same facts does not, so the guarantee that would make this worth buying is not printed here yet."
   claim: fact-diff-absent
   rail: link
+  buyer: any
+  also_for: [agents, investors, startups]
+  checkout_mode: attached
+  checkout_url: ""
   delivery_says:
     - "The same result, in the formats you chose."
     - "The variant list, and the date each was rendered."
@@ -124,6 +169,10 @@
   state: "The wording does not exist. It has to, before a first signature — so this add-on is listed and cannot yet be bought."
   claim: opinion-wording-absent
   rail: none
+  buyer: investors
+  also_for: []
+  checkout_mode: none
+  checkout_url: ""
   delivery_says:
     - "Nothing yet. This offer has no delivery page because it has no wording, and it is listed here so that nobody proposes it as new."
   not_promised:

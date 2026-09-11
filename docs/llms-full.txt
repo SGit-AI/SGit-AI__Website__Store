@@ -1,5 +1,5 @@
 # store.sgit.ai — the whole site as markdown
-site v0.1.1 · every claim's verification state is at /ledger/
+site v0.1.2 · every claim's verification state is at /ledger/
 
 Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.
 
@@ -17,11 +17,26 @@ PAGE /  —  Every agent needs a licence to operate
 
 ---
 title: Every agent needs a licence to operate
-description: "Six offers, four with a price and a printed code. What is sold here is an instance: your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by security professionals. The paid thing is not access and it is not customisation. It is independence."
-lead: "**The paid thing is not access, and it is not customisation. It is independence.** The library is free and public and it stays that way. What is priced here is an **instance**: your situation, computed against it, in a vault you hold the keys to. **Four tiers, from £10 to £10,000, and two add-ons.** Two of the six do not exist yet — [they say so on their own row](/offers/), because a store that edits its gaps out is a marketing page wearing a lab coat."
+description: "Six offers grouped by who each was built for: a team running agents, an investor backing a company, a startup about to meet diligence. What is sold is an instance — your own answers and the delta they imply, the provisions of the regulation that reach you, a person to review your situation, or an assessment by a team. The paid thing is not access and it is not customisation. It is independence."
+lead: "**The paid thing is not access, and it is not customisation. It is independence.** The library is free and public and it stays that way. What is priced here is an **instance**: your situation, computed against it, in a vault you hold the keys to. **Four tiers, from £10 to £10,000, and two add-ons**, grouped below by which of three buyers each one was built for. Two of the six do not exist yet — [they say so on their own row](/offers/), because a store that edits its gaps out is a marketing page wearing a lab coat."
 order: 1
 toc: true
 ---
+
+## Start with which one of these you are
+
+**Three buyers, and they are not equally served.** The order below is the order of
+the opportunity, not the order of the pitch: one group has a market above it and
+nothing underneath, one has nothing at any price, and one has two funded
+incumbents and a free tier already sitting under it. **Everything on this site is
+six offers. These are three ways in.**
+
+{{buyers}}
+
+**Nothing in that grouping is a new product.** It is a second index over the same
+six offers below — which is also why the third door says, on its own face, that
+nothing here was built pointing that way. [The routing, with the evidence under
+each](/audiences/). {{claim:startup-offer-is-reverse-only}}
 
 ## The four, and the two
 
@@ -72,14 +87,23 @@ marketplace after a conversation. **The two rails never appear as a choice on on
 transaction**, and [the paying page](/paying/) explains why that is a rule rather
 than a preference. {{claim:marketplace-no-customer-payment}}
 
-## Who this is for
+**And no payment link has been created yet.** Every offer card above shows its
+code and its delivery page instead of a button, because the field that would hold
+the link is empty for all six. That is one pasted line away from being a live
+checkout and it is not pretended otherwise: **a greyed-out button is a lie about
+which half of the work is done.** {{claim:checkout-links-not-issued}} Only
+[tier 1](/d/t1/) can ever carry a standing link at all — the other two link-rail
+offers are bands, and **a fixed-price link cannot carry a range.**
+{{claim:checkout-bands-have-no-standing-link}}
+
+## Who this is for, with the evidence under each
 
 **In this order, because this is the order of the opportunity** — not because the
 three are equally served. [The full routing is here](/audiences/).
 
-1. **The corporate user** assessing an agent they already run. The market anchors between eight and one hundred and fifty thousand dollars and nothing sits underneath it.
-2. **The investor** buying a signed review of a company they are backing. No productised, affordable, signed investor security review exists at any price, and every component of one is already written.
-3. **The founder**, and only as the reverse sale: telling a founder what diligence will find, before it runs. Two funded incumbents and a free tier sit under everything else here, and both already publish the answer.
+1. **[You run agents today](/for/agents/).** The market anchors between eight and one hundred and fifty thousand dollars and nothing sits underneath it. Two tiers were built for that gap. {{claim:agent-market-gap}}
+2. **[You are backing a company](/for/investors/)** and want somebody to look. No productised, affordable, signed investor review exists at any price, and every component of one is already written. {{claim:investor-review-absent}}
+3. **[You are a startup](/for/startups/)**, and only as the reverse sale: what diligence will find, before it runs. Two funded incumbents and a free tier sit under everything else, and both already publish the answer — so **nothing here was built pointing that way**, and that page says so above its offers rather than below them. {{claim:founder-tier-commoditised}}
 
 ## What this site will not tell you
 
@@ -100,21 +124,31 @@ about what leaks have not been answered yet. [The disclosures page says which si
 {{claim:cannot-read-unanswered}}
 
 ==============================================================================
-PAGE /audiences/  —  Who each one is for
+PAGE /audiences/  —  The three buyers, and what each one buys
 ==============================================================================
 
 ---
-title: Who each one is for
-description: "Three audiences, ordered by opportunity rather than treated as equal: the corporate user assessing an agent they already run, the investor buying a signed review, and the founder — who is a reverse sale, and the hardest of the three."
-lead: "**Order matters here, and the page reflects it.** Three audiences, and they are not equally served by what is on this site. One of them has a market above it and nothing underneath it. One of them has nothing at any price. One of them has two funded incumbents and a free tier, and is on this page only as a **reverse sale**."
+title: The three buyers, and what each one buys
+description: "Three buyers, ordered by opportunity rather than presented as three equal doors: a team running agents they already granted credentials to, an investor backing a company, and a startup about to meet diligence. Which of the six offers each one is shown, which were actually built for them, and — for one of the three — that none were."
+lead: "**Order matters here, and the page reflects it.** Three buyers, and they are not equally served by what is on this site. One has a market above it and nothing underneath. One has nothing at any price. One has two funded incumbents and a free tier already sitting under it, and is here only as a **reverse sale**. The grouping below adds no offer and no price: it is a second index over the same six, and **the third group has nothing built pointing at it at all.**"
 order: 3
 toc: true
+wide: true
 ---
 
-## 1. The corporate user, assessing an agent they already run
+## The routing, in one table
+
+{{offers-by-buyer}}
+
+Each row has a page of its own. The offers on it are the same records the
+[offer page](/offers/) renders — the same prices, the same states, the same
+delivery pages — sorted by whose question they were built to answer instead of by
+what they cost.
+
+## 1. You run agents today
 
 **The market anchors between eight and one hundred and fifty thousand dollars, and
-nothing sits underneath it.**
+nothing sits underneath it.** {{claim:agent-market-gap}}
 
 That gap is the whole opportunity. Somebody running an agent today, who wants to
 know what they actually granted it, has a choice between a five-figure engagement
@@ -126,10 +160,12 @@ against what the holder is authorised and expected to do, and the excess authori
 between the two. **That delta is computed and never stored.** It is not a thing we
 keep about you.
 
-## 2. The investor, buying a signed review of a company they are backing
+[Everything this buyer is shown &rarr;](/for/agents/)
 
-**No productised, affordable, signed investor security review exists at any price
-— and every component of one is already written.**
+## 2. You are backing a company, and want somebody to look
+
+**No productised, affordable, signed investor review exists at any price
+— and every component of one is already written.** {{claim:investor-review-absent}}
 
 That is the emptiest quadrant on this page, and the one the top two tiers point
 at. [Tier 3](/d/t3/) is a person reading a situation. [Tier 4](/d/t4/) is a team.
@@ -142,15 +178,40 @@ suppliers is the combination two industries have already regulated. So:
 - **The people who sell do not sign.** That constrains this site's own layout: the signature block and the checkout must not name the same person, and on this site neither names anyone at all.
 - The **signed opinion is a separate add-on with separate wording**, and that wording does not exist yet. {{claim:opinion-wording-absent}}
 
-## 3. The founder, and only as the reverse sale
+[Everything this buyer is shown &rarr;](/for/investors/)
+
+## 3. You are a startup, and only as the reverse sale
 
 **Two funded incumbents, a free tier beneath them, and both already publish the
 answer.** Selling a founder a security posture document is selling into a
-commoditised tier.
+commoditised tier. {{claim:founder-tier-commoditised}}
 
 **The unoccupied offer is the reverse one: telling a founder what diligence will
 find, before it runs.** Same components, opposite direction, and it is the only
 version of this that is not already free somewhere.
+
+**And it is not on the price list.** The startup page is assembled entirely out of
+tiers built for the other two buyers — you buy [tier 3](/d/t3/) or
+[tier 4](/d/t4/) and say which direction you want it run in. There is no seventh
+product behind that sentence, the page says so above its offers rather than below
+them, and this row is why the grouping is called an index rather than a range.
+{{claim:startup-offer-is-reverse-only}}
+
+[Everything this buyer is shown &rarr;](/for/startups/)
+
+## Why the groups are a view and not a range
+
+**Because the alternative is how an offer list grows without anybody deciding to
+grow it.** Three audiences, three pages, and within a month each page has a thing
+of its own on it that nobody priced, nobody specified, and nobody can say the
+state of.
+
+So the grouping is mechanical. `data/buyers.yml` names offer ids and nothing else;
+the build joins them to `data/offers.yml`; and the gate fails the release if a
+group names an offer that does not exist, if an offer belongs to no group, or if
+the set of groups changes. **A buyer page cannot contain a product**, in the same
+way [the eight further offers](/catalogue/) cannot quietly widen the four that are
+for sale.
 
 ## What none of the three is buying
 
@@ -560,6 +621,14 @@ wide: true
 
 {{offer-table}}
 
+## The same six, by who each one was built for
+
+**This page is the price ladder. [The other way in](/audiences/) is by who is
+climbing it** — which is the question somebody actually arrives with, and the
+reason the home page asks it first.
+
+{{offers-by-buyer}}
+
 ## The six, in full
 
 {{offers}}
@@ -593,6 +662,24 @@ host appears in no sentence of copy, and the identifiers above do not change.
 **If the site moves, it costs a DNS record and no reprinting.**
 {{claim:domain-ruling-overruled}}
 
+## How each one is paid for
+
+**A standing payment link carries exactly one price, and only one offer on this
+page has one.** Tier 1 is £10 and could hold a link tomorrow. Tiers 2 and 3 are
+bands, so their link is issued once the band is fixed for the case; tier 4 is
+above the threshold where a card makes sense at all; and the two add-ons are
+priced against the depth band of whatever they attach to. **That is arithmetic
+about how a fixed-price link works, not a policy about who may pay.**
+{{claim:checkout-bands-have-no-standing-link}}
+
+**No link has been created for any of them.** Every offer carries an empty
+checkout field, so every card above shows its code and its delivery page rather
+than a button, and this page says which of the five reasons applies to each.
+Issuing one is a single pasted line, and the build holds whatever lands there to
+the payment provider's own checkout hosts over HTTPS.
+{{claim:checkout-links-not-issued}} [How the rails work, and why they never
+meet](/paying/).
+
 ## What is not on this page
 
 **Eight further offers are specified and none of them is for this week.** The
@@ -608,7 +695,7 @@ PAGE /paying/  —  The two rails, and why they never meet
 
 ---
 title: The two rails, and why they never meet
-description: "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, and the separation is a rule rather than a preference."
+description: "Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, the separation is a rule rather than a preference, and no link has been issued yet."
 lead: "**Both rails exist. They must never appear as a choice on one transaction.** One is a payment link with a printed code beside it. The other is a cloud marketplace, above roughly a thousand pounds, after a conversation. The reason they are kept apart is not taste — it is that the marketplace's seller terms say a seller is **not permitted to collect customer payment information at any time**."
 order: 4
 toc: true
@@ -623,6 +710,50 @@ toc: true
 | **What it removes** | The card reader, and the declined tap | The master agreement, the vendor onboarding, the new purchase order |
 | **What it costs** | The provider's ordinary card fee | **0.5 per cent**, falling to zero inside a qualifying multi-product solution |
 | **State** | {{claim:card-reader-refused}} | {{claim:marketplace-registration}} |
+
+## Who takes the card, and where
+
+**The payment links are Stripe payment links, and the card number is typed on
+Stripe's own pages.** That is the whole of the integration, and it is deliberately
+the smallest one available: there is no payment form here, no script from anywhere
+else, and no key of any kind in this repository or in what it publishes. A
+[build check](/versions/) holds every page to it — **no page on this site opens a
+network connection at all**, so there is nothing here for a card number to travel
+through.
+
+A checkout is therefore one field in one file. `data/offers.yml` carries a
+`checkout_url` per offer; the build renders a live button where a URL exists, and
+the sentence explaining why there is no button where it does not. **Every one of
+those fields is empty today.** {{claim:checkout-links-not-issued}}
+
+**And the URL is pinned.** Whatever lands in that field has to be on
+`buy.stripe.com` or `checkout.stripe.com`, over HTTPS, or the release stops. A
+checkout that can be edited into a redirect through somewhere else is a phishing
+page with our prices on it, and a printed code makes that permanent — the card
+cannot be recalled from a conference floor either.
+
+### Only one of the six can ever hold a standing link
+
+**A fixed-price payment link carries one price.** Three of the four link-rail
+offers do not have one:
+
+| Offer | Price | What its checkout can be |
+|---|---|---|
+| [`t1`](/d/t1/) | £10 | **A standing link.** One price, one URL, printable on a card |
+| [`t2`](/d/t2/) | £50 to £100 | A link **issued once the band is fixed** for the case |
+| [`t3`](/d/t3/) | £150 to £1,000 | A link **issued once the band is fixed** — it is a person's time, and the range covers an hour at one end and a working week at the other |
+| [`t4`](/d/t4/) | £5,000 to £10,000 | **No card.** Invoice and bank transfer, after [a conversation](/booking/) |
+| `add-formats` | By depth band | **Not bought alone.** It attaches to one of the above and is priced against its band |
+| `add-opinion` | By depth band | **No code behind it.** The wording does not exist {{claim:opinion-wording-absent}} |
+
+That is a property of how a fixed-price link works rather than a decision about
+who may pay, and it is on this page because the alternative — four buttons, two of
+which take the wrong amount — is the kind of thing that gets discovered by a buyer.
+{{claim:checkout-bands-have-no-standing-link}}
+
+There is no form on this site and there will not be one, so a banded link is
+requested the same way tier 4 starts: by talking to somebody. **Nothing here
+collects anything, from anybody, ever.**
 
 ## Why a link, and not a card reader
 

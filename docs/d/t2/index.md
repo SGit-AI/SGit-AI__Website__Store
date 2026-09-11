@@ -5,6 +5,7 @@ Only the provisions of the regulation that reach your situation, with the fact t
 - Offer id: `t2`
 - Price: £50 to £100
 - How it is paid: Payment link
+- Checkout: A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
 - What is true of it today: Specified 28 July. The graph exists at 1,523 nodes with amendments applied. The pipeline that turns a situation into a vault does not exist.
 
 ## What arrives

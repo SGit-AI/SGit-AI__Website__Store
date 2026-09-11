@@ -1,7 +1,11 @@
-/* elevenlabs.providers.sgit.ai — one stylesheet, self-hosted, no imports.
-   Tokens, type and component idioms are taken from the sgit.ai house stylesheet
-   so this subdomain reads as part of the estate. Nothing here is borrowed from
-   the vendor: no ElevenLabs logo, wordmark or brand colour appears on this site. */
+/* store.sgit.ai — one stylesheet, self-hosted, no imports, no web fonts, no CDN.
+   Tokens, type and component idioms are taken from the sgit.ai house stylesheet so
+   this subdomain reads as part of the estate.
+
+   The banner on this file used to name a sibling site, because the file was copied
+   from one. It is corrected rather than quietly replaced: a stylesheet that says it
+   belongs to another site is the smallest possible version of the mistake this
+   whole repository is built to avoid, and it survived a release. */
 
 :root{
   --bg:#faf9f5; --panel:#ffffff; --panel2:#f2f0e9; --line:#e5e1d5; --line2:#d5d0c2;
@@ -632,3 +636,41 @@ a.offer-cta:hover{border-color:var(--accent);text-decoration:none}
 /* What holds a document out of the dev packs area. */
 .hold{display:inline-block;font-size:.68rem;font-weight:700;color:#8f1d1d;background:rgba(185,28,28,.08);
   border:1px solid rgba(185,28,28,.3);border-radius:5px;padding:.05rem .38rem;white-space:nowrap;margin:0 .2rem .2rem 0}
+
+/* ---------- the buyers (store.sgit.ai) ----------
+   Three doors, and the checkout control on an offer card. The doors are the
+   buyer axis over the same six offers: the offer page is the price ladder, and
+   this is the same ladder read by who is climbing it.
+
+   One rule is load-bearing rather than decorative. A group with nothing built
+   for it carries .door-warn, and .door-warn is styled to be READ rather than to
+   be tucked away — it is the one sentence on that card somebody needs before
+   they spend anything. A gap rendered in grey 11px is a gap that has been
+   removed in every way that matters. */
+.doors{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:1.4rem 0}
+.door{display:flex;flex-direction:column;position:relative;background:var(--panel);
+      border:1px solid var(--line);border-radius:12px;padding:1.05rem 1.15rem 1.1rem;color:inherit}
+a.door:hover{border-color:var(--accent);text-decoration:none}
+.door-n{position:absolute;top:.85rem;right:1rem;font-family:var(--serif);font-size:1.6rem;
+        line-height:1;color:var(--line2)}
+.door h3{font-size:1.02rem;line-height:1.3;margin:0 2rem .45rem 0;letter-spacing:-.01em}
+.door-q{margin:0 0 .55rem;font-family:var(--serif);font-size:.98rem;color:var(--ink)}
+.door-who{margin:0 0 .7rem;font-size:.84rem;color:var(--dim);line-height:1.55}
+.door-offers{margin:0 0 .6rem;font-size:.8rem;color:var(--dim)}
+.door-offers b{color:var(--ink)}
+.door-warn{display:block;margin:0 0 .6rem;font-size:.78rem;line-height:1.5;font-weight:600;
+           color:#8a3d12;background:#fdf1e6;border:1px solid #f0d3b8;border-radius:7px;
+           padding:.4rem .55rem}
+.door .go{margin-top:auto;font-size:.82rem;font-weight:600;color:var(--accent)}
+
+/* The checkout control. A live button where a payment link exists, and a sentence
+   where one does not — never a disabled button, which reads as broken software
+   rather than as an offer that is not yet payable. */
+.offer-foot{margin:auto 0 0;display:flex;flex-direction:column;gap:.45rem;align-items:flex-start}
+.offer-foot .offer-cta{margin-top:0}
+.buy{display:inline-block;font-size:.84rem;font-weight:700;border-radius:8px;padding:.42rem .8rem;
+     border:1px solid transparent;background:var(--accent);color:#fff}
+a.buy:hover{text-decoration:none;filter:brightness(1.08)}
+a.buy-alt{background:transparent;color:var(--accent);border-color:var(--accent)}
+.buy-off{background:transparent;color:var(--dim2);border:1px dashed var(--line2);font-weight:500;
+         font-size:.78rem;line-height:1.4}

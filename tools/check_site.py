@@ -544,6 +544,152 @@ def check_pack_area_is_honest():
              "only thing this area publishes, so it is the only thing that has to be right")
 
 
+# ------------------------------------------- the checkout, and where it points ---
+# This is the estate's first site with a checkout on it, and a checkout URL is the
+# one string here that a stranger's phone will open with a card in their hand. Two
+# things are held.
+#
+# THE HOST. A payment link may point at the payment provider's own checkout hosts
+# and nowhere else. A link that can be edited into a redirect through somewhere
+# else is a phishing page carrying our prices, and the codes are PRINTED — a card
+# handed out on a conference floor cannot be recalled, so the check is a host
+# allowlist rather than a review.
+#
+# THE MODE. How an offer can be paid for is derived from its price, not chosen: a
+# fixed-price link carries one price, so only the single-priced tier can ever hold
+# a standing one. The table below is frozen for the same reason EXPECTED_PRICES is
+# — if a band silently becomes a fixed price, the site starts offering a standing
+# link for a number nobody set.
+CHECKOUT_HOSTS = ("https://buy.stripe.com/", "https://checkout.stripe.com/")
+EXPECTED_CHECKOUT = {
+    "t1": "fixed",            # £10, one price, one link
+    "t2": "banded",           # £50 to £100
+    "t3": "banded",           # £150 to £1,000
+    "t4": "conversation",     # at £10,000 the card fee alone reaches about £250
+    "add-formats": "attached",
+    "add-opinion": "none",
+}
+# The modes that cannot have a link at all, whatever anybody pastes into the file.
+NO_LINK_MODES = ("attached", "conversation", "none")
+
+
+def check_checkout_links():
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offers = {o["id"]: o for o in index["offers"]}
+    declared = set()
+    for oid, mode in EXPECTED_CHECKOUT.items():
+        o = offers.get(oid)
+        if not o:
+            fail(f"offer {oid}: missing from the built index")
+            continue
+        if o["checkout_mode"] != mode:
+            fail(f"offer {oid}: checkout_mode is {o['checkout_mode']!r}, expected {mode!r} — "
+                 "how an offer is paid for follows from its price and is not the builder's to "
+                 "change on its own")
+        url = o.get("checkout_url")
+        if not url:
+            continue
+        declared.add(url)
+        if not url.startswith(CHECKOUT_HOSTS):
+            fail(f"offer {oid}: checkout URL {url!r} is not on {' or '.join(CHECKOUT_HOSTS)} — "
+                 "a printed code cannot be recalled, so the destination is pinned")
+        if mode in NO_LINK_MODES:
+            fail(f"offer {oid}: mode {mode!r} carries a checkout URL. "
+                 + {"attached": "An add-on is priced against the offer it attaches to and is not bought alone.",
+                    "conversation": "Above about £1,000 a card stops making sense; this one goes by invoice.",
+                    "none": "There is no code behind this one."}[mode])
+
+    # Nothing may link to a checkout that is not one of the declared ones. A payment
+    # destination typed into a paragraph is a payment destination no data file knows
+    # about and no check can hold to a price.
+    for rel, text in texts():
+        for m in re.finditer(r'href="(https?://[^"]*stripe[^"]*)"', text, re.I):
+            if m.group(1) not in declared:
+                fail(f"{rel}: links to a checkout {m.group(1)!r} that no offer declares — "
+                     "every payment destination comes from data/offers.yml or it does not exist")
+        for m in re.finditer(r"\bpk_(?:live|test)_[A-Za-z0-9]{8,}", text):
+            fail(f"{rel}: a publishable payment key is in the output. Nothing on this site talks "
+                 "to a payment API, so there is no reason for one to be here")
+
+
+def check_no_forms():
+    """Three pages say this site collects nothing from anybody, ever. This is what
+    makes that a fact rather than a sentence. A checkout that is a link to somebody
+    else's page and a checkout that is a form on ours are different products with
+    different obligations, and the difference is one tag."""
+    for rel, text in texts():
+        if not rel.endswith(".html"):
+            continue
+        for tag in ("<form", "<input", "<textarea", "<select"):
+            if tag in text.lower():
+                fail(f"{rel}: contains {tag}> — this site collects nothing, from anybody, ever")
+
+
+# ------------------------------------------- the buyer groups are a VIEW, not a range ---
+# The three groups are a second index over the same six offers. The failure this
+# check exists for is specific and it is how offer lists grow without anybody
+# deciding to grow them: a buyer page acquires a thing of its own, nobody priced
+# it, nobody specified it, and the ledger has no state for it.
+#
+# So a group may name offer ids and nothing else, every tier belongs to exactly one
+# group, and the group set is frozen. The third entry is empty ON PURPOSE — nothing
+# on the offer list was built pointing at a startup — and the check requires that
+# page to say so, because an empty list that renders as a confident page is worse
+# than no page.
+EXPECTED_BUYERS = {"agents": ["t1", "t2"], "investors": ["t3", "t4"], "startups": []}
+NOT_BUILT_SENTENCE = "Nothing on the offer list was built pointing this way"
+
+
+def check_buyer_groups():
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    buyers = {b["id"]: b for b in index["buyers"]}
+    offer_ids = {o["id"] for o in index["offers"]}
+    if set(buyers) != set(EXPECTED_BUYERS):
+        fail(f"the buyer set changed: expected {sorted(EXPECTED_BUYERS)}, built {sorted(buyers)}")
+        return
+    if [b["id"] for b in sorted(index["buyers"], key=lambda b: b["order"])] != list(EXPECTED_BUYERS):
+        fail("the buyers are not in the order the evidence puts them in — the ordering is by "
+             "opportunity and it is argued on /audiences/, so it is not a layout preference")
+
+    primary_owner = {}
+    for bid, b in buyers.items():
+        if b["built_for_them"] != EXPECTED_BUYERS[bid]:
+            fail(f"buyer {bid}: built for {b['built_for_them']}, expected {EXPECTED_BUYERS[bid]} — "
+                 "a group cannot acquire a tier without somebody deciding that it did")
+        named = list(b["built_for_them"]) + list(b["serves_them"]) + list(b["addons"])
+        for oid in named + [b["entry"]]:
+            if oid not in offer_ids:
+                fail(f"buyer {bid}: names offer {oid!r}, which is not on the offer list — a buyer "
+                     "page may index offers and may not introduce one")
+        if not named:
+            fail(f"buyer {bid}: shows no offers at all")
+        for oid in b["built_for_them"]:
+            if oid in primary_owner:
+                fail(f"offer {oid}: built for both {primary_owner[oid]!r} and {bid!r}")
+            primary_owner[oid] = bid
+
+        page = OUT / "for" / bid / "index.html"
+        if not page.exists():
+            fail(f"buyer {bid}: no page at /for/{bid}/")
+            continue
+        text = page.read_text()
+        if bid not in text:
+            fail(f"/for/{bid}/: the page does not name its own group id")
+        if not b["built_for_them"] and NOT_BUILT_SENTENCE not in strip_tags(text):
+            fail(f"/for/{bid}/: nothing on the offer list was built for this buyer and the page "
+                 "does not say so. An empty group rendered as a confident page is the exact "
+                 "widening the catalogue page exists to prevent")
+        if b["built_for_them"] and NOT_BUILT_SENTENCE in strip_tags(text):
+            fail(f"/for/{bid}/: says nothing was built for this buyer, but {b['built_for_them']} was")
+
+    for o in index["offers"]:
+        if o["tier"] != "add-on" and o["id"] not in primary_owner:
+            fail(f"offer {o['id']}: belongs to no buyer group. Every tier is on somebody's page, "
+                 "or it is on the offer list for a reason nobody has written down")
+        if o["buyer"] != "any" and o["buyer"] not in buyers:
+            fail(f"offer {o['id']}: buyer {o['buyer']!r} is not one of the three")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -558,6 +704,7 @@ def main():
         check_banned_words, check_cannot_read_sentence_absent, check_tamper_wording,
         check_naming_collision, check_prices, check_delivery_pages,
         check_committed_spend_correction, check_rails_not_a_choice,
+        check_checkout_links, check_no_forms, check_buyer_groups,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,
     ]:

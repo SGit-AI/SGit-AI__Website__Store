@@ -5,6 +5,7 @@ The same result as a document, a deck, an infographic, and in a second language.
 - Offer id: `add-formats`
 - Price: By depth band
 - How it is paid: Payment link
+- Checkout: This attaches to another offer and is priced against its depth band, so it has no checkout of its own.
 - What is true of it today: The generator exists. The check that proves every variant carries the same facts does not, so the guarantee that would make this worth buying is not printed here yet.
 
 ## What arrives

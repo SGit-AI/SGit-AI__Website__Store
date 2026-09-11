@@ -1,0 +1,122 @@
+# The reference documents this site is built against, and where each one lives.
+#
+# sgit.ai publishes guidance for anybody — human or agent — about to build, publish
+# or change something in this estate, and it publishes it twice: as an HTML page,
+# and as a `.md` twin at the same path with the extension swapped. tools/refs.py
+# fetches the TWIN, never the page. Parsing the HTML would be re-deriving something
+# already published, which is close to the first thing the guidance tells you not
+# to do.
+#
+# Why this file exists rather than a README line saying "read sgit.ai/llms.txt":
+# the guidance is the source of several decisions in this repository — the version
+# convention, the read-key rule, one-click-to-the-bytes, state-the-gap — and a
+# decision whose source is a URL somebody half-remembers is a decision the next
+# person reverses. Each entry records what this repository actually took from it.
+#
+# The fetched copies land in refs/, which is NOT committed. Three reasons, and the
+# third is the load-bearing one:
+#   1. it is somebody else's document and it moves upstream;
+#   2. a vendored copy becomes a lie on a schedule — the guidance's own argument
+#      about hand-maintained indexes, pointed at ourselves;
+#   3. hard rule 1 bars one word from every byte under docs/. Fetched text is not
+#      ours to edit, so it stays outside the build tree entirely and the gate never
+#      has to hold an opinion about it.
+#
+# `tools/refs.py check` re-fetches and compares against the recorded sha256, so a
+# "read, not run" claim on this site can name the bytes it was read from.
+#
+# One line per value: the YAML subset in build.py drops deeper-indented
+# continuation lines, so a wrapped value would be silently truncated.
+
+meta:
+  base: https://sgit.ai
+  cache: refs
+  note: "Every page on sgit.ai has a .md twin at the same path. Fetch the twin, not the page."
+
+sources:
+  # ----------------------------------------------------------- the entry points
+  - id: llms
+    title: "sgit.ai — the site index for agents"
+    url: https://sgit.ai/llms.txt
+    kind: index
+    took: "The convention this repository copies: llms.txt beside llms-full.txt, every page served as markdown at <page>/index.md, and indexes generated from the data they index rather than maintained by hand."
+
+  - id: guidance
+    title: "Working on a vault — start here"
+    url: https://sgit.ai/docs/guidance/index.md
+    kind: guidance
+    took: "Version everything and show the version, linked to that version's own details rather than a generic changelog. Publish a read key, never a vault key. Anything rendered stays one click from the bytes it was rendered from. State the gap rather than papering over it."
+
+  - id: guidance-llms
+    title: "Working on a vault — the same page, for agents"
+    url: https://sgit.ai/docs/guidance/llms.txt
+    kind: guidance
+    took: "The five rules in the form an agent reads first. A router, not a manual — which is the shape /audiences/ now has."
+
+  # ---------------------------------------------------------------- the briefs
+  - id: briefs
+    title: "All briefs"
+    url: https://sgit.ai/docs/briefs/index.md
+    kind: brief
+    took: "The catalogue of briefs written to be executed, which is what the dev packs area here is modelled on."
+
+  - id: brief-site-pages
+    title: "Reading a vault from a *.sgit.ai site page"
+    url: https://sgit.ai/docs/briefs/sgit-ai-site-pages.md
+    kind: brief
+    took: "The scan discipline in tools/secret-scan.sh: a scan built for sgit shapes will not catch an API key sitting in a field called openrouter_key. Scan for what the tree holds, not only for what one issuer issues."
+
+  - id: brief-not-to-build
+    title: "Markdown and file viewers — what not to build"
+    url: https://sgit.ai/docs/briefs/markdown-and-file-viewers.md
+    kind: brief
+    took: "Do not rebuild what the platform already has. Part of why this site is a dependency-free static build."
+
+  - id: brief-decks
+    title: "Decks from a vault, on a site"
+    url: https://sgit.ai/docs/briefs/vault-decks-on-a-site.md
+    kind: brief
+    took: "Read, not applied. The multi-format add-on would land here if its fact diff existed."
+
+  - id: brief-telemetry
+    title: "Telemetry from a published vault"
+    url: https://sgit.ai/docs/briefs/vault-telemetry-append-lanes.md
+    kind: brief
+    took: "Read, and deliberately not applied: no page on this site opens a network connection, so this site reports nothing back about anybody."
+
+  - id: surfaces
+    title: "Three surfaces"
+    url: https://sgit.ai/docs/surfaces.md
+    kind: guidance
+    took: "Pick the surface before anything else. This store is the third one — a page on a *.sgit.ai site — which is why nothing here needs a key to read."
+
+  - id: publishing
+    title: "Publishing a vault — the method"
+    url: https://sgit.ai/demos/vaults/publishing.md
+    kind: guidance
+    took: "Classify the credential before it touches anything, and give every credential test a negative control. Both are in tools/secret-scan.sh."
+
+  # ------------------------------------ the rest of the answer, other domains
+  - id: coding
+    title: "coding.sgit.ai — how software actually gets written here"
+    url: https://coding.sgit.ai/llms.txt
+    kind: network
+    took: "Read before writing code for this repository, per the guidance's own instruction to follow the edge rather than stop at one domain."
+
+  - id: nfrs
+    title: "nfrs.sgit.ai — the requirements nobody writes down until they are violated"
+    url: https://nfrs.sgit.ai/llms.txt
+    kind: network
+    took: "What a thing owes anyone who comes to depend on it. A store that takes money is exactly that, so this is not optional reading here."
+
+  - id: graphs
+    title: "graphs.sgit.ai — a grammar for semantic graphs"
+    url: https://graphs.sgit.ai/llms.txt
+    kind: network
+    took: "Read before modelling anything as data. offers.yml, buyers.yml and claims.yml are nodes; the joins the build makes between them are the edges."
+
+  - id: network
+    title: "The full network"
+    url: https://sgit.ai/network/index.md
+    kind: network
+    took: "Every site in the estate, with what it covers and the words it answers to."

@@ -5,6 +5,7 @@ Your own answers, your measured grant, and the delta between them, as a file you
 - Offer id: `t1`
 - Price: £10
 - How it is paid: Payment link
+- Checkout: One price means one standing payment link, printable on a card.
 - What is true of it today: An application built in August may exist and has not been located. Until it is found, this is a questions page, and this page does not promise more than that.
 
 ## What arrives

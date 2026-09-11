@@ -90,8 +90,17 @@ NAV = [
     ("What is for sale", "/", []),
     ("The offers", "/offers/", [
         ("All six, side by side", "/offers/"),
-        ("Who each one is for", "/audiences/"),
         ("What is not for sale yet", "/catalogue/"),
+    ]),
+    # The buyer axis. The offer page is the price ladder; this is the same six
+    # offers indexed by who is climbing it, which is the question an arriving
+    # reader actually has. Every label here is a real page, per the estate rule
+    # that nothing is reachable only by opening a menu.
+    ("Who it is for", "/audiences/", [
+        ("The three buyers", "/audiences/"),
+        ("You run agents today", "/for/agents/"),
+        ("You are backing a company", "/for/investors/"),
+        ("You are a startup", "/for/startups/"),
     ]),
     ("Paying", "/paying/", [
         ("The two rails", "/paying/"),
@@ -625,6 +634,28 @@ def shortcodes_block(block, ctx):
 # and these prices go onto printed cards that cannot be recalled.
 OFFERS = yaml_load((DATA / "offers.yml").read_text())
 
+# The three buyers, and which offers each one buys. A SECOND INDEX over the same
+# six records above — it introduces no offer and no price, and check_buyer_groups
+# holds it to that. What it changes is the question the site answers first: not
+# "what does it cost" but "which of these was built for me".
+BUYERS = sorted(yaml_load((DATA / "buyers.yml").read_text()), key=lambda b: b["order"])
+BUYERS_BY_ID = {b["id"]: b for b in BUYERS}
+OFFERS_BY_ID = {o["id"]: o for o in OFFERS}
+
+# Checked once, here, rather than at each of the four places that resolve an id.
+# The mistake this catches has exactly one cause — somebody put a product on a
+# buyer page — so the build says that rather than dying of a KeyError forty frames
+# down in whichever block happened to render first.
+for _b in BUYERS:
+    _missing = [i for i in (list(_b["primary"]) + list(_b["also"]) + list(_b["addons"])
+                            + [_b["entry"]]) if i not in OFFERS_BY_ID]
+    if _missing:
+        raise SystemExit(
+            f"build: buyer {_b['id']!r} names {', '.join(_missing)}, which is not in "
+            "data/offers.yml. A buyer group is an index over the offer list and may not introduce "
+            "an offer: if this is a new thing to sell it is priced in offers.yml first, with a "
+            "state in the ledger, or it is not real.")
+
 RAILS = {
     "link": ("Payment link", "A link, and a printed code beside it. An online payment, "
                              "so no cross-border rule applies to it."),
@@ -634,16 +665,73 @@ RAILS = {
 }
 
 
-def offer_card(o, ctx, link=True):
+# How each offer can be paid for. Derived from the price rather than chosen: a
+# standing payment link carries ONE price, so only the single-priced tier can ever
+# have one, a band takes a link issued once the band is fixed, and above about
+# £1,000 a card stops making sense at all.
+#
+# The label a reader sees when no link exists is the honest one rather than a
+# greyed-out button that looks broken. `data/offers.yml` carries an empty
+# `checkout_url` for every offer today, so today every one of these is the second
+# string. Pasting a link into that file is the whole of turning a checkout on.
+# (the label on a live button, the label where there is no button). The second is
+# short because it sits inside a card that has already said how the offer is paid
+# for — repeating the rail sentence under itself is the shell showing through.
+# The full reason lives in CHECKOUT_WHY, on the page read with a card in hand.
+CHECKOUT = {
+    "fixed": ("Pay {price}", "The payment link has not been issued yet"),
+    "banded": ("Pay {price}", "A link is issued once the band is fixed"),
+    "attached": (None, "Priced against the offer it attaches to"),
+    "conversation": (None, "Start with a conversation"),
+    "none": (None, "No code behind this one yet"),
+}
+
+# The only hosts a checkout URL may point at. A payment link is a URL printed on a
+# card and opened by a stranger's phone, which makes it exactly the kind of thing
+# that is worth pinning: a checkout that could be edited into a redirect through
+# somewhere else is a phishing page with our prices on it. check_checkout_links
+# holds the built output to the same two hosts.
+CHECKOUT_HOSTS = ("https://buy.stripe.com/", "https://checkout.stripe.com/")
+
+# One sentence per mode, for the page somebody reads with a card already in hand.
+# It answers "why is there no button" before they have to ask it, which is the
+# whole reason the control is a sentence rather than a greyed-out rectangle.
+CHECKOUT_WHY = {
+    "fixed": "One price means one standing payment link, printable on a card.",
+    "banded": "A fixed-price link carries one price, and this one is a band — so the link is "
+              "issued once the band is fixed for the case.",
+    "attached": "This attaches to another offer and is priced against its depth band, so it has "
+                "no checkout of its own.",
+    "conversation": "Above about £1,000 a card stops making sense, so this one goes by invoice "
+                    "and bank transfer after a conversation.",
+    "none": "There is no code behind this one.",
+}
+
+
+def checkout_html(o, ctx):
+    """The checkout control for one offer: a live button where a link exists, and
+    a sentence saying which of the five reasons there is no button where it does
+    not. Never both, and never an empty element pretending to be a button."""
+    live, dead = CHECKOUT[o["checkout_mode"]]
+    url = (o.get("checkout_url") or "").strip()
+    if url and live:
+        return (f'<a class="buy" href="{html.escape(url)}" rel="noopener">'
+                f'{html.escape(live.format(price=o["price_label"]))} &rarr;</a>')
+    if o["checkout_mode"] == "conversation":
+        return f'<a class="buy buy-alt" href="/booking/">{html.escape(dead)} &rarr;</a>'
+    return f'<span class="buy buy-off">{html.escape(dead)}</span>'
+
+
+def offer_card(o, ctx, link=True, anchor_prefix=""):
     tier = o["tier"]
     label = f"Tier {tier}" if tier != "add-on" else "Add-on"
     rail_name, rail_why = RAILS[o["rail"]]
     href = f"/d/{o['id']}/" if o["rail"] != "none" else ""
     cta = (f'<a class="offer-cta" href="{href}">What arrives, and what does not &rarr;</a>'
            if link and href else
-           '<span class="offer-cta offer-cta-off">No code behind this one yet</span>')
+           '<span class="offer-cta offer-cta-off">Nothing to read yet: no wording, no code</span>')
     return (
-        f'<div class="offer" id="offer-{o["id"]}">'
+        f'<div class="offer" id="{anchor_prefix}offer-{o["id"]}">'
         f'<div class="offer-head"><span class="offer-tier">{label}</span>'
         f'<span class="offer-price">{html.escape(o["price_label"])}</span></div>'
         f'<h3 class="offer-q">{html.escape(o["question"])}</h3>'
@@ -651,7 +739,8 @@ def offer_card(o, ctx, link=True):
         f'<p class="offer-state">{chip(o["state_badge"], claim_id=o["claim"])} '
         f'{inline(o["state"], ctx)}</p>'
         f'<p class="offer-rail"><b>{html.escape(rail_name)}.</b> {html.escape(rail_why)}</p>'
-        f"{cta}</div>"
+        f'<p class="offer-foot">{checkout_html(o, ctx)}{cta}</p>'
+        "</div>"
     )
 
 
@@ -703,6 +792,73 @@ def block_prices_why(ctx):
 
 def short_label(url):
     return url.strip("/").split("/")[-1] or "home"
+
+
+# ------------------------------------------------------------- the buyers ----
+# Three doors on the home page, a routing table on the offer page, and one page
+# per buyer at /for/<id>/. All three render from data/buyers.yml and join to
+# data/offers.yml, so a group cannot list an offer that does not exist and an
+# offer cannot quietly belong to a group the ledger has not seen.
+
+def buyer_offer_ids(b):
+    """Every offer this buyer is shown, in the order it is shown: the tiers built
+    for them, then the tiers that serve them anyway, then the add-ons."""
+    return list(b["primary"]) + list(b["also"]) + list(b["addons"])
+
+
+def block_buyers(ctx):
+    doors = []
+    for b in BUYERS:
+        tiers = [OFFERS_BY_ID[i] for i in (b["primary"] or b["also"])]
+        prices = " &middot; ".join(
+            f'<b>{"Tier " + o["tier"] if o["tier"] != "add-on" else "Add-on"}</b> '
+            f'{html.escape(o["price_label"])}' for o in tiers)
+        built = ("" if b["primary"] else
+                 '<span class="door-warn">Nothing here was built pointing this way</span>')
+        doors.append(
+            f'<a class="door" href="/for/{b["id"]}/">'
+            f'<span class="door-n">{b["order"]}</span>'
+            f'<h3>{html.escape(b["name"])}</h3>'
+            f'<p class="door-q">&ldquo;{html.escape(b["arrives_with"])}&rdquo;</p>'
+            f'<p class="door-who">{inline(b["who"], ctx)}</p>'
+            f'<p class="door-offers">{prices}</p>{built}'
+            f'<span class="go">What this one buys &rarr;</span></a>'
+        )
+    return '<div class="doors">' + "".join(doors) + "</div>"
+
+
+def block_offers_by_buyer(ctx):
+    """The same six offers, indexed by who is buying rather than by what they
+    cost. A table rather than cards, because the cards are on the buyer's own page
+    and one id cannot be rendered twice on one page."""
+    rows = []
+    for b in BUYERS:
+        offers = [OFFERS_BY_ID[i] for i in buyer_offer_ids(b)]
+        listed = ", ".join(
+            f'<a href="/d/{o["id"]}/"><code>{o["id"]}</code></a>' if o["rail"] != "none"
+            else f'<code>{o["id"]}</code>' for o in offers)
+        built = (", ".join(f'<code>{i}</code>' for i in b["primary"])
+                 if b["primary"] else '<span class="dim">none &mdash; see the page</span>')
+        # Register the market claim against the page that renders this table, so the
+        # ledger's "where it is said" column joins on a page a reader can click
+        # rather than on a data file they cannot.
+        cid = b["opportunity_claim"]
+        ctx["claim_uses"].setdefault(cid, set()).add(ctx["page"])
+        rows.append(
+            f'<tr><td><a href="/for/{b["id"]}/"><b>{html.escape(b["short"])}</b></a>'
+            f'<br><span class="small dim">&ldquo;{html.escape(b["arrives_with"])}&rdquo;</span></td>'
+            f'<td class="small">{listed}</td><td class="small">{built}</td>'
+            f'<td class="small">{chip(ctx["claims_by_id"][cid]["state"], claim_id=cid)}</td></tr>'
+        )
+    return (
+        '<div class="tablewrap"><table><thead><tr><th>Who is buying</th>'
+        '<th>What they are shown</th><th>Built for them</th><th>The market, evidenced</th>'
+        '</tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>"
+        '<p class="small dim">Three groups, six offers, and no seventh: this is an index over '
+        'the price list, not an extension of it. The middle column is what each group is shown; '
+        'the third is what was actually built pointing at them, which for one of the three is '
+        'nothing.</p>'
+    )
 
 
 def block_ledger(ctx):
@@ -758,6 +914,8 @@ def block_releases(ctx):
 BLOCKS = {
     "offers": block_offers,
     "offer-table": block_offer_table,
+    "buyers": block_buyers,
+    "offers-by-buyer": block_offers_by_buyer,
     "prices-why": block_prices_why,
     "ledger": block_ledger,
     "releases": block_releases,
@@ -905,6 +1063,11 @@ def delivery_pages(out_dir, ctx_shared):
             f"<ul>{arrives}</ul>"
             '<h2 id="what-this-is-not">What this is not, and will not become</h2>'
             f"<ul>{withheld}</ul>"
+            '<h2 id="how-to-buy-this">How to buy this</h2>'
+            f'<p class="offer-foot">{checkout_html(o, ctx)}</p>'
+            f'<p class="small dim">The code on the card redirects here, and this page says what '
+            f'arrives before anything is paid. {html.escape(CHECKOUT_WHY[o["checkout_mode"]])} '
+            f'<a href="/paying/">The two rails, and why they never meet</a>.</p>' 
             '<div class="note"><p><b>Everything on this page is model generated unless it '
             'says otherwise, and it is marked as such where it is delivered.</b> '
             'Nothing here is a compliance assessment and nothing here is a mark of conformity &mdash; '
@@ -926,10 +1089,122 @@ def delivery_pages(out_dir, ctx_shared):
             "src_md": (
                 f"# {tier} — {o['question']}\n\n{o['gets']}\n\n"
                 f"- Offer id: `{o['id']}`\n- Price: {o['price_label']}\n"
-                f"- How it is paid: {rail_name}\n- What is true of it today: {o['state']}\n\n"
+                f"- How it is paid: {rail_name}\n"
+                f"- Checkout: {(o.get('checkout_url') or '').strip() or CHECKOUT_WHY[o['checkout_mode']]}\n"
+                f"- What is true of it today: {o['state']}\n\n"
                 "## What arrives\n\n" + "".join(f"- {x}\n" for x in o["delivery_says"]) +
                 "\n## What this is not, and will not become\n\n" +
                 "".join(f"- {x}\n" for x in o["not_promised"])
+            ),
+        }
+        target = out_dir / url.strip("/") / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(page_html(page, ctx, body))
+        twin = page["src_md"]
+        if LICENCE_STAMP not in twin:
+            twin += f"\n---\n\n{LICENCE_STAMP}\n"
+        (target.parent / "index.md").write_text(twin)
+        made[url] = page["fm"]["title"]
+    return made
+
+
+# ----------------------------------------------------------- buyer pages ----
+# One page per buyer at /for/<id>/. The offer page is the price ladder; these are
+# the same six offers read by who is climbing it, which is the question somebody
+# actually arrives with. Generated rather than written for the same reason the
+# delivery pages are: a hand-written buyer page is a page that will one day offer
+# a tier the offer list no longer contains, or soften a state the ledger holds.
+#
+# The third page is the one worth reading. Its `primary` list is empty, so it says
+# on its own face that nothing here was built pointing at that buyer, and it says
+# it above the offers rather than below them.
+
+def buyer_pages(out_dir, ctx_shared):
+    made = {}
+    for b in BUYERS:
+        url = f"/for/{b['id']}/"
+        ctx = dict(ctx_shared)
+        ctx.update({"page": f"for/{b['id']}", "page_url": url, "fm": {}, "toc": []})
+        offers = [OFFERS_BY_ID[i] for i in buyer_offer_ids(b)]
+        entry = OFFERS_BY_ID[b["entry"]]
+        others = "".join(
+            f'<a href="/for/{x["id"]}/">{html.escape(x["short"])} &rarr;</a>'
+            for x in BUYERS if x["id"] != b["id"])
+
+        not_built = ("" if b["primary"] else
+                     '<div class="warnbox"><p><b>Nothing on the offer list was built pointing '
+                     'this way.</b> Everything below was built for one of the other two buyers, '
+                     'and what is on offer here is the same work run in the opposite direction. '
+                     'That is a real gap and it is stated here rather than papered over with a '
+                     'heading: there is no seventh product behind this page. '
+                     '{{claim:startup-offer-is-reverse-only}}</p></div>')
+        market_chip = chip(ctx["claims_by_id"][b["opportunity_claim"]]["state"],
+                           claim_id=b["opportunity_claim"])
+        ctx["claim_uses"].setdefault(b["opportunity_claim"], set()).add(ctx["page"])
+
+        groups = []
+        if b["primary"]:
+            groups.append(("Built for this question", [OFFERS_BY_ID[i] for i in b["primary"]]))
+        if b["also"]:
+            groups.append(("Built for somebody else, and it still answers yours",
+                           [OFFERS_BY_ID[i] for i in b["also"]]))
+        if b["addons"]:
+            groups.append(("Attaches to whichever of those you buy",
+                           [OFFERS_BY_ID[i] for i in b["addons"]]))
+        cards = "".join(
+            f'<h2 id="{slugify(label)}">{html.escape(label)}</h2>'
+            '<div class="offers">'
+            + "".join(offer_card(o, ctx, anchor_prefix=f"{b['id']}-") for o in group)
+            + "</div>"
+            for label, group in groups)
+
+        body = (
+            f'<p class="lead">{inline(b["who"], ctx)} '
+            f'You arrive asking: <b>&ldquo;{html.escape(b["arrives_with"])}&rdquo;</b></p>'
+            f'{not_built}'
+            '<h2 id="what-the-market-looks-like">What the market looks like here</h2>'
+            f'<p>{market_chip} {inline(b["opportunity"], ctx)}</p>'
+            '<h2 id="what-you-are-actually-buying">What you are actually buying</h2>'
+            f'<p>{inline(b["buying"], ctx)}</p>'
+            f'<p class="small dim">Start at <a href="/d/{entry["id"]}/">'
+            f'{"tier " + entry["tier"] if entry["tier"] != "add-on" else "the add-on"} '
+            f'&mdash; {html.escape(entry["price_label"])}</a> unless you already know you need '
+            'more than it. Every card below says what arrives and what does not before it says '
+            'how to pay.</p>'
+            f'{cards}'
+            '<h2 id="what-you-are-not-buying">What you are not buying</h2>'
+            '<ul>' + "".join(f"<li>{inline(x, ctx)}</li>" for x in b["not_buying"]) + "</ul>"
+            '<div class="note"><p><b>Nothing on this page is a compliance assessment, and no '
+            'page here claims conformity to any standard.</b> Outputs are model generated and '
+            'marked as such where they are delivered. Where a finding reaches you it has been '
+            'reproduced first &mdash; recall-optimised agents run at 0.388 precision, so what is '
+            'sold is triage and never raw findings. {{claim:precision-0388}}</p></div>'
+            f'<p class="pagenav">{others}<a href="/offers/">All six, side by side &rarr;</a></p>'
+        )
+        body = shortcodes_inline(body, ctx)
+        page = {
+            "fm": {"title": b["name"],
+                   "description": f"{b['who']} What this buyer is shown, what was built for them, "
+                                  f"what was not, and what none of it is."},
+            "url": url,
+            "crumb": f' / <a href="/audiences/">who it is for</a> / {html.escape(b["id"])}',
+            "nav_match": "/audiences/",
+            "src_md": (
+                f"# {b['name']}\n\n{b['who']}\n\nYou arrive asking: \u201c{b['arrives_with']}\u201d\n\n"
+                + ("" if b["primary"] else
+                   "**Nothing on the offer list was built pointing this way.** Everything below was "
+                   "built for one of the other two buyers and is run in the opposite direction. "
+                   "There is no seventh product behind this page.\n\n")
+                + f"## What the market looks like here\n\n{b['opportunity']}\n\n"
+                + f"## What you are actually buying\n\n{b['buying']}\n\n"
+                + "## The offers you are shown\n\n"
+                + "".join(
+                    f"- `{o['id']}` \u2014 {'Tier ' + o['tier'] if o['tier'] != 'add-on' else 'Add-on'}"
+                    f" \u2014 {o['price_label']} \u2014 {o['question']}"
+                    f" \u2014 {(o.get('checkout_url') or '').strip() or CHECKOUT_WHY[o['checkout_mode']]}\n"
+                    for o in offers)
+                + "\n## What you are not buying\n\n"
+                + "".join(f"- {x}\n" for x in b["not_buying"])
             ),
         }
         target = out_dir / url.strip("/") / "index.html"
@@ -1049,7 +1324,8 @@ def footer_html():
   <div>
     <div class="brandline">store<span>.sgit.ai</span></div>
     <p class="nonaff"><b>{LICENCE_TO_OPERATE.capitalize()}.</b> This is where you buy one.
-       Six offers, four of them with a price and a code, two of them listed and not yet buyable.
+       Six offers, four of them with a price and a code, two of them listed and not yet buyable,
+       grouped by which of three buyers each was built for.
        <b>The paid thing is not access and it is not customisation. It is independence.</b></p>
     <p>Nothing here is a compliance assessment, nothing here is a mark of conformity to any standard, and no opinion here is
        personal: <b>the company issues every opinion</b>, and the person who sells is never the
@@ -1063,8 +1339,14 @@ def footer_html():
     <h4>The offers</h4>
     <a href="/offers/">All six, side by side</a>
     <a href="/offers/#the-two-add-ons">The two add-ons</a>
-    <a href="/audiences/">Who each one is for</a>
     <a href="/catalogue/">What is not for sale yet</a>
+  </div>
+  <div>
+    <h4>Who it is for</h4>
+    <a href="/audiences/">The three buyers</a>
+    <a href="/for/agents/">You run agents today</a>
+    <a href="/for/investors/">You are backing a company</a>
+    <a href="/for/startups/">You are a startup</a>
   </div>
   <div>
     <h4>Paying</h4>
@@ -1218,6 +1500,7 @@ def build(out_dir):
         shutil.copytree(FILES, out_dir / "files")
 
     extra = delivery_pages(out_dir, ctx_shared)
+    extra.update(buyer_pages(out_dir, ctx_shared))
     extra.update(release_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The
@@ -1268,8 +1551,22 @@ def site_index(rendered, claims):
         "offers": [
             {"id": o["id"], "tier": o["tier"], "question": o["question"],
              "price": o["price_label"], "rail": o["rail"], "state": o["state_badge"],
+             "buyer": o["buyer"], "also_for": o["also_for"],
+             "checkout_mode": o["checkout_mode"],
+             # The link itself, or null. Never a placeholder string: a consumer of
+             # this index has to be able to tell "no checkout" from "a checkout
+             # whose URL somebody typed the word TODO into".
+             "checkout_url": (o.get("checkout_url") or "").strip() or None,
              "delivery": f"/d/{o['id']}/" if o["rail"] != "none" else None}
             for o in OFFERS
+        ],
+        "buyers": [
+            {"id": b["id"], "order": b["order"], "name": b["name"],
+             "question": b["arrives_with"], "url": f"/for/{b['id']}/",
+             "built_for_them": b["primary"], "serves_them": b["also"],
+             "addons": b["addons"], "entry": b["entry"],
+             "market_claim": b["opportunity_claim"]}
+            for b in BUYERS
         ],
         "claims": [
             {"id": c["id"], "state": c["state"], "date": c.get("date", ""),
@@ -1312,10 +1609,31 @@ def llms_txt(rendered, extra):
     ]
     for url, (page, _ctx, _body) in sorted(rendered.items()):
         lines.append(f"- [{page['fm']['title']}]({SITE['base']}{url}): {page['fm'].get('description', '')}")
+    lines += ["", "## Who each offer was built for",
+              "Three buyers, ordered by opportunity rather than presented as three equal doors. The",
+              "grouping is a second index over the same six offers: it adds no offer and no price.",
+              ""]
+    for b in BUYERS:
+        built = ", ".join(b["primary"]) or "NOTHING — every offer shown there was built for another buyer"
+        lines.append(f"- `{b['id']}` — {b['name']} — asks \"{b['arrives_with']}\" — "
+                     f"built for them: {built} — also shown: "
+                     f"{', '.join(b['also'] + b['addons']) or 'none'} — {SITE['base']}/for/{b['id']}/")
     lines += ["", "## Offers, and where each code lands"]
     for o in OFFERS:
         where = f"{SITE['base']}/d/{o['id']}/" if o["rail"] != "none" else "no code behind it yet"
-        lines.append(f"- `{o['id']}` — {o['price_label']} — {o['question']} — {where}")
+        url = (o.get("checkout_url") or "").strip()
+        pay = url or f"no payment link ({o['checkout_mode']}) — {CHECKOUT_WHY[o['checkout_mode']]}"
+        lines.append(f"- `{o['id']}` — {o['price_label']} — {o['question']} — for: {o['buyer']}"
+                     f" — {where} — checkout: {pay}")
+    lines += [
+        "",
+        "No payment link has been created for any offer on this site: every checkout_url in",
+        "data/offers.yml is empty, so each offer shows its code and its delivery page rather than a",
+        "button. A standing payment link carries one price, so only the single-priced tier can ever",
+        "have one; the two banded tiers take a link issued once the band is fixed, and the top tier",
+        "goes by invoice after a conversation. Any URL that does land there is held by the build to",
+        "the payment provider's own checkout hosts over HTTPS.",
+    ]
     return "\n".join(lines) + "\n"
 
 

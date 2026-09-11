@@ -5,6 +5,7 @@ An assessment by security professionals.
 - Offer id: `t4`
 - Price: £5,000 to £10,000
 - How it is paid: Invoice and bank transfer
+- Checkout: Above about £1,000 a card stops making sense, so this one goes by invoice and bank transfer after a conversation.
 - What is true of it today: A booking with a deposit. The seven-role team is specified and has never run. You would be the first, and the price reflects it.
 
 ## What arrives
