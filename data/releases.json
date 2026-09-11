@@ -1,10 +1,24 @@
 {
-  "current": "v0.1.5",
+  "current": "v0.1.6",
   "releases": [
+    {
+      "version": "v0.1.6",
+      "date": "2026-09-11",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the tier four deposit paragraph stops saying the balance is invoiced twice",
+      "summary": "A one-sentence duplication on /d/t4/: the deposit paragraph ended \"the balance is invoiced. The rest is invoiced.\" It was noticed before v0.1.5 shipped and the edit missed, because the search string carried a trailing space the file did not \u2014 the second time that has happened in this repository, and the first where the miss was reported as a fix and reached the live site.",
+      "changes": [
+        "build.py",
+        "data"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.5",
       "date": "2026-09-11",
-      "commit": "",
+      "commit": "43c77bff7600a5f7e7f0542cc5232ee40f06c9ff",
       "site": "store.sgit.ai",
       "title": "tier four takes a \u00a3500 deposit by payment link, and the balance stays on the invoice rail",
       "summary": "The pack already called tier 4 a booking with a deposit; the deposit was simply not payable. It is now \u00a3500 by payment link, with the \u00a35,000 to \u00a310,000 balance still invoiced \u2014 because the fee arithmetic that put tier 4 on the invoice rail was always about the \u00a310,000 and never about the deposit. Two amounts and two rails on one offer, with the card, the offer page and the delivery page each naming which of the two the button takes. The deposit amount is frozen against the pack exactly as the six prices are, and three further checks hold it: below the threshold this site's own copy names, below the engagement it is a deposit against, and never on a page that also presents the marketplace. The deposit follows the conversation and a written scope, because what happens to a deposit for an engagement that cannot be scheduled is not written down \u2014 and that gap is in the ledger rather than papered over with a term nobody agreed.",

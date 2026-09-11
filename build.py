@@ -1146,7 +1146,7 @@ def delivery_pages(out_dir, ctx_shared):
             + ('' if not o.get("deposit_label") else
                '<h2 id="the-deposit">The deposit</h2>'
                f'<p><b>{html.escape(o["deposit_label"])}, by payment link.</b> '
-               f'{inline(o["deposit_why"], ctx)}. The rest is invoiced.</p>'
+               f'{inline(o["deposit_why"], ctx)}.</p>'
                '<h3 id="what-the-deposit-does">What the deposit does</h3><ul>'
                + "".join(f"<li>{inline(x, ctx)}</li>" for x in o["deposit_says"]) + "</ul>"
                '<h3 id="what-it-does-not-do">What it does not do</h3><ul>'
