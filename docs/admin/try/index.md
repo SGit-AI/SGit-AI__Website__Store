@@ -72,6 +72,15 @@ hundred per cent and a live payment rail can never be in the same build, because
 real rail is switched on, these codes come off this page in the same commit.
 {{claim:discount-code-is-in-the-browser}}
 
+### The same two walkthroughs as PDFs
+
+Snapshots of this page, split in two and laid out to be read away from a screen or
+handed to somebody. **The live page is the source of truth**; each PDF carries the
+version it was taken at in its own filename, so a stale copy is stale on its face.
+
+- **[Run the store end to end, by hand](/admin/downloads/store-walkthrough-by-hand-v0.1.11.pdf)** — 11 pages, all seven screenshots.
+- **[Run the store end to end, as an agent](/admin/downloads/store-walkthrough-as-an-agent-v0.1.11.pdf)** — 7 pages, the assertions and both modes.
+
 ## A. If you are a person
 
 **Seven steps, about four minutes.** Use a normal browser window rather than a

@@ -1,5 +1,5 @@
 {
- "version": "v0.1.11",
+ "version": "v0.1.12",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -39,6 +39,7 @@
     "What you are looking at, in one minute",
     "What is real and what is a stand-in",
     "The codes",
+    "The same two walkthroughs as PDFs",
     "A. If you are a person",
     "1. Open the catalogue with a code on it",
     "2. Pick a shape and look at its four levels",

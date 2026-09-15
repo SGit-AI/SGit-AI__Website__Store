@@ -13,6 +13,11 @@ or an agent goes from the catalogue to the page after payment in about four
 minutes, for nothing, with a discount code printed on the page. Screenshots of
 every step, and a script an agent can follow without a person in the loop.
 
+**The same thing as PDFs**, for sharing or for reading away from a screen —
+[by hand](/admin/downloads/store-walkthrough-by-hand-v0.1.11.pdf) (11 pages, every
+screenshot) and [as an agent](/admin/downloads/store-walkthrough-as-an-agent-v0.1.11.pdf)
+(7 pages, the assertions). Both are snapshots; the page is the source of truth.
+
 ## The rest of it
 
 | | |

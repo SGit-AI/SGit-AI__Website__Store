@@ -2320,6 +2320,15 @@ def build(out_dir):
 
     # static assets, verbatim
     shutil.copytree(ASSETS, out_dir / "assets")
+    # The two walkthrough PDFs live under /admin/ rather than /assets/ for one
+    # reason: they print the walkthrough discount codes, and the check that keeps
+    # those codes off every other file in the built site exempts /admin/ alone.
+    # Their names carry the version they were taken at, so a stale copy is stale
+    # on its face rather than silently.
+    _dl = ASSETS / "downloads"
+    if _dl.is_dir():
+        shutil.copytree(_dl, out_dir / "admin" / "downloads")
+        shutil.rmtree(out_dir / "assets" / "downloads")
     if FILES.exists():
         shutil.copytree(FILES, out_dir / "files")
 
