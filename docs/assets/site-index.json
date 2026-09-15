@@ -1,5 +1,5 @@
 {
- "version": "v0.1.14",
+ "version": "v0.1.15",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -214,6 +214,17 @@
     "The four levels",
     "What the counts on a tile mean",
     "Where the list comes from"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/review/",
+   "title": "A partner reviewed this store, and here is the whole thing",
+   "description": "A partner walked the entire store and wrote it up. Their note is published here verbatim, with eleven proposals drawn out of it \u2014 two we will not do, three that need a ruling \u2014 and a verdict box on each. Nothing you type leaves your browser.",
+   "lead": "A partner went through the whole workflow and sent back a critique. It is below in full, unedited, including the parts that say the entry is built the wrong way round and the \u00a35 price may be a mistake. Under it: what we read in it, what each point would cost to act on, and a stance on every one \u2014 including the ones we think we should not do.",
+   "headings": [
+    "Why this is a page and not a document",
+    "This page can be typed into, and nothing else on this site can"
    ],
    "kind": "page"
   },
@@ -687,6 +698,12 @@
    "state": "absent",
    "date": "15 Sep 2026",
    "claim": "How long the corrected vault takes after the buyer replies is committed to nowhere on this site. The 24 hours is riskmandate.ai's commitment to follow up and is theirs to keep. The time from a buyer's reply to a delivered vault has never run for a paying buyer, so there is no measurement to quote \u2014 and the delivery page now says that rather than carrying an invented number. It was found by walking the store as a founder with six weeks to a term sheet, who left without buying and named the missing date as the reason."
+  },
+  {
+   "id": "review-is-the-one-typing-surface",
+   "state": "docs",
+   "date": "15 Sep 2026",
+   "claim": "There is no <form>, <input> or <select> anywhere in this site's output, and the reason boxes on [/review/](/review/) are the only place on this domain that can be typed into. The rule was absolute until v0.1.15 and moved by ruling, to make room for a page that answers a partner's review \u2014 asking somebody to answer a critique with no way to answer it would have been the joke version of this site's whole argument. What stayed absolute: no <form>, which is the element that submits; no <input> and no <select>, which is where a card number or an address gets typed; no network connection on any page, which is the check that makes all of it a fact rather than a sentence; and no name attribute on the boxes, because a name is what a field is called when it is submitted and these are never submitted. What a reader types stays in their browser until they copy it out."
   }
  ]
 }

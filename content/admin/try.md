@@ -58,8 +58,10 @@ https://store.sgit.ai/policies/?code=BETA7LOOP
 | `DEMO3STAND` | showing somebody the flow on a laptop or a phone | 100% |
 
 **There is nowhere to type a code**, and that is not an oversight. No page on
-this site has a text field — no form, no input, no textarea, no select — and a
-build check refuses any page that grows one. So a code arrives in the address,
+this site has a field a code could go in — no form, no input, no select — and a
+build check refuses any page that grows one. (One page, [the partner
+review](/review/), carries reason boxes, by a ruling that allowed those and
+nothing else.) So a code arrives in the address,
 which is what a printed card or a QR at a stand does anyway. The store recognises
 it, shows it as a chip you can remove, and takes it back out of the address bar
 so a screenshot of a checkout does not carry it.

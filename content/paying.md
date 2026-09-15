@@ -23,11 +23,18 @@ set up; SumUp is being set up. **Running both is deliberate** — which one give
 better workflow is a thing to find out rather than to assume, and the loser costs
 nothing to drop because neither one holds the catalogue.
 
-**Nothing on this site collects anything.** No form, no input, no field, no
-account, no cookie. The provider takes your name, your contact and your card on
-its own pages, which is the only place a card number should ever be typed. A build
-check holds every page here to that, and a second one holds every page to opening
-no network connection at all.
+**Nothing on this site collects anything.** No form, no input, no select, no account,
+no cookie. The provider takes your name, your contact and your card on its own pages,
+which is the only place a card number should ever be typed. A build check holds every
+page here to that, and a second one holds every page to opening no network connection
+at all.
+
+**One page can be typed into: [the partner review](/review/).** It has reason boxes on it
+because it exists to be answered, and the rule moved by ruling in v0.1.15 to allow exactly
+that and nothing else. There is still no `<form>` on this domain — that is the element that
+submits — and still no `<input>` or `<select>`, which is where a card number would go. What
+somebody types there stays in their own browser until they copy it out.
+{{claim:review-is-the-one-typing-surface}}
 
 **What reaches the provider is the amount and your order reference.** The
 reference carries the product codes for everything you picked, so matching it

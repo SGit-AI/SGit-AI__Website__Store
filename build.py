@@ -110,6 +110,7 @@ NAV = [
     ]),
     ("Evidence", "/ledger/", [
         ("The claim ledger", "/ledger/"),
+        ("A partner\u2019s review, in full", "/review/"),
         ("What we do not say, and why", "/disclosures/"),
         ("What is not for sale yet", "/catalogue/"),
         ("The dev packs", "/dev-packs/"),
@@ -1448,6 +1449,412 @@ def block_levels_table(ctx):
             'fourth is the line between a thing agents do and a thing a person signs.</p>')
 
 
+# Two figures. Both are hand-authored SVG with no script and no external anything:
+# structure in currentColor so they read in any future theme, and the site's accent
+# reserved for the one thing each drawing is actually claiming.
+REVIEW_FIG_LEVERS = '''
+<figure class="rv-fig"><div class="rv-figbox">
+<svg viewBox="0 0 1180 600" role="img" aria-label="Six frictions from the review map onto four levers, which satisfy the six recommendations. Lever A — putting the existing free diagnostic in front of the sale — alone satisfies F-2, F-3, R-1 and most of R-6.">
+<defs>
+<marker id="rvA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+<marker id="rvH" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+</defs>
+<text class="rv-lab" x="30" y="26">FRICTION</text>
+<text class="rv-lab" x="392" y="26">LEVER</text>
+<text class="rv-lab" x="790" y="26">SATISFIES</text>
+
+<rect class="rv-node" x="30" y="46" width="270" height="44" rx="7"/>
+<text class="rv-tid" x="44" y="65">F-2</text><text class="rv-t" x="80" y="65">Entry is our shape, not theirs</text>
+<text class="rv-t2" x="80" y="81">&#8220;Which agent do you run?&#8221;</text>
+
+<rect class="rv-node" x="30" y="104" width="270" height="44" rx="7"/>
+<text class="rv-tid" x="44" y="123">F-3</text><text class="rv-t" x="80" y="123">No discovery moment</text>
+<text class="rv-t2" x="80" y="139">told the problem, then sold the fix</text>
+
+<rect class="rv-node" x="30" y="184" width="270" height="44" rx="7"/>
+<text class="rv-tid" x="44" y="203">F-1</text><text class="rv-t" x="80" y="203">Vocabulary before value</text>
+<text class="rv-t2" x="80" y="219">eight terms to decode</text>
+
+<rect class="rv-node" x="30" y="242" width="270" height="44" rx="7"/>
+<text class="rv-tid" x="44" y="261">F-4</text><text class="rv-t" x="80" y="261">The rungs are unlabelled</text>
+<text class="rv-t2" x="80" y="277">each level must be decoded</text>
+
+<rect class="rv-node" x="30" y="322" width="270" height="44" rx="7"/>
+<text class="rv-tid" x="44" y="341">F-6</text><text class="rv-t" x="80" y="341">&#163;500 is buy-then-discover</text>
+<text class="rv-t2" x="80" y="357">value arrives after the money</text>
+
+<rect class="rv-node" x="30" y="400" width="270" height="44" rx="7"/>
+<text class="rv-tid" x="44" y="419">F-5</text><text class="rv-t" x="80" y="419">&#163;5 may read as commodity</text>
+<text class="rv-t2" x="80" y="435">two independent reports</text>
+
+<rect class="rv-node-hot" x="392" y="46" width="290" height="102" rx="9"/>
+<text class="rv-tid-hot" x="408" y="68">LEVER A</text>
+<text class="rv-th" x="408" y="90">Put the diagnostic first</text>
+<text class="rv-t2" x="408" y="108">MAP-A-GRANT already exists,</text>
+<text class="rv-t2" x="408" y="123">already free, already in every zip.</text>
+<text class="rv-tid-hot" x="408" y="139">Move it before the paywall.</text>
+
+<rect class="rv-node" x="392" y="184" width="290" height="102" rx="9"/>
+<text class="rv-tid" x="408" y="206">LEVER B</text>
+<text class="rv-th" x="408" y="228">Gloss, don&#8217;t rename</text>
+<text class="rv-t2" x="408" y="246">Plain sentence first, precise term</text>
+<text class="rv-t2" x="408" y="261">one click away. Rename the four</text>
+<text class="rv-t2" x="408" y="276">rungs; keep the vocabulary.</text>
+
+<rect class="rv-node" x="392" y="322" width="290" height="102" rx="9"/>
+<text class="rv-tid" x="408" y="344">LEVER C</text>
+<text class="rv-th" x="408" y="366">Value before payment</text>
+<text class="rv-t2" x="408" y="384">/lab/ already turns a described</text>
+<text class="rv-t2" x="408" y="399">deployment into a band. Make it</text>
+<text class="rv-t2" x="408" y="414">emit a draft mandate instead.</text>
+
+<rect class="rv-node" x="392" y="458" width="290" height="102" rx="9"/>
+<text class="rv-tid" x="408" y="480">LEVER D</text>
+<text class="rv-th" x="408" y="502">Make the record re-run</text>
+<text class="rv-t2" x="408" y="520">The vault is already the record.</text>
+<text class="rv-t2" x="408" y="535">What is missing is an org index</text>
+<text class="rv-t2" x="408" y="550">and a scheduled re-comparison.</text>
+
+<rect class="rv-node-hot" x="790" y="46" width="360" height="44" rx="7"/>
+<text class="rv-tid-hot" x="804" y="65">R-1</text><text class="rv-t" x="842" y="65">Lead with the question, then four numbers</text>
+<text class="rv-t2" x="842" y="81">the aha moment, for nothing</text>
+
+<rect class="rv-node-hot" x="790" y="104" width="360" height="44" rx="7"/>
+<text class="rv-tid-hot" x="804" y="123">R-6</text><text class="rv-t" x="842" y="123">Pick &#8594; see &#8594; compare &#8594; find the gaps</text>
+<text class="rv-t2" x="842" y="139">four of the six steps in the loop</text>
+
+<rect class="rv-node" x="790" y="184" width="360" height="44" rx="7"/>
+<text class="rv-tid" x="804" y="203">R-2</text><text class="rv-t" x="842" y="203">Template / Live Policy / Review / Sign-off</text>
+<text class="rv-t2" x="842" y="219">copy, one release</text>
+
+<rect class="rv-node" x="790" y="242" width="360" height="44" rx="7"/>
+<text class="rv-tid" x="804" y="261">R-3</text><text class="rv-t" x="842" y="261">Free template, charge to operationalise</text>
+<text class="rv-t2" x="842" y="277">answered by A, not by dropping the &#163;5</text>
+
+<rect class="rv-node" x="790" y="322" width="360" height="44" rx="7"/>
+<text class="rv-tid" x="804" y="341">R-4</text><text class="rv-t" x="842" y="341">Describe the deployment before buying</text>
+<text class="rv-t2" x="842" y="357">a draft mandate, then the offer</text>
+
+<rect class="rv-node" x="790" y="458" width="360" height="44" rx="7"/>
+<text class="rv-tid" x="804" y="477">R-5</text><text class="rv-t" x="842" y="477">Agent Authorization Record</text>
+<text class="rv-t2" x="842" y="493">70% shipped; the rest is a subscription</text>
+
+<g class="rv-hot"><path class="rv-edge-hot" d="M300 68 L390 82" marker-end="url(#rvH)"/>
+<path class="rv-edge-hot" d="M300 126 L390 108" marker-end="url(#rvH)"/>
+<path class="rv-edge-hot" d="M300 432 C332 460, 342 170, 390 126" marker-end="url(#rvH)" stroke-dasharray="4 4" stroke-width="1.3"/>
+<path class="rv-edge-hot" d="M682 78 L788 68" marker-end="url(#rvH)"/>
+<path class="rv-edge-hot" d="M682 104 L788 126" marker-end="url(#rvH)"/>
+<path class="rv-edge-hot" d="M682 126 C730 190, 740 248, 788 262" marker-end="url(#rvH)"/></g>
+
+<path class="rv-edge" d="M300 206 L390 220" marker-end="url(#rvA)"/>
+<path class="rv-edge" d="M300 264 L390 246" marker-end="url(#rvA)"/>
+<path class="rv-edge" d="M300 344 L390 358" marker-end="url(#rvA)"/>
+<path class="rv-edge" d="M300 422 C344 422, 350 392, 390 384" marker-end="url(#rvA)"/>
+<path class="rv-edge" d="M682 220 L788 206" marker-end="url(#rvA)"/>
+<path class="rv-edge" d="M682 370 L788 344" marker-end="url(#rvA)"/>
+<path class="rv-edge" d="M682 498 L788 480" marker-end="url(#rvA)"/>
+<path class="rv-edge" d="M682 530 C740 530, 752 190, 788 142" marker-end="url(#rvA)"/>
+
+<text class="rv-tid-hot" x="30" y="512">Solid = lever A&#8217;s reach.</text>
+<text class="rv-t2" x="30" y="530">Dashed = an indirect effect: a free</text>
+<text class="rv-t2" x="30" y="545">diagnostic changes what &#163;5 is for.</text>
+</svg>
+</div>
+<figcaption><b>One lever carries half the note.</b> F-2, F-3, R-1 and the first four steps of R-6 are
+all the same missing thing: a way for a buyer to find their own gap before paying. That thing is
+already built &mdash; <code>MAP-A-GRANT.md</code> ships free in every public template zip and prints
+exactly the four numbers the note asks for. It is only surfaced <em>after</em> a &pound;500 purchase.
+Moving it is a re-ordering, not a build.</figcaption></figure>
+'''
+
+REVIEW_FIG_FUNNEL = '''
+<figure class="rv-fig"><div class="rv-figbox">
+<svg viewBox="0 0 1040 320" role="img" aria-label="Today the free diagnostic sits after the 500 pound purchase. In the proposed funnel it moves to the front, before the catalogue, so a buyer sees their own gap before any payment.">
+<defs><marker id="rvF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<text class="rv-lab" x="20" y="24">TODAY</text>
+<rect class="rv-node" x="20" y="40" width="150" height="40" rx="6"/><text class="rv-t" x="95" y="64" text-anchor="middle">Catalogue</text>
+<rect class="rv-node" x="210" y="40" width="150" height="40" rx="6"/><text class="rv-t" x="285" y="64" text-anchor="middle">Pick a shape</text>
+<rect class="rv-node" x="400" y="40" width="150" height="40" rx="6"/><text class="rv-t" x="475" y="64" text-anchor="middle">Pay</text>
+<rect class="rv-node" x="590" y="40" width="150" height="40" rx="6"/><text class="rv-t" x="665" y="64" text-anchor="middle">What happens now</text>
+<rect class="rv-node-hot" x="780" y="34" width="240" height="52" rx="6"/>
+<text class="rv-th" x="900" y="56" text-anchor="middle">The diagnostic prompt</text>
+<text class="rv-t2" x="900" y="73" text-anchor="middle">free, and behind &#163;500</text>
+<path class="rv-edge" d="M170 60 L206 60" marker-end="url(#rvF)"/>
+<path class="rv-edge" d="M360 60 L396 60" marker-end="url(#rvF)"/>
+<path class="rv-edge" d="M550 60 L586 60" marker-end="url(#rvF)"/>
+<path class="rv-edge" d="M740 60 L776 60" marker-end="url(#rvF)"/>
+<text class="rv-t2" x="475" y="106" text-anchor="middle">the buyer is told there is a gap</text>
+<text class="rv-tid-hot" x="900" y="106" text-anchor="middle">and only here can they see their own</text>
+
+<line x1="20" y1="142" x2="1020" y2="142" stroke="currentColor" stroke-opacity=".18"/>
+
+<text class="rv-tid-hot" x="20" y="180">PROPOSED</text>
+<rect class="rv-node-hot" x="20" y="196" width="240" height="52" rx="6"/>
+<text class="rv-th" x="140" y="218" text-anchor="middle">The diagnostic prompt</text>
+<text class="rv-t2" x="140" y="235" text-anchor="middle">free, and first</text>
+<rect class="rv-node" x="300" y="202" width="150" height="40" rx="6"/><text class="rv-t" x="375" y="226" text-anchor="middle">Your four numbers</text>
+<rect class="rv-node" x="490" y="202" width="150" height="40" rx="6"/><text class="rv-t" x="565" y="226" text-anchor="middle">Pick a shape</text>
+<rect class="rv-node" x="680" y="202" width="150" height="40" rx="6"/><text class="rv-t" x="755" y="226" text-anchor="middle">Pay</text>
+<rect class="rv-node" x="870" y="202" width="150" height="40" rx="6"/><text class="rv-t" x="945" y="226" text-anchor="middle">What happens now</text>
+<g class="rv-hot"><path class="rv-edge-hot" d="M260 222 L296 222" marker-end="url(#rvF)"/>
+<path class="rv-edge-hot" d="M450 222 L486 222" marker-end="url(#rvF)"/></g>
+<path class="rv-edge" d="M640 222 L676 222" marker-end="url(#rvF)"/>
+<path class="rv-edge" d="M830 222 L866 222" marker-end="url(#rvF)"/>
+<text class="rv-tid-hot" x="375" y="274" text-anchor="middle">the buyer finds their own gap, for nothing</text>
+<text class="rv-t2" x="755" y="274" text-anchor="middle">and now knows what they are buying</text>
+</svg>
+</div>
+<figcaption><b>Nothing is built and nothing is removed.</b> One asset moves from the end of the funnel
+to the front of it. That single move answers F-2, F-3, R-1, the first four steps of R-6, and changes
+what the &pound;5 is <em>for</em> &mdash; which is most of the answer to F-5 and R-3 as well.</figcaption></figure>
+'''
+
+# ------------------------------------------------------------ the review ----
+# THE ONE PAGE ON THIS SITE WITH SOMEWHERE TO TYPE, and the rule it moved.
+#
+# Until v0.1.15 there was no form, input, textarea or select anywhere in docs/ and
+# a check refused a release that grew one. A partner's review asked for two things
+# that need somewhere to type — a deployment described before it is paid for, and a
+# capability list pasted back — and asking them to answer that review with no way to
+# answer it would have been the joke version of this whole site.
+#
+# So the rule moved, by ruling, and it moved NARROWLY. What stayed absolute:
+#
+#   * NO <form> ANYWHERE. It is the element that submits. Nothing on this site has
+#     one and nothing on this site ever will.
+#   * NO <input> AND NO <select> ANYWHERE. A card number, an email address and a
+#     name are typed into a single-line field, and there is not one on this domain.
+#   * NO NETWORK, on this page as on every other. No fetch, no XHR, no beacon, no
+#     socket, no third-party anything. The check did not move an inch.
+#   * The reason boxes carry NO name attribute, because a name is what a form field
+#     is called when it is submitted and these are never submitted.
+#
+# What a reader types stays in their own browser until they press a copy button,
+# which puts it on their clipboard. It reaches us when they paste it to us and by
+# no other route. The page says all of that on itself, in those words, because a
+# site whose argument is checkability does not get to quietly widen a rule.
+REVIEW = json.loads((DATA / "review.json").read_text())
+
+
+def _review_letter():
+    """The note as sent. `>>` marks a line the writer set apart; `||` marks a block
+    they laid out as a list. Nothing else is interpreted, and nothing is edited."""
+    out, buf, flow = [], [], []
+
+    def flush_para():
+        if buf:
+            out.append("<p>" + html.escape(" ".join(buf)) + "</p>")
+            buf.clear()
+
+    def flush_flow():
+        if flow:
+            out.append('<p class="rv-flow">' + html.escape("\n".join(flow)) + "</p>")
+            flow.clear()
+
+    for line in REVIEW["verbatim"].split("\n"):
+        s = line.strip()
+        if not s:
+            flush_para(); flush_flow(); continue
+        if s.startswith(">>"):
+            flush_para(); flush_flow()
+            out.append('<p class="rv-pull">' + html.escape(s[2:].strip()) + "</p>")
+        elif s.startswith("||"):
+            flush_para()
+            flow.append(s[2:].strip().replace("->", "→"))
+        else:
+            flush_flow(); buf.append(s)
+    flush_para(); flush_flow()
+    return "".join(out)
+
+
+def _review_taxonomy():
+    out = []
+    for group, head, cls in (("keep", "Keep — four things called out as working", "rv-k"),
+                             ("friction", "Friction — six things that got in the way", "rv-f"),
+                             ("rec", "Recommendation — six proposals", "rv-r")):
+        out.append(f'<h3 class="rv-taxhead">{html.escape(head)}</h3><div class="rv-tax">')
+        for tid, title, body in REVIEW["taxonomy"][group]:
+            out.append(f'<div class="rv-tx {cls}"><span class="rv-txid">{tid}</span>'
+                       f'<b>{html.escape(title)}</b><p>{body}</p></div>')
+        out.append("</div>")
+    return "".join(out)
+
+
+def _review_proposals():
+    """Rendered on the SERVER, reason boxes included. The alternative — writing the
+    boxes in from script — would have put a form control on the page that the gate
+    could not see, which is the sneaky version of moving a rule rather than the
+    honest one."""
+    labels = REVIEW["stance_labels"]
+    out = []
+    for p in REVIEW["proposals"]:
+        out.append(f'<article class="rv-item" id="{p["id"].lower()}">')
+        out.append(f'<div class="rv-head"><span class="rv-id">{p["id"]}</span>'
+                   f'<h3>{p["title"]}</h3>'
+                   f'<span class="rv-st st-{p["stance"]}">{html.escape(labels[p["stance"]])}</span></div>')
+        out.append('<div class="rv-body">')
+        out.append(f'<p class="rv-refs">Answers {html.escape(p["refs"])}</p>')
+        out.append(f'<p class="rv-quote">“{html.escape(p["quote"])}”</p>')
+        out.append('<div class="rv-block"><span class="rv-blab">What we could do</span>')
+        out.append("".join(f"<p>{x}</p>" for x in p["what"]))
+        if p.get("opts"):
+            out.append('<div class="rv-opts">')
+            for name, body in p["opts"]:
+                out.append(f'<div class="rv-opt"><b>{html.escape(name)}</b><span>{body}</span></div>')
+            out.append("</div>")
+        out.append("</div>")
+        out.append('<div class="rv-block"><div class="rv-cost">'
+                   + "".join(f"<span>{html.escape(k)} <b>{html.escape(v)}</b></span>"
+                             for k, v in p["cost"])
+                   + "</div></div>")
+        out.append("</div>")
+
+        picks = "".join(
+            f'<button type="button" class="rv-pick" data-v="{v}" aria-pressed="false">'
+            f'{html.escape(label)}</button>'
+            for v, label in REVIEW["verdicts"])
+        out.append(
+            f'<div class="rv-verdict">'
+            f'<div class="rv-vlab"><span>Your verdict on {p["id"]}</span>'
+            f'<span class="rv-saved" data-saved="{p["id"]}">saved</span></div>'
+            f'<div class="rv-picks" data-picks="{p["id"]}">{picks}</div>'
+            f'<label class="visually-hidden" for="why-{p["id"]}">Why, for {p["id"]}</label>'
+            f'<textarea class="rv-why" id="why-{p["id"]}" rows="3" '
+            f'placeholder="Why? If you disagree, the reason is the useful part."></textarea>'
+            f"</div>")
+        out.append("</article>")
+    return "".join(out)
+
+
+def _review_model(prefix):
+    titles, refs, stances = {}, {}, {}
+    for p in REVIEW["proposals"]:
+        titles[p["id"]] = re.sub(r"<[^>]+>", "", p["title"]).replace("&mdash;", "—") \
+            .replace("&rsquo;", "’").replace("&ldquo;", "“").replace("&rdquo;", "”")
+        refs[p["id"]] = p["refs"]
+        stances[p["id"]] = REVIEW["stance_labels"][p["stance"]]
+    return {
+        "page": "store.sgit.ai/review/",
+        "version": SITE["version"],
+        "reviewed_on": REVIEW["reviewed_on"],
+        "storage": REVIEW["storage"],
+        "ids": [p["id"] for p in REVIEW["proposals"]],
+        "verdicts": REVIEW["verdicts"],
+        "titles": titles,
+        "refs": refs,
+        "stances": stances,
+    }
+
+
+def block_review(ctx):
+    n = len(REVIEW["proposals"])
+    island = ('<script type="application/json" id="review-model">'
+              + json.dumps(_review_model(rel_prefix(ctx["page_url"])), separators=(",", ":"))
+              + "</script>")
+    return (
+        '<h2 id="the-note-verbatim">The note, verbatim</h2>'
+        '<p>Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased — the '
+        'reading of it below is ours and is kept separate from it on purpose.</p>'
+        '<div class="rv-letter"><span class="rv-verb">Unedited</span>'
+        + _review_letter() + "</div>"
+
+        + '<h2 id="what-is-in-the-note">What is in the note</h2>'
+        '<p>Sixteen distinct points, sorted into three kinds. The identifiers are used for the '
+        'rest of this page, so a verdict can name exactly what it is answering.</p>'
+        + _review_taxonomy()
+
+        + '<h2 id="six-frictions-four-levers">Six frictions, four levers</h2>'
+        '<p>Read as six separate asks, this is a quarter’s work. Read for what actually moves, '
+        'it collapses: <b>four changes carry all six recommendations, and one of the four carries '
+        'half of them on its own.</b></p>'
+        + REVIEW_FIG_LEVERS
+
+        + '<h2 id="the-one-edge-that-moves">The one edge that moves</h2>'
+        '<p>The same funnel, before and after. One thing changes position; everything else is '
+        'where it already is.</p>'
+        + REVIEW_FIG_FUNNEL
+
+        + f'<h2 id="the-proposals">{n} proposals, with a stance on each</h2>'
+        '<p>Two of these are <b>won’t do</b> and three need a ruling that is not the '
+        'builder’s to make. Every one carries what it would cost and what it touches. '
+        '<b>Disagreeing is the useful answer</b>, and the reason matters more than the verdict.</p>'
+        '<div class="rv-prog"><span class="rv-track"><span class="rv-fill" id="rv-fill"></span></span>'
+        f'<span id="rv-num">0 of {n} answered</span>'
+        '<span class="dim">· kept in this browser, sent nowhere</span></div>'
+        + _review_proposals()
+
+        + '<h2 id="send-it-back">Send it back</h2>'
+        '<div class="rv-export"><h3>Your verdicts, as text you can paste</h3>'
+        '<p>Everything you set above lives <b>in this browser only</b>. There is no account, '
+        'nothing is submitted, and no page here opens a network connection — which is a build '
+        'check rather than a promise. The buttons put it on your clipboard: markdown to read in a '
+        'message, JSON if it is going into a tracker.</p>'
+        '<label class="rv-blab" for="rv-overall" style="margin-top:1.1rem">'
+        'Anything the proposals did not cover</label>'
+        '<textarea class="rv-why" id="rv-overall" rows="3" '
+        'placeholder="What did we miss? What would you have led with? Anything you would drop entirely?">'
+        '</textarea>'
+        '<div class="rv-exbtns">'
+        '<button type="button" class="buy" id="rv-md">Copy as markdown</button>'
+        '<button type="button" class="buy buy-alt" id="rv-json">Copy as JSON</button>'
+        '<button type="button" class="linkish" id="rv-toggle">Show what gets copied</button>'
+        '<button type="button" class="linkish" id="rv-clear">Clear everything</button>'
+        '</div><pre class="rv-prev" id="rv-prev" hidden></pre></div>'
+        '<div class="rv-toast" id="rv-toast" role="status" aria-live="polite">Copied</div>'
+        + island)
+
+
+def review_markdown():
+    """The same review as markdown, for the twin. Every page here is served as
+    markdown at <page>/index.md and an agent reads that rather than the HTML; a twin
+    carrying the shortcode and not the review would hand an agent a page about a
+    critique with the critique missing."""
+    strip = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s))
+    L = ["## The note, verbatim", "",
+         "Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased.", "",
+         "> " + REVIEW["verbatim"].replace("\n", "\n> ").replace(">> ", "").replace("|| ", "    "),
+         ""]
+    L += ["## What is in the note", ""]
+    for group, head in (("keep", "Keep"), ("friction", "Friction"), ("rec", "Recommendation")):
+        L += [f"### {head}", ""]
+        for tid, title, body in REVIEW["taxonomy"][group]:
+            L.append(f"- **{tid} — {title}.** {strip(body)}")
+        L.append("")
+    L += ["## Six frictions, four levers", "",
+          "Four changes carry all six recommendations, and one carries half of them on its own: "
+          "put the free diagnostic in front of the sale. `MAP-A-GRANT.md` already exists, is "
+          "already free, already ships in every public template zip, and prints exactly the four "
+          "numbers the note asks for — it is only surfaced after a £500 purchase. Moving "
+          "it is a re-ordering, not a build.", "",
+          f"## The {len(REVIEW['proposals'])} proposals", "",
+          "Two are *won't do* and three need a ruling. Each carries what it would cost.", ""]
+    for pr in REVIEW["proposals"]:
+        L += [f"### {pr['id']} — {strip(pr['title'])}", "",
+              f"- **Our stance:** {REVIEW['stance_labels'][pr['stance']]}",
+              f"- **Answers:** {pr['refs']}",
+              "- **Cost:** " + " · ".join(f"{k} {v}" for k, v in pr["cost"]), "",
+              f"> {pr['quote']}", ""]
+        for para in pr["what"]:
+            L += [strip(para), ""]
+        for name, body in pr.get("opts", []):
+            L.append(f"- **{name}.** {strip(body)}")
+        if pr.get("opts"):
+            L.append("")
+    L += ["## Send it back", "",
+          "The page at https://store.sgit.ai/review/ carries a verdict control and a reason box on "
+          "every proposal, and copies the result out as markdown or JSON. Nothing typed there is "
+          "submitted anywhere: no page on this site opens a network connection.", ""]
+    return "\n".join(L)
+
+
+# Shortcodes with a markdown rendering for the twin. A block with no entry here is
+# left as its shortcode, which is right for one that renders a control the twin
+# cannot carry and wrong for one that IS the page.
+TWIN_BLOCKS = {"review": review_markdown}
+
+
+BLOCKS["review"] = block_review
+
 BLOCKS["catalogue"] = block_catalogue
 BLOCKS["levels-table"] = block_levels_table
 
@@ -1709,7 +2116,8 @@ def lab_pages(out_dir, ctx_shared):
             f'{json.dumps(lab_model(prefix), separators=(",", ":"))}</script>'
             f'<div id="lab" data-view="{v["id"]}">'
             '<p class="dim">This prototype needs JavaScript. Everything it does happens in '
-            'this browser: there is no form on this site and no page here opens a network '
+            'this browser: there is no form on this site, nothing is submitted anywhere, and no page '
+            'here opens a network '
             'connection, so with scripting off there is nothing to fall back to except '
             '<a href="/lab/">the description of what it would do</a>.</p></div>'
             f'<p class="pagenav">{others}<a href="/lab/">All five, compared &rarr;</a></p>'
@@ -1893,7 +2301,7 @@ def shape_pages(out_dir, ctx_shared):
          " / paying",
          "pay",
          '<p class="lead">What is due now, and what is due when the work is in your hands. '
-         '<b>Nothing on this page collects anything</b> \u2014 there is no form, no field and no '
+         '<b>Nothing on this page collects anything</b> \u2014 there is no form, no card field and no '
          'account, and a card is typed on the provider\u2019s own pages.</p>',
          "# Paying\n\nThe amount due now and the amount due on delivery, and the rails that "
          "take them. The store collects nothing: the provider takes the name, the contact and the "
@@ -2069,8 +2477,21 @@ def release_pages(out_dir, ctx_shared):
         changes = ("" if not r.get("changes") else
                    '<p class="small dim">Touched: ' +
                    " &middot; ".join(f"<code>{html.escape(c)}</code>" for c in r["changes"]) + "</p>")
+        # A RELEASE NOTE IS DATA, NOT MARKUP, so it renders the way republished vault
+        # content does: everything escaped, no shortcode run, links held to safe schemes.
+        # inline() passes anything tag-shaped straight through for trusted content, which
+        # is right for a page whose author writes HTML on purpose and wrong for a prose
+        # field in a JSON file. A note that named the form element put a real one into the
+        # page, and the gate caught it. Bold, italic and code spans still work, which is
+        # all a release note has ever wanted.
+        #
+        # Blank lines now make paragraphs. They did not, so every multi-paragraph note
+        # since v0.1.9 rendered as one wall of text on its own version page.
+        leads = "".join(
+            f'<p class="lead">{inline(para, dict(ctx, untrusted=True))}</p>'
+            for para in re.split(r"\n\s*\n", (r["summary"] or r["title"]).strip()))
         body = (
-            f'<p class="lead">{inline(r["summary"] or r["title"], ctx)}</p>'
+            leads +
             '<div class="tablewrap"><table><tbody>'
             f'<tr><th>Version</th><td><code>{html.escape(ver)}</code>'
             f'{" &mdash; <b>current</b>" if ver == RELEASES["current"] else ""}</td></tr>'
@@ -2184,6 +2605,7 @@ def footer_html():
   <div>
     <h4>Evidence</h4>
     <a href="/ledger/">Every claim, with its state</a>
+    <a href="/review/">A partner&rsquo;s review, in full</a>
     <a href="/disclosures/">What we do not say, and why</a>
     <a href="/dev-packs/">The dev packs</a>
     <a href="/versions/">Release history</a>
@@ -2325,6 +2747,9 @@ def build(out_dir):
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(page_html(page, ctx, body))
         twin = page["src_md"].rstrip("\n")
+        for _name, _fn in TWIN_BLOCKS.items():
+            if "{{" + _name + "}}" in twin:
+                twin = twin.replace("{{" + _name + "}}", _fn())
         if LICENCE_STAMP not in twin:
             twin += f"\n\n---\n\n{LICENCE_STAMP}\n"
         (target.parent / "index.md").write_text(twin)

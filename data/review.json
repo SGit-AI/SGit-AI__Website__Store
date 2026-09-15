@@ -1,0 +1,434 @@
+{
+  "type": "partner-review",
+  "_what_this_is": "A partner walked the whole store and wrote it up. Their note is reproduced here verbatim and unedited, and every proposal we drew out of it carries a stance — including the three we think we should not do. It is published for the same reason the claim ledger is: a critique that only the seller has read is a critique that changes nothing.",
+  "reviewed_version": "v0.1.14",
+  "reviewed_on": "15 September 2026",
+  "reviewer": "A partner, after a full walkthrough. Published with their words unedited and their name off it.",
+  "verbatim": "I went through the full workflow. Overall, I think there is a lot to like here. The underlying product thinking is actually really strong.\n\nWhat I really like is the core idea of comparing what an agent can do versus what you actually want it to do, what you don't want it to do, and what's actually stopping it. That feels like the most powerful part of the product. The Gmail example makes this pretty obvious. I may only want an agent reading certain emails, but the credential I've given it could technically allow it to read everything.\n\nI also like the different levels of service. There is a natural progression from downloading something yourself, to having a working version, to getting something customized, to having professional review and sign-off. I think that ladder makes sense.\n\nThe transparency is also great. You're very clear about what has and hasn't been proven, what isn't live yet, and what the product does and doesn't claim to do. For a security product, that actually builds a lot of trust. I also really like that the store itself follows the security philosophy of the product. No accounts, forms, analytics, cookies, etc.\n\nThere are a lot of concepts to learn before I really understand what I'm buying. Shape, Agent Behaviour Policy, grant, mandate, vault, correction, levels, licence to operate, and so on. I wouldn't necessarily simplify what's happening underneath, but I would simplify the jargon and visualization.\n\nI also think the experience starts a little too much from how you've built the product rather than how the customer thinks about the problem. \"Which agent do you run?\" is fine, but I think the more interesting question is something like:\n\n>> \"What can your AI agent do that you didn't actually authorize?\"\n\nThen let me pick ChatGPT, Claude Code, Gmail, GitHub, n8n, etc.\n\nOnce I choose one, show me something really simple:\n\n|| Your agent can do 4 things.\n|| You intended 1.\n|| 3 are outside its mandate.\n|| 2 have nothing effectively stopping them.\n\nThen let me click in and actually see those capabilities.\n\nThat would be a much stronger aha moment for me. Right now you're telling me there is a problem and then selling me the policy. I'd rather discover the problem myself and then have you offer me the solution.\n\nI'd also simplify the four levels. Something along the lines of Template, Live Policy, Deployment Review, and Professional Sign-off is much easier for me to immediately understand than having to figure out what each level means.\n\nI'm also not sure about the £5 price point. I understand the logic because it makes trying the product almost frictionless, but there is a risk that it makes something pretty sophisticated feel like a commodity template. Since you're already making the public template available, I'd experiment with making that free and charging more once someone wants to actually operationalize it.\n\nThe £500 experience could also be more interactive. Instead of buying first and then figuring out what information I need to send you, let me describe my deployment first. What agent am I using? What systems does it touch? What data does it have access to? What should it be allowed to do? What should it absolutely never do?\n\nThen show me a preliminary mandate and say, \"We can validate this against your actual deployment.\"\n\nI think I'd be much more likely to buy at that point because I've already seen the value.\n\nThe other idea I'd play with is some kind of Agent Passport or Agent Authorization Record. Basically a persistent record for every agent that says who owns it, what systems it touches, what it's authorized to do, what it's not authorized to do, what the underlying credentials technically allow, where the gaps are, what controls exist, and when it was last reviewed.\n\nThat starts to feel much bigger than selling policies. It could eventually become the system of record for which AI agents are actually authorized to do what inside an organization.\n\nSo overall, I wouldn't change the rigor underneath. I actually think that's one of the strongest parts. I'd just hide more of that complexity from the buyer.\n\nThe experience I'd ultimately try to get to is really simple:\n\n|| Pick your agent -> see what it can do -> see what you actually authorized\n|| -> identify the gaps -> fix them -> continuously prove the agent\n|| is operating within its mandate.",
+  "taxonomy": {
+    "keep": [
+      [
+        "K-1",
+        "The delta itself",
+        "Can-do against want-to-do against don’t-want against what actually stops it. Named “the most powerful part of the product”. The Gmail example is what made it land."
+      ],
+      [
+        "K-2",
+        "The ladder",
+        "Download it yourself, have a working one, have it customised, have it reviewed and signed. The <em>shape</em> of the progression is right."
+      ],
+      [
+        "K-3",
+        "The disclosure",
+        "Clear about what has and has not been proven, what is not live, what is not claimed. For a security product that builds trust rather than costing it."
+      ],
+      [
+        "K-4",
+        "The store practises it",
+        "No accounts, no forms, no analytics, no cookies. The shop is built the way the product argues you should build things."
+      ]
+    ],
+    "friction": [
+      [
+        "F-1",
+        "Too much vocabulary, too early",
+        "Shape, Agent Behaviour Policy, grant, mandate, vault, correction, levels, licence to operate — before you know what you are buying."
+      ],
+      [
+        "F-2",
+        "Entry is our shape, not theirs",
+        "“Which agent do you run?” is how the catalogue is built. The buyer’s question is what their agent can do that they never authorised."
+      ],
+      [
+        "F-3",
+        "No discovery moment",
+        "We assert the problem and then sell the policy. Nothing lets the buyer find the problem in their own deployment first."
+      ],
+      [
+        "F-4",
+        "The rungs are unlabelled",
+        "Each level has to be decoded before it can be compared with the one above it."
+      ],
+      [
+        "F-5",
+        "£5 may read as commodity",
+        "Frictionless, but it can make something sophisticated feel like a template with a price tag on it."
+      ],
+      [
+        "F-6",
+        "£500 is buy-then-discover",
+        "You pay, and only then find out what you have to send. The value arrives after the money."
+      ]
+    ],
+    "rec": [
+      [
+        "R-1",
+        "Lead with the question",
+        "“What can your AI agent do that you didn’t authorize?” then pick a vendor, then four numbers, then click into the capabilities."
+      ],
+      [
+        "R-2",
+        "Rename the levels",
+        "Template, Live Policy, Deployment Review, Professional Sign-off."
+      ],
+      [
+        "R-3",
+        "Free template, charge to operationalise",
+        "The public template is already free; let the money start where the work starts."
+      ],
+      [
+        "R-4",
+        "Describe before you buy",
+        "Describe the deployment, get a preliminary mandate, then be offered validation against the real one."
+      ],
+      [
+        "R-5",
+        "Agent Authorization Record",
+        "A persistent per-agent record: owner, systems, authorised, not authorised, what the credential allows, the gaps, the controls, when it was last reviewed."
+      ],
+      [
+        "R-6",
+        "The whole loop",
+        "Pick, see, compare, find the gaps, fix, keep proving it."
+      ]
+    ]
+  },
+  "stance_labels": {
+    "do": "Do now",
+    "later": "Do next",
+    "wont": "Won't do",
+    "ruling": "Needs a ruling"
+  },
+  "verdicts": [
+    [
+      "agree",
+      "Agree"
+    ],
+    [
+      "disagree",
+      "Disagree"
+    ],
+    [
+      "talk",
+      "Let's talk"
+    ]
+  ],
+  "storage": "sgit.store.review.v1",
+  "proposals": [
+    {
+      "id": "P-1",
+      "refs": "K-1 · F-3",
+      "stance": "wont",
+      "title": "Keep the delta exactly as it is",
+      "quote": "The core idea of comparing what an agent can do versus what you actually want it to do, what you don't want it to do, and what's actually stopping it. That feels like the most powerful part of the product.",
+      "what": [
+        "<b>Nothing changes underneath.</b> The four-way comparison, the barrier on every row, and the fact that the delta is computed rather than stored are the product, and the note agrees.",
+        "<b>But the counts are already on every catalogue tile and nobody reads them.</b> Every tile carries what the agent can do, what was wanted, what is unwanted, and what has nothing in the way. A synthetic run last week had a staff engineer skim past them and never come back, because the explainer sits further down the page than the tiles do. So the asset the note calls the most powerful part of the product is already on the page and is not landing.",
+        "This is a placement problem, not a product problem, and it is fixed by P-6 rather than by touching anything here."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "none"
+        ],
+        [
+          "Touches",
+          "nothing"
+        ],
+        [
+          "Risk",
+          "none"
+        ]
+      ]
+    },
+    {
+      "id": "P-2",
+      "refs": "K-3",
+      "stance": "wont",
+      "title": "Keep the disclosure, including the parts that cost us sales",
+      "quote": "You're very clear about what has and hasn't been proven, what isn't live yet, and what the product does and doesn't claim to do. For a security product, that actually builds a lot of trust.",
+      "what": [
+        "<b>No change, and it is worth saying why out loud.</b> The claim ledger, the &ldquo;never sold once&rdquo; chips on the two upper levels, and the page refusing to call a professional sign-off a signed opinion each cost a sale in testing and each bought the credibility back. The investor persona in last week&rsquo;s run stayed to the end <em>because</em> of that refusal and said she would buy second but not first.",
+        "<b>One gap it opens that we have not closed.</b> Disclosing that a level has never run raises an obvious question &mdash; what happens to my money if I am the first and it goes badly &mdash; and nothing on the site answers it. That is a real hole created by the honesty, and it should be filled rather than used as a reason to be less honest."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "one paragraph"
+        ],
+        [
+          "Touches",
+          "/d/t3/, /d/t4/"
+        ],
+        [
+          "Risk",
+          "none"
+        ]
+      ]
+    },
+    {
+      "id": "P-3",
+      "refs": "K-4 · R-1 · R-4",
+      "stance": "ruling",
+      "title": "No accounts and no forms is the constraint everything else has to fit",
+      "quote": "I also really like that the store itself follows the security philosophy of the product. No accounts, forms, analytics, cookies, etc.",
+      "what": [
+        "<b>This is the asset and the design problem at the same time, and it is worth being explicit about the trade.</b> There is no <code>&lt;form&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code> or <code>&lt;select&gt;</code> anywhere in the built site and a check refuses any release that grows one. That is why filtering is chips, quantity is a pair of buttons, and a discount code arrives in the address bar.",
+        "<b>Both of the interactive things the note asks for need somewhere to type.</b> R-1 wants a capability list pasted back; R-4 wants a deployment described. Neither is possible under the rule as written.",
+        "Three ways out, and this is the one decision on this page that is not ours to make:"
+      ],
+      "opts": [
+        [
+          "Keep it whole",
+          "The buyer runs the diagnostic in their own agent and reads the answer there. We publish the prompt and the scoring, and never see or receive anything. Ships this week, weakest experience."
+        ],
+        [
+          "One editable page",
+          "An editable region on the diagnostic page only, marked as such, writing to the reader's own browser and posting nowhere. Keeps &ldquo;collects nothing&rdquo; literally true; makes &ldquo;no field&rdquo; need a footnote."
+        ],
+        [
+          "Move it into the vault",
+          "A bought vault already has an app that can take input. Best experience, but it sits behind a purchase, which is exactly the wrong side of the paywall for a diagnostic."
+        ]
+      ],
+      "cost": [
+        [
+          "Effort",
+          "a ruling, then 1–3 days"
+        ],
+        [
+          "Touches",
+          "the no-forms check, the footer claim"
+        ],
+        [
+          "Risk",
+          "a claim on every page"
+        ]
+      ]
+    },
+    {
+      "id": "P-4",
+      "refs": "F-1",
+      "stance": "do",
+      "title": "A plain sentence first, the precise word one click away",
+      "quote": "There are a lot of concepts to learn before I really understand what I'm buying… I wouldn't necessarily simplify what's happening underneath, but I would simplify the jargon and visualization.",
+      "what": [
+        "<b>Agreed, with one boundary: gloss the vocabulary, do not rename it.</b> Grant, mandate and delta have exact meanings, the ledger is keyed on them, and the barrier column only makes sense if the three stay distinct. Renaming them to something friendlier would make the site easier to read and harder to check, and checkability is the whole argument.",
+        "<b>So: every page leads with the plain sentence and carries the precise term as a link.</b> &ldquo;Your setup&rdquo; before &ldquo;shape&rdquo;. &ldquo;What it is allowed to do&rdquo; before &ldquo;mandate&rdquo;. &ldquo;The gap&rdquo; before &ldquo;delta&rdquo;. The precise word appears in the same sentence, once, linked.",
+        "<b>A glossary page is not the fix.</b> If a reader has to leave to understand the page they are on, the page failed. One exception worth flagging: <em>licence to operate</em> is already constrained by an open naming collision on this estate &mdash; a second phrase in the same vocabulary means the opposite thing &mdash; so that one is not free to re-word until the collision closes."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "copy, ~1 release"
+        ],
+        [
+          "Touches",
+          "every content page"
+        ],
+        [
+          "Risk",
+          "low"
+        ]
+      ]
+    },
+    {
+      "id": "P-5",
+      "refs": "F-4 · R-2",
+      "stance": "do",
+      "title": "Rename the four rungs, keep the identifiers",
+      "quote": "I'd also simplify the four levels. Something along the lines of Template, Live Policy, Deployment Review, and Professional Sign-off is much easier for me to immediately understand.",
+      "what": [
+        "<b>Agreed, and there is already a mechanism for it.</b> Level one was renamed from &ldquo;the pack, by email&rdquo; to &ldquo;the pack, downloaded&rdquo; two releases ago and its SKU letter moved with it. The codes on printed cards are <code>t1</code>–<code>t4</code> and they do not change, which is what makes a rename cost no reprinting.",
+        "<b>One quibble with the proposed names.</b> <em>Live Policy</em> reads as something that watches the agent at runtime, and £50 does not do that &mdash; it is the same document as £5 as a vault you hold the keys to, with your name on the licence. Calling it live would promise the thing that only exists after lever D. Suggested instead: <b>Template</b> · <b>Your Vault</b> · <b>Deployment Review</b> · <b>Professional Sign-off</b>.",
+        "Worth your view on that one specifically &mdash; if <em>Live Policy</em> is what a buyer actually wants to hear, the honest response is to build the thing rather than to borrow the name."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "copy + 4 SKU letters"
+        ],
+        [
+          "Touches",
+          "products.yml, every level label"
+        ],
+        [
+          "Risk",
+          "low"
+        ]
+      ]
+    },
+    {
+      "id": "P-6",
+      "refs": "F-2 · F-3 · R-1 · R-6",
+      "stance": "do",
+      "title": "Put the free diagnostic at the front door",
+      "quote": "Right now you're telling me there is a problem and then selling me the policy. I'd rather discover the problem myself and then have you offer me the solution.",
+      "what": [
+        "<b>This is the biggest thing in the note and it is mostly a re-ordering.</b> <code>MAP-A-GRANT.md</code> is a prompt that reads an agent&rsquo;s own configuration and prints exactly the four numbers the note asks for. It already exists, it is already free, and it already ships inside every public template zip. Today it is only surfaced on the page a buyer reaches <em>after</em> paying £500.",
+        "<b>The new front door.</b> A page headed with the note&rsquo;s own question, a row of vendor tiles, and then: copy this prompt, paste it where your agent runs, read what it prints. It asks for no credential, it does not act, and its last line says so. The buyer discovers their own gap, in their own deployment, before anything is sold to them.",
+        "<b>Then the offer lands differently.</b> Instead of &ldquo;here is a policy for the agent you run&rdquo;, it becomes &ldquo;you have three capabilities outside your mandate and two with nothing stopping them &mdash; here is the document that fixes that&rdquo;. Same product, and the buyer wrote the first half of the pitch.",
+        "<b>What it depends on.</b> How far this goes depends entirely on P-3. Publishing the prompt and the scoring is shippable this week with no ruling at all; rendering the buyer&rsquo;s numbers on our page needs somewhere to paste them."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "1 release for the shippable form"
+        ],
+        [
+          "Touches",
+          "a new page, the home page, /policies/"
+        ],
+        [
+          "Risk",
+          "depends on P-3"
+        ]
+      ]
+    },
+    {
+      "id": "P-7",
+      "refs": "F-5 · R-3",
+      "stance": "ruling",
+      "title": "The £5 &mdash; and it is not ours to move",
+      "quote": "I'm also not sure about the £5 price point… there is a risk that it makes something pretty sophisticated feel like a commodity template.",
+      "what": [
+        "<b>Two independent reports now say the same thing.</b> Yours, and a synthetic staff-engineer run last week that said &ldquo;five pounds is almost too cheap &mdash; it made me assume it was a lead magnet and I nearly did not click. The price made me trust it less, not more.&rdquo; Two readers arriving at the same reaction from different directions is the strongest signal in the note.",
+        "<b>But the £5 is doing a job.</b> The same persona bought at £5 <em>specifically to find out whether the thing was real</em>, and the purchase is what produces an order reference, which is what makes the handover to riskmandate.ai work at all. Removing the price removes a qualification step and a tested flow.",
+        "<b>A price is the project lead&rsquo;s to set and not the builder&rsquo;s.</b> The four prices are frozen in a table that only moves by a ruling in the commit that says so. So this is a recommendation with three options and no decision:"
+      ],
+      "opts": [
+        [
+          "Recommended",
+          "Free diagnostic (P-6), £5 pack stays. The free thing becomes the <em>answer</em>; the £5 becomes the <em>artefact</em>. The commodity reading goes away because the free tier is now worth more than the paid one used to be, and nothing already built is thrown away."
+        ],
+        [
+          "Template free, start at £50",
+          "Closest to what the note proposes. Costs the frictionless first transaction and the order-reference flow that is built and tested, and makes £50 the first thing anybody ever pays, which is a much harder first yes."
+        ],
+        [
+          "Raise it",
+          "£25 or so. Fixes nothing about the perception and loses the only frictionless entry we have."
+        ]
+      ],
+      "cost": [
+        [
+          "Effort",
+          "0 to 1 release"
+        ],
+        [
+          "Touches",
+          "the frozen price table"
+        ],
+        [
+          "Risk",
+          "a ruling, not a build"
+        ]
+      ]
+    },
+    {
+      "id": "P-8",
+      "refs": "F-6 · R-4",
+      "stance": "do",
+      "title": "Let them describe the deployment before they pay for it",
+      "quote": "Instead of buying first and then figuring out what information I need to send you, let me describe my deployment first… Then show me a preliminary mandate and say, \"We can validate this against your actual deployment.\"",
+      "what": [
+        "<b>Agreed, and two thirds of it is already on the site in the wrong clothes.</b> There is a tool at <code>/lab/</code> that takes a described deployment &mdash; entirely through chips, so it survives the no-forms rule &mdash; and turns it into a depth band. It is currently framed as a pricing instrument and is explicitly marked as something you cannot buy from.",
+        "<b>What has to change is the output and the framing, not the mechanism.</b> Instead of emitting a band, it emits a <em>draft mandate</em>: here is what you have told us this agent should and should never be allowed to do, written in the form the product actually ships. Then the offer: we can validate this against what the credential really permits.",
+        "<b>It also closes a hole a synthetic run found last week.</b> The £500 page described its own process two ways and the post-sale page a third, and carried no duration at all. That is now fixed, but the deeper problem is the one you named: the buyer is asked to commit before they can see what they are committing to."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "2–3 releases"
+        ],
+        [
+          "Touches",
+          "/lab/, /d/t3/, the buyer pages"
+        ],
+        [
+          "Risk",
+          "medium — new output, no new mechanism"
+        ]
+      ]
+    },
+    {
+      "id": "P-9",
+      "refs": "R-5",
+      "stance": "later",
+      "title": "The Authorization Record &mdash; most of it is already the vault",
+      "quote": "Some kind of Agent Passport or Agent Authorization Record. Basically a persistent record for every agent that says who owns it, what systems it touches, what it's authorized to do, what it's not authorized to do, what the underlying credentials technically allow, where the gaps are, what controls exist, and when it was last reviewed.",
+      "what": [
+        "<b>Held against what a £50 vault already contains, this is about seventy per cent shipped.</b> A vault already carries the grant, the mandate, the delta, the barrier on every row, a licence with the holder&rsquo;s name, its own version history and a read key that can be handed to anybody who asks how an agent is governed. That is most of the list.",
+        "<b>Three things are genuinely missing.</b> An <em>organisation-level index</em> &mdash; the vault is per agent, and nothing says which agents exist or who owns them. A <em>last reviewed</em> date and a cadence. And the re-run that compares today&rsquo;s grant against the committed mandate, which is the only part that is a new build rather than a new view.",
+        "<b>Naming.</b> &ldquo;Passport&rdquo; implies issuance by an authority, which is the same trap <em>licence to operate</em> is already caught in on this estate &mdash; there is an open collision on exactly that idea and a build check keeps the phrase off every page until it closes. <b>Agent Authorization Record</b> is both safer and more accurate, and is the name we would use.",
+        "Marked <em>do next</em> rather than <em>do now</em> only because P-6 and P-8 change who arrives and what they arrive knowing, and this should be designed against that rather than against today&rsquo;s traffic."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "a quarter"
+        ],
+        [
+          "Touches",
+          "a new org-level surface"
+        ],
+        [
+          "Risk",
+          "medium"
+        ]
+      ]
+    },
+    {
+      "id": "P-10",
+      "refs": "R-5 · R-6",
+      "stance": "ruling",
+      "title": "&ldquo;Continuously prove&rdquo; is a different business, not a feature",
+      "quote": "…continuously prove the agent is operating within its mandate.",
+      "what": [
+        "<b>Five of the six steps in your target loop are a re-ordering of things that exist. The sixth is not.</b> Pick, see, compare, find the gaps, fix &mdash; all of that is the current product in a better order. <em>Keep proving it</em> is a recurring comparison of a live credential against a committed mandate, which means a schedule, a re-run, a diff, and somebody who notices when it changes.",
+        "<b>That is a subscription.</b> Different delivery, different pricing, different support obligation, and a different promise: today we sell a document that is true when it is written, and that would be selling a claim that stays true. It is almost certainly where the value is, and it should be decided as a business question rather than arrived at by adding features.",
+        "<b>One thing worth noting.</b> The mechanism already half exists in a direction nobody has used yet: a vault has history, and a re-run of the diagnostic produces a comparable artefact. What is missing is the cadence and the person, not the maths."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "a business decision first"
+        ],
+        [
+          "Touches",
+          "the model, not the site"
+        ],
+        [
+          "Risk",
+          "high — a promise that has to hold"
+        ]
+      ]
+    },
+    {
+      "id": "P-11",
+      "refs": "F-2 · R-1",
+      "stance": "later",
+      "title": "Lead with the question, but not on the home page yet",
+      "quote": "\"Which agent do you run?\" is fine, but I think the more interesting question is something like: \"What can your AI agent do that you didn't actually authorize?\"",
+      "what": [
+        "<b>The question is better and we would use it &mdash; on the diagnostic, not yet on the home page.</b> It is a promise: ask it and the next screen has to answer it. Putting it on the front page before P-6 ships means the reader is asked a question and then handed a catalogue, which is worse than the catalogue on its own.",
+        "<b>So the order matters.</b> P-6 first, the question as the heading of that page, and only once it works does it move up to the home page. If P-3 lands on the weakest option and we never render the numbers ourselves, the question has to be softened to match what the page can actually deliver.",
+        "<b>One thing already true that we do not say.</b> The vendor tiles the note asks for are already the catalogue &mdash; ChatGPT, Claude Code, Gmail, GitHub Actions, n8n and eleven more, one per real deployment shape. What is missing is not the tiles; it is the question above them."
+      ],
+      "cost": [
+        [
+          "Effort",
+          "copy, after P-6"
+        ],
+        [
+          "Touches",
+          "the home page, /policies/"
+        ],
+        [
+          "Risk",
+          "low, if sequenced"
+        ]
+      ]
+    }
+  ]
+}

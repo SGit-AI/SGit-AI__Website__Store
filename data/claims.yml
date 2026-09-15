@@ -377,3 +377,11 @@
   group: The state of each thing on the offer list
   claim: "**How long the corrected vault takes after the buyer replies is committed to nowhere on this site.** The 24 hours is riskmandate.ai's commitment to follow up and is theirs to keep. The time from a buyer's reply to a delivered vault **has never run for a paying buyer, so there is no measurement to quote** — and the delivery page now says that rather than carrying an invented number. It was found by walking the store as a founder with six weeks to a term sheet, who left without buying and named the missing date as the reason."
   source: "data/offers.yml t3, and the synthetic-user run 2026-09-15-startups-01"
+
+# ---------------------------------------------- the rule that moved for /review/
+- id: review-is-the-one-typing-surface
+  state: docs
+  date: 15 Sep 2026
+  group: How paying works, and why it works that way
+  claim: "**There is no `<form>`, `<input>` or `<select>` anywhere in this site's output, and the reason boxes on [/review/](/review/) are the only place on this domain that can be typed into.** The rule was absolute until v0.1.15 and moved by ruling, to make room for a page that answers a partner's review — asking somebody to answer a critique with no way to answer it would have been the joke version of this site's whole argument. **What stayed absolute:** no `<form>`, which is the element that submits; no `<input>` and no `<select>`, which is where a card number or an address gets typed; **no network connection on any page**, which is the check that makes all of it a fact rather than a sentence; and no `name` attribute on the boxes, because a name is what a field is called when it is submitted and these are never submitted. What a reader types stays in their browser until they copy it out."
+  source: "tools/check_site.py, check_no_forms and check_the_typing_surface_is_inert"

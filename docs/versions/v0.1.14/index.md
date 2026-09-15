@@ -9,7 +9,7 @@ SECOND TIME ON THIS ESTATE, same shape both times: a language template's ignore 
 So the fix is not only the anchor. check_the_build_reads_nothing_git_ignores asks GIT what it ignores, across assets/, content/, data/ and docs/, and fails the release if the build reads or writes one of them — a source file absent from a clone builds a different site in CI, and a built file git ignores never reaches the deployed one. Neither should be found by a deploy going red, a third time.
 
 - Released: 2026-09-15
-- Built from commit: ``
+- Built from commit: `911c1ccbb1b61244343d50c7b06e8e1b59d68ee1`
 - Reconstructed: no
 
 ---

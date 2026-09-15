@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.1.14
+> site v0.1.15
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
@@ -40,6 +40,7 @@ Licence: This document is released under the Creative Commons Attribution 4.0 In
 - [All six, side by side](https://store.sgit.ai/offers/): The four tiers and the two add-ons in one table: the question each answers, its price, what is true of the thing behind it today, how it is paid, and the stable offer identifier a printed code redirects to.
 - [The two rails, and why they never meet](https://store.sgit.ai/paying/): Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, the separation is a rule rather than a preference, and no link has been issued yet.
 - [Which agent do you run?](https://store.sgit.ai/policies/): Fifteen Agent Behaviour Policies, one per application, at four levels: the pack downloaded at £5, a working vault you hold the keys to at £50, corrected against your situation at £500, and two sessions with a security professional signing it at £1,500.
+- [A partner reviewed this store, and here is the whole thing](https://store.sgit.ai/review/): A partner walked the entire store and wrote it up. Their note is published here verbatim, with eleven proposals drawn out of it — two we will not do, three that need a ruling — and a verdict box on each. Nothing you type leaves your browser.
 - [Release history](https://store.sgit.ai/versions/): Every release of this site, what changed in it, and the commit it was built from. The version is owned by one file, the release commit's subject repeats it, and the pipeline refuses to tag if the two disagree.
 
 ## Who each offer was built for

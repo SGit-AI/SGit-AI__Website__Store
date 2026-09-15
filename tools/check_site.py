@@ -711,17 +711,82 @@ def check_checkout_links():
                  "to a payment API, so there is no reason for one to be here")
 
 
+# THE RULE THAT MOVED, AND EXACTLY HOW FAR.
+#
+# Until v0.1.15 there was no form, input, textarea or select anywhere in docs/, full
+# stop. A partner's review asked for things that need somewhere to type, and the
+# page that answers that review had to be answerable — so the rule moved by ruling,
+# and it moved as little as it could.
+#
+# <form> is still barred EVERYWHERE, because it is the element that submits.
+# <input> and <select> are still barred EVERYWHERE, because a card number, a name
+# and an address are typed into a single-line field and there is not one on this
+# domain. <textarea> is allowed on ONE named page and nowhere else.
+#
+# Those three sentences are the whole of the change. check_no_network did not move
+# an inch, so even the allowed page cannot send what it holds; check_the_typing_
+# surface_is_inert below holds the boxes to carrying no name and sitting in no form.
+# A rule that loosens without a check loosens again next time nobody is looking.
+TYPING_SURFACE = "review/index.html"
+
+
 def check_no_forms():
-    """Three pages say this site collects nothing from anybody, ever. This is what
+    """Every page here says this site collects nothing from anybody. This is what
     makes that a fact rather than a sentence. A checkout that is a link to somebody
     else's page and a checkout that is a form on ours are different products with
     different obligations, and the difference is one tag."""
     for rel, text in texts():
         if not rel.endswith(".html"):
             continue
-        for tag in ("<form", "<input", "<textarea", "<select"):
-            if tag in text.lower():
-                fail(f"{rel}: contains {tag}> — this site collects nothing, from anybody, ever")
+        low = text.lower()
+        for tag in ("<form", "<input", "<select"):
+            if tag in low:
+                fail(f"{rel}: contains {tag}> — this site collects nothing, from anybody, ever, "
+                     "and these are the tags that would collect it")
+        if "<textarea" in low and rel != TYPING_SURFACE:
+            fail(f"{rel}: contains <textarea>. The ruling of v0.1.15 allowed one on "
+                 f"/{TYPING_SURFACE.rsplit('/', 1)[0]}/ and on no other page; a second typing "
+                 "surface is a second ruling, not a second file")
+
+
+def check_the_typing_surface_is_inert():
+    """The one page that can be typed into, held to what the ruling actually allowed:
+    boxes that carry no name, sit in no form, and belong to a page that — like every
+    other page here — opens no connection at all. The claim on the page is that what
+    a reader types reaches us only when they paste it to us. This is that claim."""
+    page = OUT / TYPING_SURFACE
+    if not page.exists():
+        for rel, text in texts():
+            if rel.endswith(".html") and "<textarea" in text.lower():
+                fail(f"{rel}: has a typing surface and /{TYPING_SURFACE} does not exist")
+        return
+    text = page.read_text()
+    boxes = re.findall(r"<textarea\b[^>]*>", text, re.I)
+    if not boxes:
+        fail(f"{TYPING_SURFACE}: the one page allowed a typing surface has none, so the ruling "
+             "that moved the rule is buying nothing")
+    for b in boxes:
+        if re.search(r"\bname\s*=", b, re.I):
+            fail(f"{TYPING_SURFACE}: a box carries a name attribute — {b[:80]}. A name is what a "
+                 "field is called when it is SUBMITTED, and nothing here is ever submitted")
+        if not re.search(r"\bid\s*=", b, re.I):
+            fail(f"{TYPING_SURFACE}: a box carries no id — {b[:80]}. Without one it cannot be "
+                 "labelled, and an unlabelled box is unusable with a screen reader")
+    flat = " ".join(strip_tags(text).split())
+    for needed in ("no page here opens a network connection",
+                   "lives in this browser only"):
+        if needed not in flat:
+            fail(f"{TYPING_SURFACE}: does not say {needed!r}. The page that takes typing is the "
+                 "page that owes the reader the clearest possible account of where it goes")
+    js = (OUT / "assets" / "review.js")
+    if not js.exists():
+        fail("assets/review.js is missing, so the register on /review/ does nothing")
+        return
+    src = js.read_text()
+    for bad in ("fetch(", "XMLHttpRequest", "sendBeacon", "new WebSocket", "<form"):
+        if bad in src:
+            fail(f"assets/review.js: uses {bad} — the one page that takes typing is the one page "
+                 "that must most obviously not send it")
 
 
 # ------------------------------------------- the buyer groups are a VIEW, not a range ---
@@ -1337,7 +1402,8 @@ def main():
         check_banned_words, check_cannot_read_sentence_absent, check_tamper_wording,
         check_naming_collision, check_prices, check_delivery_pages,
         check_committed_spend_correction, check_rails_not_a_choice,
-        check_checkout_links, check_no_forms, check_buyer_groups,
+        check_checkout_links, check_no_forms, check_the_typing_surface_is_inert,
+        check_buyer_groups,
         check_deposits, check_deposit_not_beside_the_marketplace, check_offer_claims_exist,
         check_payment_split, check_post_sale_page, check_wallet_is_marked,
         check_discount_percentages, check_discount_codes_are_not_printed,

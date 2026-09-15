@@ -200,7 +200,8 @@ rule it enforces:
   of that claim was wrong and three sources say so.
 - **Every checkout URL is on the payment provider's own host**, every checkout mode
   matches the price it follows from, and nothing links to a payment destination that no
-  offer declares. There is no form, no input and no key anywhere in the output.
+  offer declares. There is no form, no input and no key anywhere in the output; one page,
+  /review/, carries reason boxes, by the ruling recorded in v0.1.15.
 - **The buyer groups are an index and not a range**: a group names offer ids only, every
   tier belongs to exactly one group, and the group whose list is empty says so on its
   own page.

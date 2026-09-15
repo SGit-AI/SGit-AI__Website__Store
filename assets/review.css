@@ -1,0 +1,138 @@
+/* review.css — the partner review at /review/.
+ *
+ * THE ONE PAGE ON THIS SITE WITH SOMEWHERE TO TYPE. Every other page is buttons
+ * and links, and a build check refuses a form control anywhere else. What makes
+ * that safe rather than an exception is narrow and mechanical: there is no <form>
+ * element here, the boxes carry no name attribute, nothing is posted, and the
+ * no-network check still holds every page — including this one — to opening no
+ * connection at all. What a reader types stays in their own browser until they
+ * press a copy button, which puts it on their clipboard and nowhere else.
+ *
+ * The register borrows the ledger's vocabulary rather than inventing one: an id,
+ * a state, and the thing it is answering. A page that argues about its own product
+ * should look like the page that argues about its own claims. */
+
+.rv-lede{font-size:1.02rem;line-height:1.65;max-width:62ch}
+
+/* the note, verbatim */
+.rv-letter{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;
+  background:var(--panel);padding:1.5rem 1.7rem;max-width:74ch;box-shadow:var(--shadow);margin:1.2rem 0}
+.rv-verb{display:inline-flex;align-items:center;gap:.45rem;font:800 .62rem/1 var(--sans);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dim2);margin-bottom:.9rem}
+.rv-verb::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.rv-letter p{margin:0 0 1rem;font-size:.97rem;line-height:1.75}
+.rv-letter p:last-child{margin-bottom:0}
+.rv-pull{font-family:var(--serif);font-size:1.2rem;color:#101114;padding-left:.9rem;
+  border-left:2px solid var(--line2);margin:1.3rem 0 !important}
+.rv-flow{font-family:var(--mono);font-size:.82rem;line-height:1.9;color:#101114;background:var(--panel2);
+  border-radius:8px;padding:.85rem 1.05rem;margin:1.2rem 0 !important;white-space:pre-wrap}
+
+/* taxonomy */
+.rv-taxhead{font-size:.95rem;margin:1.9rem 0 .2rem}
+.rv-tax{display:grid;grid-template-columns:repeat(auto-fit,minmax(244px,1fr));gap:.7rem;margin:.9rem 0 0}
+.rv-tx{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:.8rem .9rem}
+.rv-tx b{display:block;font-size:.9rem;color:#101114;margin:.45rem 0 .25rem}
+.rv-tx p{margin:0;font-size:.82rem;line-height:1.6;color:var(--dim)}
+.rv-txid{display:inline-block;font:700 .64rem/1 var(--mono);letter-spacing:.09em;border-radius:4px;
+  padding:.24rem .42rem}
+.rv-k .rv-txid{color:var(--accent-dk);background:rgba(15,118,110,.1)}
+.rv-f .rv-txid{color:var(--warm);background:rgba(180,83,9,.1)}
+.rv-r .rv-txid{color:#1e4f8a;background:rgba(30,79,138,.09)}
+
+/* figures */
+.rv-fig{margin:1.4rem 0 0}
+.rv-figbox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  padding:1.1rem;box-shadow:var(--shadow)}
+.rv-figbox svg{display:block;max-width:100%;height:auto;min-width:760px;color:var(--ink)}
+.rv-fig figcaption{margin-top:.8rem;font-size:.85rem;line-height:1.6;color:var(--dim);max-width:72ch}
+.rv-fig figcaption b{color:var(--ink)}
+.rv-hot{color:var(--accent-dk)}
+.rv-node{fill:none;stroke:currentColor;stroke-opacity:.34}
+.rv-node-hot{fill:var(--accent);fill-opacity:.09;stroke:var(--accent-dk);stroke-width:1.6}
+.rv-edge{fill:none;stroke:currentColor;stroke-opacity:.42;stroke-width:1.3}
+.rv-edge-hot{fill:none;stroke:var(--accent-dk);stroke-width:1.7}
+.rv-lab{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.11em;
+  fill:currentColor;opacity:.5}
+.rv-t{font-family:var(--sans);font-size:12.5px;fill:currentColor}
+.rv-t2{font-family:var(--sans);font-size:11px;fill:currentColor;opacity:.62}
+.rv-tid{font-family:var(--mono);font-size:11px;font-weight:700;fill:currentColor;opacity:.58}
+.rv-tid-hot{font-family:var(--mono);font-size:11px;font-weight:800;fill:var(--accent-dk)}
+.rv-th{font-family:var(--sans);font-size:13.5px;font-weight:700;fill:currentColor}
+
+/* the register */
+.rv-item{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin:0 0 1rem;
+  overflow:hidden;box-shadow:var(--shadow)}
+.rv-head{display:flex;gap:.7rem;align-items:flex-start;flex-wrap:wrap;padding:.95rem 1.1rem .8rem}
+.rv-id{flex:0 0 auto;font:800 .68rem/1 var(--mono);letter-spacing:.07em;color:var(--accent-dk);
+  background:rgba(15,118,110,.09);border-radius:5px;padding:.33rem .48rem}
+.rv-head h3{flex:1 1 16rem;font-size:1.08rem;margin:0;border:0;padding:0;line-height:1.28}
+.rv-st{flex:0 0 auto;font:700 .63rem/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;
+  border-radius:999px;padding:.34rem .6rem;border:1px solid;white-space:nowrap}
+.st-do{color:var(--accent-dk);border-color:rgba(15,118,110,.5);background:rgba(15,118,110,.08)}
+.st-later{color:var(--warm);border-color:rgba(180,83,9,.5);background:rgba(180,83,9,.08)}
+.st-wont{color:#93263a;border-color:rgba(147,38,58,.5);background:rgba(147,38,58,.07)}
+.st-ruling{color:#4c3f8f;border-color:rgba(76,63,143,.5);background:rgba(76,63,143,.07)}
+.rv-body{padding:0 1.1rem 1rem;display:grid;gap:.8rem}
+.rv-refs{font:700 .66rem/1.5 var(--mono);letter-spacing:.05em;color:var(--dim2)}
+.rv-quote{border-left:2px solid var(--line2);padding-left:.85rem;font-size:.87rem;line-height:1.65;
+  color:var(--dim);font-style:italic;margin:0}
+.rv-block{border-top:1px solid var(--line);padding-top:.75rem}
+.rv-blab{display:block;font:800 .62rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim2);margin-bottom:.45rem}
+.rv-block p{margin:0 0 .55rem;font-size:.9rem;line-height:1.68}
+.rv-block p:last-child{margin-bottom:0}
+.rv-opts{display:grid;gap:.4rem;margin-top:.55rem}
+.rv-opt{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.6rem;align-items:baseline;
+  background:var(--panel2);border-radius:8px;padding:.55rem .75rem;font-size:.86rem;line-height:1.58}
+.rv-opt b{font:600 .7rem/1.4 var(--mono);letter-spacing:.04em;color:var(--accent-dk);white-space:nowrap}
+.rv-cost{display:flex;gap:.4rem 1.1rem;flex-wrap:wrap;font:600 .7rem/1.5 var(--mono);color:var(--dim)}
+.rv-cost b{color:var(--ink);font-weight:700}
+
+/* the verdict — the only typing surface on this site */
+.rv-verdict{background:var(--panel2);border-top:1px solid var(--line);padding:.9rem 1.1rem 1rem}
+.rv-vlab{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin-bottom:.55rem}
+.rv-vlab span{font:800 .62rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--dim2)}
+.rv-saved{font:700 .64rem/1 var(--mono);color:var(--accent-dk);opacity:0;transition:opacity .18s}
+.rv-saved.on{opacity:1}
+.rv-picks{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.6rem}
+.rv-pick{cursor:pointer;border:1px solid var(--line2);background:var(--panel);border-radius:999px;
+  padding:.38rem .85rem;font:600 .8rem/1.2 var(--sans);color:var(--ink)}
+.rv-pick:hover{border-color:var(--accent)}
+.rv-pick[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.rv-pick[data-v="disagree"][aria-pressed="true"]{background:#93263a;border-color:#93263a}
+.rv-pick[data-v="talk"][aria-pressed="true"]{background:var(--warm);border-color:var(--warm)}
+.rv-why{width:100%;min-height:62px;resize:vertical;background:var(--panel);color:var(--ink);
+  border:1px solid var(--line2);border-radius:8px;padding:.6rem .75rem;
+  font:400 .88rem/1.6 var(--sans)}
+/* The reason box has a real label, and a screen reader reads it. It is off screen
+   rather than display:none, because display:none takes it out of the accessibility
+   tree as well and an unlabelled box is unusable. */
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.rv-why::placeholder{color:var(--dim2)}
+.rv-why:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(15,118,110,.14)}
+
+/* progress + export */
+.rv-prog{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;border:1px solid var(--line);
+  border-radius:10px;background:var(--panel2);padding:.6rem .85rem;margin:1.2rem 0 1.4rem;
+  font:600 .76rem/1 var(--mono);color:var(--dim)}
+.rv-track{width:120px;height:5px;background:var(--line2);border-radius:999px;overflow:hidden}
+.rv-fill{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .25s}
+.rv-export{border:1px solid var(--line2);border-radius:12px;background:var(--panel);
+  padding:1.2rem 1.35rem;box-shadow:var(--shadow)}
+.rv-export h3{font-size:1.15rem;margin:0 0 .5rem;border:0;padding:0}
+.rv-export p{margin:0;font-size:.89rem;line-height:1.65;color:var(--dim);max-width:64ch}
+.rv-exbtns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.rv-prev{margin-top:1rem;background:var(--term-bg);color:#c9d1d9;border-radius:9px;padding:.9rem 1.05rem;
+  font-size:.74rem;line-height:1.7;white-space:pre-wrap;max-height:280px;overflow:auto}
+.rv-toast{position:fixed;left:50%;bottom:1.3rem;transform:translate(-50%,150%);z-index:60;
+  background:#101114;color:#fbfaf7;border-radius:999px;padding:.55rem 1.1rem;
+  font:600 .8rem/1 var(--sans);transition:transform .2s ease;box-shadow:var(--shadow)}
+.rv-toast.on{transform:translate(-50%,0)}
+
+@media (max-width:640px){
+  .rv-head h3{flex-basis:100%}
+  .rv-opt{grid-template-columns:1fr;gap:.2rem}
+  .rv-letter{padding:1.1rem 1.2rem}
+}
+@media (prefers-reduced-motion:reduce){.rv-fill,.rv-toast,.rv-saved{transition:none}}
