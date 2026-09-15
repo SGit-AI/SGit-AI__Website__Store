@@ -57,6 +57,23 @@
 # conversation and a written scope, so it is never taken from somebody who cannot
 # be scheduled.
 #
+# HOW MUCH IS TAKEN ON SALE. `pay_now_pct` is the share of the price taken when
+# the order is placed; the rest is due on delivery. It is 100 for the two levels
+# that are produced without anybody being scheduled, and 20 for the two that are
+# somebody's work — £100 of £500, £300 of £1,500. A deposit is how you sell an
+# hour of a person from a card without either side carrying the whole risk of a
+# thing that has never run for a paying buyer, and it works the same whether the
+# card is tapped in a room or opened on a phone: the split is a property of the
+# offer, not of the rail.
+#
+# Frozen in tools/check_site.py exactly as the prices are. A deposit that drifts
+# is a price that drifted, and these go onto printed cards.
+#
+# `post_sale` is what the buyer reads AFTER paying, which is a different page from
+# the delivery page they read before. It answers what happens now: when it arrives,
+# what they have to do, how a key reaches them — never the key itself — and what
+# "done" means, which is a commit they can check from the vault's own history.
+#
 # `checkout_url` is the payment link itself. EVERY ONE IS EMPTY, and that is the
 # state of this rail rather than a placeholder somebody forgot: no payment link
 # has been created for any offer on this site. The build renders a live button
@@ -76,7 +93,7 @@
   price_min: 500
   price_max: 500
   price_why: "The floor, set by ruling on 15 September. The card fee is about four per cent of it, which was the reason £5 was ruled OUT as a floor on 10 September — the fee did not change, the judgement did, and the arithmetic stays on the page rather than being quietly dropped"
-  gets: "Every file in the vault for the shape you picked, sent to you: the policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent."
+  gets: "Every file in the vault for the shape you picked, sent to you: the behaviour policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent."
   state_badge: exists
   state: "Built, and it runs today. Fifteen template shapes are published, and the pack for any of them is what this level sends."
   claim: abp-templates-exist
@@ -85,9 +102,15 @@
   also_for: [startups, investors]
   checkout_mode: fixed
   checkout_url: ""
+  pay_now_pct: 100
+  post_when: "Within one working day, by email."
+  post_does: "Nothing. It arrives."
+  post_done: "The email carries a link to a zip whose content hash matches the hash published for that shape."
+  post_check: "Compare the hash on the page with the hash of what you downloaded."
+  post_key: "Not applicable. There is no vault at this level and so there is no key."
   delivery_says:
-    - "One email, with the whole pack for the shape you chose."
-    - "The policy, the grant, the mandate, the delta and the barrier on each row."
+    - "One email, carrying a download link to a zip of the whole pack for the shape you chose — a link rather than an attachment, because an attachment has a size limit and a link does not."
+    - "The behaviour policy, the grant, the mandate, the delta and the barrier on each row."
     - "The prompts and documents you hand the agent, and the business case for a control."
   not_promised:
     - "Not a vault. No history, no app, and no read key to hand anybody — that is the level above."
@@ -109,6 +132,12 @@
   also_for: [startups, investors]
   checkout_mode: fixed
   checkout_url: ""
+  pay_now_pct: 100
+  post_when: "Within one working day."
+  post_does: "Nothing, until the key arrives. Then clone it."
+  post_done: "A vault exists, the licence file in it carries your name, the public key is off it, and you have opened it with your key."
+  post_check: "Your first clone. The licence file is in the tree."
+  post_key: "Out of band, and never on a page. A vault key is never published and never committed, so it reaches you by a separate route agreed when the vault is made."
   delivery_says:
     - "A vault you hold the keys to: clone it, change it, commit, and the history is yours."
     - "Its own app, and a read key you can hand to anybody who asks how you govern the agent."
@@ -133,6 +162,12 @@
   also_for: [agents, investors]
   checkout_mode: fixed
   checkout_url: ""
+  pay_now_pct: 20
+  post_when: "The prompt within one working day. The corrected vault within three of your reply."
+  post_does: "Run the prompt below where the agent runs, and send back what it prints."
+  post_done: "The corrected mandate and the recomputed delta are committed, with the note of what changed and why committed beside them."
+  post_check: "The commit is in your history and the note names every changed row."
+  post_key: "Out of band, and never on a page."
   delivery_says:
     - "Everything in the vault level, with the mandate corrected against what you told us."
     - "The delta recomputed against your corrected mandate, with the barrier on every row."
@@ -149,7 +184,7 @@
   price_min: 150000
   price_max: 150000
   price_why: "Two half-hour sessions — one to interview the team, one to deliver — plus the work between them and a security professional's review. It is the only level whose cost is somebody's time, and it is a fixed price rather than a band because two sessions is what is sold"
-  gets: "Two half-hour sessions with your team, the policy built from the interview, and a security professional's review and sign-off."
+  gets: "Two half-hour sessions with your team, the behaviour policy built from the interview, and a security professional's review and sign-off."
   state_badge: unrun
   state: "Specified, and never run for a paying buyer. The sessions have not been held with anybody, and a first buyer would be the first run."
   claim: abp-sessions-unrun
@@ -158,6 +193,12 @@
   also_for: [agents, startups]
   checkout_mode: fixed
   checkout_url: ""
+  pay_now_pct: 20
+  post_when: "The first session is scheduled with you. The record and the sign-off follow the second."
+  post_does: "Book the first session. A route to do that comes with this page."
+  post_done: "Both sessions have been held, the record of what was asked and answered is committed, and the sign-off file is committed with the professional's name and the date."
+  post_check: "Three files in the tree, and the sessions dated in the record."
+  post_key: "Out of band, and never on a page."
   delivery_says:
     - "Half an hour with your team to find out what is actually running."
     - "Half an hour to deliver it and walk through what came back."

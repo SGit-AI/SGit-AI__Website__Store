@@ -915,6 +915,86 @@ def check_offer_claims_exist():
                  "would link to an anchor that does not exist")
 
 
+# ------------------------------------------- the deposit split, and the key rule ---
+# Two of the four levels take a fifth on the order and the rest on delivery. That
+# share is frozen exactly as a price is, because it IS a price: it decides what
+# comes off a card, and it goes onto the same printed material.
+#
+# The second check here is the load-bearing one on this whole site. A vault key is
+# never published and never committed; a page under docs/ is a committed file; so
+# a key on the page a buyer lands on after paying is a security incident rather
+# than a convenience. The post-sale page says HOW a key arrives and never carries
+# one, and this refuses the release if anything key-shaped lands there.
+EXPECTED_SPLIT = {"t1": 100, "t2": 100, "t3": 20, "t4": 20}
+
+KEY_SHAPES = [
+    (re.compile(r"sgit_private_(?:vault|write|read)_[A-Za-z0-9]{6,}"), "an sgit vault key"),
+    (re.compile(r"[A-Za-z0-9_-]{16,}:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"),
+     "a passphrase:uuid vault key"),
+]
+
+
+def check_payment_split():
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offers = {o["id"]: o for o in index["offers"]}
+    for oid, pct in EXPECTED_SPLIT.items():
+        got = offers.get(oid, {}).get("pay_now_pct")
+        if got != pct:
+            fail(f"offer {oid}: takes {got}% on the order, the ruling sets {pct}% — what comes off "
+                 "a card is a price, and a price is not the builder's to move")
+    for oid, o in offers.items():
+        pct = o.get("pay_now_pct")
+        if pct is None:
+            continue
+        if not (0 < pct <= 100):
+            fail(f"offer {oid}: pay_now_pct is {pct}, which is not a share of a price")
+        if pct < 100 and o.get("state") not in ("unrun", "spec", "unlocated", "absent", "booking"):
+            fail(f"offer {oid}: takes a deposit but its state is {o.get('state')!r}. A deposit is "
+                 "how a thing that has not run yet is sold honestly; a thing that runs takes its "
+                 "price")
+
+
+def check_post_sale_page():
+    """The page a buyer lands on after paying: it exists, it says how a key
+    arrives, and it carries no key."""
+    page = OUT / "order" / "index.html"
+    if not page.exists():
+        fail("there is no post-sale page at /order/ — a payment's success address would land on "
+             "the page the buyer already read before paying, which is the wrong page at the "
+             "wrong moment")
+        return
+    flat = strip_tags(page.read_text())
+    for needed in ("never on this page", "Done is a commit"):
+        if needed not in flat:
+            fail(f"/order/: does not say {needed!r}")
+    for rel, text in texts():
+        for rx, what in KEY_SHAPES:
+            m = rx.search(text)
+            if m:
+                fail(f"{rel}: {what} is in the built output. A key is never published and never "
+                     "committed, and every page here is a committed file")
+
+
+def check_wallet_is_marked():
+    """The simulated rail is never dressed to look live, and it is never the only
+    rail on the page: a checkout that did not admit to being a demonstration would
+    be the one dishonest thing on a site whose argument is checkability."""
+    src = (ROOT / "data" / "checkout.yml").read_text()
+    sim = re.findall(r"^\s*simulated: true$", src, re.M)
+    if not sim:
+        return  # no simulated rail is a fine state
+    if len(sim) > 1:
+        fail("data/checkout.yml: more than one rail is marked simulated")
+    if len(re.findall(r"^  - id: ", src, re.M)) < 2:
+        fail("data/checkout.yml: the simulated rail is the only rail. A demonstration wallet "
+             "beside nothing real reads as the checkout rather than as a stand-in")
+    js = (OUT / "assets" / "shop.js").read_text()
+    for needed in ("charges nothing", "Simulated"):
+        if needed not in js:
+            fail(f"assets/shop.js: the simulated rail does not say {needed!r} on the screen it "
+                 "appears on")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -931,6 +1011,7 @@ def main():
         check_committed_spend_correction, check_rails_not_a_choice,
         check_checkout_links, check_no_forms, check_buyer_groups,
         check_deposits, check_deposit_not_beside_the_marketplace, check_offer_claims_exist,
+        check_payment_split, check_post_sale_page, check_wallet_is_marked,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,

@@ -100,6 +100,7 @@ NAV = [
         ("The three steps", "/how-it-works/"),
         ("The two rails", "/paying/"),
         ("What a session is", "/booking/"),
+        ("What happens after you pay", "/order/"),
     ]),
     ("Who it is for", "/audiences/", [
         ("The three buyers", "/audiences/"),
@@ -1113,11 +1114,13 @@ def relativise(doc, prefix):
 # promise something the offer no longer includes, and this one is read by somebody
 # who has already paid.
 
+def _money(pence):
+    return "£" + format(pence / 100, ",.2f").rstrip("0").rstrip(".")
+
+
 def delivery_pages(out_dir, ctx_shared):
     made = {}
     for o in OFFERS:
-        if o["rail"] == "none":
-            continue
         url = f"/d/{o['id']}/"
         ctx = dict(ctx_shared)
         ctx.update({"page": f"d/{o['id']}", "page_url": url, "fm": {}, "toc": []})
@@ -1150,6 +1153,46 @@ def delivery_pages(out_dir, ctx_shared):
                + "".join(f"<li>{inline(x, ctx)}</li>" for x in o["deposit_says"]) + "</ul>"
                '<h3 id="what-it-does-not-do">What it does not do</h3><ul>'
                + "".join(f"<li>{inline(x, ctx)}</li>" for x in o["deposit_not"]) + "</ul>")
+            # What comes off the card now, and what is owed when the work lands. Only
+            # on the levels that take a deposit, because on the others there is one
+            # amount and a second row saying "£0 later" is noise.
+            + ('' if (o.get("pay_now_pct") or 100) >= 100 else
+               '<h2 id="what-is-taken-when">What is taken, and when</h2>'
+               '<div class="tablewrap"><table><tbody>'
+               '<tr><th>On the order</th><td><b>'
+               + _money(o["price_min"] * o["pay_now_pct"] // 100)
+               + '</b> &mdash; a fifth</td></tr>'
+               '<tr><th>On delivery</th><td>'
+               + _money(o["price_min"] - o["price_min"] * o["pay_now_pct"] // 100)
+               + ', invoiced when the work is in your hands</td></tr>'
+               "</tbody></table></div>"
+               '<p class="small dim">This level has never run for a paying buyer, and a deposit is '
+               'how that is sold honestly from a card: neither side carries the whole amount before '
+               'anybody has done anything. <b>The split belongs to the offer and not to the rail</b> '
+               '&mdash; a card tapped at the stand takes the same deposit as a link on a phone.</p>')
+            # Gap 2 of the 15 September brief: this page said "corrected against your
+            # situation" and never said how the situation reaches us, while telling the
+            # buyer nobody would interview them — which left them with no route at all.
+            + ('' if o["id"] != "t3" else
+               '<h2 id="what-you-do">What you do</h2>'
+               '<p><b>Nobody needs access to your environment and you send us no credentials.</b> '
+               'We send a prompt, <b>you run it where the agent runs</b>, and you send back what it '
+               'printed. The mandate is corrected against that.</p>'
+               '<div class="tablewrap"><table><tbody>'
+               '<tr><th>1</th><td>You buy this level. Nothing is scheduled and nobody waits.</td></tr>'
+               '<tr><th>2</th><td>You paste the prompt to the agent, in the environment it actually '
+               'runs in. It reads its own configuration and prints a table.</td></tr>'
+               '<tr><th>3</th><td>You send back what it printed. One table &mdash; no credentials, '
+               'no logs, no access.</td></tr>'
+               '<tr><th>4</th><td>The corrected vault comes back, with a written note of what '
+               'changed and why.</td></tr>'
+               "</tbody></table></div>"
+               '<p class="small dim">The result is computed on your own machine and sent back in '
+               'bands rather than as raw counts, because a connector list on its own is '
+               'identifying. <b>The prompt reads and prints; it does not act</b>, and its last line '
+               'says so. The whole of it is on '
+               '<a href="/how-it-works/">the page that explains buying</a>, and again on your own '
+               'page after you pay.</p>')
             + '<h2 id="how-to-buy-this">How to buy this</h2>'
             f'<p class="offer-foot">{checkout_html(o, ctx)}</p>'
             f'<p class="small dim">The code on the card redirects here, and this page says what '
@@ -1215,6 +1258,10 @@ def delivery_pages(out_dir, ctx_shared):
 # the correction done with you rather than by you.
 
 ABP = json.loads((DATA / "abp-catalogue.json").read_text())
+# The prompt a level-three buyer runs, kept as a text file rather than a YAML
+# string: it is the thing they paste, and a paste-able artefact should live
+# somewhere it can be read and diffed without a parser in the way.
+LEVEL3_PROMPT = (DATA / "level3-prompt.txt").read_text().rstrip()
 PRODUCTS = yaml_load((DATA / "products.yml").read_text())
 CHECKOUT_RAILS = yaml_load((DATA / "checkout.yml").read_text())
 # Each level names the offer it is; the price is joined from data/offers.yml so
@@ -1227,7 +1274,13 @@ for _l in PRODUCTS["levels"]:
                          "data/offers.yml. A level is an offer with a description; it cannot name "
                          "a price that does not exist.")
     LEVELS.append(dict(_l, price_label=_o["price_label"], price=_o["price_min"],
-                       rail=_o["rail"], state=_o["state_badge"]))
+                       rail=_o["rail"], state=_o["state_badge"],
+                       pay_now_pct=_o.get("pay_now_pct", 100),
+                       post_when=_o.get("post_when", ""), post_does=_o.get("post_does", ""),
+                       post_key=_o.get("post_key", ""), post_done=_o.get("post_done", ""),
+                       post_check=_o.get("post_check", ""),
+                       # only the corrected level asks the buyer to run anything
+                       prompt=LEVEL3_PROMPT if _l["id"] == "custom" else ""))
 LEVELS_BY_ID = {l["id"]: l for l in LEVELS}
 SHAPE_CODES = PRODUCTS["shape_codes"]
 CUSTOM_SHAPE = PRODUCTS["custom_shape"]
@@ -1287,7 +1340,10 @@ def shop_model(prefix):
         "order_prefix": PRODUCTS["meta"]["order_prefix"],
         "levels": [{"id": l["id"], "code": l["code"], "n": l["n"], "name": l["name"],
                     "offer": l["offer"], "price_label": l["price_label"], "price": l["price"],
-                    "lede": l["lede"]}
+                    "lede": l["lede"], "pay_now_pct": l["pay_now_pct"],
+                    "post_when": l["post_when"], "post_does": l["post_does"],
+                    "post_key": l["post_key"], "post_done": l["post_done"],
+                    "post_check": l["post_check"], "prompt": l["prompt"]}
                    for l in LEVELS],
         "shapes": [{"slug": s["slug"], "code": s["code"], "title": s["title"],
                     "summary": s["summary"], "glyph": s["glyph"], "family": s["family"],
@@ -1297,8 +1353,9 @@ def shop_model(prefix):
         "rails": [{"id": r["id"], "n": r["n"], "name": r["name"],
                    "url": (r.get("url") or "").strip(),
                    "ref_param": r["ref_param"], "amount_param": (r.get("amount_param") or ""),
+                   "simulated": bool(r.get("simulated")),
                    "kind": r["kind"], "takes": r["takes"], "note": r["note"]}
-                  for r in CHECKOUT_RAILS["rails"]],
+                  for r in sorted(CHECKOUT_RAILS["rails"], key=lambda r: r["n"])],
     }
 
 
@@ -1490,6 +1547,37 @@ def lab_model(prefix):
         "scenarios": BRIEF["scenarios"],
         "offers": offers,
     }
+
+
+PAY_NOTE = (
+    '<h2 id="the-deposit-is-the-offer">Why two of the four take a deposit</h2>'
+    '<p><b>Two of the four levels are produced without anybody being scheduled</b>, so they take '
+    'the whole price. The other two are somebody\u2019s work, and neither has run for a paying '
+    'buyer yet \u2014 so they take <b>a fifth on the order and the rest when the work is in your '
+    'hands</b>. £100 of £500; £300 of £1,500.</p>'
+    '<p><b>The split belongs to the offer and not to the rail.</b> A card tapped on a terminal at '
+    'the stand takes the same deposit as a link opened on a phone, because what is being split is '
+    'the risk on a thing that has never run, and that does not change with how the card is read.</p>'
+    '<h2 id="what-the-store-never-sees">What the store never sees</h2>'
+    '<p>No name, no contact, no card. There is <b>no form, input, textarea or select anywhere in '
+    'this site\u2019s output</b> and a build check holds that line; the provider takes all three '
+    'on its own pages and hands back nothing. What travels is the amount and an order reference '
+    'carrying the product codes.</p>'
+)
+
+POST_SALE_NOTE = (
+    '<h2 id="the-key-is-never-on-this-page">The key is never on this page</h2>'
+    '<p><b>A vault key is never published and never committed</b>, and a page on this site is a '
+    'committed file. So this page says <em>how</em> a key reaches you and never carries one. '
+    'Anything that looks like a key on a page like this is a security incident rather than a '
+    'convenience, and a build check refuses the release if one lands here.</p>'
+    '<h2 id="done-is-a-commit">Done is a commit</h2>'
+    '<p>Every level has a definition of done you can check yourself, and at the three vault levels '
+    'it is <b>a commit in your own history</b> rather than somebody\u2019s word: the licence file '
+    'with your name in it, the corrected mandate and the recomputed delta with the note beside '
+    'them, or the record and the sign-off file with a name and a date. <b>You do not have to take '
+    'anybody\u2019s word for whether the thing you bought was delivered.</b></p>'
+)
 
 
 # The sentence every lab page has to carry, above the tool. check_lab_is_marked
@@ -1711,6 +1799,52 @@ def shape_pages(out_dir, ctx_shared):
     twin = page["src_md"] + f"\n---\n\n{LICENCE_STAMP}\n"
     (target.parent / "index.md").write_text(twin)
     made[url] = page["fm"]["title"]
+
+    # ------------------------------------------------------------ paying
+    for slug, title, desc, crumb, mount, intro, tail_md in (
+        ("pay", "Paying",
+         "What is due now, what is due on delivery, and the rails. Nothing is collected here: "
+         "the provider takes your name and card on its own pages.",
+         " / paying",
+         "pay",
+         '<p class="lead">What is due now, and what is due when the work is in your hands. '
+         '<b>Nothing on this page collects anything</b> \u2014 there is no form, no field and no '
+         'account, and a card is typed on the provider\u2019s own pages.</p>',
+         "# Paying\n\nThe amount due now and the amount due on delivery, and the rails that "
+         "take them. The store collects nothing: the provider takes the name, the contact and the "
+         "card on its own pages, and what reaches it is the amount and an order reference.\n"),
+        ("order", "What happens now",
+         "Read after paying: the order reference, what arrives and when, what you do next, how a "
+         "key reaches you, and what done means for each level.",
+         " / what happens now",
+         "order",
+         '<p class="lead">Your order, and <b>what happens now</b> \u2014 which is a different '
+         'question from what you were buying, and so this is a different page from the one you '
+         'read before paying.</p>',
+         "# What happens now\n\nRead after paying. Per line: what arrives and when, what you do "
+         "next, how a key reaches you, and what done means.\n\n**A vault key never appears on "
+         "this page.** A key is never published and never committed, and a page is a committed "
+         "file, so the page says how the key arrives and never carries it.\n"),
+    ):
+        u2 = f"/{slug}/"
+        pre2 = rel_prefix(u2)
+        c2 = dict(ctx_shared)
+        c2.update({"page": slug, "page_url": u2, "fm": {}, "toc": []})
+        b2 = (intro + shop_island(pre2) +
+              f'<div id="{mount}"><p class="dim">This page needs JavaScript. '
+              '<a href="/policies/">The catalogue</a> lists everything and what it costs.</p></div>'
+              + (POST_SALE_NOTE if slug == "order" else PAY_NOTE))
+        pg2 = {
+            "fm": {"title": title, "description": desc,
+                   "head_css": "/assets/shop.css", "head_js": "/assets/shop.js"},
+            "url": u2, "crumb": crumb, "nav_match": "/policies/",
+            "src_md": tail_md,
+        }
+        t2 = out_dir / slug / "index.html"
+        t2.parent.mkdir(parents=True, exist_ok=True)
+        t2.write_text(page_html(pg2, c2, b2))
+        (t2.parent / "index.md").write_text(tail_md + f"\n---\n\n{LICENCE_STAMP}\n")
+        made[u2] = title
     return made
 
 
@@ -2024,9 +2158,9 @@ Nothing on this site is a compliance assessment, and no page claims conformity t
 {f'<p class="lead">{inline(fm["lead"], ctx)}</p>' if fm.get('lead') else ''}
 {toc}
 {body}
-<p class="pagenav"><a href="/offers/">The six offers &rarr;</a>
-<a href="/ledger/">Every claim on this site, with its state &rarr;</a>
-<a href="/disclosures/">What we do not say &rarr;</a></p>
+<p class="pagenav"><a href="/policies/">Which agent do you run? &rarr;</a>
+<a href="/how-it-works/">How buying works &rarr;</a>
+<a href="/ledger/">Every claim, with its state &rarr;</a></p>
 </main>
 {footer_html()}
 </body>
@@ -2166,6 +2300,8 @@ def site_index(rendered, claims):
              "price": o["price_label"], "rail": o["rail"], "state": o["state_badge"],
              "buyer": o["buyer"], "also_for": o["also_for"],
              "checkout_mode": o["checkout_mode"],
+             # the share taken when the order is placed; the rest is due on delivery
+             "pay_now_pct": o.get("pay_now_pct", 100),
              # The link itself, or null. Never a placeholder string: a consumer of
              # this index has to be able to tell "no checkout" from "a checkout
              # whose URL somebody typed the word TODO into".

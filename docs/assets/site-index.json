@@ -1,5 +1,5 @@
 {
- "version": "v0.1.7",
+ "version": "v0.1.8",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -202,6 +202,7 @@
     "investors"
    ],
    "checkout_mode": "fixed",
+   "pay_now_pct": 100,
    "checkout_url": null,
    "deposit": null,
    "delivery": "/d/t1/"
@@ -219,6 +220,7 @@
     "investors"
    ],
    "checkout_mode": "fixed",
+   "pay_now_pct": 100,
    "checkout_url": null,
    "deposit": null,
    "delivery": "/d/t2/"
@@ -236,6 +238,7 @@
     "investors"
    ],
    "checkout_mode": "fixed",
+   "pay_now_pct": 20,
    "checkout_url": null,
    "deposit": null,
    "delivery": "/d/t3/"
@@ -253,6 +256,7 @@
     "startups"
    ],
    "checkout_mode": "fixed",
+   "pay_now_pct": 20,
    "checkout_url": null,
    "deposit": null,
    "delivery": "/d/t4/"
@@ -271,6 +275,7 @@
     "startups"
    ],
    "checkout_mode": "attached",
+   "pay_now_pct": 100,
    "checkout_url": null,
    "deposit": null,
    "delivery": "/d/add-formats/"
@@ -285,6 +290,7 @@
    "buyer": "investors",
    "also_for": [],
    "checkout_mode": "none",
+   "pay_now_pct": 100,
    "checkout_url": null,
    "deposit": null,
    "delivery": null

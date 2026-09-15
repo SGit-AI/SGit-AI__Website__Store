@@ -1,10 +1,27 @@
 {
-  "current": "v0.1.7",
+  "current": "v0.1.8",
   "releases": [
+    {
+      "version": "v0.1.8",
+      "date": "2026-09-15",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the flow runs end to end on a simulated wallet, and two levels take a fifth on the order",
+      "summary": "The whole purchase runs end to end without a payment link existing: catalogue, order, paying, and the page that says what happens now. Paying is a demonstration wallet \u2014 a balance in the reader's own browser, charging nothing, labelled as simulated on every screen it appears on, beside the three real rails which still say no link has been issued. The two levels that are somebody's work take a fifth on the order and the rest on delivery: \u00a3100 of \u00a3500, \u00a3300 of \u00a31,500, frozen in the gate exactly as a price is, and the split belongs to the offer rather than the rail so a card tapped at the stand takes the same deposit as a link on a phone. The post-sale page is new and is a different page from the delivery page: per line it carries the reference, what arrives and when, what the buyer does next, how a key reaches them \u2014 never the key \u2014 and what done means, which at the vault levels is a commit in their own history. Level three now says what the buyer actually does and carries the prompt they run; the add-on that cannot be bought has a page instead of a 404; and the two-word shortening a ruling forbids is gone from the pages that carried it.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.7",
       "date": "2026-09-15",
-      "commit": "",
+      "commit": "326e07809425e5acf8a5705d21a3edbaa54adcf3",
       "site": "store.sgit.ai",
       "title": "the store: fifteen agent behaviour policies, four levels each, a cart and two rails",
       "summary": "The store proper. Fifteen Agent Behaviour Policy shapes promoted from riskmandate.ai at build time with a content hash, times four levels \u2014 the pack by email at \u00a35, a working vault at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500 \u2014 plus one for a deployment nobody has profiled, which starts at the third level because the first two deliver a template and for it there is not one. A catalogue with chip filters, a page per shape, an order that survives a reload, and two payment rails. The four tiers of the 10 September pack were replaced by ruling; the identifiers did not change, so a printed code still lands. Nothing is collected here: every control is a button, no page opens a connection, and what reaches the provider is an amount and an order reference carrying the product codes.",

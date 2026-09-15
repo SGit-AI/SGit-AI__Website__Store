@@ -1,6 +1,6 @@
 # Tier 4 — Can somebody go through it with my team?
 
-Two half-hour sessions with your team, the policy built from the interview, and a security professional's review and sign-off.
+Two half-hour sessions with your team, the behaviour policy built from the interview, and a security professional's review and sign-off.
 
 - Offer id: `t4`
 - Price: £1,500

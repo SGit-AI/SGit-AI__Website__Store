@@ -1,0 +1,21 @@
+# Paste this to the agent you want the behaviour policy for.
+# It reads its own configuration and prints a table. It does not act.
+
+List every capability you currently hold, using the verb.object.reach
+grammar published at https://abp.sgit.ai/model/capabilities/
+
+For each capability, state:
+  - the capability id
+  - how you know you have it (a setting, a scope, a token, a tool listing)
+  - what stands between you and using it, as exactly one of:
+      none        nothing in the way
+      expectation a rule written down that nothing enforces
+      setting     a switch your own account can flip
+      boundary    enforced above you, out of your reach
+
+Then state, separately, what you understand you were asked to do.
+
+Do not include any credential, token, key, customer record or message
+content. Names of tools and scopes only.
+
+Print the result as a markdown table. Do not act on anything.

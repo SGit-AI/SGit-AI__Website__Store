@@ -120,3 +120,71 @@
 .cartlink:hover{border-color:var(--accent);text-decoration:none}
 .cartlink b{display:inline-flex;align-items:center;justify-content:center;min-width:1.15rem;height:1.15rem;
   border-radius:99px;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;padding:0 .3rem}
+
+/* ---------- the split, paying, and the page after ----------
+   Two of the four levels take a deposit. The split is shown as two halves of one
+   row rather than as a discount or a saving, because it is neither: it is the
+   same price, taken at two moments. */
+.splitbox{margin:1.1rem 0 0;border:1px solid var(--line);border-radius:11px;background:var(--panel);padding:.85rem 1rem 1rem}
+.sp-lab{display:block;font-size:.66rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--dim2);margin-bottom:.6rem}
+.sp-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.sp-half{background:var(--panel);padding:.7rem .85rem}
+.sp-half b{display:block;font-family:var(--serif);font-size:1.6rem;line-height:1;color:#101114;letter-spacing:-.02em}
+.sp-half span{display:block;margin-top:.2rem;font-size:.74rem;color:var(--dim)}
+.sp-later b{color:var(--dim)}
+.sp-note{margin:.7rem 0 0;font-size:.78rem;line-height:1.55;color:var(--dim)}
+.buy-big{font-size:.95rem;padding:.6rem 1.2rem}
+
+.paysum{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:1rem 1.15rem 1.1rem;
+  box-shadow:var(--shadow)}
+.paysum-head{display:flex;align-items:baseline;justify-content:space-between}
+.ps-lab{font-size:.66rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--dim2)}
+.ps-now{font-family:var(--serif);font-size:2.3rem;line-height:1;color:#101114;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.ps-later{margin:.35rem 0 0;font-size:.84rem;color:var(--dim)}
+.ps-lines{list-style:none;margin:.9rem 0 0;padding:.8rem 0 0;border-top:1px solid var(--line)}
+.ps-lines li{display:grid;grid-template-columns:8.5rem minmax(0,1fr) auto;gap:.8rem;align-items:baseline;padding:.3rem 0}
+.ps-sku{font-family:var(--mono);font-size:.74rem;color:var(--dim2)}
+.ps-what{font-size:.84rem;color:var(--ink)}
+.ps-amt{font-size:.8rem;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.ps-ref{margin:.8rem 0 0;padding-top:.7rem;border-top:1px solid var(--line);font-family:var(--mono);
+  font-size:.78rem;color:var(--dim)}
+
+/* The simulated rail is marked on its own card and never dressed to look live. */
+.rail-sim{border-style:dashed;border-color:var(--line2);background:var(--panel2)}
+.rail-flag{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--warm);background:#fdf1e6;border:1px solid #f0d3b8;border-radius:99px;padding:.12rem .5rem;margin-bottom:.5rem}
+.rail-bal{margin:.2rem 0 .7rem;font-size:.84rem;color:var(--dim)}
+.rail-bal b{font-family:var(--serif);font-size:1.25rem;color:#101114}
+.rail .buy{width:100%;text-align:center;cursor:pointer;font:700 .86rem/1.5 var(--sans)}
+
+.orderhead{border:1px solid rgba(15,118,110,.32);background:rgba(15,118,110,.05);border-radius:12px;
+  padding:1rem 1.15rem 1.1rem;margin-bottom:1.4rem}
+.oh-lab{display:block;font-size:.66rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-dk)}
+.oh-ref{display:inline-block;margin-top:.4rem;font-family:var(--mono);font-size:1.3rem;font-weight:700;
+  letter-spacing:.06em;color:#101114;background:var(--panel);border:1px solid var(--line2);border-radius:7px;padding:.25rem .7rem}
+.oh-amt{margin:.6rem 0 0;font-size:.88rem;color:var(--ink)}
+.oh-sim{margin:.5rem 0 0;font-size:.78rem;line-height:1.55;color:var(--warm)}
+
+.aftercard{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:1rem 1.15rem 1.15rem;
+  margin:0 0 1rem}
+.ac-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem .8rem;padding-bottom:.7rem;border-bottom:1px solid var(--line)}
+.ac-sku{font-family:var(--mono);font-size:.72rem;color:var(--dim2);flex:1 0 100%}
+.ac-head h2{font-family:var(--serif);font-size:1.25rem;color:#101114;margin:0;border:0;padding:0}
+.ac-lvl{font-size:.8rem;color:var(--dim)}
+.ac-rows{display:flex;flex-direction:column}
+.ac-row{display:grid;grid-template-columns:11rem minmax(0,1fr);gap:1rem;padding:.55rem 0;border-bottom:1px solid var(--panel2)}
+.ac-k{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--dim2);padding-top:.15rem}
+.ac-v{font-size:.87rem;line-height:1.6;color:var(--ink)}
+.ac-prompt{margin:1rem 0 0;padding-top:.9rem;border-top:1px solid var(--line)}
+.ac-plab{display:block;font-size:.66rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--dim2);margin-bottom:.5rem}
+pre.ac-pre{margin:0 0 .7rem;font-size:.74rem;line-height:1.65;max-height:22rem;overflow:auto}
+.ac-pnote{margin:.6rem 0 0;font-size:.78rem;line-height:1.55;color:var(--dim)}
+.aftertail{margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--line);display:flex;gap:1.2rem;
+  align-items:center;flex-wrap:wrap}
+.aftertail p{margin:0;font-size:.84rem;color:var(--dim);flex:1 1 auto}
+@media(max-width:640px){
+  .sp-row{grid-template-columns:1fr}
+  .ps-lines li{grid-template-columns:1fr}
+  .ac-row{grid-template-columns:1fr;gap:.15rem}
+}

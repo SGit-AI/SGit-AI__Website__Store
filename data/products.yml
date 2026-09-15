@@ -42,7 +42,7 @@ levels:
     lede: "Every file in the vault, sent to you. Yours to use, keep and hand to your agent."
     who: "You want the material and you do not want to run anything."
     gets:
-      - "The whole pack for the shape you picked: the policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, and the two files you hand the agent."
+      - "The whole pack for the shape you picked: the behaviour policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, and the two files you hand the agent."
       - "The prompts, the documents and the business case that come with it."
       - "One email. Nothing to clone, nothing to install, nothing to hold a key for."
     not:
@@ -102,7 +102,7 @@ levels:
       - "A record of what was asked and what was answered, so the next version starts from it."
     not:
       - "Not an audit, an accreditation or a mark of conformity. None of those words describes this and none appears on the deliverable."
-      - "Not a risk score. The policy describes what is there; what the risk of it is depends on your assets and is a different piece of work."
+      - "Not a risk score. The behaviour policy describes what is there; what the risk of it is depends on your assets and is a different piece of work."
       - "Not open-ended. Two sessions is what is sold; more is a separate conversation."
     fulfilment: person
     rail: link

@@ -119,6 +119,52 @@
     return lines().reduce(function (t, l) { return t + l.qty; }, 0);
   }
 
+  /* What is taken now, and what is owed on delivery. The split is a property of
+     the OFFER, not of the rail: a card tapped on a terminal at the stand takes the
+     same deposit as a link opened on a phone. Two of the four levels are produced
+     without anybody being scheduled and take the whole price; the two that are
+     somebody's work take a deposit, because selling an hour of a person from a
+     card — for work that has never run for a paying buyer — should not put the
+     whole amount on one side of the table before anybody has done anything. */
+  function splitOf(line) {
+    var pct = line.lvl.pay_now_pct == null ? 100 : line.lvl.pay_now_pct;
+    var now = Math.round(line.lvl.price * pct / 100) * line.qty;
+    return { now: now, later: line.sum - now, pct: pct };
+  }
+
+  function dueNow() {
+    return lines().reduce(function (t, l) { return t + splitOf(l).now; }, 0);
+  }
+
+  function dueLater() {
+    return lines().reduce(function (t, l) { return t + splitOf(l).later; }, 0);
+  }
+
+  /* ---------------------------------------------------------- the wallet ----
+     A DEMONSTRATION, and every screen it appears on says so before it says
+     anything else. It charges nothing, there is no account, and nothing leaves
+     this browser: the balance is local storage on the reader's own machine and it
+     goes when they clear site data. It exists so the whole flow — catalogue,
+     order, payment, and the page that says what happens now — can be walked
+     before a single real payment link has been issued.
+
+     It never blocks either. An empty wallet tops itself back up, because the
+     interesting part is the ledger and the post-sale page, not a gate. */
+  var WKEY = 'sgit.store.wallet.v1';
+  var TOPUP = 200000;   // pence — £2,000, enough to buy anything on the list
+
+  function wallet() {
+    try {
+      var w = JSON.parse(window.localStorage.getItem(WKEY) || 'null');
+      if (w && w.schema === 1) return w;
+    } catch (e) { /* private window, blocked storage */ }
+    return { schema: 1, balance: TOPUP, spent: 0, topups: 0, orders: [] };
+  }
+
+  function saveWallet(w) {
+    try { window.localStorage.setItem(WKEY, JSON.stringify(w)); } catch (e) { /* as above */ }
+  }
+
   function money(pence) {
     return '£' + (pence / 100).toLocaleString('en-GB',
       { minimumFractionDigits: pence % 100 ? 2 : 0, maximumFractionDigits: 2 });
@@ -131,6 +177,49 @@
     return ref() + ' ' + lines().map(function (l) {
       return l.sku + (l.qty > 1 ? '*' + l.qty : '');
     }).join(' ');
+  }
+
+  /* An order is the record the post-sale page renders from. It is written when a
+     rail is used and it is never sent anywhere: on the simulated rail nothing
+     leaves the browser at all, and on a real rail what reaches the provider is
+     still only the amount and the reference. */
+  function placeOrder(railId) {
+    var w = wallet();
+    var now = dueNow();
+    if (railId === 'wallet') {
+      if (w.balance < now) { w.balance = TOPUP; w.topups += 1; }
+      w.balance -= now;
+      w.spent += now;
+    }
+    var order = {
+      ref: ref(),
+      at: new Date().toISOString(),
+      rail: railId,
+      paid_now: now,
+      due_later: dueLater(),
+      total: total(),
+      lines: lines().map(function (l) {
+        var s = splitOf(l);
+        return { sku: l.sku, slug: l.slug, level: l.level, qty: l.qty,
+                 title: l.shape ? l.shape.title : l.slug, lvl: l.lvl.name,
+                 sum: l.sum, now: s.now, later: s.later };
+      }),
+    };
+    w.orders = [order].concat(w.orders || []).slice(0, 25);
+    saveWallet(w);
+    S.items = {}; S.ref = null; save();
+    try { window.localStorage.setItem('sgit.store.lastorder.v1', JSON.stringify(order)); }
+    catch (e) { /* the order page falls back to the newest in the wallet */ }
+    window.location.href = M.root + 'order/index.html';
+  }
+
+  function lastOrder() {
+    try {
+      var o = JSON.parse(window.localStorage.getItem('sgit.store.lastorder.v1') || 'null');
+      if (o && o.ref) return o;
+      var w = wallet();
+      return (w.orders && w.orders[0]) || null;
+    } catch (e) { return null; }
   }
 
   /* ------------------------------------------------------------------ dom */
@@ -323,16 +412,52 @@
     tot.appendChild(el('span', 'ct-sum', money(total())));
     root.appendChild(tot);
 
-    // the order reference, which is the whole integration
+    if (dueLater() > 0) {
+      var sp = el('div', 'splitbox');
+      sp.appendChild(el('span', 'sp-lab', 'Two of the four levels are somebody\u2019s work, so they take a deposit'));
+      var row = el('div', 'sp-row');
+      var a = el('div', 'sp-half');
+      a.appendChild(el('b', null, money(dueNow())));
+      a.appendChild(el('span', null, 'due now'));
+      row.appendChild(a);
+      var b = el('div', 'sp-half sp-later');
+      b.appendChild(el('b', null, money(dueLater())));
+      b.appendChild(el('span', null, 'on delivery'));
+      row.appendChild(b);
+      sp.appendChild(row);
+      sp.appendChild(el('p', 'sp-note',
+        'The split belongs to the offer, not to how you pay: a card tapped at the stand takes the ' +
+        'same deposit as a link opened on a phone. Nothing further is taken until the thing you ' +
+        'bought is in your hands.'));
+      root.appendChild(sp);
+    }
+
+    var acts = el('div', 'cartfoot');
+    var go = el('a', 'buy buy-big');
+    go.href = M.root + 'pay/index.html';
+    go.textContent = 'Pay ' + money(dueNow()) + ' \u2192';
+    acts.appendChild(go);
+    acts.appendChild(btn('linkish', 'Empty the order', function () {
+      S.items = {}; S.ref = null; save(); render();
+    }));
+    var back = el('a', 'linkish');
+    back.href = M.root + 'policies/index.html';
+    back.textContent = 'Keep looking';
+    acts.appendChild(back);
+    root.appendChild(acts);
+
+    root.appendChild(orderBox());
+  }
+
+  function orderBox() {
     var ord = el('div', 'orderbox');
     ord.appendChild(el('span', 'ob-lab', 'Your order reference'));
     ord.appendChild(el('code', 'ob-ref', ref()));
     ord.appendChild(el('p', 'ob-note',
-      'This goes to the payment provider with the amount. It is how the order is ' +
-      'matched to the name and contact you give them — nothing about you is ' +
-      'stored here, and this reference lives in this browser until you clear it.'));
-    var line = el('code', 'ob-line', orderString());
-    ord.appendChild(line);
+      'This goes to the payment provider with the amount. It is how the order is matched to the ' +
+      'name and contact you give them \u2014 nothing about you is stored here, and this reference ' +
+      'lives in this browser until you clear it.'));
+    ord.appendChild(el('code', 'ob-line', orderString()));
     ord.appendChild(btn('buy buy-alt', 'Copy the order line', function (e) {
       var b = e.currentTarget, was = b.textContent;
       var done = function (ok) {
@@ -344,29 +469,81 @@
           function () { done(true); }, function () { done(false); });
       } else { done(false); }
     }));
-    root.appendChild(ord);
+    return ord;
+  }
 
+  /* ------------------------------------------------------------- paying ---- */
+  function renderPay(root) {
+    root.textContent = '';
+    var ls = lines();
+    if (!ls.length) {
+      var e0 = el('div', 'cart-empty');
+      e0.appendChild(el('p', null, 'There is nothing to pay for yet.'));
+      var g0 = el('a', 'buy');
+      g0.href = M.root + 'policies/index.html';
+      g0.textContent = 'Pick an agent \u2192';
+      e0.appendChild(g0);
+      root.appendChild(e0);
+      return;
+    }
+
+    var sum = el('div', 'paysum');
+    var head = el('div', 'paysum-head');
+    head.appendChild(el('span', 'ps-lab', 'Due now'));
+    head.appendChild(el('span', 'ps-now', money(dueNow())));
+    sum.appendChild(head);
+    if (dueLater() > 0) {
+      sum.appendChild(el('p', 'ps-later',
+        money(dueLater()) + ' on delivery \u00b7 ' + money(total()) + ' in total'));
+    }
+    var ul = el('ul', 'ps-lines');
+    ls.forEach(function (l) {
+      var s = splitOf(l);
+      var li = el('li');
+      li.appendChild(el('span', 'ps-sku', l.sku + (l.qty > 1 ? ' \u00d7' + l.qty : '')));
+      li.appendChild(el('span', 'ps-what', (l.shape ? l.shape.title : l.slug) + ' \u2014 ' + l.lvl.name));
+      li.appendChild(el('span', 'ps-amt',
+        s.later > 0 ? money(s.now) + ' now, ' + money(s.later) + ' later' : money(s.now)));
+      ul.appendChild(li);
+    });
+    sum.appendChild(ul);
+    sum.appendChild(el('p', 'ps-ref', 'Order reference ' + ref()));
+    root.appendChild(sum);
+
+    var w = wallet();
     var rails = el('div', 'rails');
     M.rails.forEach(function (r) {
-      var box = el('div', 'rail');
-      box.appendChild(el('span', 'rail-n', String(r.n)));
-      box.appendChild(el('h3', null, 'Pay with ' + r.name));
+      var box = el('div', 'rail' + (r.simulated ? ' rail-sim' : ''));
+      if (r.simulated) {
+        box.appendChild(el('span', 'rail-flag', 'Simulated \u2014 charges nothing'));
+      }
+      box.appendChild(el('h3', null, r.simulated ? 'Pay from the demonstration wallet' : 'Pay with ' + r.name));
       box.appendChild(el('p', 'rail-kind', r.kind));
       box.appendChild(el('p', 'rail-takes', r.takes));
-      if (r.url) {
+      if (r.simulated) {
+        var bal = el('p', 'rail-bal');
+        bal.appendChild(el('b', null, money(w.balance)));
+        bal.appendChild(document.createTextNode(' in the wallet'));
+        box.appendChild(bal);
+        box.appendChild(btn('buy', 'Pay ' + money(dueNow()) + ' from the wallet', function () {
+          placeOrder('wallet');
+        }));
+        box.appendChild(el('p', 'rail-note',
+          'Nothing is charged and nothing leaves this browser. The balance is local storage on ' +
+          'your own machine and it goes when you clear site data. It tops itself back up when it ' +
+          'empties, because the interesting part is the page after this one.'));
+      } else if (r.url) {
         var u = r.url + (r.url.indexOf('?') >= 0 ? '&' : '?') +
                 encodeURIComponent(r.ref_param) + '=' + encodeURIComponent(orderString());
         if (r.amount_param) {
-          u += '&' + encodeURIComponent(r.amount_param) + '=' + (total() / 100).toFixed(2);
+          u += '&' + encodeURIComponent(r.amount_param) + '=' + (dueNow() / 100).toFixed(2);
         }
-        var a = el('a', 'buy');
-        a.href = u;
-        a.rel = 'noopener';
-        a.textContent = 'Pay ' + money(total()) + ' with ' + r.name + ' →';
-        box.appendChild(a);
+        var a2 = el('a', 'buy');
+        a2.href = u; a2.rel = 'noopener';
+        a2.textContent = 'Pay ' + money(dueNow()) + ' with ' + r.name + ' \u2192';
+        box.appendChild(a2);
       } else {
-        box.appendChild(el('span', 'buy buy-off',
-          'No ' + r.name + ' link has been issued yet'));
+        box.appendChild(el('span', 'buy buy-off', 'No ' + r.name + ' link has been issued yet'));
         box.appendChild(el('p', 'rail-note', r.note));
       }
       rails.appendChild(box);
@@ -374,14 +551,102 @@
     root.appendChild(rails);
 
     var foot = el('div', 'cartfoot');
-    foot.appendChild(btn('linkish', 'Empty the order', function () {
-      S.items = {}; S.ref = null; save(); render();
-    }));
-    var back = el('a', 'linkish');
-    back.href = M.root + 'policies/index.html';
-    back.textContent = 'Keep looking';
-    foot.appendChild(back);
+    var back2 = el('a', 'linkish');
+    back2.href = M.root + 'cart/index.html';
+    back2.textContent = 'Back to your order';
+    foot.appendChild(back2);
     root.appendChild(foot);
+  }
+
+  /* --------------------------------------------------- after the payment ---- */
+  function renderOrder(root) {
+    root.textContent = '';
+    var o = lastOrder();
+    if (!o) {
+      var e1 = el('div', 'cart-empty');
+      e1.appendChild(el('p', null, 'No order in this browser yet.'));
+      var g1 = el('a', 'buy');
+      g1.href = M.root + 'policies/index.html';
+      g1.textContent = 'Start one \u2192';
+      e1.appendChild(g1);
+      root.appendChild(e1);
+      return;
+    }
+
+    var head = el('div', 'orderhead');
+    head.appendChild(el('span', 'oh-lab', 'Paid \u00b7 keep this reference'));
+    head.appendChild(el('code', 'oh-ref', o.ref));
+    var amt = el('p', 'oh-amt');
+    amt.appendChild(el('b', null, money(o.paid_now) + ' paid'));
+    if (o.due_later > 0) {
+      amt.appendChild(document.createTextNode(' \u00b7 ' + money(o.due_later) +
+        ' due on delivery, invoiced when the work is in your hands'));
+    }
+    head.appendChild(amt);
+    if (o.rail === 'wallet') {
+      head.appendChild(el('p', 'oh-sim',
+        'Paid from the demonstration wallet. Nothing was charged to anybody and nothing left this ' +
+        'browser \u2014 this is the flow, not a transaction.'));
+    }
+    root.appendChild(head);
+
+    o.lines.forEach(function (l) {
+      var lv = LEVELS[l.level] || {};
+      var card = el('section', 'aftercard');
+      var h = el('div', 'ac-head');
+      h.appendChild(el('span', 'ac-sku', l.sku + (l.qty > 1 ? ' \u00d7' + l.qty : '')));
+      h.appendChild(el('h2', null, l.title));
+      h.appendChild(el('span', 'ac-lvl', l.lvl));
+      card.appendChild(h);
+
+      var rows = [
+        ['What arrives, and when', lv.post_when],
+        ['What you do next', lv.post_does],
+        ['How the key reaches you', lv.post_key],
+        ['Done means', lv.post_done],
+        ['How you check that', lv.post_check],
+      ];
+      var dl = el('div', 'ac-rows');
+      rows.forEach(function (r) {
+        if (!r[1]) return;
+        var row = el('div', 'ac-row');
+        row.appendChild(el('span', 'ac-k', r[0]));
+        row.appendChild(el('span', 'ac-v', r[1]));
+        dl.appendChild(row);
+      });
+      card.appendChild(dl);
+
+      if (lv.prompt) {
+        var pw = el('div', 'ac-prompt');
+        pw.appendChild(el('span', 'ac-plab', 'The prompt to run'));
+        var pre = el('pre', 'ac-pre');
+        pre.appendChild(el('code', null, lv.prompt));
+        pw.appendChild(pre);
+        pw.appendChild(btn('buy buy-alt', 'Copy the prompt', function (e) {
+          var b = e.currentTarget, was = b.textContent;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(lv.prompt).then(function () {
+              b.textContent = 'Copied';
+              setTimeout(function () { b.textContent = was; }, 1600);
+            }, function () {});
+          }
+        }));
+        pw.appendChild(el('p', 'ac-pnote',
+          'It reads and prints. It does not act, and it asks for no credential \u2014 the last ' +
+          'line says so, and that is the line to check before you paste it anywhere.'));
+        card.appendChild(pw);
+      }
+      root.appendChild(card);
+    });
+
+    var tail = el('div', 'aftertail');
+    tail.appendChild(el('p', null,
+      'If nothing arrives, write to a person rather than a form. Quote ' + o.ref + '.'));
+    var keep = el('a', 'linkish');
+    keep.href = M.root + 'policies/index.html';
+    keep.textContent = 'Back to the catalogue';
+    tail.appendChild(keep);
+    root.appendChild(tail);
   }
 
   /* --------------------------------------------------------------- the bar */
@@ -394,6 +659,10 @@
     if (s) renderShape(s);
     var k = document.getElementById('cart');
     if (k) renderCart(k);
+    var pay = document.getElementById('pay');
+    if (pay) renderPay(pay);
+    var ord = document.getElementById('order');
+    if (ord) renderOrder(ord);
     renderBadge();
   }
 

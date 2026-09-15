@@ -16,7 +16,21 @@
 # takes an amount and a reference, and neither has to know about the other. It is
 # the smallest integration that answers the question "what did they buy".
 #
-# BOTH URLS ARE EMPTY. No payment link has been created on either rail. The cart
+# THE WALLET IS A SIMULATION AND SAYS SO FIRST. Until a real payment link exists
+# on either rail, the store carries a demonstration wallet: a balance in the
+# reader's own browser, debited by an order, with the spend on a page rather than
+# in a panel. It charges nothing, there is no account, and nothing leaves the
+# browser — the same shape pt.newsroom.sgit.ai uses for its per-page wallet, and
+# the same discipline: a checkout that did not admit to being a demonstration
+# would be the one dishonest thing on a site whose whole argument is checkability.
+#
+# It exists so the flow can be walked end to end — catalogue, order, payment, and
+# the page that says what happens now — before a single real link is issued. When
+# the links arrive the wallet does not need removing: it stays as the rail
+# labelled "simulated", and the gate refuses to let it be the only one that looks
+# real.
+#
+# BOTH LIVE URLS ARE EMPTY. No payment link has been created on either rail. The cart
 # renders the button as unissued and says which rail is missing rather than
 # showing something that looks live. Pasting one line here turns a rail on.
 
@@ -25,6 +39,30 @@ meta:
   note: "An order reference is generated in the browser. It is not an account and nothing is stored anywhere but the browser that made it."
 
 rails:
+  - id: wallet
+    name: the demonstration wallet
+    n: 0
+    url: ""
+    hosts: []
+    ref_param: ""
+    amount_param: ""
+    simulated: true
+    kind: "A balance in your own browser. It charges nothing and nothing leaves this page."
+    takes: "Nothing. There is no account, no card and no name — the balance is local storage on your own machine and it goes when you clear site data."
+    note: "Here so the whole flow can be walked before a real link exists. It is labelled on every screen it appears on."
+
+  - id: contactless
+    name: Contactless, in person
+    n: 3
+    url: ""
+    hosts: []
+    ref_param: ""
+    amount_param: ""
+    simulated: false
+    kind: "A card tapped on a terminal at the stand, for the amount due now."
+    takes: "Name, contact and card, on the terminal. The order reference is written on the receipt."
+    note: "The deposit split works the same here as online: what is taken on the tap is the amount due now, and the rest is invoiced on delivery. The rail changes; the offer does not."
+
   - id: stripe
     name: Stripe
     n: 1
