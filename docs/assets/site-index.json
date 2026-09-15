@@ -1,5 +1,5 @@
 {
- "version": "v0.1.9",
+ "version": "v0.1.10",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -15,6 +15,44 @@
     "The free thing, and the paid thing",
     "How paying works, in one paragraph",
     "What this site will not tell you"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/admin/",
+   "title": "Admin",
+   "description": "The internal surfaces of this store in one place: the walkthrough anybody can run end to end, the claim ledger, the dev packs, the release history and the purchase lab. Public, like every page here, and kept out of the sitemap because it is not a selling surface.",
+   "lead": "Everything here is public, because every page on this site is \u2014 there is no login, no account and nothing to gate. What this page is, is findable: one address that gathers the parts of the store that are for the people building it rather than for somebody buying.",
+   "headings": [
+    "Start here",
+    "The rest of it",
+    "Why this page is noindex and not private"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/admin/try/",
+   "title": "Run the whole flow yourself",
+   "description": "A walkthrough of store.sgit.ai from the catalogue to the page after payment, for a person and for an agent. It takes about four minutes, it costs nothing, and the discount codes that make it free are printed on this page.",
+   "lead": "Go from the catalogue to the page that says what happens after payment, for nothing, in about four minutes. A discount code on this page takes the whole price off \u2014 the order still places, the reference is still generated, and the handover to riskmandate.ai still carries it. Two sets of instructions below: one for a person, one for an agent driving a browser or reading files.",
+   "headings": [
+    "What you are looking at, in one minute",
+    "What is real and what is a stand-in",
+    "The codes",
+    "A. If you are a person",
+    "1. Open the catalogue with a code on it",
+    "2. Pick a shape and look at its four levels",
+    "3. Add two of them",
+    "4. Look at your order",
+    "5. Pay",
+    "6. Read what happens now",
+    "7. Follow the handover",
+    "What is worth reporting",
+    "B. If you are an agent",
+    "Mode 1 \u2014 with a browser",
+    "Mode 2 \u2014 with nothing but a fetch tool",
+    "What an agent should report",
+    "What this walkthrough cannot show you"
    ],
    "kind": "page"
   },

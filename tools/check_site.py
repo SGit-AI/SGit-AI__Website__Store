@@ -459,7 +459,13 @@ def check_links():
             target = m.group(1)
             if target.startswith(("http://", "https://", "mailto:", "//")):
                 continue
-            joined = os.path.normpath(os.path.join(base, target))
+            # A query is read by the page, not by the file system. The walkthrough
+            # links to /policies/?code=… and this used to call that dead, which is
+            # the check being wrong about the site rather than the other way round.
+            path_part = target.split("?", 1)[0]
+            if not path_part:
+                continue                      # a link to this same page with a query
+            joined = os.path.normpath(os.path.join(base, path_part))
             if joined == ".":
                 joined = ""
             if joined not in have and joined + "/index.html" not in have:
@@ -1063,18 +1069,36 @@ def check_wallet_is_marked():
 # island. That is the same rule as "no vault key on any page" and it is here for
 # the same reason: a static site publishes everything it carries, so what it must
 # not give away it must not carry.
-EXPECTED_DISCOUNTS = {"summit-25": 25, "summit-50": 50, "summit-100": 100, "loop-check": 100}
+# pct, and whether the code may be PRINTED. Both are rulings: one decides what
+# comes off a price, the other decides whether a stranger can read the code off a
+# page. The three walkthrough codes are printed on purpose — a beta tester or a
+# synthetic user cannot walk the flow without one — and the check below is what
+# keeps that from becoming free product the day a rail is switched on.
+EXPECTED_DISCOUNTS = {
+    "summit-25":   (25,  False),
+    "summit-50":   (50,  False),
+    "summit-100":  (100, False),
+    "loop-check":  (100, False),
+    "beta-human":  (100, True),
+    "synth-agent": (100, True),
+    "demo-stand":  (100, True),
+}
 
 
 def check_discount_percentages():
-    got = {c["id"]: int(c["pct"]) for c in yml_records("discounts.yml", "pct")}
-    for cid, pct in EXPECTED_DISCOUNTS.items():
+    got = {c["id"]: (int(c["pct"]), c.get("printable") == "true")
+           for c in yml_records("discounts.yml", "pct", "printable")}
+    for cid, (pct, printable) in EXPECTED_DISCOUNTS.items():
         if cid not in got:
             fail(f"discount {cid}: in the frozen table and not in data/discounts.yml. A code that "
                  "was printed on something and then deleted is a code somebody will try")
-        elif got[cid] != pct:
-            fail(f"discount {cid}: takes {got[cid]}% off, the ruling sets {pct}% — what comes off "
-                 "a price is a price")
+            continue
+        if got[cid][0] != pct:
+            fail(f"discount {cid}: takes {got[cid][0]}% off, the ruling sets {pct}% — what comes "
+                 "off a price is a price")
+        if got[cid][1] != printable:
+            fail(f"discount {cid}: printable is {got[cid][1]}, the ruling sets {printable}. "
+                 "Whether a code may be read off a page is not the builder's to flip")
     for cid in got:
         if cid not in EXPECTED_DISCOUNTS:
             fail(f"discount {cid}: in data/discounts.yml and not in the frozen table. A discount "
@@ -1084,7 +1108,8 @@ def check_discount_percentages():
 def check_discount_codes_are_not_printed():
     """No code reaches the built site. Every byte of docs/ — pages, scripts, JSON
     islands, the markdown twins — against every code, in any casing."""
-    codes = yml_records("discounts.yml", "code")
+    codes = [c for c in yml_records("discounts.yml", "code", "printable")
+             if c.get("printable") != "true"]
     everything = list(OUT.rglob("*"))
     for c in codes:
         rx = re.compile(re.escape(str(c["code"])), re.I)
@@ -1111,6 +1136,57 @@ def check_discount_codes_are_not_printed():
             fail(f"discount {c.get('id')!r} ships {c.get('hash')!r}, which is not a sha256")
         if "code" in c:
             fail(f"discount {c.get('id')!r} ships the code itself in the model")
+
+
+def check_printable_codes_need_a_dead_rail():
+    """A published code at a hundred per cent and a rail that can take money must
+    never be in the same build. Today every checkout_url is empty and the only rail
+    that completes is a wallet that charges nothing, so a printed code costs nobody
+    anything and the walkthrough is self-service. The day somebody pastes a real
+    payment link in, this fails the release until the printed codes are gone.
+
+    Left to a person to remember, this is the mistake that is made once."""
+    printed = [c for c in yml_records("discounts.yml", "code", "printable", "pct")
+               if c.get("printable") == "true"]
+    if not printed:
+        return
+    src = (ROOT / "data" / "checkout.yml").read_text()
+    live = [m for m in re.findall(r'^\s*url: "(.+)"$', src, re.M) if m.strip()]
+    if live:
+        names = ", ".join(c["id"] for c in printed)
+        fail(f"a payment rail has a URL ({live[0]}) and these discount codes are printed on a "
+             f"page: {names}. A published code and a live rail is free product. Remove the codes "
+             "or set printable: false on them, in the commit that turns the rail on")
+    for c in printed:
+        if int(c.get("pct", 0)) != 100:
+            fail(f"discount {c['id']}: printed on a page at {c['pct']}%. A printed code is a "
+                 "walkthrough code and a walkthrough takes no money — a printed code at less "
+                 "than a hundred per cent is a discount anybody can read")
+    page = OUT / "admin" / "try" / "index.html"
+    if not page.exists():
+        fail("codes are marked printable and there is no /admin/try/ to print them on")
+        return
+    text = page.read_text()
+    for c in printed:
+        if c["code"] not in text:
+            fail(f"discount {c['id']} is marked printable and is not on /admin/try/. A code that "
+                 "is allowed onto a page and is on none is a code nobody can use")
+    for f in OUT.rglob("*"):
+        if not f.is_file() or f.suffix.lower() in {".png", ".jpg", ".svg", ".ico"}:
+            continue
+        rel = str(f.relative_to(OUT)).replace(os.sep, "/")
+        if rel.startswith("admin/") or rel in ("llms-full.txt", "sitemap.xml",
+                                               "assets/site-index.json"):
+            continue
+        try:
+            body = f.read_text()
+        except (UnicodeDecodeError, OSError):
+            continue
+        for c in printed:
+            if re.search(re.escape(c["code"]), body, re.I):
+                fail(f"{rel}: carries walkthrough code {c['id']!r}. These are printed on "
+                     "/admin/try/ and nowhere else — a code loose on a selling page is a code "
+                     "somebody finds without reading why it exists")
 
 
 def check_handover_contract():
@@ -1193,6 +1269,7 @@ def main():
         check_deposits, check_deposit_not_beside_the_marketplace, check_offer_claims_exist,
         check_payment_split, check_post_sale_page, check_wallet_is_marked,
         check_discount_percentages, check_discount_codes_are_not_printed,
+        check_printable_codes_need_a_dead_rail,
         check_handover_contract, check_follow_up_is_twenty_four_hours,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,

@@ -29,7 +29,15 @@ h1,h2,h3{line-height:1.2;letter-spacing:-.015em}
 code,pre,kbd{font-family:var(--mono)}
 p code,li code,td code,.note code,.doc code{overflow-wrap:anywhere;background:var(--panel2);border:1px solid var(--line);
   border-radius:4px;padding:.08em .35em;font-size:.84em;color:#24343f}
-pre code{background:none;border:0;border-radius:0;padding:0;font-size:inherit;color:inherit}
+/* .doc code above is (0,1,1) and plain `pre code` is (0,0,2), so the inline-code
+   chip was winning INSIDE a pre: a white box with a border behind every line of a
+   code block. It only showed where a pre actually contains a code element, which
+   on this site is the prompt the cart writes into the post-sale page — built by
+   script, on no server-rendered page, so nothing anybody read caught it. Found by
+   screenshotting the flow for the walkthrough. The reset now matches the chip's
+   specificity, in both shapes, so it wins wherever the chip would. */
+.doc pre code,pre code{background:none;border:0;border-radius:0;padding:0;font-size:inherit;
+  color:inherit;overflow-wrap:normal}
 pre{background:var(--term-bg);color:#c9d1d9;border-radius:10px;padding:.9rem 1.1rem;overflow-x:auto;
   font-size:.8rem;line-height:1.6;box-shadow:var(--shadow)}
 pre.shell{color:var(--term-green)}
@@ -681,3 +689,15 @@ a.buy-alt{background:transparent;color:var(--accent);border-color:var(--accent)}
 .offer-deposit{margin:-.4rem 0 .9rem;font-size:.78rem;color:var(--dim);line-height:1.55;
   padding-left:.6rem;border-left:2px solid var(--line2)}
 .offer-deposit b{color:var(--ink);display:block}
+
+/* THE WALKTHROUGH SHOTS on /admin/try/. A screenshot in a walkthrough is not
+   decoration: it is what the reader compares their own screen against, so it is
+   wide, it is sharp at the width it was taken, and the caption says what to look
+   at rather than what is in the picture. */
+figure.walkshot{margin:1.1rem 0 1.6rem;padding:0;display:flex;flex-direction:column;gap:.6rem}
+figure.walkshot img{width:100%;height:auto;display:block;border:1px solid var(--line2);
+  border-radius:10px;box-shadow:0 3px 14px rgba(28,29,33,.10);background:var(--panel)}
+figure.walkshot figcaption{font-size:.82rem;line-height:1.6;color:var(--ink);
+  border-left:3px solid var(--accent);padding-left:.8rem}
+figure.walkshot figcaption b{color:#101114}
+figure.walkshot figcaption code{font-size:.9em}

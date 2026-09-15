@@ -39,9 +39,26 @@
 # `until` is the last day the code works, in the buyer's own clock, because the
 # page has no other. A code past its day is refused with the date said out loud
 # rather than silently ignored.
+#
+# `printable` is whether the code MAY APPEAR ON A PAGE. Almost none may: the check
+# in tools/check_site.py reads every byte of docs/ for every code and fails the
+# release if one is found. The exceptions are the walkthrough codes, which exist
+# to be printed — a beta tester or a synthetic user cannot walk the flow without
+# one, and a code they have to be sent privately is a code that stops the
+# walkthrough being self-service.
+#
+# THE COUPLING THAT MAKES THAT SAFE, and it is mechanical rather than remembered:
+# a printable code at a hundred per cent and a live payment rail must never exist
+# in the same build. Today every checkout_url in data/checkout.yml is empty and
+# the only rail that completes is a wallet that charges nothing, so a published
+# hundred-per-cent code costs nobody anything. The DAY a real rail is switched on,
+# check_printable_codes_need_a_dead_rail fails the build until these codes are
+# removed or made unprintable. A published code and a live card reader is free
+# product, and that is not a thing to leave to whoever is doing the release.
 
 - id: summit-25
   code: SUMMIT25
+  printable: false
   pct: 25
   label: Startup Summit
   why: "For the room at the Startup Summit. A quarter off, on anything on the store."
@@ -50,6 +67,7 @@
 
 - id: summit-50
   code: SUMMIT50
+  printable: false
   pct: 50
   label: Startup Summit
   why: "Half off, for a conversation at the stand that got as far as a shape and a level."
@@ -58,6 +76,7 @@
 
 - id: summit-100
   code: SUMMIT100
+  printable: false
   pct: 100
   label: Startup Summit
   why: "The whole price off. Handed to somebody who should have the thing and be asked what they made of it, rather than be sold it."
@@ -66,8 +85,47 @@
 
 - id: loop-check
   code: LOOPCHECK
+  printable: false
   pct: 100
   label: Walkthrough
   why: "Not for a buyer. It exists so the flow from the catalogue to the page after payment can be walked end to end, by a person or by a browser in a test, without money and without a rail."
+  levels: all
+  until: "2027-12-31"
+
+# ------------------------------------------------- the three walkthrough codes
+# PRINTED ON PURPOSE, on /admin/try/ and nowhere else. One each for the three
+# ways somebody walks the flow, so that a screenshot or an order record says
+# which walkthrough it came from without anybody having to remember.
+#
+# They are not memorable words and they are not sequential: a code somebody can
+# guess from another code is a code that turns up in a search. They are meant to
+# be readable off a screen and typed into an address bar once — a digit rather
+# than a letter where the two look alike, nothing that spells anything, and short
+# enough to say down a phone.
+
+- id: beta-human
+  code: BETA7LOOP
+  printable: true
+  pct: 100
+  label: Beta walkthrough
+  why: "For a person walking the whole flow from /admin/try/. A hundred per cent, so the order places and lands on the page that says what happens next without anybody paying for a walkthrough."
+  levels: all
+  until: "2027-12-31"
+
+- id: synth-agent
+  code: SYNTH4DELTA
+  printable: true
+  pct: 100
+  label: Synthetic run
+  why: "For an agent driving the flow from the script on /admin/try/. Separate from the human's code so an order record says which of the two produced it."
+  levels: all
+  until: "2027-12-31"
+
+- id: demo-stand
+  code: DEMO3STAND
+  printable: true
+  pct: 100
+  label: Shown in a room
+  why: "For showing the flow to somebody on a laptop or a phone, at a stand or across a table, without the demonstration wallet being the first thing they see."
   levels: all
   until: "2027-12-31"

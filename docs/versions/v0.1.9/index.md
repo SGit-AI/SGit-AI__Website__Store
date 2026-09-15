@@ -11,7 +11,7 @@ What the handover still owes is on the ledger rather than in somebody's head: no
 One bug found by driving it: shop.js was loaded twice on the cart, paying and order pages — the cart engine running twice against one document, the second copy undoing what the first did. A check now holds every page to one copy of each script.
 
 - Released: 2026-09-15
-- Built from commit: ``
+- Built from commit: `00a03b81cfd5e1d990587ce34f9d5b3ae0c7e4b2`
 - Reconstructed: no
 
 ---

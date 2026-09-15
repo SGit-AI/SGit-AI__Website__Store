@@ -115,6 +115,7 @@ NAV = [
         ("The dev packs", "/dev-packs/"),
         ("The purchase lab", "/lab/"),
         ("Release history", "/versions/"),
+        ("Run the whole flow yourself", "/admin/try/"),
     ]),
 ]
 
@@ -2175,6 +2176,7 @@ def footer_html():
     <a href="/disclosures/">What we do not say, and why</a>
     <a href="/dev-packs/">The dev packs</a>
     <a href="/versions/">Release history</a>
+    <a href="/admin/">Admin</a>
   </div>
 </div>
 <div class="footnote"><p>No analytics. No cookies. No third-party fonts, scripts or CDN &mdash; every byte of this
@@ -2203,7 +2205,7 @@ def page_html(page, ctx, body):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{html.escape(fm['title'])} &mdash; {html.escape(SITE['title'])}</title>
 <meta name="description" content="{html.escape(desc)}">
-<meta name="robots" content="index,follow">
+<meta name="robots" content="{fm.get('robots') or 'index,follow'}">
 <link rel="canonical" href="{SITE['base']}{page['url']}">
 <meta property="og:type" content="{'website' if page['url'] == '/' else 'article'}">
 <meta property="og:site_name" content="{SITE['domain']}">
@@ -2336,8 +2338,14 @@ def build(out_dir):
     (out_dir / ".nojekyll").write_text("")
     (out_dir / "robots.txt").write_text(
         f"User-agent: *\nAllow: /\nSitemap: {SITE['base']}/sitemap.xml\n")
+    # /admin/ and everything under it is public — every page here is — but it is
+    # not a selling surface and it carries the walkthrough codes, so it is kept out
+    # of the sitemap and marked noindex. The difference between "public" and
+    # "advertised" is the whole point: anybody handed the address can read it, and
+    # nobody finds it by searching for a discount code.
     urls = "".join(f"<url><loc>{SITE['base']}{u}</loc></url>"
-                   for u in sorted(set(rendered) | set(extra)))
+                   for u in sorted(set(rendered) | set(extra))
+                   if not u.startswith("/admin/"))
     (out_dir / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + urls + "</urlset>\n"
