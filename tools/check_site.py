@@ -1191,6 +1191,45 @@ def check_printable_codes_need_a_dead_rail():
                      "somebody finds without reading why it exists")
 
 
+def check_the_shape_count_agrees_with_itself():
+    """Fifteen published templates. The copy says 'fifteen' in words, the promoted
+    catalogue carries fifteen records, and the catalogue's own count line says
+    fifteen — and the sixteenth tile, the one for a deployment with no template, is
+    counted separately because it is a different kind of thing.
+
+    It disagreed: the copy said fifteen and the catalogue rendered '16 of 16
+    shapes'. Found by walking the store as a synthetic user, which is the only way
+    it WOULD be found — nothing on either side is wrong on its own, and the two
+    numbers are four pages apart."""
+    promoted = json.loads((ROOT / "data" / "abp-catalogue.json").read_text())["count"]
+    model = shop_model_island()
+    shapes = model.get("shapes", [])
+    published = [s for s in shapes if s["slug"] != "your-own"]
+    catchall = [s for s in shapes if s["slug"] == "your-own"]
+    if len(published) != promoted:
+        fail(f"the shipped model carries {len(published)} published shapes and the promoted "
+             f"catalogue carries {promoted}")
+    if len(catchall) != 1:
+        fail(f"{len(catchall)} catch-all shapes in the model; there is exactly one deployment "
+             "with no template and it is 'your-own'")
+    words = {15: "fifteen", 16: "sixteen", 14: "fourteen", 17: "seventeen"}
+    want = words.get(promoted)
+    wrong = words.get(promoted + 1)
+    if want:
+        for rel, text in texts():
+            if rel.startswith(("versions/", "ledger/", "admin/")):
+                continue          # a record may quote the number it corrected
+            m = re.search(rf"\b{wrong}\s+(?:applications|shapes|templates)\b", text, re.I)
+            if wrong and m:
+                fail(f"{rel}: says {m.group(0)!r}. {promoted} templates are published, so the "
+                     f"word is {want!r} — the catch-all tile is counted separately because it is "
+                     "a deployment with no template rather than one more template")
+    js = (OUT / "assets" / "shop.js").read_text()
+    if "your-own" not in js or "shapes'" not in js:
+        fail("assets/shop.js: the catalogue count no longer separates the published shapes from "
+             "the catch-all, which is how the two numbers disagreed in the first place")
+
+
 def check_handover_contract():
     """riskmandate.ai publishes one page per level and its level-one page IS the
     download. The contract it published is two optional plain-text parameters —
@@ -1273,6 +1312,7 @@ def main():
         check_discount_percentages, check_discount_codes_are_not_printed,
         check_printable_codes_need_a_dead_rail,
         check_handover_contract, check_follow_up_is_twenty_four_hours,
+        check_the_shape_count_agrees_with_itself,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,

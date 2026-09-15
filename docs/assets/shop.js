@@ -573,8 +573,21 @@
     root.appendChild(bar);
 
     var list = visible();
+    /* The published shapes and the catch-all are counted SEPARATELY. They used to
+       be one number, so the catalogue said '16 of 16 shapes' while the home page
+       said fifteen applications — the one place on this site where two numbers
+       about the same thing disagreed, on a site whose argument is that facts come
+       from one file so they cannot. Fifteen is the number of published templates;
+       the sixteenth tile is a deployment that has no template yet, which is a
+       different kind of thing and is now counted as one. */
+    var published = 0, catchall = 0;
+    M.shapes.forEach(function (s) { if (s.slug === 'your-own') catchall++; else published++; });
+    var shownPub = list.filter(function (s) { return s.slug !== 'your-own'; }).length;
+    var shownAny = list.length - shownPub;
     root.appendChild(el('p', 'shopcount',
-      list.length + ' of ' + M.shapes.length + ' shapes'));
+      shownPub + ' of ' + published + ' shapes' +
+      (shownAny ? ', and one for a deployment with no template' :
+       (catchall ? '' : ''))));
     var grid = el('div', 'tiles');
     list.forEach(function (s) { grid.appendChild(tile(s)); });
     root.appendChild(grid);

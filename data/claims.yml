@@ -369,3 +369,11 @@
   group: How paying works, and why it works that way
   claim: "**A discount code is recognised by the page, not by a rail.** What ships is **sha256 of the code and never the code**, checked on every release against every byte of the built site — but a short code can be ground out of a hash, and that is said rather than dressed up. **The thing that stops a stranger paying nothing is that a browser does not take money**: a code changes the amount a payment link is issued for, and the rail decides what is charged. **No rail exists yet**, so today a code at a hundred per cent is how the whole flow gets walked without money."
   source: "data/discounts.yml and tools/check_site.py, check_discount_codes_are_not_printed"
+
+# ---------------------------------------------------- what the synthetic users found
+- id: t3-delivery-time-absent
+  state: absent
+  date: 15 Sep 2026
+  group: The state of each thing on the offer list
+  claim: "**How long the corrected vault takes after the buyer replies is committed to nowhere on this site.** The 24 hours is riskmandate.ai's commitment to follow up and is theirs to keep. The time from a buyer's reply to a delivered vault **has never run for a paying buyer, so there is no measurement to quote** — and the delivery page now says that rather than carrying an invented number. It was found by walking the store as a founder with six weeks to a term sheet, who left without buying and named the missing date as the reason."
+  source: "data/offers.yml t3, and the synthetic-user run 2026-09-15-startups-01"

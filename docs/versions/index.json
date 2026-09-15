@@ -1,10 +1,27 @@
 {
-  "current": "v0.1.12",
+  "current": "v0.1.13",
   "releases": [
+    {
+      "version": "v0.1.13",
+      "date": "2026-09-15",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "three things five synthetic users found, two of them regressions from v0.1.9",
+      "summary": "Five invented buyers were walked through the store a screenshot at a time and interviewed afterwards. They found eighteen things; three of them cost a sale and two of those were regressions this repository introduced in v0.1.9.\n\nTHE \u00a3500 PAGE DESCRIBED ITS OWN PROCESS TWO WAYS and the post-sale page a third. The delivery page said both \u201cnobody interviews you: you send the details\u201d and \u201cwe send a prompt, you run it\u201d, while the page after payment said the prompt is MAP-A-GRANT.md, which the buyer already has because it ships in every zip. A buyer would have had to pay to find out which was true. The delivery page now carries the same five steps the post-sale page does, and names the file and the three things that come back.\n\nAND IT CARRIED NO DURATION AT ALL. The founder persona's single decisive question is how long \u00a3500 takes, and it was answerable nowhere before purchase \u2014 earlier copy had it and it was lost when the follow-up wording moved to 24 hours. The honest fix is not a new number: the 24 hours is riskmandate.ai's commitment to follow up, and the time from a buyer's reply to a delivered vault has never run for a paying buyer, so the page says that and the ledger carries it as absent.\n\nFIFTEEN AGAINST SIXTEEN. The copy said fifteen applications; the catalogue rendered \u201c16 of 16 shapes\u201d, because the tile for a deployment with no template was counted as a template. One place on this site where two numbers about the same thing disagreed, on a site whose whole argument is that facts come from one file so they cannot. The count line now separates the fifteen published shapes from the one catch-all, and a check holds the word in the copy to the number in the promoted catalogue.\n\nNothing on either side of that was wrong on its own, and the two numbers are four pages apart. It was found by reading the site as somebody who counts tiles \u2014 which is the argument for running the walk at all.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.12",
       "date": "2026-09-15",
-      "commit": "",
+      "commit": "d2427fb84d5dcfb87b42c86147f84706ff02df1b",
       "site": "store.sgit.ai",
       "title": "the two walkthroughs as PDFs, hosted under /admin/",
       "summary": "The walkthrough, split in two and laid out for print: eleven pages for a person with all seven screenshots, seven pages for an agent with the assertions and both modes. They are served from /admin/downloads/ rather than /assets/ for one reason \u2014 they print the walkthrough discount codes, and the check that keeps those codes off every other file in the built site exempts /admin/ alone. Each filename carries the version it was taken at, so a stale copy is stale on its face rather than silently, and both documents say on their last page that the live page is the source of truth and a disagreement between the two is itself worth reporting.",

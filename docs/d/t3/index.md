@@ -16,7 +16,7 @@ The vault, with the mandate corrected against your situation rather than against
 
 ## What this is not, and will not become
 
-- Not a call. Nobody interviews you at this level: you send the details and the work is done from them.
+- Not a call. Nobody interviews you at this level: you run the prompt where the agent runs and send back what it writes, and the work is done from that.
 - Not signed by a named professional. That is the level above.
 - Not a compliance assessment and not a risk score. An Agent Behaviour Policy describes and does not judge.
 
