@@ -1,23 +1,23 @@
-# Tier 1 — What did I actually grant it?
+# Tier 1 — Can I just have the pack?
 
-Your own answers, your measured grant, and the delta between them, as a file you keep.
+Every file in the vault for the shape you picked, sent to you: the policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent.
 
 - Offer id: `t1`
-- Price: £10
+- Price: £5
 - How it is paid: Payment link
 - Checkout: One price means one standing payment link, printable on a card.
-- What is true of it today: An application built in August may exist and has not been located. Until it is found, this is a questions page, and this page does not promise more than that.
+- What is true of it today: Built, and it runs today. Fifteen template shapes are published, and the pack for any of them is what this level sends.
 
 ## What arrives
 
-- The questions, in the order they are asked.
-- Your answers, as you gave them.
-- The grant we measured, if the measurement ran.
-- The delta between the two, computed at the moment you open it and never stored.
+- One email, with the whole pack for the shape you chose.
+- The policy, the grant, the mandate, the delta and the barrier on each row.
+- The prompts and documents you hand the agent, and the business case for a control.
 
 ## What this is not, and will not become
 
-- That the measurement ran. If the August application cannot be located, what arrives is your answers and the questions, and the page says so before you pay.
+- Not a vault. No history, no app, and no read key to hand anybody — that is the level above.
+- Not corrected for you. The mandate in it is the starting mandate, written to be corrected, and correcting it is yours to do.
 
 ---
 

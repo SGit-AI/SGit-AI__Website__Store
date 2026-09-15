@@ -6,51 +6,41 @@ order: 6
 toc: true
 ---
 
-## What a booking is
+## Only one of the four is a booking
 
-**A time, confirmed, and a scope in writing.** For [tier 3](/d/t3/) that is a
-person reading your situation and running a vault for you. For [tier 4](/d/t4/) it
-is an assessment by security professionals, with a deposit against a written
-scope.
+**Three of the four levels need nobody to be scheduled.** The pack by email, the
+working vault and the corrected vault are produced without a conversation: you pick,
+you pay, and the work happens. **Only [the £1,500 level](/d/t4/) is a booking**,
+because it is the one whose cost is somebody's time.
 
-**Neither is a file you download.** {{claim:t3-collision-open}}
+That line — between a thing agents do and a thing a person sits down for — is the
+line between the third level and the fourth, and it is the only reason the price
+moves as far as it does. {{claim:abp-correction-unrun}}
 
-## Tier 4 starts with a conversation, and the reason is arithmetic
+## What the two sessions are
 
-**Above about a thousand pounds a card stops making sense.** At £10,000 the card
-fee alone reaches roughly £250 {{claim:card-fee-floor}}. So the **engagement** goes
-by invoice and bank transfer, or through [the cloud marketplace](/paying/) if the
-buyer would rather have it inside terms they already hold.
+**Half an hour to interview your team, and half an hour to deliver.** The first
+finds out what is actually running — which agents, on what accounts, with which
+credentials, and what anybody believes they are for. The second walks through what
+came back.
 
-**The deposit is the exception, and it is the same arithmetic.** The threshold was
-never about the deposit: **£500 costs about £12 on a card**, so the **£500 deposit
-is a payment link and the balance is not.** Two amounts, two rails, one offer —
-and [the delivery page](/d/t4/) says which of them the button takes.
-{{claim:t4-deposit-below-threshold}}
+**Between them, the work.** The mandate is built from the interview rather than
+from a form, the delta is recomputed against it, and **a security professional
+reviews and signs off** what is delivered. {{claim:abp-sessions-unrun}}
 
-There is a second reason, and it is the more important one. **The seven-role team
-is specified and has never run.** {{claim:t4-team-never-run}} A first buyer would
-be the first run. That belongs in a conversation before a deposit, not in a
-paragraph after one — **which is why the deposit follows the conversation rather
-than starting it**, and not only because it reads better. What happens to a deposit
-against an engagement that cannot be scheduled has not been written down, and
-taking money before that exists would be a promise nobody has agreed.
-{{claim:t4-deposit-terms-absent}}
+**Two sessions is what is sold.** More is a separate conversation, and saying so
+before you buy is cheaper than discovering it afterwards.
 
 ## What a booking does not buy
 
-**A signature.** A reviewed opinion, issued by the company and signed by a named
-professional, is [a separate add-on](/offers/#offer-add-opinion) — and it cannot be
-bought at all right now, because **its wording does not exist and has to before a
-first signature.** {{claim:opinion-wording-absent}}
+**A signed opinion as a formal instrument.** A security professional reviewing and
+signing off the work is **not** the company issuing a signed opinion, and **the
+wording for that still does not exist.** The two are kept apart on every page here,
+because they are one word away from each other and a buyer could reasonably assume
+the first is the second. {{claim:opinion-wording-absent}}
 
-This overlap is recorded and unresolved: tier 3 and the opinion add-on sit close
-enough together that a buyer could reasonably assume one includes the other.
-**It does not.** Until the overlap is closed, the two are sold separately and
-neither page implies the other. {{claim:t3-collision-open}}
-
-**A compliance assessment, or a mark of conformity.** Neither describes a booking
-here, and neither appears on anything that comes out of one. The family of words
+**Not a compliance assessment, and not a mark of conformity.** Neither word
+describes this and neither appears on anything that comes out of it. The family of words
 around conformity marking is avoided outright: it raises the standard of care
 beyond ordinary negligence and buys a buyer nothing.
 
@@ -76,11 +66,15 @@ and sources, with no evaluative adjective attached to anybody's name.
 
 ## How to book
 
-**At the event**: the code on the card. It redirects to the delivery page for that
-tier, which says what the booking covers before you commit to it.
+**Buy the level, and the sessions are scheduled after.** [Your order](/cart/) takes
+you to the payment provider; the conversation follows the purchase rather than
+gating it, which is the opposite of how consulting is usually sold and is the
+reason it can be bought from a card at all.
 
-**Otherwise**: use the same code, or start the conversation for tier 4. There is
-no form on this site — it does not collect anything, from anybody, ever.
+**At the event**: the code on the card, which redirects to the delivery page for
+that level and says what it covers before you commit.
+
+There is no form on this site — it does not collect anything, from anybody, ever.
 
 ---
 

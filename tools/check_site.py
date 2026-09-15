@@ -242,11 +242,18 @@ def check_naming_collision():
 # price cannot be corrected, so the check is a frozen table rather than a range: to
 # move a price you edit this file, in a commit that says so, beside the copy that
 # changes with it.
+#
+# RE-POINTED 15 SEPTEMBER 2026, BY RULING. The four tiers of the 10 September pack
+# were replaced by the project lead with four levels of one product: the pack by
+# email, a working vault, corrected for your situation, and two sessions with a
+# professional signing it. The check did not loosen — it was re-pointed at the new
+# numbers, in the commit that says so, which is exactly the mechanism this table
+# exists for. The previous table is in the history and in the ledger.
 EXPECTED_PRICES = {
-    "t1": ("£10", 1000, 1000),
-    "t2": ("£50 to £100", 5000, 10000),
-    "t3": ("£150 to £1,000", 15000, 100000),
-    "t4": ("£5,000 to £10,000", 500000, 1000000),
+    "t1": ("£5", 500, 500),
+    "t2": ("£50", 5000, 5000),
+    "t3": ("£500", 50000, 50000),
+    "t4": ("£1,500", 150000, 150000),
     "add-formats": ("By depth band", 0, 0),
     "add-opinion": ("By depth band", 0, 0),
 }
@@ -562,10 +569,14 @@ def check_pack_area_is_honest():
 # link for a number nobody set.
 CHECKOUT_HOSTS = ("https://buy.stripe.com/", "https://checkout.stripe.com/")
 EXPECTED_CHECKOUT = {
-    "t1": "fixed",            # £10, one price, one link
-    "t2": "banded",           # £50 to £100
-    "t3": "banded",           # £150 to £1,000
-    "t4": "deposit",          # the engagement is invoiced; the £500 deposit is a link
+    # Every level is now a single price, so every one of them can hold a standing
+    # link. The banded modes and the deposit belonged to the tiers that were
+    # replaced: there is no band left to fix and no engagement left to deposit
+    # against.
+    "t1": "fixed",            # £5
+    "t2": "fixed",            # £50
+    "t3": "fixed",            # £500
+    "t4": "fixed",            # £1,500
     "add-formats": "attached",
     "add-opinion": "none",
 }
@@ -588,7 +599,11 @@ NO_LINK_MODES = ("attached", "conversation", "none")
 #      against its own checkout in the paragraph next to it.
 #   2. A deposit must be smaller than the thing it is a deposit against. A deposit
 #      at or above the engagement's floor is not a deposit, it is the price.
-EXPECTED_DEPOSITS = {"t4": ("£500", 50000)}
+# Empty since 15 September 2026. The deposit was against a £5,000 to £10,000
+# engagement that the new product line does not carry, so there is nothing left
+# for it to be a deposit against. The machinery stays: it is four lines, it is
+# tested, and the next offer above the card threshold will want it.
+EXPECTED_DEPOSITS = {}
 CARD_THRESHOLD = 100000   # £1,000, the number the copy names on /paying/ and /booking/
 
 
@@ -879,6 +894,27 @@ def check_deposit_not_beside_the_marketplace():
                      "They are alternatives for one engagement, never a combination")
 
 
+def check_offer_claims_exist():
+    """Every offer's state chip links to a claim in the ledger. The chip is built
+    from the offer record rather than from a shortcode, so an offer naming a claim
+    nobody wrote renders a live-looking badge pointing at a dead anchor — which is
+    what happened when the offer line was replaced and four new claims were cited
+    a commit before they existed."""
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    known = {c["id"] for c in index["claims"]}
+    src = (ROOT / "data" / "offers.yml").read_text()
+    for m in re.finditer(r"(?ms)^- id: (\S+)\n(.*?)(?=^- id: |\Z)", src):
+        oid, block = m.group(1), m.group(2)
+        cm = re.search(r"^\s*claim: (\S+)$", block, re.M)
+        if not cm:
+            fail(f"offer {oid}: cites no claim, so its state badge is an assertion with nothing "
+                 "behind it")
+            continue
+        if cm.group(1) not in known:
+            fail(f"offer {oid}: cites claim {cm.group(1)!r}, which is not in the ledger. The badge "
+                 "would link to an anchor that does not exist")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -894,7 +930,7 @@ def main():
         check_naming_collision, check_prices, check_delivery_pages,
         check_committed_spend_correction, check_rails_not_a_choice,
         check_checkout_links, check_no_forms, check_buyer_groups,
-        check_deposits, check_deposit_not_beside_the_marketplace,
+        check_deposits, check_deposit_not_beside_the_marketplace, check_offer_claims_exist,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,

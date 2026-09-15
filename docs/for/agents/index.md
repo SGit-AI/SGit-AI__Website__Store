@@ -14,8 +14,8 @@ The **delta**: the union of what a credential permits, against what its holder i
 
 ## The offers you are shown
 
-- `t1` — Tier 1 — £10 — What did I actually grant it? — One price means one standing payment link, printable on a card.
-- `t2` — Tier 2 — £50 to £100 — Which parts of the regulation actually reach me? — A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
+- `t1` — Tier 1 — £5 — Can I just have the pack? — One price means one standing payment link, printable on a card.
+- `t2` — Tier 2 — £50 — Can I have a vault I hold the keys to? — One price means one standing payment link, printable on a card.
 - `add-formats` — Add-on — By depth band — Can I have the same result in a form the board will read? — This attaches to another offer and is priced against its depth band, so it has no checkout of its own.
 
 ## What you are not buying

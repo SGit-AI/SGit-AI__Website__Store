@@ -1,10 +1,27 @@
 {
-  "current": "v0.1.6",
+  "current": "v0.1.7",
   "releases": [
+    {
+      "version": "v0.1.7",
+      "date": "2026-09-15",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the store: fifteen agent behaviour policies, four levels each, a cart and two rails",
+      "summary": "The store proper. Fifteen Agent Behaviour Policy shapes promoted from riskmandate.ai at build time with a content hash, times four levels \u2014 the pack by email at \u00a35, a working vault at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500 \u2014 plus one for a deployment nobody has profiled, which starts at the third level because the first two deliver a template and for it there is not one. A catalogue with chip filters, a page per shape, an order that survives a reload, and two payment rails. The four tiers of the 10 September pack were replaced by ruling; the identifiers did not change, so a printed code still lands. Nothing is collected here: every control is a button, no page opens a connection, and what reaches the provider is an amount and an order reference carrying the product codes.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.6",
       "date": "2026-09-11",
-      "commit": "",
+      "commit": "892e790c3f45a1a5a6bc528542554f700f6f0b06",
       "site": "store.sgit.ai",
       "title": "the tier four deposit paragraph stops saying the balance is invoiced twice",
       "summary": "A one-sentence duplication on /d/t4/: the deposit paragraph ended \"the balance is invoiced. The rest is invoiced.\" It was noticed before v0.1.5 shipped and the edit missed, because the search string carried a trailing space the file did not \u2014 the second time that has happened in this repository, and the first where the miss was reported as a fix and reached the live site.",

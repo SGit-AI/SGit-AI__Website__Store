@@ -18,10 +18,10 @@ Everything on one page, in order, with the ticket pinned beside it.
 
 ## Where a total lands
 
-- up to 8 weighted: `t1` £10 — A small estate, your own account of it, and the delta between the two halves.
-- up to 18 weighted: `t2` £50 to £100 — Enough surfaces that the map is worth drawing, and the regulation slice attached to it.
-- up to 34 weighted: `t3` £150 to £1,000 — Wide enough that somebody should read it with you rather than hand it over.
-- up to 9999 weighted: `t4` £5,000 to £10,000 — An estate, not a project. This one starts with a conversation and a written scope.
+- up to 8 weighted: `t1` £5 — A small estate, your own account of it, and the delta between the two halves.
+- up to 18 weighted: `t2` £50 — Enough surfaces that the map is worth drawing, and the regulation slice attached to it.
+- up to 34 weighted: `t3` £500 — Wide enough that somebody should read it with you rather than hand it over.
+- up to 9999 weighted: `t4` £1,500 — An estate, not a project. This one starts with a conversation and a written scope.
 
 ---
 

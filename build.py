@@ -88,36 +88,31 @@ LICENCE_TO_OPERATE = "every agent needs a licence to operate"
 # page, so nothing is reachable only by opening a menu.
 NAV = [
     ("What is for sale", "/", []),
-    ("The offers", "/offers/", [
-        ("All six, side by side", "/offers/"),
-        ("What is not for sale yet", "/catalogue/"),
+    # The store proper, first: fifteen shapes, four levels, and an order.
+    ("The policies", "/policies/", [
+        ("Which agent do you run?", "/policies/"),
+        ("The four levels", "/policies/#the-four-levels"),
+        ("Something not on the list", "/p/your-own/"),
+        ("The price list", "/offers/"),
+        ("Your order", "/cart/"),
     ]),
-    # The buyer axis. The offer page is the price ladder; this is the same six
-    # offers indexed by who is climbing it, which is the question an arriving
-    # reader actually has. Every label here is a real page, per the estate rule
-    # that nothing is reachable only by opening a menu.
+    ("How buying works", "/how-it-works/", [
+        ("The three steps", "/how-it-works/"),
+        ("The two rails", "/paying/"),
+        ("What a session is", "/booking/"),
+    ]),
     ("Who it is for", "/audiences/", [
         ("The three buyers", "/audiences/"),
         ("You run agents today", "/for/agents/"),
         ("You are backing a company", "/for/investors/"),
         ("You are a startup", "/for/startups/"),
     ]),
-    # The lab. It sells nothing and it is in the nav anyway: five prototypes that
-    # only their author can find are five prototypes nobody can disagree with.
-    ("The lab", "/lab/", [
-        ("All five, compared", "/lab/"),
-    ] + [(v_name, f"/lab/{v_id}/") for v_id, v_name in (
-        ("interview", "The interview"), ("ladder", "The ladder"),
-        ("board", "The estate board"), ("delta", "The delta"),
-        ("scenario", "The scenario"))]),
-    ("Paying", "/paying/", [
-        ("The two rails", "/paying/"),
-        ("Booking a person", "/booking/"),
-    ]),
     ("Evidence", "/ledger/", [
         ("The claim ledger", "/ledger/"),
         ("What we do not say, and why", "/disclosures/"),
-        ("The dev packs, published raw", "/dev-packs/"),
+        ("What is not for sale yet", "/catalogue/"),
+        ("The dev packs", "/dev-packs/"),
+        ("The purchase lab", "/lab/"),
         ("Release history", "/versions/"),
     ]),
 ]
@@ -742,6 +737,10 @@ def checkout_html(o, ctx):
 
 
 def offer_card(o, ctx, link=True, anchor_prefix=""):
+    # The state chip is built from the offer record rather than from a {{claim:}}
+    # shortcode, so nothing registered it as used and the ledger's "where it is
+    # said" column stayed blank for every offer claim. Register it here.
+    ctx["claim_uses"].setdefault(o["claim"], set()).add(ctx["page"])
     tier = o["tier"]
     label = f"Tier {tier}" if tier != "add-on" else "Add-on"
     rail_name, rail_why = RAILS[o["rail"]]
@@ -1198,6 +1197,156 @@ def delivery_pages(out_dir, ctx_shared):
     return made
 
 
+# ------------------------------------------------------------------ the shop ----
+# The store proper: fifteen Agent Behaviour Policy shapes, four levels each, a
+# cart and two payment rails.
+#
+# WHERE THE CATALOGUE COMES FROM. riskmandate.ai publishes the shapes; this site
+# promotes them at build time into data/abp-catalogue.json with the source URL, a
+# retrieval time and a content hash. It is not fetched at runtime because no page
+# here opens a network connection — so a push to riskmandate.ai is live here on
+# the next build rather than on the next page load, and `tools/promote_abp.py`
+# is the one command that moves it.
+#
+# WHAT IS SOLD, AND WHAT IS NOT. The templates are free and public on
+# riskmandate.ai, with published read keys, and this site says so rather than
+# pretending otherwise. What is priced here is a template with the mandate
+# corrected, a name on the licence and no public key — and at the two upper levels,
+# the correction done with you rather than by you.
+
+ABP = json.loads((DATA / "abp-catalogue.json").read_text())
+PRODUCTS = yaml_load((DATA / "products.yml").read_text())
+CHECKOUT_RAILS = yaml_load((DATA / "checkout.yml").read_text())
+# Each level names the offer it is; the price is joined from data/offers.yml so
+# that file stays the only place a price exists.
+LEVELS = []
+for _l in PRODUCTS["levels"]:
+    _o = OFFERS_BY_ID.get(_l["offer"])
+    if not _o:
+        raise SystemExit(f"build: level {_l['id']!r} names offer {_l['offer']!r}, which is not in "
+                         "data/offers.yml. A level is an offer with a description; it cannot name "
+                         "a price that does not exist.")
+    LEVELS.append(dict(_l, price_label=_o["price_label"], price=_o["price_min"],
+                       rail=_o["rail"], state=_o["state_badge"]))
+LEVELS_BY_ID = {l["id"]: l for l in LEVELS}
+SHAPE_CODES = PRODUCTS["shape_codes"]
+CUSTOM_SHAPE = PRODUCTS["custom_shape"]
+
+# Every promoted shape needs a SKU code, and a code with no shape behind it is a
+# code somebody forgot to delete. Checked at load, because a shape that arrives
+# upstream without one would otherwise render a tile whose buttons produce
+# "ABP-???-V" and nobody would notice until an order arrived.
+_uncoded = [s["slug"] for s in ABP["shapes"] if s["slug"] not in SHAPE_CODES]
+if _uncoded:
+    raise SystemExit(
+        f"build: {', '.join(_uncoded)} arrived in the promoted catalogue with no SKU code in "
+        "data/products.yml. A shape without a code cannot be ordered: give it one (three "
+        "characters, unique) before it reaches a page.")
+_orphans = [c for c in SHAPE_CODES if c not in {s["slug"] for s in ABP["shapes"]}]
+if _orphans:
+    raise SystemExit(f"build: data/products.yml carries SKU codes for {', '.join(_orphans)}, "
+                     "which are not in the promoted catalogue. Either the shape was withdrawn "
+                     "upstream or the code is stale.")
+_dupes = [c for c in set(SHAPE_CODES.values()) if list(SHAPE_CODES.values()).count(c) > 1]
+if _dupes:
+    raise SystemExit(f"build: duplicate SKU code(s) {', '.join(_dupes)} — two shapes sharing a "
+                     "code means an order cannot say which was bought.")
+
+
+def shop_shapes():
+    """Every purchasable shape: the promoted catalogue, plus the one for a
+    deployment nobody has profiled. The last one carries its own level list,
+    because the first two levels deliver an existing template and for it there is
+    not one — which is a fact about the product rather than a packaging choice."""
+    out = []
+    for s in ABP["shapes"]:
+        out.append(dict(s, code=SHAPE_CODES[s["slug"]],
+                        levels=[l["id"] for l in LEVELS]))
+    out.append({
+        "slug": CUSTOM_SHAPE["slug"], "code": CUSTOM_SHAPE["code"],
+        "title": CUSTOM_SHAPE["title"], "summary": CUSTOM_SHAPE["summary"],
+        "glyph": CUSTOM_SHAPE["glyph"], "family": CUSTOM_SHAPE["family"],
+        "url": None, "counts": None, "open_questions": 0,
+        "levels": CUSTOM_SHAPE["levels"], "note": CUSTOM_SHAPE["note"],
+    })
+    return out
+
+
+SHOP_SHAPES = shop_shapes()
+
+
+def shop_model(prefix):
+    """The model the cart renders from. Every URL is already relative to the page,
+    because the site has to work on the custom domain, on a project path, from a
+    local directory and inside a frame with no origin."""
+    return {
+        "schema": 1,
+        "storage": "sgit.store.order.v1",
+        "root": prefix,
+        "sku_prefix": PRODUCTS["meta"]["sku_prefix"],
+        "order_prefix": PRODUCTS["meta"]["order_prefix"],
+        "levels": [{"id": l["id"], "code": l["code"], "n": l["n"], "name": l["name"],
+                    "offer": l["offer"], "price_label": l["price_label"], "price": l["price"],
+                    "lede": l["lede"]}
+                   for l in LEVELS],
+        "shapes": [{"slug": s["slug"], "code": s["code"], "title": s["title"],
+                    "summary": s["summary"], "glyph": s["glyph"], "family": s["family"],
+                    "counts": s["counts"], "open_questions": s["open_questions"],
+                    "levels": s["levels"]}
+                   for s in SHOP_SHAPES],
+        "rails": [{"id": r["id"], "n": r["n"], "name": r["name"],
+                   "url": (r.get("url") or "").strip(),
+                   "ref_param": r["ref_param"], "amount_param": (r.get("amount_param") or ""),
+                   "kind": r["kind"], "takes": r["takes"], "note": r["note"]}
+                  for r in CHECKOUT_RAILS["rails"]],
+    }
+
+
+def shop_island(prefix):
+    return (f'<script type="application/json" id="shop-model">'
+            f'{json.dumps(shop_model(prefix), separators=(",", ":"))}</script>')
+
+
+# Registered here rather than in the BLOCKS literal above, which is defined before
+# this section and cannot name a function that does not exist yet.
+def block_catalogue(ctx):
+    """The grid, rendered by the cart engine. The server-rendered fallback is the
+    whole catalogue as a list, because a store that shows nothing without
+    JavaScript is a store that shows nothing to a crawler either."""
+    rows = "".join(
+        f'<li><a href="/p/{s["slug"]}/"><b>{html.escape(s["title"])}</b></a> &mdash; '
+        f'{html.escape(s["summary"])}'
+        + ("" if not s["counts"] else
+           f' <span class="small dim">{s["counts"]["grant"]} it can do, '
+           f'{s["counts"]["wanted"]} wanted, {s["counts"]["unbounded"]} with nothing in the way.</span>')
+        + "</li>"
+        for s in SHOP_SHAPES)
+    return (shop_island(rel_prefix(ctx["page_url"]))
+            + '<div id="catalogue"><noscript-fallback>'
+            + f'<ul class="small">{rows}</ul>'
+            + '</noscript-fallback></div>')
+
+
+def block_levels_table(ctx):
+    rows = "".join(
+        f'<tr><td class="num">{l["n"]}</td>'
+        f'<td><b>{html.escape(l["name"])}</b><br>'
+        f'<span class="small dim">{html.escape(l["who"])}</span></td>'
+        f'<td class="num"><b>{html.escape(l["price_label"])}</b></td>'
+        f'<td class="small">{inline(l["lede"], ctx)}</td>'
+        f'<td class="small">{html.escape(l["fulfilment"])}</td></tr>' for l in LEVELS)
+    return ('<div class="tablewrap"><table><thead><tr><th class="num"></th><th>Level</th>'
+            '<th class="num">Price</th><th>What it is</th><th>Who does it</th>'
+            '</tr></thead><tbody>' + rows + "</tbody></table></div>"
+            '<p class="small dim">Every level is the same document. What changes is the form it '
+            'arrives in and who does the correcting &mdash; and the line between the third and the '
+            'fourth is the line between a thing agents do and a thing a person signs.</p>')
+
+
+BLOCKS["catalogue"] = block_catalogue
+BLOCKS["levels-table"] = block_levels_table
+
+
 # ------------------------------------------------------------------- the lab ----
 # Five prototypes of one purchase flow, at /lab/<id>/.
 #
@@ -1431,6 +1580,140 @@ def lab_pages(out_dir, ctx_shared):
     return made
 
 
+def shape_pages(out_dir, ctx_shared):
+    """One page per shape at /p/<slug>/, and the order at /cart/.
+
+    Generated rather than written for the same reason the delivery pages are: a
+    hand-written product page is a page that will one day price a level the
+    catalogue no longer carries, or promise a template that was withdrawn
+    upstream."""
+    made = {}
+    for s in SHOP_SHAPES:
+        url = f"/p/{s['slug']}/"
+        prefix = rel_prefix(url)
+        ctx = dict(ctx_shared)
+        ctx.update({"page": f"p/{s['slug']}", "page_url": url, "fm": {}, "toc": []})
+        c = s["counts"]
+        counts = ("" if not c else
+                  '<div class="tablewrap"><table><thead><tr>'
+                  '<th class="num">It can do</th><th class="num">You wanted</th>'
+                  '<th class="num">Not wanted</th><th class="num">Nothing in the way</th>'
+                  '</tr></thead><tbody><tr>'
+                  f'<td class="num">{c["grant"]}</td><td class="num">{c["wanted"]}</td>'
+                  f'<td class="num">{c["excess"]}</td><td class="num">{c["unbounded"]}</td>'
+                  '</tr></tbody></table></div>'
+                  '<p class="small dim">Counts, not a score. An Agent Behaviour Policy describes '
+                  'and does not judge: the same policy is dangerous in one deployment and harmless '
+                  'in another, so there is no rating on it here or anywhere. The last column is the '
+                  'one a control moves.</p>')
+        openq = ("" if not s["open_questions"] else
+                 '<div class="labnote"><p><b>' + str(s["open_questions"]) +
+                 ' open question' + ('' if s["open_questions"] == 1 else 's') + '.</b> '
+                 'This shape is read from the vendor&rsquo;s own published pages on a date, not '
+                 'measured on the thing itself. The questions those pages could not settle travel '
+                 'with the vault rather than being guessed at.</p></div>')
+        note = ("" if not s.get("note") else
+                f'<div class="labnote"><p>{inline(s["note"], ctx)}</p></div>')
+        free = ("" if not s.get("url") else
+                '<p>The template for this shape is <b>free and public</b>, with a published read '
+                f'key, at <a href="{html.escape(s["url"])}" rel="noopener">riskmandate.ai</a>. '
+                'Go and read it before you buy anything here. <b>What is priced below is that '
+                'template with the mandate corrected, a name on the licence and no public key</b> '
+                '&mdash; and at the upper two levels, the correction done with you rather than by '
+                'you.</p>')
+        body = (
+            f'<p class="lead">{html.escape(s["summary"])}</p>'
+            f'{note}{counts}{openq}{free}'
+            '<h2 id="the-four-levels">The four levels</h2>'
+            + shop_island(prefix) +
+            f'<div id="shape-levels" data-shape="{html.escape(s["slug"])}">'
+            '<p class="dim">The levels need JavaScript to add to an order. '
+            '<a href="/policies/">The catalogue</a> lists what each one is.</p></div>'
+            '<p class="pagenav"><a href="/cart/">Your order &rarr;</a>'
+            '<a href="/policies/">Every shape &rarr;</a>'
+            '<a href="/how-it-works/">How buying works &rarr;</a></p>'
+        )
+        page = {
+            "fm": {"title": s["title"],
+                   "description": f"An Agent Behaviour Policy for {s['title']}: "
+                                  f"{s['summary'][:120]}",
+                   "head_css": "/assets/shop.css", "head_js": "/assets/shop.js"},
+            "url": url,
+            "crumb": f' / <a href="/policies/">policies</a> / {html.escape(s["slug"])}',
+            "nav_match": "/policies/",
+            "src_md": (
+                f"# {s['title']}\n\n{s['summary']}\n\n"
+                + ("" if not c else
+                   f"- It can do: {c['grant']}\n- You wanted: {c['wanted']}\n"
+                   f"- Not wanted: {c['excess']}\n- Nothing in the way: {c['unbounded']}\n"
+                   "\nCounts, not a score.\n")
+                + ("" if not s.get("url") else f"\nFree public template: {s['url']}\n")
+                + "\n## The four levels\n\n"
+                + "".join(
+                    f"- `{PRODUCTS['meta']['sku_prefix']}-{s['code']}-{LEVELS_BY_ID[lid]['code']}` "
+                    f"\u2014 {LEVELS_BY_ID[lid]['price_label']} \u2014 "
+                    f"{LEVELS_BY_ID[lid]['name']}: {LEVELS_BY_ID[lid]['lede']}\n"
+                    for lid in s["levels"])
+            ),
+        }
+        target = out_dir / url.strip("/") / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(page_html(page, ctx, body))
+        twin = page["src_md"]
+        if LICENCE_STAMP not in twin:
+            twin += f"\n---\n\n{LICENCE_STAMP}\n"
+        (target.parent / "index.md").write_text(twin)
+        made[url] = page["fm"]["title"]
+
+    # ------------------------------------------------------------ the order
+    url = "/cart/"
+    prefix = rel_prefix(url)
+    ctx = dict(ctx_shared)
+    ctx.update({"page": "cart", "page_url": url, "fm": {}, "toc": []})
+    body = (
+        '<p class="lead">Everything you have picked, what it costs, and the two ways to pay. '
+        '<b>Nothing on this page is collected by us</b> &mdash; your order lives in this browser, '
+        'and your name, your contact and your card are taken by the payment provider on its own '
+        'pages.</p>'
+        + shop_island(prefix) +
+        '<div id="cart"><p class="dim">Your order needs JavaScript. '
+        '<a href="/policies/">The catalogue</a> lists everything and what it costs.</p></div>'
+        '<h2 id="what-reaches-the-provider">What reaches the payment provider</h2>'
+        '<p><b>The amount, and your order reference. Nothing else.</b> The reference carries the '
+        'codes for what you picked, so matching it against the name and contact the provider '
+        'captured gives the whole order. There is no account here, no cookie, and '
+        '<b>no form, input or field anywhere on this site</b> &mdash; a build check holds that, '
+        'which is what makes it a fact rather than a promise.</p>'
+        '<p>The catalogue is not duplicated inside either provider. Sixty-two codes maintained '
+        'twice is sixty-two codes that will one day disagree, so the provider takes an amount and '
+        'a reference and neither side has to know about the other.</p>'
+        '<p class="pagenav"><a href="/policies/">Every shape &rarr;</a>'
+        '<a href="/how-it-works/">How buying works &rarr;</a></p>'
+    )
+    page = {
+        "fm": {"title": "Your order",
+               "description": "What you have picked, what it costs, your order reference, and the "
+                              "two payment rails. Nothing on this page is collected by us.",
+               "head_css": "/assets/shop.css", "head_js": "/assets/shop.js"},
+        "url": url,
+        "crumb": " / your order",
+        "nav_match": "/policies/",
+        "src_md": ("# Your order\n\nYour order lives in your own browser. The payment provider "
+                   "takes your name, your contact and your card on its own pages; what this site "
+                   "hands it is the amount and an order reference carrying the codes for what you "
+                   "picked.\n\n## The levels\n\n"
+                   + "".join(f"- `{l['code']}` \u2014 {l['price_label']} \u2014 {l['name']}\n"
+                             for l in LEVELS)),
+    }
+    target = out_dir / "cart" / "index.html"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(page_html(page, ctx, body))
+    twin = page["src_md"] + f"\n---\n\n{LICENCE_STAMP}\n"
+    (target.parent / "index.md").write_text(twin)
+    made[url] = page["fm"]["title"]
+    return made
+
+
 # ----------------------------------------------------------- buyer pages ----
 # One page per buyer at /for/<id>/. The offer page is the price ladder; these are
 # the same six offers read by who is climbing it, which is the question somebody
@@ -1637,6 +1920,8 @@ def nav_html(current):
         f'{SITE["version"]}</a>'
         '<button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">Menu</button>'
         '<div class="nav-items">' + "".join(items) + "</div>"
+        '<a class="cartlink" href="/cart/">Your order '
+        '<b data-cart-count hidden></b><span data-cart-total></span></a>'
         '<a class="gh" href="https://github.com/SGit-AI/SGit-AI__Website__Store" rel="noopener">&#9733; Source</a>'
         "</div></nav>"
     )
@@ -1724,6 +2009,7 @@ def page_html(page, ctx, body):
 {f'<link rel="stylesheet" href="{fm["head_css"]}">' if fm.get('head_css') else ''}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <script src="/assets/site.js" defer></script>
+<script src="/assets/shop.js" defer></script>
 {f'<script src="{fm["head_js"]}" defer></script>' if fm.get('head_js') else ''}
 </head>
 <body>
@@ -1827,6 +2113,7 @@ def build(out_dir):
     extra = delivery_pages(out_dir, ctx_shared)
     extra.update(buyer_pages(out_dir, ctx_shared))
     extra.update(lab_pages(out_dir, ctx_shared))
+    extra.update(shape_pages(out_dir, ctx_shared))
     extra.update(release_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The

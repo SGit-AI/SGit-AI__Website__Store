@@ -14,8 +14,8 @@ No productised, affordable, signed investor review exists at any price — and e
 
 ## The offers you are shown
 
-- `t3` — Tier 3 — £150 to £1,000 — Will somebody look at my situation with me? — A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
-- `t4` — Tier 4 — £5,000 to £10,000 — What would a team of security professionals find? — The engagement goes by invoice and bank transfer, because above about £1,000 a card stops making sense. The deposit is below that threshold, so the deposit is a payment link and the balance is not.
+- `t3` — Tier 3 — £500 — Can you correct it for my situation? — One price means one standing payment link, printable on a card.
+- `t4` — Tier 4 — £1,500 — Can somebody go through it with my team? — One price means one standing payment link, printable on a card.
 - `add-opinion` — Add-on — By depth band — Will somebody put their name to it? — There is no code behind this one.
 - `add-formats` — Add-on — By depth band — Can I have the same result in a form the board will read? — This attaches to another offer and is priced against its depth band, so it has no checkout of its own.
 

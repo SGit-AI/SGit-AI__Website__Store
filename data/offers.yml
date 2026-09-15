@@ -1,10 +1,20 @@
 # The offers. THIS FILE IS THE ONLY PLACE A PRICE EXISTS.
 #
-# Four tiers and two add-ons, from 01__WHAT-TO-BUILD.md. Four prices are set, one
-# range is deliberately wide, and the add-ons are banded rather than priced. The
-# pack is explicit that a price is not the builder's to invent, so the gate in
-# tools/check_site.py holds every number below against the pack and fails the
-# release if one moves.
+# FOUR LEVELS OF ONE THING, and two add-ons. Every level is the same document — an
+# Agent Behaviour Policy for one agent in one deployment — and what changes is the
+# form it arrives in and who does the correcting.
+#
+# THE PRICES CHANGED ON 15 SEPTEMBER 2026, BY RULING. The four tiers of the
+# 10 September pack (£10, £50 to £100, £150 to £1,000, £5,000 to £10,000) were
+# replaced by the project lead with £5, £50, £500 and £1,500. A price is not the
+# builder's to invent and it IS the project lead's to set, so the frozen table in
+# tools/check_site.py moved with these numbers, in the commit that says so. That
+# mechanism is the point: the check did not loosen, it was re-pointed.
+#
+# THE IDENTIFIERS DID NOT CHANGE, and that is deliberate. t1 to t4 are printed on
+# cards that are already made. A code still lands on /d/<id>/ and that page now
+# describes the level rather than the old tier, which is the whole reason the pack
+# said to keep the identifiers stable: a repricing costs no reprinting.
 #
 # `id` is the stable offer identifier. A payment link redirects to /d/<id>/ and
 # nothing else about it is load-bearing, so the site can move host without
@@ -61,109 +71,103 @@
 
 - id: t1
   tier: "1"
-  question: What did I actually grant it?
-  price_label: "£10"
-  price_min: 1000
-  price_max: 1000
-  price_why: "The floor is arithmetic, not positioning. At £5 the fixed card fee alone is about four per cent of the transaction"
-  gets: "Your own answers, your measured grant, and the delta between them, as a file you keep."
-  state_badge: unlocated
-  state: "An application built in August may exist and has not been located. Until it is found, this is a questions page, and this page does not promise more than that."
-  claim: t1-app-not-located
+  question: Can I just have the pack?
+  price_label: "£5"
+  price_min: 500
+  price_max: 500
+  price_why: "The floor, set by ruling on 15 September. The card fee is about four per cent of it, which was the reason £5 was ruled OUT as a floor on 10 September — the fee did not change, the judgement did, and the arithmetic stays on the page rather than being quietly dropped"
+  gets: "Every file in the vault for the shape you picked, sent to you: the policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent."
+  state_badge: exists
+  state: "Built, and it runs today. Fifteen template shapes are published, and the pack for any of them is what this level sends."
+  claim: abp-templates-exist
   rail: link
   buyer: agents
-  also_for: []
+  also_for: [startups, investors]
   checkout_mode: fixed
   checkout_url: ""
   delivery_says:
-    - "The questions, in the order they are asked."
-    - "Your answers, as you gave them."
-    - "The grant we measured, if the measurement ran."
-    - "The delta between the two, computed at the moment you open it and never stored."
+    - "One email, with the whole pack for the shape you chose."
+    - "The policy, the grant, the mandate, the delta and the barrier on each row."
+    - "The prompts and documents you hand the agent, and the business case for a control."
   not_promised:
-    - "That the measurement ran. If the August application cannot be located, what arrives is your answers and the questions, and the page says so before you pay."
+    - "Not a vault. No history, no app, and no read key to hand anybody — that is the level above."
+    - "Not corrected for you. The mandate in it is the starting mandate, written to be corrected, and correcting it is yours to do."
 
 - id: t2
   tier: "2"
-  question: Which parts of the regulation actually reach me?
-  price_label: "£50 to £100"
+  question: Can I have a vault I hold the keys to?
+  price_label: "£50"
   price_min: 5000
-  price_max: 10000
-  price_why: "A band, not a number. Where a case lands inside it depends on how much of the graph the situation touches"
-  gets: "Only the provisions of the regulation that reach your situation, with the fact that caused each provision to arrive visible beside it, as a vault you own."
-  state_badge: spec
-  state: "Specified 28 July. The graph exists at 1,523 nodes with amendments applied. The pipeline that turns a situation into a vault does not exist."
-  claim: t2-pipeline-absent
+  price_max: 5000
+  price_why: "The same material as the level below, as the thing itself rather than a copy of its contents. A vault is versioned, has its own app and can be handed to somebody with a read key, and none of that survives an email"
+  gets: "A vault of your own with the pack in it, a licence carrying your name, and no public key on it."
+  state_badge: exists
+  state: "Built, and it runs today. A template shape is built into a vault by one command; yours is that, licensed to you, with the public key off it."
+  claim: abp-vault-build-exists
   rail: link
   buyer: agents
-  also_for: [startups]
-  checkout_mode: banded
+  also_for: [startups, investors]
+  checkout_mode: fixed
   checkout_url: ""
   delivery_says:
-    - "The provisions that reach you, and only those."
-    - "Beside each one, the fact about your situation that caused it to arrive."
-    - "The graph version and the amendment set the selection ran against."
-    - "A vault you hold the keys to, that you can clone, and that we can be removed from."
+    - "A vault you hold the keys to: clone it, change it, commit, and the history is yours."
+    - "Its own app, and a read key you can hand to anybody who asks how you govern the agent."
+    - "A licence with your name on it, and no public key."
   not_promised:
-    - "A compliance assessment. This is a selection from a published regulation, not a judgement about whether you meet it."
-    - "That the selection is complete. What arrives is a record of what the pipeline reached, with the version it reached it at."
+    - "Not customised by us. It is the template licensed to you — the correction is still yours to make."
+    - "Not a review. Nobody here has looked at your situation at this level."
 
 - id: t3
   tier: "3"
-  question: Will somebody look at my situation with me?
-  price_label: "£150 to £1,000"
-  price_min: 15000
-  price_max: 100000
-  price_why: "The width is deliberate. It is a person's time, and the range covers an hour at one end and a working week at the other"
-  gets: "A person reviewing your situation, and running a vault for you."
-  state_badge: booking
-  state: "A booking, not a download. This tier overlaps the signed-opinion add-on, and the overlap is recorded and unresolved — so the two are sold separately and the page says which one you are buying."
-  claim: t3-collision-open
+  question: Can you correct it for my situation?
+  price_label: "£500"
+  price_min: 50000
+  price_max: 50000
+  price_why: "You send the industry, the use case and the details; the mandate is corrected against them and the delta recomputed. It is the first level where somebody other than you does the work that makes the document yours"
+  gets: "The vault, with the mandate corrected against your situation rather than against a starting assumption, and a written note of what changed."
+  state_badge: unrun
+  state: "Specified, and never run for a paying buyer. The generator and the correction exist; this level as a product has not been sold once, and you would be the first."
+  claim: abp-correction-unrun
   rail: link
-  buyer: investors
-  also_for: [startups]
-  checkout_mode: banded
+  buyer: startups
+  also_for: [agents, investors]
+  checkout_mode: fixed
   checkout_url: ""
   delivery_says:
-    - "A time, confirmed, with a named person's role — not their name, because the person who sells is not the person who signs."
-    - "What they will read before the call."
-    - "What you get afterwards, in writing."
+    - "Everything in the vault level, with the mandate corrected against what you told us."
+    - "The delta recomputed against your corrected mandate, with the barrier on every row."
+    - "A written note of what was changed and why, so the correction is checkable rather than trusted."
   not_promised:
-    - "A signed opinion. That is a separate add-on with separate wording, and buying an hour of review does not buy a signature."
+    - "Not a call. Nobody interviews you at this level: you send the details and the work is done from them."
+    - "Not signed by a named professional. That is the level above."
+    - "Not a compliance assessment and not a risk score. An Agent Behaviour Policy describes and does not judge."
 
 - id: t4
   tier: "4"
-  question: What would a team of security professionals find?
-  price_label: "£5,000 to £10,000"
-  price_min: 500000
-  price_max: 1000000
-  price_why: "Above about £1,000 a card stops making sense — at £10,000 the card fee alone reaches roughly £250 — so the engagement goes by invoice and bank transfer, or through the cloud marketplace after a conversation. The £500 deposit is below that threshold, so the deposit is a payment link and the balance is not"
-  gets: "An assessment by security professionals."
+  question: Can somebody go through it with my team?
+  price_label: "£1,500"
+  price_min: 150000
+  price_max: 150000
+  price_why: "Two half-hour sessions — one to interview the team, one to deliver — plus the work between them and a security professional's review. It is the only level whose cost is somebody's time, and it is a fixed price rather than a band because two sessions is what is sold"
+  gets: "Two half-hour sessions with your team, the policy built from the interview, and a security professional's review and sign-off."
   state_badge: unrun
-  state: "A booking with a deposit. The seven-role team is specified and has never run. You would be the first, and the price reflects it."
-  claim: t4-team-never-run
-  rail: invoice
+  state: "Specified, and never run for a paying buyer. The sessions have not been held with anybody, and a first buyer would be the first run."
+  claim: abp-sessions-unrun
+  rail: link
   buyer: investors
-  also_for: [startups]
-  checkout_mode: deposit
+  also_for: [agents, startups]
+  checkout_mode: fixed
   checkout_url: ""
-  deposit_label: "£500"
-  deposit_amount: 50000
-  deposit_why: "A deposit against the engagement, and the only part of tier 4 a card makes sense for. £500 is below the threshold the fee arithmetic sets; the balance is invoiced"
-  deposit_says:
-    - "It counts against the engagement. It is a deposit and not a fee."
-    - "It follows the conversation and a written scope, and is not taken before one."
-    - "It buys a place in the schedule. It does not buy the assessment, which is invoiced."
-  deposit_not:
-    - "It does not buy findings, a scope, or an opinion, and nothing is delivered against a deposit alone."
-    - "What happens to a deposit against an engagement that cannot be scheduled is not written down yet, which is why the deposit follows the conversation rather than starting it."
   delivery_says:
-    - "A conversation first, because nothing at this size should start with a card."
-    - "A scope in writing, and a £500 deposit against it — paid by link, because £500 is below the threshold where a card stops making sense."
-    - "The seven roles that will run, and which of them has run before."
+    - "Half an hour with your team to find out what is actually running."
+    - "Half an hour to deliver it and walk through what came back."
+    - "Everything in the corrected level, built from the interview rather than from a form."
+    - "Reviewed and signed off by a security professional, with a record of what was asked and answered."
   not_promised:
-    - "A mark of conformity to a standard, an accreditation, or an audit opinion. None of those describes this, and the language around them appears on no deliverable and on no page of this site."
-    - "Raw findings. What is delivered is triage: every finding that reaches you has been reproduced first."
+    - "Not a signed opinion as a formal instrument. A professional reviewing and signing off the work is not the same thing as the company issuing a signed opinion, and the wording for that does not exist yet."
+    - "Not an audit, an accreditation or a mark of conformity. None of those words describes this and none appears on the deliverable."
+    - "Not a risk score. What the risk of your deployment is depends on your assets and is separate work."
+    - "Not open-ended. Two sessions is what is sold; more is a separate conversation."
 
 - id: add-formats
   tier: add-on

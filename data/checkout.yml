@@ -1,0 +1,48 @@
+# The two payment rails, and what the store hands each of them.
+#
+# NOTHING IS COLLECTED HERE. The store never sees a name, an email or a card: the
+# provider's own page collects all three, which is the only place a card number
+# should ever be typed. There is no form, input, textarea or select anywhere in
+# this site's output and a build check holds that line — so the cart is built out
+# of buttons and the customer's details are the provider's to take.
+#
+# WHAT REACHES THE PROVIDER. The amount, and an order reference that carries the
+# SKUs. The reference is generated in the browser, shown on the page, and passed
+# on the URL. Match it against the name and contact the provider captured and you
+# have the whole order: who, how to reach them, and exactly what they bought.
+#
+# WHY NO PRODUCT CATALOGUE INSIDE THE PROVIDERS. Sixty-two SKUs maintained twice
+# is sixty-two SKUs that will disagree. The catalogue lives here, the provider
+# takes an amount and a reference, and neither has to know about the other. It is
+# the smallest integration that answers the question "what did they buy".
+#
+# BOTH URLS ARE EMPTY. No payment link has been created on either rail. The cart
+# renders the button as unissued and says which rail is missing rather than
+# showing something that looks live. Pasting one line here turns a rail on.
+
+meta:
+  order_prefix: SG
+  note: "An order reference is generated in the browser. It is not an account and nothing is stored anywhere but the browser that made it."
+
+rails:
+  - id: stripe
+    name: Stripe
+    n: 1
+    url: ""
+    hosts: [https://buy.stripe.com/, https://checkout.stripe.com/]
+    ref_param: client_reference_id
+    amount_param: ""
+    kind: "A payment link that takes the amount the buyer enters."
+    takes: "Name, email and card, on Stripe's own pages."
+    note: "Set up already. The link has not been created."
+
+  - id: sumup
+    name: SumUp
+    n: 2
+    url: ""
+    hosts: [https://pay.sumup.com/, https://checkout.sumup.com/]
+    ref_param: reference
+    amount_param: amount
+    kind: "A payment link that takes the amount on the URL."
+    takes: "Name, email and card, on SumUp's own pages."
+    note: "Being set up. Running both rails is deliberate: the one with the better workflow wins, and that is a thing to find out rather than to assume."

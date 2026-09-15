@@ -1,0 +1,146 @@
+# The product line. Four levels of the same thing, times the catalogue.
+#
+# WHAT IS SOLD. An Agent Behaviour Policy for one agent in one deployment: what it
+# can do, what you authorised it to do, the gap between them, and what actually
+# stands in the way. riskmandate.ai publishes the TEMPLATES free and public, with
+# published read keys, and says so. What is sold here is a template with the
+# mandate corrected, a name on the licence, and no public key — plus, at the two
+# upper levels, the correction done with you rather than by you.
+#
+# So the catalogue is the fifteen shapes in data/abp-catalogue.json, promoted from
+# riskmandate.ai at build time, times the four levels below. Each cell is a SKU.
+#
+# NO PRICE IS IN THIS FILE. Each level names the offer it is, and the price comes
+# from data/offers.yml, which is the only place a price exists on this site. A
+# level that carried its own number would be a second price list, and two price
+# lists disagree on a schedule.
+#
+# THE PRICES ARE A RULING, NOT A DRIFT. They were set by the project lead on
+# 15 September 2026 and they replace the four tiers of the 10 September pack. The
+# frozen table in tools/check_site.py moved with them, in the commit that says so,
+# which is the whole mechanism: a price is not the builder's to invent, and it IS
+# the project lead's to change.
+#
+# WHY THE LADDER IS THIS SHAPE. The first two levels differ only in the form the
+# same bytes arrive in — an email of the pack, or a vault you hold the keys to.
+# The third and fourth differ in who does the correcting: level three you tell us
+# the situation and it is corrected for you, level four you are interviewed and a
+# security professional signs what comes back. The line between three and four is
+# the line between a thing agents do and a thing a person does.
+
+meta:
+  sku_prefix: ABP
+  order_prefix: SG
+  ruling: "Prices set by the project lead, 15 September 2026, replacing the four tiers of the 10 September pack."
+
+levels:
+  - id: email
+    code: E
+    n: 1
+    name: The pack, by email
+    offer: t1
+    lede: "Every file in the vault, sent to you. Yours to use, keep and hand to your agent."
+    who: "You want the material and you do not want to run anything."
+    gets:
+      - "The whole pack for the shape you picked: the policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, and the two files you hand the agent."
+      - "The prompts, the documents and the business case that come with it."
+      - "One email. Nothing to clone, nothing to install, nothing to hold a key for."
+    not:
+      - "Not a vault. There is no history, no app and no read key to hand anybody — that is the next level up."
+      - "Not corrected for you. The mandate in it is the starting mandate, written to be corrected, and correcting it is yours to do."
+    fulfilment: automated
+    rail: link
+
+  - id: vault
+    code: V
+    n: 2
+    name: A working vault
+    offer: t2
+    lede: "The same material as a vault you hold the keys to: clone it, change it, version it, and hand anyone a read key."
+    who: "You want the thing itself rather than a copy of its contents."
+    gets:
+      - "A vault of your own, with the pack in it and a licence carrying your name."
+      - "You hold the keys. Clone it, tweak it, correct the mandate, commit, and the history is yours."
+      - "Its own app, and a read key you can hand to anybody who asks how you govern the agent."
+      - "No public key on it. The templates are public; yours is not."
+    not:
+      - "Not customised by us. It is the template, licensed to you, in a vault you own — the correction is still yours to make."
+      - "Not a review. Nobody here has looked at your situation at this level."
+    fulfilment: automated
+    rail: link
+
+  - id: custom
+    code: C
+    n: 3
+    name: Corrected for your situation
+    offer: t3
+    lede: "You tell us the industry, the use case and the details. The mandate is corrected against them and the vault comes back yours."
+    who: "Your deployment is not the template, and you would rather not do the correcting."
+    gets:
+      - "Everything in the vault level, with the mandate corrected against what you told us rather than against a starting assumption."
+      - "The delta recomputed against your corrected mandate, with the barrier on each row."
+      - "A written note of what we changed and why, so the correction is checkable rather than trusted."
+      - "Reviewed before it ships."
+    not:
+      - "Not a call. Nobody interviews you at this level — you send the details and the work is done from them."
+      - "Not signed. A named professional putting their name to it is the level above."
+      - "Not a compliance assessment, and not a risk score. An Agent Behaviour Policy describes and does not judge."
+    fulfilment: agents with review
+    rail: link
+
+  - id: session
+    code: S
+    n: 4
+    name: Two sessions, and a professional signs it
+    offer: t4
+    lede: "Half an hour with your team to find out what is actually running, and half an hour to deliver it — reviewed and signed off by a security professional."
+    who: "The answer has to survive somebody else asking about it."
+    gets:
+      - "Two half-hour sessions: one to interview your team, one to deliver and walk through what came back."
+      - "Everything in the corrected level, built from the interview rather than from a form."
+      - "Reviewed and signed off by a security professional."
+      - "A record of what was asked and what was answered, so the next version starts from it."
+    not:
+      - "Not an audit, an accreditation or a mark of conformity. None of those words describes this and none appears on the deliverable."
+      - "Not a risk score. The policy describes what is there; what the risk of it is depends on your assets and is a different piece of work."
+      - "Not open-ended. Two sessions is what is sold; more is a separate conversation."
+    fulfilment: person
+    rail: link
+
+# ---------------------------------------------------------------------- shapes
+# The short code each catalogue shape carries into a SKU, because a payment
+# reference has room for an order and a handful of codes and not for fifteen
+# slugs. Maintained HERE rather than promoted, because it is this store's
+# identifier and not riskmandate.ai's — and check_sku_codes fails the release if a
+# shape arrives upstream without one, so a new vault cannot quietly become an
+# unsellable row.
+shape_codes:
+  claude-code-web: CCW
+  claude-code-cli: CCL
+  claude-code-cli-confirmations-off: CCO
+  claude-desktop: CDT
+  claude-web-connectors: CWC
+  chatgpt-web: GPT
+  browser-extension: BEX
+  github-actions: GHA
+  scheduled-job: SJB
+  google-workspace-mcp: GWS
+  gmail-readonly: GML
+  google-drive-readonly: GDR
+  claude-m365-connector: M65
+  dropbox-mcp: DBX
+  n8n-owner-api-key: N8N
+
+# ----------------------------------------------------------- not in the list
+# The shape nobody has profiled yet. It cannot be sold at the first two levels,
+# because both of those deliver an existing template and there is not one — which
+# is the honest reason rather than a packaging decision.
+custom_shape:
+  slug: your-own
+  code: OWN
+  title: Something not on this list
+  summary: "An agent, a connector or a deployment nobody here has profiled. The grant is measured or read from the vendor's own pages first, and the vault is built from that rather than from a template."
+  glyph: "?"
+  family: other
+  levels: [custom, session]
+  note: "The first two levels deliver an existing template, and for this there is not one yet. That is why it starts at the corrected level and not below it."

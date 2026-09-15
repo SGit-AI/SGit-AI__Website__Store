@@ -1,24 +1,23 @@
-# Tier 2 — Which parts of the regulation actually reach me?
+# Tier 2 — Can I have a vault I hold the keys to?
 
-Only the provisions of the regulation that reach your situation, with the fact that caused each provision to arrive visible beside it, as a vault you own.
+A vault of your own with the pack in it, a licence carrying your name, and no public key on it.
 
 - Offer id: `t2`
-- Price: £50 to £100
+- Price: £50
 - How it is paid: Payment link
-- Checkout: A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
-- What is true of it today: Specified 28 July. The graph exists at 1,523 nodes with amendments applied. The pipeline that turns a situation into a vault does not exist.
+- Checkout: One price means one standing payment link, printable on a card.
+- What is true of it today: Built, and it runs today. A template shape is built into a vault by one command; yours is that, licensed to you, with the public key off it.
 
 ## What arrives
 
-- The provisions that reach you, and only those.
-- Beside each one, the fact about your situation that caused it to arrive.
-- The graph version and the amendment set the selection ran against.
-- A vault you hold the keys to, that you can clone, and that we can be removed from.
+- A vault you hold the keys to: clone it, change it, commit, and the history is yours.
+- Its own app, and a read key you can hand to anybody who asks how you govern the agent.
+- A licence with your name on it, and no public key.
 
 ## What this is not, and will not become
 
-- A compliance assessment. This is a selection from a published regulation, not a judgement about whether you meet it.
-- That the selection is complete. What arrives is a record of what the pipeline reached, with the version it reached it at.
+- Not customised by us. It is the template licensed to you — the correction is still yours to make.
+- Not a review. Nobody here has looked at your situation at this level.
 
 ---
 

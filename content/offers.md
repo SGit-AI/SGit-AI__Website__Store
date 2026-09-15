@@ -25,18 +25,37 @@ reason the home page asks it first.
 
 ## Why each number is that number
 
-**No price on this site was invented, and none of them is positioning.** Three of
-the six are arithmetic and the workings are here.
+**No price on this site is positioning, and none of them is the builder's.** The
+four were set by the project lead on 15 September 2026, replacing the four tiers
+of the 10 September pack, and the frozen table in the build gate was re-pointed at
+them in the commit that says so. **The check did not loosen; it was aimed
+somewhere else.**
 
 {{prices-why}}
 
-The floor is the clearest of them: **at £5 the fixed card fee alone is about four
-per cent of the transaction**, so £10 is the floor and £5 is not a cheaper version
-of it — it is a worse one. At the other end, **at £10,000 a card costs up to about
-£250**, which is why tier 4 does not take one. {{claim:card-fee-floor}}
+**The floor moved, and the arithmetic that argued against it is still here.** At
+£5 the fixed card fee alone is about four per cent of the transaction, which on
+10 September was the reason the floor was £10 rather than £5. On 15 September the
+floor was set at £5 anyway. **The fee did not change, the judgement did** — and
+the old reasoning stays on the page rather than being quietly dropped, because a
+store that deletes the argument it lost is a store you cannot check.
+{{claim:card-fee-floor}}
 
 **Prices are in pounds.** Pricing in euros while settling in pounds adds about two
 per cent, and that two per cent buys nothing. {{claim:pricing-in-pounds}}
+
+## How each one is paid for
+
+**Every level is a single price, so every level can hold a standing payment link.**
+There is no band to fix and nothing to take a deposit against: that shape belonged
+to the offer line replaced on 15 September, and [the ledger keeps
+it](/ledger/) rather than pretending it was never there.
+{{claim:checkout-bands-have-no-standing-link}}
+
+**No link has been created on either rail.** Every card shows its code and its
+delivery page instead of a live button, and [your order](/cart/) names which rail
+is missing. {{claim:checkout-links-not-issued}}
+[How buying works](/how-it-works/).
 
 ## The offer identifier is the stable part
 
@@ -51,26 +70,6 @@ the build treats the host as moveable: every internal link here is relative, the
 host appears in no sentence of copy, and the identifiers above do not change.
 **If the site moves, it costs a DNS record and no reprinting.**
 {{claim:domain-ruling-overruled}}
-
-## How each one is paid for
-
-**A standing payment link carries exactly one price, and two offers on this page
-have one.** Tier 1 is £10 and could hold a link tomorrow. Tiers 2 and 3 are bands,
-so their link is issued once the band is fixed for the case. **Tier 4 carries two
-amounts**: the engagement is above the threshold where a card makes sense and is
-invoiced, while its **£500 deposit is below it and is a standing link**. The two
-add-ons are priced against the depth band of whatever they attach to. **That is
-arithmetic about how a fixed-price link works, not a policy about who may pay.**
-{{claim:checkout-bands-have-no-standing-link}}
-{{claim:t4-deposit-below-threshold}}
-
-**No link has been created for any of them.** Every offer carries an empty
-checkout field, so every card above shows its code and its delivery page rather
-than a button, and this page says which of the five reasons applies to each.
-Issuing one is a single pasted line, and the build holds whatever lands there to
-the payment provider's own checkout hosts over HTTPS.
-{{claim:checkout-links-not-issued}} [How the rails work, and why they never
-meet](/paying/).
 
 ## What is not on this page
 

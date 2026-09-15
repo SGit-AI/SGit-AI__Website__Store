@@ -1,0 +1,122 @@
+/* shop.css — the store: catalogue, one shape's four levels, and the order.
+ *
+ * It is an e-commerce grid and it is built entirely out of buttons. There is no
+ * form, input, select or textarea anywhere in this site's output and a build
+ * check holds that line, so filtering is chips rather than a search field and
+ * quantity is a pair of buttons rather than a number field. At fifteen shapes
+ * that is not a compromise: chips are faster than typing, and the constraint
+ * picked the better control.
+ *
+ * NO SEVERITY COLOUR. The counts on a tile — what it can do, what you wanted,
+ * what is not wanted, what has nothing in the way — are counts and never a
+ * rating. An Agent Behaviour Policy describes and does not judge: the same policy
+ * is dangerous in one deployment and harmless in another, so nothing here is red
+ * because it is bad. The one accent belongs to what is purchasable. */
+
+.shopbar{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:center;justify-content:space-between;
+  padding:.9rem 0;border-block:1px solid var(--line);margin:1.4rem 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center}
+.chips-lab{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim2);margin-right:.2rem}
+.chip{cursor:pointer;font:600 .78rem/1 var(--sans);color:var(--dim);background:var(--panel);
+  border:1px solid var(--line);border-radius:99px;padding:.38rem .75rem}
+.chip:hover{border-color:var(--line2);color:var(--fg)}
+.chip.is-on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shopcount{margin:.8rem 0 0;font-size:.76rem;color:var(--dim2);font-family:var(--mono)}
+
+/* ---------- the catalogue grid ---------- */
+.tiles{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));margin:1rem 0 0}
+.tile{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:1rem 1.05rem 1.05rem}
+.tile-head{display:flex;gap:.6rem;align-items:flex-start;margin:0 0 .5rem}
+.tile-glyph{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:2.1rem;
+  height:2.1rem;padding:0 .35rem;border-radius:7px;background:var(--panel2);border:1px solid var(--line);
+  font:700 .74rem/1 var(--mono);color:var(--dim);letter-spacing:.02em}
+.tile h3{margin:.2rem 0 0;font-size:.98rem;line-height:1.3;letter-spacing:-.01em}
+.tile h3 a{color:#101114}
+.tile-sum{margin:0 0 .75rem;font-size:.82rem;line-height:1.55;color:var(--dim)}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;padding:.6rem 0;
+  border-block:1px solid var(--line);margin:0 0 .7rem}
+.num{text-align:center}
+.num b{display:block;font-family:var(--serif);font-size:1.25rem;line-height:1;color:#101114;
+  font-variant-numeric:tabular-nums}
+.num span{display:block;margin-top:.2rem;font-size:.63rem;line-height:1.3;color:var(--dim2)}
+.tile-open{margin:0 0 .7rem;font-size:.72rem;line-height:1.45;color:var(--warm)}
+.tile-buy{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin:auto 0 .5rem}
+.mini{cursor:pointer;font:700 .8rem/1 var(--sans);color:var(--accent-dk);background:var(--panel);
+  border:1px solid var(--line2);border-radius:7px;padding:.45rem .2rem}
+.mini:hover{border-color:var(--accent);background:rgba(15,118,110,.05)}
+.mini.is-in{background:var(--accent);border-color:var(--accent);color:#fff}
+.mini:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tile-more{font-size:.75rem;color:var(--dim)}
+
+/* ---------- one shape, four levels ---------- */
+.lvl{border:1px solid var(--line);border-radius:11px;padding:.85rem 1rem .9rem;margin:0 0 .7rem;
+  background:var(--panel)}
+.lvl.is-in{border-color:var(--accent);background:rgba(15,118,110,.04)}
+.lvl-head{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.lvl-n{font-family:var(--mono);font-size:.7rem;color:var(--dim2)}
+.lvl-name{font-size:1rem;font-weight:700;color:#101114;flex:1 1 auto}
+.lvl-price{font-family:var(--serif);font-size:1.45rem;line-height:1;color:#101114;letter-spacing:-.02em}
+.lvl-lede{margin:.4rem 0 .7rem;font-size:.87rem;line-height:1.55;color:var(--ink)}
+.lvl-act{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.lvl-in{font-size:.76rem;color:var(--accent-dk);font-weight:600}
+.lvl-sku{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--dim2)}
+
+/* ---------- quantity ---------- */
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+.qty-b{cursor:pointer;background:var(--panel);border:0;padding:.3rem .6rem;font:600 .95rem/1.2 var(--sans);
+  color:var(--fg)}
+.qty-b:hover{background:var(--panel2)}
+.qty-n{min-width:2rem;text-align:center;font:700 .85rem/1 var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- the order ---------- */
+.cart-empty{text-align:center;padding:2.4rem 1rem;border:1px dashed var(--line2);border-radius:12px}
+.cart-empty p{color:var(--dim);margin:0 0 .9rem}
+.cartlines{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.cartline{display:flex;align-items:center;gap:.9rem;padding:.7rem .9rem;border-top:1px solid var(--line)}
+.cartline:first-child{border-top:0}
+.cl-what{flex:1 1 auto;min-width:0}
+.cl-what b{display:block;font-size:.9rem;color:#101114}
+.cl-lvl{display:block;font-size:.78rem;color:var(--dim)}
+.cl-sku{display:block;font-family:var(--mono);font-size:.7rem;color:var(--dim2)}
+.cl-sum{min-width:4.5rem;text-align:right;font:700 .95rem/1 var(--sans);font-variant-numeric:tabular-nums;
+  color:#101114}
+.cl-x{cursor:pointer;background:none;border:0;color:var(--dim2);font-size:1.05rem;padding:.2rem .3rem}
+.cl-x:hover{color:var(--fg)}
+.carttotal{display:flex;justify-content:space-between;align-items:baseline;padding:.9rem .2rem;
+  border-bottom:1px solid var(--line)}
+.ct-lab{font-size:.8rem;color:var(--dim)}
+.ct-sum{font-family:var(--serif);font-size:1.9rem;line-height:1;color:#101114;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+
+.orderbox{margin:1.4rem 0;border:1px solid var(--line);border-radius:11px;padding:.9rem 1rem;
+  background:var(--panel2)}
+.ob-lab{display:block;font-size:.66rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dim2);margin-bottom:.35rem}
+.ob-ref{display:inline-block;font-family:var(--mono);font-size:1.25rem;font-weight:700;color:#101114;
+  background:var(--panel);border:1px solid var(--line2);border-radius:7px;padding:.25rem .7rem;
+  letter-spacing:.06em}
+.ob-note{margin:.6rem 0;font-size:.78rem;line-height:1.55;color:var(--dim)}
+.ob-line{display:block;overflow-x:auto;white-space:nowrap;font-family:var(--mono);font-size:.76rem;
+  background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:.5rem .6rem;
+  margin:0 0 .6rem;color:var(--ink)}
+
+.rails{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));margin:1.2rem 0 0}
+.rail{border:1px solid var(--line);border-radius:11px;padding:.9rem 1rem 1rem;background:var(--panel);
+  position:relative}
+.rail-n{position:absolute;top:.7rem;right:.9rem;font-family:var(--serif);font-size:1.3rem;color:var(--line2)}
+.rail h3{margin:.1rem 0 .35rem;font-size:1rem;color:#101114}
+.rail-kind{margin:0 0 .3rem;font-size:.82rem;color:var(--ink)}
+.rail-takes{margin:0 0 .8rem;font-size:.78rem;color:var(--dim)}
+.rail-note{margin:.5rem 0 0;font-size:.75rem;color:var(--dim2);line-height:1.5}
+.rail .buy{display:inline-block;text-align:center}
+.cartfoot{display:flex;gap:1.2rem;align-items:center;margin:1.4rem 0 0}
+
+/* ---------- the bar badge ---------- */
+.cartlink{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--line2);border-radius:6px;
+  padding:.28rem .7rem;color:var(--fg);font-size:.78rem;white-space:nowrap;background:var(--panel)}
+.cartlink:hover{border-color:var(--accent);text-decoration:none}
+.cartlink b{display:inline-flex;align-items:center;justify-content:center;min-width:1.15rem;height:1.15rem;
+  border-radius:99px;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;padding:0 .3rem}

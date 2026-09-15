@@ -10,7 +10,7 @@ toc: true
 
 | | **Payment link, with a printed code** | **The cloud marketplace** |
 |---|---|---|
-| **For** | Everything at the event, and everything below about £1,000 | Business buyers above roughly £1,000, after a conversation |
+| **For** | Everything on the price list, all four levels | Business buyers who would rather have it inside terms they already hold, after a conversation |
 | **Why** | A payment link is an online payment, so no cross-border rule applies | The buyer already holds the marketplace's legal terms |
 | **What it removes** | The card reader, and the declined tap | The master agreement, the vendor onboarding, the new purchase order |
 | **What it costs** | The provider's ordinary card fee | **0.5 per cent**, falling to zero inside a qualifying multi-product solution |
@@ -18,68 +18,43 @@ toc: true
 
 ## Who takes the card, and where
 
-**The payment links are Stripe payment links, and the card number is typed on
-Stripe's own pages.** That is the whole of the integration, and it is deliberately
-the smallest one available: there is no payment form here, no script from anywhere
-else, and no key of any kind in this repository or in what it publishes. A
-[build check](/versions/) holds every page to it — **no page on this site opens a
-network connection at all**, so there is nothing here for a card number to travel
-through.
+**Two rails, and both are payment links on the provider's own pages.** Stripe is
+set up; SumUp is being set up. **Running both is deliberate** — which one gives a
+better workflow is a thing to find out rather than to assume, and the loser costs
+nothing to drop because neither one holds the catalogue.
 
-A checkout is therefore one field in one file. `data/offers.yml` carries a
-`checkout_url` per offer; the build renders a live button where a URL exists, and
-the sentence explaining why there is no button where it does not. **Every one of
-those fields is empty today.** {{claim:checkout-links-not-issued}}
+**Nothing on this site collects anything.** No form, no input, no field, no
+account, no cookie. The provider takes your name, your contact and your card on
+its own pages, which is the only place a card number should ever be typed. A build
+check holds every page here to that, and a second one holds every page to opening
+no network connection at all.
 
-**And the URL is pinned.** Whatever lands in that field has to be on
-`buy.stripe.com` or `checkout.stripe.com`, over HTTPS, or the release stops. A
-checkout that can be edited into a redirect through somewhere else is a phishing
-page with our prices on it, and a printed code makes that permanent — the card
-cannot be recalled from a conference floor either.
+**What reaches the provider is the amount and your order reference.** The
+reference carries the product codes for everything you picked, so matching it
+against the name and contact the provider captured gives the whole order.
+[How that works, in three steps](/how-it-works/).
 
-### Only one of the six can ever hold a standing link
+### Every level is one price, so every level can hold a link
 
-**A fixed-price payment link carries one price.** Three of the four link-rail
-offers do not have one:
-
-| Offer | Price | What its checkout can be |
-|---|---|---|
-| [`t1`](/d/t1/) | £10 | **A standing link.** One price, one URL, printable on a card |
-| [`t2`](/d/t2/) | £50 to £100 | A link **issued once the band is fixed** for the case |
-| [`t3`](/d/t3/) | £150 to £1,000 | A link **issued once the band is fixed** — it is a person's time, and the range covers an hour at one end and a working week at the other |
-| [`t4`](/d/t4/) | £5,000 to £10,000 | **Two amounts, two rails.** The **£500 deposit** is a standing link, because £500 is below the threshold. The balance is invoiced, after [a conversation](/booking/) {{claim:t4-deposit-below-threshold}} |
-| `add-formats` | By depth band | **Not bought alone.** It attaches to one of the above and is priced against its band |
-| `add-opinion` | By depth band | **No code behind it.** The wording does not exist {{claim:opinion-wording-absent}} |
-
-That is a property of how a fixed-price link works rather than a decision about
-who may pay, and it is on this page because the alternative — four buttons, two of
-which take the wrong amount — is the kind of thing that gets discovered by a buyer.
+The four levels are £5, £50, £500 and £1,500 — **single prices, not bands**, which
+is what a standing payment link needs. The banded tiers and the deposit that this
+page used to describe belonged to the offer line replaced on 15 September: there is
+no band left to fix and no engagement left to deposit against.
 {{claim:checkout-bands-have-no-standing-link}}
 
-### The one offer with two amounts
+**No link has been created on either rail.** [Your order](/cart/) renders the
+button as unissued and names the rail that is missing, rather than showing
+something that looks live: **a greyed-out button is a lie about which half of the
+work is done.** Pasting one line into `data/checkout.yml` turns a rail on, and the
+build holds whatever lands there to that provider's own checkout hosts over HTTPS.
+{{claim:checkout-links-not-issued}}
 
-**Tier 4 is invoiced and its deposit is not.** The threshold argument was always
-about the £10,000: at £10,000 a card costs up to about £250, and on the same rate
-£500 costs about £12. So **the deposit is a payment link and the balance is a bank
-transfer**, and the card and the delivery page both name which of the two amounts
-the button takes. A build check holds the deposit below the threshold this page
-names — **if it ever rose above it, this paragraph would be arguing against the
-button beside it.** {{claim:t4-deposit-below-threshold}}
+### Why the catalogue is not inside either provider
 
-**The deposit follows the conversation.** It is against a written scope and is
-never taken before one, because what happens to a deposit for an engagement that
-cannot be scheduled **is not written down yet** and this site does not print a
-term nobody has agreed. {{claim:t4-deposit-terms-absent}}
-
-**And the deposit and the marketplace are alternatives, never a combination.** A
-buyer taking the marketplace route does not pay a card deposit here first — that
-would be collecting customer payment information for a marketplace transaction,
-which is the one thing the seller terms rule out. A build check keeps the two off
-the same page. {{claim:marketplace-no-customer-payment}}
-
-There is no form on this site and there will not be one, so a banded link is
-requested the same way tier 4 starts: by talking to somebody. **Nothing here
-collects anything, from anybody, ever.**
+**Sixty-two product codes maintained in two places is sixty-two codes that will one
+day disagree.** The catalogue lives here, in one file, checked on every build; the
+provider takes an amount and a reference; neither side has to know about the other.
+It also means adding a product is a build rather than a build plus a console.
 
 ## Why a link, and not a card reader
 
@@ -127,13 +102,15 @@ old claim in a room, the correction is findable rather than remembered.
 
 ## Where each code lands
 
-Four codes, one per tier. Each is a payment link, and each redirects after payment
+Four codes, one per level. **The identifiers did not change when the prices did**,
+which is the whole reason the pack said to keep them stable: a repricing costs no
+reprinting, and a card already made still lands on the right page. Each redirects
 to a delivery page that says **what arrives and what does not**:
 
-- [`t1`](/d/t1/) — £10
-- [`t2`](/d/t2/) — £50 to £100
-- [`t3`](/d/t3/) — £150 to £1,000
-- [`t4`](/d/t4/) — £5,000 to £10,000, with a **£500 deposit** by link and the balance invoiced. It starts with [a conversation](/booking/)
+- [`t1`](/d/t1/) — £5, the pack by email
+- [`t2`](/d/t2/) — £50, a working vault you hold the keys to
+- [`t3`](/d/t3/) — £500, corrected for your situation
+- [`t4`](/d/t4/) — £1,500, two sessions and [a professional signs it](/booking/)
 
 The cards the codes are printed on differ only in **the question on the front** and
 **the destination of the code**, which makes the fact set identical across every

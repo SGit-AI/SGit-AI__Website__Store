@@ -1,22 +1,24 @@
-# Tier 3 — Will somebody look at my situation with me?
+# Tier 3 — Can you correct it for my situation?
 
-A person reviewing your situation, and running a vault for you.
+The vault, with the mandate corrected against your situation rather than against a starting assumption, and a written note of what changed.
 
 - Offer id: `t3`
-- Price: £150 to £1,000
+- Price: £500
 - How it is paid: Payment link
-- Checkout: A fixed-price link carries one price, and this one is a band — so the link is issued once the band is fixed for the case.
-- What is true of it today: A booking, not a download. This tier overlaps the signed-opinion add-on, and the overlap is recorded and unresolved — so the two are sold separately and the page says which one you are buying.
+- Checkout: One price means one standing payment link, printable on a card.
+- What is true of it today: Specified, and never run for a paying buyer. The generator and the correction exist; this level as a product has not been sold once, and you would be the first.
 
 ## What arrives
 
-- A time, confirmed, with a named person's role — not their name, because the person who sells is not the person who signs.
-- What they will read before the call.
-- What you get afterwards, in writing.
+- Everything in the vault level, with the mandate corrected against what you told us.
+- The delta recomputed against your corrected mandate, with the barrier on every row.
+- A written note of what was changed and why, so the correction is checkable rather than trusted.
 
 ## What this is not, and will not become
 
-- A signed opinion. That is a separate add-on with separate wording, and buying an hour of review does not buy a signature.
+- Not a call. Nobody interviews you at this level: you send the details and the work is done from them.
+- Not signed by a named professional. That is the level above.
+- Not a compliance assessment and not a risk score. An Agent Behaviour Policy describes and does not judge.
 
 ---
 
