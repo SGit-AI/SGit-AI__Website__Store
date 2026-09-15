@@ -11,7 +11,14 @@ __pycache__/
 build/
 develop-eggs/
 dist/
-downloads/
+# `/downloads/`, not `downloads/`. This is pip's download cache and it is at the
+# repository root; the unanchored form matches a directory of that name at ANY
+# depth, which swallowed assets/downloads/ (the walkthrough PDFs) AND the built
+# copy of them at docs/admin/downloads/. Anchoring it kills the whole class rather
+# than negating it path by path. See the note beside admin/build/ below: this is
+# the second time a language template's rule has matched a directory of this
+# estate's own, and the second time it was found by a deploy going red.
+/downloads/
 eggs/
 .eggs/
 lib/
@@ -236,6 +243,8 @@ __marimo__/
 # build reads a file git is ignoring, so the third one cannot ship.
 !assets/downloads/
 !assets/downloads/**
+!docs/admin/downloads/
+!docs/admin/downloads/**
 
 # Reference documents fetched from elsewhere by tools/refs.py. Never committed:
 # they move upstream, and a vendored copy becomes a lie on a schedule.

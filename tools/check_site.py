@@ -1193,15 +1193,15 @@ def check_printable_codes_need_a_dead_rail():
 
 
 def check_the_build_reads_nothing_git_ignores():
-    """A source file the build reads and git ignores passes every check here and
-    fails on a clean checkout, because the gate builds from the working tree and CI
-    builds from a clone. It has now happened twice on this estate, both times a
+    """A file the build reads, or writes, that git ignores passes every check here
+    and fails on a clean checkout — because the gate builds from the working tree
+    and CI builds from a clone. It has now happened twice on this estate, both times a
     language template's rule matching a directory of this estate's own: `build/`
     swallowed admin/build/ on a sibling site and shipped a release without its gate,
     and `downloads/` swallowed assets/downloads/ here and shipped two dead links.
 
     So this asks git, rather than asking the filesystem."""
-    src = [ROOT / "assets", ROOT / "content", ROOT / "data"]
+    src = [ROOT / "assets", ROOT / "content", ROOT / "data", OUT]
     files = [f for d in src if d.is_dir() for f in d.rglob("*") if f.is_file()]
     if not files:
         return
@@ -1214,7 +1214,10 @@ def check_the_build_reads_nothing_git_ignores():
         return
     ignored = [x for x in r.stdout.split("\n") if x.strip()]
     for rel in ignored:
-        fail(f"{rel}: the build reads this and git ignores it. It would be absent from a clean "
+        what = ("the build WRITES this and git ignores it, so it would never reach the deployed "
+                "site" if rel.startswith("docs/") else
+                "the build reads this and git ignores it")
+        fail(f"{rel}: {what}. It would be absent from a clean "
              "checkout, so the release would build differently in CI than it does here — "
              "un-ignore it in .gitignore, the way admin/build/ and assets/downloads/ are")
 
