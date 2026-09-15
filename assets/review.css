@@ -136,3 +136,66 @@
   .rv-letter{padding:1.1rem 1.2rem}
 }
 @media (prefers-reduced-motion:reduce){.rv-fill,.rv-toast,.rv-saved{transition:none}}
+
+/* ---------------------------------------------------------- the register */
+.rv-index{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:.9rem;
+  margin:1.4rem 0 0}
+.rv-card{display:block;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  padding:1rem 1.1rem 1.1rem;box-shadow:var(--shadow);color:inherit;
+  border-top:3px solid var(--line2);transition:border-color .12s,transform .12s}
+.rv-card:hover{border-color:var(--line2);border-top-color:var(--accent);transform:translateY(-1px)}
+.rv-kind-human{border-top-color:var(--accent)}
+.rv-kind-self{border-top-color:var(--warm)}
+.rv-kind-synthetic{border-top-color:var(--dim2)}
+.rv-cdate{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap;
+  font:700 .68rem/1 var(--mono);letter-spacing:.07em;color:var(--dim2);margin-bottom:.55rem}
+.rv-cdate time{color:var(--ink)}
+.rv-ckind{text-transform:uppercase;letter-spacing:.1em}
+.rv-card h3{font-size:1.06rem;margin:0 0 .3rem;border:0;padding:0;line-height:1.28;color:#101114}
+.rv-csub{margin:0 0 .5rem;font:600 .74rem/1.45 var(--mono);color:var(--accent-dk)}
+.rv-csum{margin:0;font-size:.86rem;line-height:1.6;color:var(--dim)}
+.rv-cnums{display:flex;gap:.35rem .9rem;flex-wrap:wrap;margin-top:.8rem;padding-top:.7rem;
+  border-top:1px solid var(--line);font:400 .74rem/1.4 var(--mono);color:var(--dim2)}
+.rv-cnums b{color:var(--ink);font-weight:700}
+
+/* who / what / when */
+.rv-counts{display:flex;gap:.7rem;flex-wrap:wrap;margin:1.2rem 0}
+.rv-counts div{border:1px solid var(--line);border-radius:10px;background:var(--panel2);
+  padding:.55rem .85rem;min-width:88px}
+.rv-counts b{display:block;font-family:var(--serif);font-size:1.5rem;line-height:1;color:#101114}
+.rv-counts span{display:block;font:700 .62rem/1.3 var(--sans);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--dim2);margin-top:.32rem}
+.rv-who{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.7rem;
+  margin:1.2rem 0 1.6rem}
+.rv-who div{border-left:2px solid var(--line2);padding-left:.75rem}
+.rv-who b{display:block;font:700 .62rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim2);margin-bottom:.28rem}
+.rv-who span{font-size:.85rem;line-height:1.55;color:var(--ink)}
+
+/* the vault a review is of */
+.rv-vault{border:1px solid rgba(15,118,110,.32);border-radius:12px;background:rgba(15,118,110,.05);
+  padding:1.1rem 1.25rem;margin:1.4rem 0}
+.rv-vlab2{display:block;font:800 .62rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-dk);margin-bottom:.5rem}
+.rv-vnote{margin:0 0 .9rem;font-size:.89rem;line-height:1.65}
+.rv-vgrid{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
+.rv-vgrid div{background:var(--panel);border:1px solid var(--line2);border-radius:8px;
+  padding:.45rem .7rem}
+.rv-vgrid b{display:block;font:700 .6rem/1 var(--sans);letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dim2);margin-bottom:.28rem}
+.rv-vgrid code{background:none;border:0;padding:0;font-size:.82rem;color:#101114;font-weight:600}
+code.rv-key{display:block;background:var(--panel);border:1px solid var(--line2);border-radius:8px;
+  padding:.6rem .75rem;font-size:.7rem;line-height:1.6;word-break:break-all;color:var(--ink)}
+.rv-vopen{margin:.9rem 0 0}
+.rv-vopen a{font-weight:600}
+.rv-slot{margin:1rem 0 0;padding:.8rem .95rem;border:1px dashed var(--line2);border-radius:9px;
+  background:var(--panel);font-size:.84rem;line-height:1.65;color:var(--dim)}
+.rv-slot b{color:var(--ink)}
+
+/* evidence */
+.rv-shot{margin:1.2rem 0 1.6rem}
+.rv-shot img{width:100%;height:auto;display:block;border:1px solid var(--line2);border-radius:10px;
+  box-shadow:var(--shadow);background:var(--panel)}
+.rv-shot figcaption{margin-top:.6rem;font-size:.84rem;line-height:1.6;color:var(--dim);
+  border-left:3px solid var(--accent);padding-left:.8rem;max-width:72ch}
+.rv-shot figcaption b{color:var(--ink)}

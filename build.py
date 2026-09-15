@@ -110,7 +110,7 @@ NAV = [
     ]),
     ("Evidence", "/ledger/", [
         ("The claim ledger", "/ledger/"),
-        ("A partner\u2019s review, in full", "/review/"),
+        ("Reviews, dated and kept", "/admin/reviews/"),
         ("What we do not say, and why", "/disclosures/"),
         ("What is not for sale yet", "/catalogue/"),
         ("The dev packs", "/dev-packs/"),
@@ -1609,36 +1609,111 @@ to the front of it. That single move answers F-2, F-3, R-1, the first four steps
 what the &pound;5 is <em>for</em> &mdash; which is most of the answer to F-5 and R-3 as well.</figcaption></figure>
 '''
 
-# ------------------------------------------------------------ the review ----
-# THE ONE PAGE ON THIS SITE WITH SOMEWHERE TO TYPE, and the rule it moved.
+def review_markdown(rv):
+    """A review as markdown, for the twin. Every page here is served as markdown at
+    <page>/index.md and an agent reads that rather than the HTML; a twin carrying a
+    shortcode and not the review would hand an agent a page about a critique with the
+    critique missing."""
+    strip = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s))
+    L = [f"# {rv['title']}", "", rv["lede"], "",
+         f"- **Reviewer:** {rv['reviewer']}",
+         f"- **Subject:** {rv['subject']}",
+         f"- **Reviewed:** {rv['reviewed_on']}, against {rv['reviewed_version']}",
+         "- " + " · ".join(f"**{n}** {lab}" for n, lab in rv["counts"]), ""]
+    if rv.get("vault"):
+        v = rv["vault"]
+        L += ["## The vault this review is of", "", v["note"], "",
+              f"- **Vault:** `{v['id']}` · {v['files']} files · read-only",
+              f"- **Read key:** `{v['read_key']}:{v['id']}`",
+              f"- **Open it:** {v['web']}",
+              "",
+              "It is linked and not embedded. An embed is an iframe, an iframe is a connection to "
+              "another host, and no page on this site opens a network connection at all.", ""]
+    if rv.get("verbatim"):
+        L += ["## The note, verbatim", "",
+              "Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased.", "",
+              "> " + rv["verbatim"].replace("\n", "\n> ").replace(">> ", "").replace("|| ", "    "),
+              ""]
+    if rv.get("taxonomy"):
+        L += ["## What is in the note", ""]
+        for group, head in (("keep", "Keep"), ("friction", "Friction"), ("rec", "Recommendation")):
+            if group not in rv["taxonomy"]:
+                continue
+            L += [f"### {head}", ""]
+            for tid, title, body in rv["taxonomy"][group]:
+                L.append(f"- **{tid} — {title}.** {strip(body)}")
+            L.append("")
+    if rv.get("has_figures"):
+        L += ["## Six frictions, four levers", "",
+              "Four changes carry all six recommendations, and one carries half of them on its own: "
+              "put the free diagnostic in front of the sale. `MAP-A-GRANT.md` already exists, is "
+              "already free, already ships in every public template zip, and prints exactly the four "
+              "numbers the note asks for — it is only surfaced after a £500 purchase.", ""]
+    for s in rv.get("sections", []):
+        L += [f"## {s['h']}", ""]
+        for para in s["body"]:
+            L += [strip(para), ""]
+    if rv.get("evidence"):
+        L += ["## The evidence", "",
+              "Captured by driving a browser, not written.", ""]
+        for src, cap in rv["evidence"]:
+            L.append(f"- `/assets/reviews/{rv['id']}/{src}` — {strip(cap)}")
+        L.append("")
+    L += [f"## The {len(rv['proposals'])} proposals", "",
+          "Each carries what it would cost. A stance of *won't do* is written down so somebody can "
+          "argue with it.", ""]
+    for pr in rv["proposals"]:
+        L += [f"### {pr['id']} — {strip(pr['title'])}", "",
+              f"- **Our stance:** {rv['stance_labels'][pr['stance']]}",
+              f"- **Answers:** {pr['refs']}",
+              "- **Cost:** " + " · ".join(f"{k} {v}" for k, v in pr["cost"]), "",
+              f"> {pr['quote']}", ""]
+        for para in pr["what"]:
+            L += [strip(para), ""]
+        for name, body in pr.get("opts", []):
+            L.append(f"- **{name}.** {strip(body)}")
+        if pr.get("opts"):
+            L.append("")
+    L += ["## Send it back", "",
+          f"The page at {SITE['base']}{REVIEW_REGISTER['root']}{rv['id']}/ carries a verdict control "
+          "and a reason box on every proposal, and copies the result out as markdown or JSON. "
+          "Nothing typed there is submitted anywhere: no page on this site opens a network "
+          "connection.", ""]
+    return "\n".join(L)
+
+# ---------------------------------------------------------- the reviews ----
+# A REVIEW IS A MOMENT LOCKED, so it is dated, it is kept, and it is never
+# rewritten. The register in data/reviews/_register.json names them; each is a
+# JSON file in the same directory; the index, the pages, the twins and the sort
+# are all generated. Adding a review is adding a file and a line, which is the
+# only shape that survives having a lot of them.
 #
-# Until v0.1.15 there was no form, input, textarea or select anywhere in docs/ and
-# a check refused a release that grew one. A partner's review asked for two things
-# that need somewhere to type — a deployment described before it is paid for, and a
-# capability list pasted back — and asking them to answer that review with no way to
-# answer it would have been the joke version of this whole site.
-#
-# So the rule moved, by ruling, and it moved NARROWLY. What stayed absolute:
-#
-#   * NO <form> ANYWHERE. It is the element that submits. Nothing on this site has
-#     one and nothing on this site ever will.
-#   * NO <input> AND NO <select> ANYWHERE. A card number, an email address and a
-#     name are typed into a single-line field, and there is not one on this domain.
-#   * NO NETWORK, on this page as on every other. No fetch, no XHR, no beacon, no
-#     socket, no third-party anything. The check did not move an inch.
-#   * The reason boxes carry NO name attribute, because a name is what a form field
-#     is called when it is submitted and these are never submitted.
-#
-# What a reader types stays in their own browser until they press a copy button,
-# which puts it on their clipboard. It reaches us when they paste it to us and by
-# no other route. The page says all of that on itself, in those words, because a
-# site whose argument is checkability does not get to quietly widen a rule.
-REVIEW = json.loads((DATA / "review.json").read_text())
+# They live under /admin/ because a review carries reason boxes a reader types
+# into, and because the pricing deliberation and roadmap in one of them is not
+# selling copy. Public, like every page here, and not advertised: noindex, out of
+# sitemap.xml and out of llms-full.txt.
+REVIEW_REGISTER = json.loads((DATA / "reviews" / "_register.json").read_text())
+REVIEWS = {}
+for _rid in REVIEW_REGISTER["order"]:
+    _f = DATA / "reviews" / f"{_rid}.json"
+    if not _f.exists():
+        raise SystemExit(f"build: the review register names {_rid!r} and data/reviews/{_rid}.json "
+                         "does not exist. A register that points at nothing is worse than no "
+                         "register.")
+    REVIEWS[_rid] = json.loads(_f.read_text())
+for _f in sorted((DATA / "reviews").glob("*.json")):
+    if _f.stem != "_register" and _f.stem not in REVIEWS:
+        raise SystemExit(f"build: data/reviews/{_f.name} is not in the register, so it would be "
+                         "written and never linked. Add it to the order list.")
+# Newest first. The register's own order breaks a tie within a day.
+REVIEW_ORDER = sorted(REVIEW_REGISTER["order"],
+                      key=lambda i: (REVIEWS[i]["date"], -REVIEW_REGISTER["order"].index(i)),
+                      reverse=True)
 
 
-def _review_letter():
-    """The note as sent. `>>` marks a line the writer set apart; `||` marks a block
-    they laid out as a list. Nothing else is interpreted, and nothing is edited."""
+def _rv_letter(text):
+    """A note as sent. `>>` marks a line the writer set apart; `||` marks a block
+    they laid out as a list. Nothing else is interpreted and nothing is edited."""
     out, buf, flow = [], [], []
 
     def flush_para():
@@ -1651,7 +1726,7 @@ def _review_letter():
             out.append('<p class="rv-flow">' + html.escape("\n".join(flow)) + "</p>")
             flow.clear()
 
-    for line in REVIEW["verbatim"].split("\n"):
+    for line in text.split("\n"):
         s = line.strip()
         if not s:
             flush_para(); flush_flow(); continue
@@ -1667,27 +1742,75 @@ def _review_letter():
     return "".join(out)
 
 
-def _review_taxonomy():
+def _rv_taxonomy(tax):
     out = []
-    for group, head, cls in (("keep", "Keep — four things called out as working", "rv-k"),
-                             ("friction", "Friction — six things that got in the way", "rv-f"),
-                             ("rec", "Recommendation — six proposals", "rv-r")):
+    for group, head, cls in (("keep", "Keep — what was called out as working", "rv-k"),
+                             ("friction", "Friction — what got in the way", "rv-f"),
+                             ("rec", "Recommendation — what was proposed", "rv-r")):
+        if group not in tax:
+            continue
         out.append(f'<h3 class="rv-taxhead">{html.escape(head)}</h3><div class="rv-tax">')
-        for tid, title, body in REVIEW["taxonomy"][group]:
+        for tid, title, body in tax[group]:
             out.append(f'<div class="rv-tx {cls}"><span class="rv-txid">{tid}</span>'
                        f'<b>{html.escape(title)}</b><p>{body}</p></div>')
         out.append("</div>")
     return "".join(out)
 
 
-def _review_proposals():
-    """Rendered on the SERVER, reason boxes included. The alternative — writing the
-    boxes in from script — would have put a form control on the page that the gate
-    could not see, which is the sneaky version of moving a rule rather than the
-    honest one."""
-    labels = REVIEW["stance_labels"]
+def _rv_vault(v, rid):
+    """The vault the review is OF, named with its read key.
+    THE EMBED IS NOT HERE AND THE PAGE SAYS SO. An iframe would be the first network
+    connection this site has ever opened, and "no page here opens a network
+    connection at all" is in the footer of all of them and in llms.txt. That is a
+    bigger claim than the one that moved for the reason boxes, and it is not the
+    builder's to spend. The slot is rendered, the key is here, the link works."""
+    return (
+        '<div class="rv-vault">'
+        '<span class="rv-vlab2">The vault this review is of</span>'
+        f'<p class="rv-vnote">{html.escape(v["note"])}</p>'
+        '<div class="rv-vgrid">'
+        f'<div><b>Vault</b><code>{html.escape(v["id"])}</code></div>'
+        f'<div><b>Files</b><code>{v["files"]}</code></div>'
+        '<div><b>Access</b><code>read-only</code></div>'
+        "</div>"
+        '<span class="rv-vlab2">The read key. It opens the vault and cannot write to it.</span>'
+        f'<code class="rv-key">{html.escape(v["read_key"])}:{html.escape(v["id"])}</code>'
+        f'<p class="rv-vopen"><a href="{html.escape(v["web"])}" rel="noopener">'
+        'Open the vault →</a></p>'
+        '<div class="rv-slot"><b>The vault is linked here and not embedded, on purpose.</b> '
+        'An embed is an iframe, an iframe is a connection to another host, and '
+        '<em>no page on this site opens a network connection at all</em> — which is in the '
+        'footer of every page, in <code>llms.txt</code>, and held by a build check. That claim is '
+        'larger than the one that moved to put reason boxes on this page, and it is not the '
+        'builder’s to spend. One ruling turns it on; until then the link above does the same '
+        'job and this page still loads without contacting anybody.</div>'
+        "</div>")
+
+
+def _rv_sections(secs):
     out = []
-    for p in REVIEW["proposals"]:
+    for s in secs:
+        out.append(f'<h2 id="{slugify(s["h"])}">{html.escape(s["h"])}</h2>')
+        out.append("".join(f"<p>{x}</p>" for x in s["body"]))
+    return "".join(out)
+
+
+def _rv_evidence(rid, shots):
+    out = ['<h2 id="the-evidence">The evidence</h2>',
+           '<p>Captured by driving a browser, not written. Each one is what was actually on the '
+           'screen at that step, at that width, at the version named above.</p>']
+    for src, cap in shots:
+        out.append(
+            f'<figure class="rv-shot"><img src="/assets/reviews/{rid}/{src}" loading="lazy" '
+            f'alt="{html.escape(re.sub(r"<[^>]+>", "", cap))[:180]}">'
+            f"<figcaption>{cap}</figcaption></figure>")
+    return "".join(out)
+
+
+def _rv_proposals(rv):
+    labels = rv["stance_labels"]
+    out = []
+    for p in rv["proposals"]:
         out.append(f'<article class="rv-item" id="{p["id"].lower()}">')
         out.append(f'<div class="rv-head"><span class="rv-id">{p["id"]}</span>'
                    f'<h3>{p["title"]}</h3>'
@@ -1706,13 +1829,10 @@ def _review_proposals():
         out.append('<div class="rv-block"><div class="rv-cost">'
                    + "".join(f"<span>{html.escape(k)} <b>{html.escape(v)}</b></span>"
                              for k, v in p["cost"])
-                   + "</div></div>")
-        out.append("</div>")
-
+                   + "</div></div></div>")
         picks = "".join(
             f'<button type="button" class="rv-pick" data-v="{v}" aria-pressed="false">'
-            f'{html.escape(label)}</button>'
-            for v, label in REVIEW["verdicts"])
+            f"{html.escape(label)}</button>" for v, label in rv["verdicts"])
         out.append(
             f'<div class="rv-verdict">'
             f'<div class="rv-vlab"><span>Your verdict on {p["id"]}</span>'
@@ -1721,139 +1841,179 @@ def _review_proposals():
             f'<label class="visually-hidden" for="why-{p["id"]}">Why, for {p["id"]}</label>'
             f'<textarea class="rv-why" id="why-{p["id"]}" rows="3" '
             f'placeholder="Why? If you disagree, the reason is the useful part."></textarea>'
-            f"</div>")
-        out.append("</article>")
+            "</div></article>")
     return "".join(out)
 
 
-def _review_model(prefix):
+def _rv_model(rv):
     titles, refs, stances = {}, {}, {}
-    for p in REVIEW["proposals"]:
-        titles[p["id"]] = re.sub(r"<[^>]+>", "", p["title"]).replace("&mdash;", "—") \
-            .replace("&rsquo;", "’").replace("&ldquo;", "“").replace("&rdquo;", "”")
+    for p in rv["proposals"]:
+        titles[p["id"]] = html.unescape(re.sub(r"<[^>]+>", "", p["title"]))
         refs[p["id"]] = p["refs"]
-        stances[p["id"]] = REVIEW["stance_labels"][p["stance"]]
-    return {
-        "page": "store.sgit.ai/review/",
-        "version": SITE["version"],
-        "reviewed_on": REVIEW["reviewed_on"],
-        "storage": REVIEW["storage"],
-        "ids": [p["id"] for p in REVIEW["proposals"]],
-        "verdicts": REVIEW["verdicts"],
-        "titles": titles,
-        "refs": refs,
-        "stances": stances,
+        stances[p["id"]] = rv["stance_labels"][p["stance"]]
+    return {"page": f'store.sgit.ai{REVIEW_REGISTER["root"]}{rv["id"]}/',
+            "version": SITE["version"], "reviewed_on": rv["reviewed_on"],
+            "storage": rv["storage"] + "." + rv["id"],
+            "ids": [p["id"] for p in rv["proposals"]],
+            "verdicts": rv["verdicts"], "titles": titles, "refs": refs, "stances": stances}
+
+
+def _rv_counts(rv):
+    return ('<div class="rv-counts">' + "".join(
+        f'<div><b>{html.escape(n)}</b><span>{html.escape(lab)}</span></div>'
+        for n, lab in rv["counts"]) + "</div>")
+
+
+def review_pages(out_dir, ctx_shared):
+    """One page per review, plus the register that lists them."""
+    made = {}
+    root = REVIEW_REGISTER["root"]
+    kinds = REVIEW_REGISTER["kinds"]
+
+    for rid in REVIEW_ORDER:
+        rv = REVIEWS[rid]
+        url = f"{root}{rid}/"
+        ctx = dict(ctx_shared)
+        ctx.update({"page": rid, "page_url": url, "fm": {}, "toc": []})
+        n = len(rv["proposals"])
+        kind_name, kind_why = kinds[rv["kind"]]
+
+        body = (
+            f'<p class="lead">{inline(rv["lede"], dict(ctx, untrusted=True))}</p>'
+            + _rv_counts(rv)
+            + '<div class="rv-who"><div><b>Reviewer</b>'
+            f'<span>{html.escape(rv["reviewer"])}</span></div>'
+            f'<div><b>Subject</b><span>{html.escape(rv["subject"])}</span></div>'
+            f'<div><b>Reviewed</b><span>{html.escape(rv["reviewed_on"])}, against '
+            f'{html.escape(rv["reviewed_version"])}</span></div>'
+            f'<div><b>Kind</b><span>{html.escape(kind_name)} — {html.escape(kind_why)}</span></div>'
+            "</div>"
+            + (_rv_vault(rv["vault"], rid) if rv.get("vault") else "")
+            + ('<h2 id="the-note-verbatim">The note, verbatim</h2>'
+               '<p>Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased — the '
+               'reading of it below is ours and is kept separate from it on purpose.</p>'
+               '<div class="rv-letter"><span class="rv-verb">Unedited</span>'
+               + _rv_letter(rv["verbatim"]) + "</div>" if rv.get("verbatim") else "")
+            + ('<h2 id="what-is-in-the-note">What is in the note</h2>'
+               '<p>Sorted into three kinds. The identifiers are used for the rest of this page, so '
+               'a verdict can name exactly what it is answering.</p>'
+               + _rv_taxonomy(rv["taxonomy"]) if rv.get("taxonomy") else "")
+            + ('<h2 id="six-frictions-four-levers">Six frictions, four levers</h2>'
+               '<p>Read as six separate asks, this is a quarter’s work. Read for what actually '
+               'moves, it collapses: <b>four changes carry all six recommendations, and one of the '
+               'four carries half of them on its own.</b></p>' + REVIEW_FIG_LEVERS
+               + '<h2 id="the-one-edge-that-moves">The one edge that moves</h2>'
+               '<p>The same funnel, before and after. One thing changes position; everything else '
+               'is where it already is.</p>' + REVIEW_FIG_FUNNEL if rv.get("has_figures") else "")
+            + (_rv_sections(rv["sections"]) if rv.get("sections") else "")
+            + (_rv_evidence(rid, rv["evidence"]) if rv.get("evidence") else "")
+            + f'<h2 id="the-proposals">{n} proposals, with a stance on each</h2>'
+            '<p>Every one carries what it would cost and what it touches. <b>Disagreeing is the '
+            'useful answer</b>, and the reason matters more than the verdict.</p>'
+            '<div class="rv-prog"><span class="rv-track"><span class="rv-fill" id="rv-fill">'
+            f'</span></span><span id="rv-num">0 of {n} answered</span>'
+            '<span class="dim">· kept in this browser, sent nowhere</span></div>'
+            + _rv_proposals(rv)
+            + '<h2 id="send-it-back">Send it back</h2>'
+            '<div class="rv-export"><h3>Your verdicts, as text you can paste</h3>'
+            '<p>Everything you set above lives <b>in this browser only</b>. There is no account, '
+            'nothing is submitted, and no page here opens a network connection — which is a '
+            'build check rather than a promise. The buttons put it on your clipboard: markdown to '
+            'read in a message, JSON if it is going into a tracker.</p>'
+            '<label class="rv-blab" for="rv-overall" style="margin-top:1.1rem">'
+            'Anything the proposals did not cover</label>'
+            '<textarea class="rv-why" id="rv-overall" rows="3" '
+            'placeholder="What did we miss? What would you have led with? Anything you would drop?">'
+            "</textarea>"
+            '<div class="rv-exbtns">'
+            '<button type="button" class="buy" id="rv-md">Copy as markdown</button>'
+            '<button type="button" class="buy buy-alt" id="rv-json">Copy as JSON</button>'
+            '<button type="button" class="linkish" id="rv-toggle">Show what gets copied</button>'
+            '<button type="button" class="linkish" id="rv-clear">Clear everything</button>'
+            '</div><pre class="rv-prev" id="rv-prev" hidden></pre></div>'
+            '<div class="rv-toast" id="rv-toast" role="status" aria-live="polite">Copied</div>'
+            '<script type="application/json" id="review-model">'
+            + json.dumps(_rv_model(rv), separators=(",", ":")) + "</script>")
+
+        page = {
+            "fm": {"title": rv["title"], "description": rv["summary"],
+                   "head_css": "/assets/review.css", "head_js": "/assets/review.js",
+                   "robots": "noindex,follow"},
+            "url": url,
+            "crumb": f' / <a href="{root}">reviews</a> / {html.escape(rv["date"])}',
+            "nav_match": "/ledger/",
+            "src_md": review_markdown(rv),
+        }
+        target = out_dir / url.strip("/") / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(page_html(page, ctx, body))
+        (target.parent / "index.md").write_text(
+            page["src_md"].rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
+        made[url] = rv["title"]
+
+    # ------------------------------------------------------------- the index
+    rows = []
+    for rid in REVIEW_ORDER:
+        rv = REVIEWS[rid]
+        kind_name, _ = kinds[rv["kind"]]
+        rows.append(
+            f'<a class="rv-card rv-kind-{rv["kind"]}" href="{root}{rid}/">'
+            f'<div class="rv-cdate"><time datetime="{rv["date"]}">{html.escape(rv["date"])}</time>'
+            f'<span class="rv-ckind">{html.escape(kind_name)}</span></div>'
+            f'<h3>{html.escape(rv["title"])}</h3>'
+            f'<p class="rv-csub">{html.escape(rv["subject"])}</p>'
+            f'<p class="rv-csum">{html.escape(rv["summary"])}</p>'
+            + '<div class="rv-cnums">' + "".join(
+                f"<span><b>{html.escape(n)}</b> {html.escape(lab)}</span>" for n, lab in rv["counts"])
+            + "</div></a>")
+
+    idx_ctx = dict(ctx_shared)
+    idx_ctx.update({"page": "reviews", "page_url": root, "fm": {}, "toc": []})
+    idx_body = (
+        '<p class="lead">Every review of this store, newest first. <b>A review is a moment '
+        'locked</b> — dated, kept, never rewritten, and carrying the screenshots and the '
+        'version it was taken against. A month from now this is the only record of what the store '
+        'looked like today.</p>'
+        f'<div class="rv-index">{"".join(rows)}</div>'
+        '<h2 id="how-this-works">How this works</h2>'
+        '<p><b>Each review keeps its own stance on every proposal in it</b> — do now, do next, '
+        'won’t do, or needs a ruling — and carries a verdict control so the reviewer can '
+        'disagree with the stance and say why. The reasons matter more than the verdicts; the whole '
+        'point of writing down a <em>won’t do</em> is that somebody gets to argue with it.</p>'
+        '<p><b>Adding one is adding a file.</b> A review is a JSON record in '
+        '<code>data/reviews/</code> and a line in the register; the page, its markdown twin, its '
+        'card here and its place in the sort are generated. The build refuses a register entry with '
+        'no file and a file with no register entry, because a review nobody can reach is a review '
+        'that did not happen.</p>'
+        '<p><b>These pages are public and not advertised.</b> They carry reason boxes, pricing '
+        'deliberation and roadmap, which is not selling copy — so they are noindex, out of '
+        '<code>sitemap.xml</code> and out of <code>llms-full.txt</code>, and anybody handed the '
+        'address can read every word. {{claim:review-is-the-one-typing-surface}}</p>')
+    idx_page = {
+        "fm": {"title": "Reviews",
+               "description": ("Every review of this store, newest first, dated and kept. Each one "
+                               "is a moment locked: the version it was taken against, the "
+                               "screenshots, and a stance on every proposal in it."),
+               "head_css": "/assets/review.css", "robots": "noindex,follow"},
+        "url": root,
+        "crumb": ' / <a href="/admin/">admin</a> / reviews',
+        "nav_match": "/ledger/",
+        "src_md": ("# Reviews\n\nEvery review of this store, newest first. A review is a moment "
+                   "locked: dated, kept, never rewritten, carrying the screenshots and the version "
+                   "it was taken against.\n\n"
+                   + "".join(
+                       f"- **{REVIEWS[r]['date']} — {REVIEWS[r]['title']}** "
+                       f"({kinds[REVIEWS[r]['kind']][0]}) — {REVIEWS[r]['summary']} "
+                       f"— {SITE['base']}{root}{r}/\n" for r in REVIEW_ORDER)),
     }
+    target = out_dir / root.strip("/") / "index.html"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(page_html(idx_page, idx_ctx, shortcodes_inline(idx_body, idx_ctx)))
+    (target.parent / "index.md").write_text(
+        idx_page["src_md"].rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
+    made[root] = "Reviews"
+    return made
 
-
-def block_review(ctx):
-    n = len(REVIEW["proposals"])
-    island = ('<script type="application/json" id="review-model">'
-              + json.dumps(_review_model(rel_prefix(ctx["page_url"])), separators=(",", ":"))
-              + "</script>")
-    return (
-        '<h2 id="the-note-verbatim">The note, verbatim</h2>'
-        '<p>Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased — the '
-        'reading of it below is ours and is kept separate from it on purpose.</p>'
-        '<div class="rv-letter"><span class="rv-verb">Unedited</span>'
-        + _review_letter() + "</div>"
-
-        + '<h2 id="what-is-in-the-note">What is in the note</h2>'
-        '<p>Sixteen distinct points, sorted into three kinds. The identifiers are used for the '
-        'rest of this page, so a verdict can name exactly what it is answering.</p>'
-        + _review_taxonomy()
-
-        + '<h2 id="six-frictions-four-levers">Six frictions, four levers</h2>'
-        '<p>Read as six separate asks, this is a quarter’s work. Read for what actually moves, '
-        'it collapses: <b>four changes carry all six recommendations, and one of the four carries '
-        'half of them on its own.</b></p>'
-        + REVIEW_FIG_LEVERS
-
-        + '<h2 id="the-one-edge-that-moves">The one edge that moves</h2>'
-        '<p>The same funnel, before and after. One thing changes position; everything else is '
-        'where it already is.</p>'
-        + REVIEW_FIG_FUNNEL
-
-        + f'<h2 id="the-proposals">{n} proposals, with a stance on each</h2>'
-        '<p>Two of these are <b>won’t do</b> and three need a ruling that is not the '
-        'builder’s to make. Every one carries what it would cost and what it touches. '
-        '<b>Disagreeing is the useful answer</b>, and the reason matters more than the verdict.</p>'
-        '<div class="rv-prog"><span class="rv-track"><span class="rv-fill" id="rv-fill"></span></span>'
-        f'<span id="rv-num">0 of {n} answered</span>'
-        '<span class="dim">· kept in this browser, sent nowhere</span></div>'
-        + _review_proposals()
-
-        + '<h2 id="send-it-back">Send it back</h2>'
-        '<div class="rv-export"><h3>Your verdicts, as text you can paste</h3>'
-        '<p>Everything you set above lives <b>in this browser only</b>. There is no account, '
-        'nothing is submitted, and no page here opens a network connection — which is a build '
-        'check rather than a promise. The buttons put it on your clipboard: markdown to read in a '
-        'message, JSON if it is going into a tracker.</p>'
-        '<label class="rv-blab" for="rv-overall" style="margin-top:1.1rem">'
-        'Anything the proposals did not cover</label>'
-        '<textarea class="rv-why" id="rv-overall" rows="3" '
-        'placeholder="What did we miss? What would you have led with? Anything you would drop entirely?">'
-        '</textarea>'
-        '<div class="rv-exbtns">'
-        '<button type="button" class="buy" id="rv-md">Copy as markdown</button>'
-        '<button type="button" class="buy buy-alt" id="rv-json">Copy as JSON</button>'
-        '<button type="button" class="linkish" id="rv-toggle">Show what gets copied</button>'
-        '<button type="button" class="linkish" id="rv-clear">Clear everything</button>'
-        '</div><pre class="rv-prev" id="rv-prev" hidden></pre></div>'
-        '<div class="rv-toast" id="rv-toast" role="status" aria-live="polite">Copied</div>'
-        + island)
-
-
-def review_markdown():
-    """The same review as markdown, for the twin. Every page here is served as
-    markdown at <page>/index.md and an agent reads that rather than the HTML; a twin
-    carrying the shortcode and not the review would hand an agent a page about a
-    critique with the critique missing."""
-    strip = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s))
-    L = ["## The note, verbatim", "",
-         "Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased.", "",
-         "> " + REVIEW["verbatim"].replace("\n", "\n> ").replace(">> ", "").replace("|| ", "    "),
-         ""]
-    L += ["## What is in the note", ""]
-    for group, head in (("keep", "Keep"), ("friction", "Friction"), ("rec", "Recommendation")):
-        L += [f"### {head}", ""]
-        for tid, title, body in REVIEW["taxonomy"][group]:
-            L.append(f"- **{tid} — {title}.** {strip(body)}")
-        L.append("")
-    L += ["## Six frictions, four levers", "",
-          "Four changes carry all six recommendations, and one carries half of them on its own: "
-          "put the free diagnostic in front of the sale. `MAP-A-GRANT.md` already exists, is "
-          "already free, already ships in every public template zip, and prints exactly the four "
-          "numbers the note asks for — it is only surfaced after a £500 purchase. Moving "
-          "it is a re-ordering, not a build.", "",
-          f"## The {len(REVIEW['proposals'])} proposals", "",
-          "Two are *won't do* and three need a ruling. Each carries what it would cost.", ""]
-    for pr in REVIEW["proposals"]:
-        L += [f"### {pr['id']} — {strip(pr['title'])}", "",
-              f"- **Our stance:** {REVIEW['stance_labels'][pr['stance']]}",
-              f"- **Answers:** {pr['refs']}",
-              "- **Cost:** " + " · ".join(f"{k} {v}" for k, v in pr["cost"]), "",
-              f"> {pr['quote']}", ""]
-        for para in pr["what"]:
-            L += [strip(para), ""]
-        for name, body in pr.get("opts", []):
-            L.append(f"- **{name}.** {strip(body)}")
-        if pr.get("opts"):
-            L.append("")
-    L += ["## Send it back", "",
-          "The page at https://store.sgit.ai/review/ carries a verdict control and a reason box on "
-          "every proposal, and copies the result out as markdown or JSON. Nothing typed there is "
-          "submitted anywhere: no page on this site opens a network connection.", ""]
-    return "\n".join(L)
-
-
-# Shortcodes with a markdown rendering for the twin. A block with no entry here is
-# left as its shortcode, which is right for one that renders a control the twin
-# cannot carry and wrong for one that IS the page.
-TWIN_BLOCKS = {"review": review_markdown}
-
-
-BLOCKS["review"] = block_review
 
 BLOCKS["catalogue"] = block_catalogue
 BLOCKS["levels-table"] = block_levels_table
@@ -2605,7 +2765,7 @@ def footer_html():
   <div>
     <h4>Evidence</h4>
     <a href="/ledger/">Every claim, with its state</a>
-    <a href="/review/">A partner&rsquo;s review, in full</a>
+    <a href="/admin/reviews/">Reviews, dated and kept</a>
     <a href="/disclosures/">What we do not say, and why</a>
     <a href="/dev-packs/">The dev packs</a>
     <a href="/versions/">Release history</a>
@@ -2747,9 +2907,6 @@ def build(out_dir):
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(page_html(page, ctx, body))
         twin = page["src_md"].rstrip("\n")
-        for _name, _fn in TWIN_BLOCKS.items():
-            if "{{" + _name + "}}" in twin:
-                twin = twin.replace("{{" + _name + "}}", _fn())
         if LICENCE_STAMP not in twin:
             twin += f"\n\n---\n\n{LICENCE_STAMP}\n"
         (target.parent / "index.md").write_text(twin)
@@ -2773,6 +2930,7 @@ def build(out_dir):
     extra.update(lab_pages(out_dir, ctx_shared))
     extra.update(shape_pages(out_dir, ctx_shared))
     extra.update(release_pages(out_dir, ctx_shared))
+    extra.update(review_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The
     # documents are held; the hashes are not, so a reader holding the pack can
@@ -2788,9 +2946,14 @@ def build(out_dir):
     # of the sitemap and marked noindex. The difference between "public" and
     # "advertised" is the whole point: anybody handed the address can read it, and
     # nobody finds it by searching for a discount code.
+    # A page that is noindex is out of the sitemap, whatever its address. This used
+    # to be a path prefix, which was right while /admin/ was the only unadvertised
+    # thing and wrong the moment a redirect stub outside it needed the same treatment.
+    noindexed = {u for u, (pg, _c, _b) in rendered.items()
+                 if "noindex" in (pg["fm"].get("robots") or "")}
+    noindexed |= {u for u in extra if u.startswith("/admin/")}
     urls = "".join(f"<url><loc>{SITE['base']}{u}</loc></url>"
-                   for u in sorted(set(rendered) | set(extra))
-                   if not u.startswith("/admin/"))
+                   for u in sorted(set(rendered) | set(extra)) if u not in noindexed)
     (out_dir / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + urls + "</urlset>\n"
@@ -2948,7 +3111,7 @@ def llms_full(rendered):
     # An agent that wants the walkthrough follows the link in llms.txt and reads
     # /admin/try/index.md, which is the markdown twin every page here has.
     for url, (page, _ctx, _body) in sorted(rendered.items()):
-        if url.startswith("/admin/"):
+        if url.startswith("/admin/") or "noindex" in (page["fm"].get("robots") or ""):
             continue
         parts += [
             "\n" + "=" * 78,

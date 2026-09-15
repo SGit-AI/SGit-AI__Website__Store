@@ -1,5 +1,5 @@
 {
- "version": "v0.1.15",
+ "version": "v0.1.16",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -219,12 +219,11 @@
   },
   {
    "url": "/review/",
-   "title": "A partner reviewed this store, and here is the whole thing",
-   "description": "A partner walked the entire store and wrote it up. Their note is published here verbatim, with eleven proposals drawn out of it \u2014 two we will not do, three that need a ruling \u2014 and a verdict box on each. Nothing you type leaves your browser.",
-   "lead": "A partner went through the whole workflow and sent back a critique. It is below in full, unedited, including the parts that say the entry is built the wrong way round and the \u00a35 price may be a mistake. Under it: what we read in it, what each point would cost to act on, and a stance on every one \u2014 including the ones we think we should not do.",
+   "title": "The review moved",
+   "description": "The partner review that was published here in v0.1.15 now lives in the review register at /admin/reviews/, with every other review, dated and sorted.",
+   "lead": "",
    "headings": [
-    "Why this is a page and not a document",
-    "This page can be typed into, and nothing else on this site can"
+    "It is at /admin/reviews/ now"
    ],
    "kind": "page"
   },

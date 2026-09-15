@@ -1,9 +1,31 @@
 {
-  "type": "partner-review",
-  "_what_this_is": "A partner walked the whole store and wrote it up. Their note is reproduced here verbatim and unedited, and every proposal we drew out of it carries a stance — including the three we think we should not do. It is published for the same reason the claim ledger is: a critique that only the seller has read is a critique that changes nothing.",
-  "reviewed_version": "v0.1.14",
-  "reviewed_on": "15 September 2026",
+  "id": "2026-09-15-partner-walkthrough",
+  "date": "2026-09-15",
+  "kind": "human",
+  "kind_label": "A person, unprompted",
+  "title": "A partner walked the whole store and wrote it up",
   "reviewer": "A partner, after a full walkthrough. Published with their words unedited and their name off it.",
+  "subject": "store.sgit.ai v0.1.14, the whole buying flow",
+  "lede": "It is below in full, unedited, including the parts that say the entry is built the wrong way round and the £5 price may be a mistake. Under it: what we read in it, what each point would cost to act on, and a stance on every one — including the ones we think we should not do.",
+  "summary": "Sixteen points sorted into keep, friction and recommendation. The reading: six frictions collapse into four levers, and one lever carries half the note — the free diagnostic already exists and sits on the wrong side of the paywall.",
+  "counts": [
+    [
+      "16",
+      "points made"
+    ],
+    [
+      "11",
+      "proposals"
+    ],
+    [
+      "2",
+      "won’t do"
+    ],
+    [
+      "3",
+      "need a ruling"
+    ]
+  ],
   "verbatim": "I went through the full workflow. Overall, I think there is a lot to like here. The underlying product thinking is actually really strong.\n\nWhat I really like is the core idea of comparing what an agent can do versus what you actually want it to do, what you don't want it to do, and what's actually stopping it. That feels like the most powerful part of the product. The Gmail example makes this pretty obvious. I may only want an agent reading certain emails, but the credential I've given it could technically allow it to read everything.\n\nI also like the different levels of service. There is a natural progression from downloading something yourself, to having a working version, to getting something customized, to having professional review and sign-off. I think that ladder makes sense.\n\nThe transparency is also great. You're very clear about what has and hasn't been proven, what isn't live yet, and what the product does and doesn't claim to do. For a security product, that actually builds a lot of trust. I also really like that the store itself follows the security philosophy of the product. No accounts, forms, analytics, cookies, etc.\n\nThere are a lot of concepts to learn before I really understand what I'm buying. Shape, Agent Behaviour Policy, grant, mandate, vault, correction, levels, licence to operate, and so on. I wouldn't necessarily simplify what's happening underneath, but I would simplify the jargon and visualization.\n\nI also think the experience starts a little too much from how you've built the product rather than how the customer thinks about the problem. \"Which agent do you run?\" is fine, but I think the more interesting question is something like:\n\n>> \"What can your AI agent do that you didn't actually authorize?\"\n\nThen let me pick ChatGPT, Claude Code, Gmail, GitHub, n8n, etc.\n\nOnce I choose one, show me something really simple:\n\n|| Your agent can do 4 things.\n|| You intended 1.\n|| 3 are outside its mandate.\n|| 2 have nothing effectively stopping them.\n\nThen let me click in and actually see those capabilities.\n\nThat would be a much stronger aha moment for me. Right now you're telling me there is a problem and then selling me the policy. I'd rather discover the problem myself and then have you offer me the solution.\n\nI'd also simplify the four levels. Something along the lines of Template, Live Policy, Deployment Review, and Professional Sign-off is much easier for me to immediately understand than having to figure out what each level means.\n\nI'm also not sure about the £5 price point. I understand the logic because it makes trying the product almost frictionless, but there is a risk that it makes something pretty sophisticated feel like a commodity template. Since you're already making the public template available, I'd experiment with making that free and charging more once someone wants to actually operationalize it.\n\nThe £500 experience could also be more interactive. Instead of buying first and then figuring out what information I need to send you, let me describe my deployment first. What agent am I using? What systems does it touch? What data does it have access to? What should it be allowed to do? What should it absolutely never do?\n\nThen show me a preliminary mandate and say, \"We can validate this against your actual deployment.\"\n\nI think I'd be much more likely to buy at that point because I've already seen the value.\n\nThe other idea I'd play with is some kind of Agent Passport or Agent Authorization Record. Basically a persistent record for every agent that says who owns it, what systems it touches, what it's authorized to do, what it's not authorized to do, what the underlying credentials technically allow, where the gaps are, what controls exist, and when it was last reviewed.\n\nThat starts to feel much bigger than selling policies. It could eventually become the system of record for which AI agents are actually authorized to do what inside an organization.\n\nSo overall, I wouldn't change the rigor underneath. I actually think that's one of the strongest parts. I'd just hide more of that complexity from the buyer.\n\nThe experience I'd ultimately try to get to is really simple:\n\n|| Pick your agent -> see what it can do -> see what you actually authorized\n|| -> identify the gaps -> fix them -> continuously prove the agent\n|| is operating within its mandate.",
   "taxonomy": {
     "keep": [
@@ -430,5 +452,8 @@
         ]
       ]
     }
-  ]
+  ],
+  "reviewed_version": "v0.1.14",
+  "reviewed_on": "15 September 2026",
+  "has_figures": true
 }

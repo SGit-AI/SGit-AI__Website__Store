@@ -1,0 +1,14 @@
+{
+  "_what_this_is": "The review register. One record per review, newest first — the order is by date and the build sorts it, so adding a review is adding a file and a line here rather than editing a page. Every review is dated because that is the whole point: a review is a moment locked, and a month from now the only way to know what this store looked like today is a record that says so.",
+  "_how_to_add_one": "Write data/reviews/<date>-<slug>.json in the shape of the two that exist, and add its id here. The index page, the review page, its markdown twin and its place in the sort are all generated.",
+  "root": "/admin/reviews/",
+  "kinds": {
+    "human": ["A person", "Somebody outside this repository read it and wrote back."],
+    "self": ["The builder", "The agent that built the thing, reading it back. Not independent, and every such page says so first."],
+    "synthetic": ["A synthetic user", "An invented reader, replayed through the product. Evidence is the screenshots; everything said is model-written."]
+  },
+  "order": [
+    "2026-09-15-synthetic-users",
+    "2026-09-15-partner-walkthrough"
+  ]
+}

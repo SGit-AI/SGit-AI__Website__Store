@@ -13,7 +13,7 @@ The pages that said “no form, no input, no field” now say what is actually t
 Two things the gate found while this shipped. A release note that named the form element put a real one into its own version page, because inline() passes anything tag-shaped straight through for trusted content — right for a page whose author writes markup on purpose, wrong for a prose field in a JSON file. Release notes now render as data: escaped, no shortcode run, links held to safe schemes. And blank lines in a note now make paragraphs, which they did not, so every multi-paragraph note since v0.1.9 had been rendering as one wall of text on its own page.
 
 - Released: 2026-09-15
-- Built from commit: ``
+- Built from commit: `06267775cd11172569f639a1ecfe7c5e530ad7fc`
 - Reconstructed: no
 
 ---

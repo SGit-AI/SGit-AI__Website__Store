@@ -55,13 +55,27 @@ PATTERNS=(
   '"[A-Za-z0-9_]*(_key|apikey|secret|password|passphrase|token)"[[:space:]]*:[[:space:]]*"[A-Za-z0-9_.+/=-]{20,}"'
 )
 
+# Values that are PUBLISHABLE BY DESIGN, so a field name that looks credential-shaped
+# around one of them is not a finding. This list is values, never field names: a
+# field called read_key holding something random is still a hit, and that is the
+# point. The header above already ruled both of these publishable; this is the
+# generic JSON pattern learning what the specific patterns already knew.
+#
+#   sgit_private_read_…   a vault READ key. It opens a vault and cannot write to it,
+#                         which was verified by cloning with one. It is how a vault
+#                         is shared. /admin/reviews/ prints one on purpose, and
+#                         check_read_keys_are_only_for_published_vaults holds it to
+#                         the one vault that was ruled public.
+#   pk_live_… / pk_test_… the payment provider's publishable key.
+PUBLISHABLE='(sgit_private_read_|pk_live_|pk_test_)'
+
 status=0
 for p in "${PATTERNS[@]}"; do
   # --exclude-dir keeps the scanner out of git internals; everything else,
   # including the built site under docs/, is in scope on purpose.
   if hits=$(grep -rInE --binary-files=without-match \
         --exclude-dir=.git --exclude="$(basename "$0")" \
-        "$p" . 2>/dev/null); then
+        "$p" . 2>/dev/null | grep -vE ":[[:space:]]*\"$PUBLISHABLE" ); then
     echo "SECRET SCAN FAILED — pattern /$p/ matched:"
     echo "$hits" | head -20
     status=1

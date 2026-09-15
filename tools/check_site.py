@@ -727,7 +727,15 @@ def check_checkout_links():
 # an inch, so even the allowed page cannot send what it holds; check_the_typing_
 # surface_is_inert below holds the boxes to carrying no name and sitting in no form.
 # A rule that loosens without a check loosens again next time nobody is looking.
-TYPING_SURFACE = "review/index.html"
+def typing_surfaces():
+    """The pages allowed a reason box: one per review, and nothing else. It was a
+    single named file while there was one review; it is derived now because there
+    will be a lot of them, and hardcoding a list that grows is how a list goes
+    stale. The index page is NOT one — it lists reviews and takes no answers."""
+    root = OUT / "admin" / "reviews"
+    if not root.is_dir():
+        return set()
+    return {f"admin/reviews/{d.name}/index.html" for d in sorted(root.iterdir()) if d.is_dir()}
 
 
 def check_no_forms():
@@ -743,10 +751,59 @@ def check_no_forms():
             if tag in low:
                 fail(f"{rel}: contains {tag}> — this site collects nothing, from anybody, ever, "
                      "and these are the tags that would collect it")
-        if "<textarea" in low and rel != TYPING_SURFACE:
-            fail(f"{rel}: contains <textarea>. The ruling of v0.1.15 allowed one on "
-                 f"/{TYPING_SURFACE.rsplit('/', 1)[0]}/ and on no other page; a second typing "
-                 "surface is a second ruling, not a second file")
+        if "<textarea" in low and rel not in typing_surfaces():
+            fail(f"{rel}: contains <textarea>. The ruling of v0.1.15 allows a reason box on a "
+                 "review page under /admin/reviews/ and on no other page; a typing surface "
+                 "anywhere else is a second ruling, not a second file")
+
+
+def check_the_review_register_is_whole():
+    """A review is a moment locked, so the register has to hold. Every record is
+    reachable from the index, the index is in date order newest first, every review
+    names the version it was taken against, and every screenshot it cites exists.
+
+    The failure this guards is quiet: a review file with no register entry is written
+    and never linked, and a register entry with no file is a dead card. Both read as
+    fine on the page that does not mention them."""
+    root = ROOT / "data" / "reviews"
+    if not root.is_dir():
+        return
+    reg = json.loads((root / "_register.json").read_text())
+    ids = reg["order"]
+    files = {f.stem for f in root.glob("*.json") if f.stem != "_register"}
+    for rid in ids:
+        if rid not in files:
+            fail(f"the review register names {rid!r} and data/reviews/{rid}.json does not exist")
+    for f in sorted(files - set(ids)):
+        fail(f"data/reviews/{f}.json is not in the register, so it is written and never linked")
+
+    idx = OUT / "admin" / "reviews" / "index.html"
+    if not idx.exists():
+        fail("there is no review register page at /admin/reviews/")
+        return
+    idx_text = idx.read_text()
+    seen = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})"', idx_text)
+    if seen != sorted(seen, reverse=True):
+        fail(f"/admin/reviews/: the cards are dated {seen} and are not newest first. The order of "
+             "a register is the only thing that makes it a register")
+    for rid in ids:
+        rv = json.loads((root / f"{rid}.json").read_text())
+        if rid not in idx_text:
+            fail(f"/admin/reviews/: does not link {rid!r}")
+        page = OUT / "admin" / "reviews" / rid / "index.html"
+        if not page.exists():
+            fail(f"review {rid!r} has no page")
+            continue
+        if not rv.get("reviewed_version"):
+            fail(f"review {rid!r} does not name the version it was taken against. A review that "
+                 "does not say what it reviewed is not a moment locked, it is an opinion")
+        if rv.get("date") not in rid:
+            fail(f"review {rid!r} is dated {rv.get('date')!r}; the id carries the date so the "
+                 "directory sorts the same way the register does")
+        for src, _cap in rv.get("evidence", []):
+            if not (ROOT / "assets" / "reviews" / rid / src).is_file():
+                fail(f"review {rid!r} cites evidence {src!r} that does not exist. A review without "
+                     "its screenshots is a claim about a moment nobody can check")
 
 
 def check_the_typing_surface_is_inert():
@@ -754,30 +811,32 @@ def check_the_typing_surface_is_inert():
     boxes that carry no name, sit in no form, and belong to a page that — like every
     other page here — opens no connection at all. The claim on the page is that what
     a reader types reaches us only when they paste it to us. This is that claim."""
-    page = OUT / TYPING_SURFACE
-    if not page.exists():
-        for rel, text in texts():
-            if rel.endswith(".html") and "<textarea" in text.lower():
-                fail(f"{rel}: has a typing surface and /{TYPING_SURFACE} does not exist")
+    surfaces = typing_surfaces()
+    if not surfaces:
+        fail("no review page exists, so the ruling that moved the no-forms rule is buying nothing")
         return
-    text = page.read_text()
-    boxes = re.findall(r"<textarea\b[^>]*>", text, re.I)
-    if not boxes:
-        fail(f"{TYPING_SURFACE}: the one page allowed a typing surface has none, so the ruling "
-             "that moved the rule is buying nothing")
-    for b in boxes:
-        if re.search(r"\bname\s*=", b, re.I):
-            fail(f"{TYPING_SURFACE}: a box carries a name attribute — {b[:80]}. A name is what a "
-                 "field is called when it is SUBMITTED, and nothing here is ever submitted")
-        if not re.search(r"\bid\s*=", b, re.I):
-            fail(f"{TYPING_SURFACE}: a box carries no id — {b[:80]}. Without one it cannot be "
-                 "labelled, and an unlabelled box is unusable with a screen reader")
-    flat = " ".join(strip_tags(text).split())
-    for needed in ("no page here opens a network connection",
-                   "lives in this browser only"):
-        if needed not in flat:
-            fail(f"{TYPING_SURFACE}: does not say {needed!r}. The page that takes typing is the "
-                 "page that owes the reader the clearest possible account of where it goes")
+    for rel in sorted(surfaces):
+        page = OUT / rel
+        if not page.exists():
+            continue
+        text = page.read_text()
+        boxes = re.findall(r"<textarea\b[^>]*>", text, re.I)
+        if not boxes:
+            fail(f"{rel}: a review page with no reason box. The verdict register is the reason "
+                 "the rule moved at all")
+        for b in boxes:
+            if re.search(r"\bname\s*=", b, re.I):
+                fail(f"{rel}: a box carries a name attribute — {b[:80]}. A name is what a field "
+                     "is called when it is SUBMITTED, and nothing here is ever submitted")
+            if not re.search(r"\bid\s*=", b, re.I):
+                fail(f"{rel}: a box carries no id — {b[:80]}. Without one it cannot be labelled, "
+                     "and an unlabelled box is unusable with a screen reader")
+        flat = " ".join(strip_tags(text).split())
+        for needed in ("no page here opens a network connection",
+                       "lives in this browser only"):
+            if needed not in flat:
+                fail(f"{rel}: does not say {needed!r}. A page that takes typing owes the reader "
+                     "the clearest possible account of where it goes")
     js = (OUT / "assets" / "review.js")
     if not js.exists():
         fail("assets/review.js is missing, so the register on /review/ does nothing")
@@ -1053,11 +1112,54 @@ def check_offer_claims_exist():
 # one, and this refuses the release if anything key-shaped lands there.
 EXPECTED_SPLIT = {"t1": 100, "t2": 100, "t3": 20, "t4": 20}
 
+# A VAULT KEY AND A VAULT READ KEY ARE DIFFERENT OBJECTS, and the rule now says so.
+#
+# sgit_private_vault_ and sgit_private_write_ open a vault for WRITING. They are
+# credentials, they are never published, they are never committed, and there is no
+# page, no directory and no ruling that makes one of them acceptable in this output.
+# That half did not move and will not.
+#
+# sgit_private_read_ opens a vault for reading and cannot write to it — verified by
+# cloning with one, which reports "read-only (no commit/push)". For a vault that is
+# deliberately published, that is a share link rather than a credential, the same way
+# riskmandate.ai prints the read keys of its fifteen public templates on purpose.
+#
+# So a read key may appear, for a vault id in the frozen list below, and nowhere
+# else. A second published vault is a second entry here, in the commit that says so.
+# Two things worth knowing before adding one: a read key cannot be revoked without
+# rekeying the vault, and everything in that vault is then public to anyone holding
+# the address.
+PUBLISHED_VAULTS = {
+    "g2hei4u6": "admin/reviews/2026-09-15-synthetic-users",   # the synthetic-users vault
+}
+
 KEY_SHAPES = [
-    (re.compile(r"sgit_private_(?:vault|write|read)_[A-Za-z0-9]{6,}"), "an sgit vault key"),
+    (re.compile(r"sgit_private_(?:vault|write)_[A-Za-z0-9]{6,}"),
+     "an sgit vault key that can WRITE"),
     (re.compile(r"[A-Za-z0-9_-]{16,}:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"),
      "a passphrase:uuid vault key"),
 ]
+READ_KEY = re.compile(r"sgit_private_read_[0-9a-f]{16,}:?([a-z0-9]{4,})?")
+
+
+def check_read_keys_are_only_for_published_vaults():
+    """A read key is a share link for a vault somebody decided to publish, and it is
+    still a mistake anywhere else. It may appear on the review page of a vault in the
+    frozen list and on no other page — a key loose on a selling page is a key nobody
+    decided to publish."""
+    for rel, text in texts():
+        for m in READ_KEY.finditer(text):
+            vault = m.group(1)
+            where = PUBLISHED_VAULTS.get(vault or "")
+            if not vault:
+                fail(f"{rel}: a read key with no vault id beside it. A key that cannot be traced "
+                     "to a vault cannot be checked against the list of vaults meant to be public")
+            elif where is None:
+                fail(f"{rel}: publishes a read key for vault {vault!r}, which is not in the frozen "
+                     "list of vaults meant to be public. Publishing a vault is a ruling")
+            elif not rel.startswith(where):
+                fail(f"{rel}: carries the read key for {vault!r}, which belongs on /{where}/ and "
+                     "nowhere else")
 
 
 def check_payment_split():
@@ -1403,6 +1505,7 @@ def main():
         check_naming_collision, check_prices, check_delivery_pages,
         check_committed_spend_correction, check_rails_not_a_choice,
         check_checkout_links, check_no_forms, check_the_typing_surface_is_inert,
+        check_read_keys_are_only_for_published_vaults, check_the_review_register_is_whole,
         check_buyer_groups,
         check_deposits, check_deposit_not_beside_the_marketplace, check_offer_claims_exist,
         check_payment_split, check_post_sale_page, check_wallet_is_marked,
