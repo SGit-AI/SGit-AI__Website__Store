@@ -36,6 +36,7 @@ list, is not a gate. Every one below walks all of docs/.
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -1191,6 +1192,33 @@ def check_printable_codes_need_a_dead_rail():
                      "somebody finds without reading why it exists")
 
 
+def check_the_build_reads_nothing_git_ignores():
+    """A source file the build reads and git ignores passes every check here and
+    fails on a clean checkout, because the gate builds from the working tree and CI
+    builds from a clone. It has now happened twice on this estate, both times a
+    language template's rule matching a directory of this estate's own: `build/`
+    swallowed admin/build/ on a sibling site and shipped a release without its gate,
+    and `downloads/` swallowed assets/downloads/ here and shipped two dead links.
+
+    So this asks git, rather than asking the filesystem."""
+    src = [ROOT / "assets", ROOT / "content", ROOT / "data"]
+    files = [f for d in src if d.is_dir() for f in d.rglob("*") if f.is_file()]
+    if not files:
+        return
+    rels = [str(f.relative_to(ROOT)) for f in files]
+    try:
+        r = subprocess.run(["git", "check-ignore", "--stdin"], cwd=ROOT, text=True,
+                           input="\n".join(rels), capture_output=True, timeout=60)
+    except (OSError, subprocess.SubprocessError) as e:
+        note(f"could not ask git what it ignores ({e}); the build-inputs check did not run")
+        return
+    ignored = [x for x in r.stdout.split("\n") if x.strip()]
+    for rel in ignored:
+        fail(f"{rel}: the build reads this and git ignores it. It would be absent from a clean "
+             "checkout, so the release would build differently in CI than it does here — "
+             "un-ignore it in .gitignore, the way admin/build/ and assets/downloads/ are")
+
+
 def check_the_shape_count_agrees_with_itself():
     """Fifteen published templates. The copy says 'fifteen' in words, the promoted
     catalogue carries fifteen records, and the catalogue's own count line says
@@ -1313,6 +1341,7 @@ def main():
         check_printable_codes_need_a_dead_rail,
         check_handover_contract, check_follow_up_is_twenty_four_hours,
         check_the_shape_count_agrees_with_itself,
+        check_the_build_reads_nothing_git_ignores,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,

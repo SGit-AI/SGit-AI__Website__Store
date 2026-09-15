@@ -227,6 +227,16 @@ __marimo__/
 !admin/build/
 !admin/build/**
 
+# And again, for the same reason: `downloads/` above (pip's download cache) matched
+# assets/downloads/, where the walkthrough PDFs live. The build reads that directory
+# and copies it to /admin/downloads/, so the gate passed locally — where the files
+# are on disk — and CI failed on a clean checkout where they are not. The pattern of
+# the bug is the pattern of the last one: a language template's rule matching a
+# directory of this estate's own. tools/check_site.py now fails the release if the
+# build reads a file git is ignoring, so the third one cannot ship.
+!assets/downloads/
+!assets/downloads/**
+
 # Reference documents fetched from elsewhere by tools/refs.py. Never committed:
 # they move upstream, and a vendored copy becomes a lie on a schedule.
 refs/

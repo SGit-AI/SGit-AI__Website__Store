@@ -11,7 +11,7 @@ FIFTEEN AGAINST SIXTEEN. The copy said fifteen applications; the catalogue rende
 Nothing on either side of that was wrong on its own, and the two numbers are four pages apart. It was found by reading the site as somebody who counts tiles — which is the argument for running the walk at all.
 
 - Released: 2026-09-15
-- Built from commit: ``
+- Built from commit: `688c10812df4f159e11c009902431231115f4998`
 - Reconstructed: no
 
 ---
