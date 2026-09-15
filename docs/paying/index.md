@@ -107,7 +107,7 @@ which is the whole reason the pack said to keep them stable: a repricing costs n
 reprinting, and a card already made still lands on the right page. Each redirects
 to a delivery page that says **what arrives and what does not**:
 
-- [`t1`](/d/t1/) — £5, the pack by email
+- [`t1`](/d/t1/) — £5, the pack, downloaded on the page you land on
 - [`t2`](/d/t2/) — £50, a working vault you hold the keys to
 - [`t3`](/d/t3/) — £500, corrected for your situation
 - [`t4`](/d/t4/) — £1,500, two sessions and [a professional signs it](/booking/)
@@ -120,6 +120,63 @@ variant by construction rather than by checking.
 September 2026, in Lisbon**. The merchandise surface, [the eight further
 offers](/catalogue/) and the marketplace listing do not depend on it, and nothing
 on this site pretends otherwise. {{claim:event-dates}}
+
+## A discount code, and why there is nowhere to type one
+
+**A code arrives in the address, not in a field.** There is no text input anywhere
+in this site's output and the gate refuses one, so a code is handed over the way a
+printed card or a QR at a stand hands it over anyway: `store.sgit.ai/policies/?code=…`.
+The store recognises it, shows it as a chip that can be removed, and **takes it back
+out of the address bar**, because a screenshot of a checkout should not carry one.
+
+**What ships is the hash of the code and never the code.** A page that recognised a
+code by carrying it would publish it the moment it was built, so the browser hashes
+what it was handed and compares — and a build check reads every byte of the built
+site against every code and fails the release if one is found, which is the same
+rule, with the same test behind it, as *no vault key on any page*.
+
+**That is worth what it is worth and no more.** A nine-character code can be ground
+out of a hash. What actually stops a stranger paying nothing is that **a browser does
+not take money**: a recognised code changes the amount a payment link is issued
+*for*, and the rail decides what is charged. No rail exists yet.
+{{claim:discount-code-is-in-the-browser}}
+
+**It comes off the price, and the deposit is taken on what is left.** Half off the
+£500 level is £250, of which £50 is taken now and £200 on delivery; a code never
+moves the split, which belongs to the offer. **A code at a hundred per cent still
+places an order** and still lands on the page that says what happens next — which is
+the whole use of one, and how this flow gets walked end to end before a single real
+payment link exists.
+
+## What happens after the money moves
+
+**The page after paying is not on this site.** riskmandate.ai publishes one page per
+level, and since its v1.19.2 **the level-one page is the download itself** — the zip,
+its size, its sha256, and a check that hashes the file in your own browser. Their
+build stamps the size and the hash; a stale one fails their CI. Nothing is copied
+here, because two copies of a hash is one hash that will go stale.
+{{claim:post-sale-pages-exist}}
+
+**The handover carries two things and nothing else.** Your order reference, which
+their page shows back to you and puts in the subject line of every message it
+offers; and, at level one only, **the shape you bought** — the same slug this store
+uses at `/p/<slug>/`, which is why the two catalogues keep their slugs in step.
+Nothing is posted, there is no callback and no session, and their page is a static
+file that works with no parameters at all.
+
+**Twenty-four hours is the commitment at the three vault levels.** It is theirs
+rather than ours, and this store said "one working day" until v0.1.9 — a day slower
+than the page the buyer actually lands on. Two sites promising different things
+about one follow-up is the drift a shared brief exists to stop, and the number that
+stands is the one committed to in public.
+
+### What that handover still owes, in the order it blocks a sale
+
+- **Nothing carries a sale from here to the person who follows up.** A static site cannot send it; until a rail's receipt reaches them, the channel is the buyer's own first message from the page they land on. **This gates the first paid order at £50, £500 and £1,500.** {{claim:sale-notification-absent}}
+- **No receipt has ever been issued**, so whether it carries the reference, and under what name, is not known. {{claim:receipt-reference-untested}}
+- **At £500 the files come back by email.** A write-only vault to drop them into is the intended route and does not exist. {{claim:level3-return-by-email}}
+- **Who owns the follow-up mailbox past the first orders is settled on neither site.** This store names nobody and links to the page that carries the address, so a change is one change and not two. {{claim:follow-up-owner-unnamed}}
+- **The opinion add-on is listed here and has no page there** — theirs will be built in the same shape as the four once it is asked for. {{claim:opinion-add-on-has-no-page-there}}
 
 ## What this site does with a payment
 

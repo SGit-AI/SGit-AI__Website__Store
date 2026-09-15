@@ -74,6 +74,26 @@
 # what they have to do, how a key reaches them — never the key itself — and what
 # "done" means, which is a commit they can check from the vault's own history.
 #
+# `post_url` is where the buyer goes after the money moves, and it is NOT on this
+# site. riskmandate.ai publishes one page per level — paid-t1 to paid-t4 — and
+# since its v1.19.2 the level-1 page IS the download: the zip, its size, its
+# sha256, and a hash check that runs in the buyer's own browser. Duplicating that
+# here would mean two copies of a size and a hash, and one of them would go stale.
+# So the store's own /order/ page says what was bought and what is owed, and then
+# hands the buyer over.
+#
+# `post_carries` is the query the handover is allowed to carry, and it is the whole
+# contract: `order`, the store's reference, kept to letters, digits, dot, underscore
+# and hyphen and at most 64 characters; and, at level 1 only, `shape`, the slug of
+# the template — the same slug this store uses at /p/<slug>/, which is why keeping
+# the slugs in step matters. Nothing else is read, nothing is posted, there is no
+# callback and no session. The page is a static file and works with no query at all.
+#
+# TWENTY-FOUR HOURS, NOT "ONE WORKING DAY". The follow-up wording here was a day
+# behind what riskmandate.ai commits to on its own pages, and two sites promising
+# different things about the same follow-up is exactly the drift these two files
+# are meant to stop. The number that stands is theirs, because it is theirs to keep.
+#
 # `checkout_url` is the payment link itself. EVERY ONE IS EMPTY, and that is the
 # state of this rail rather than a placeholder somebody forgot: no payment link
 # has been created for any offer on this site. The build renders a live button
@@ -93,7 +113,7 @@
   price_min: 500
   price_max: 500
   price_why: "The floor, set by ruling on 15 September. The card fee is about four per cent of it, which was the reason £5 was ruled OUT as a floor on 10 September — the fee did not change, the judgement did, and the arithmetic stays on the page rather than being quietly dropped"
-  gets: "Every file in the vault for the shape you picked, sent to you: the behaviour policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent."
+  gets: "Every file in the vault for the shape you picked, downloaded by you: the behaviour policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent."
   state_badge: exists
   state: "Built, and it runs today. Fifteen template shapes are published, and the pack for any of them is what this level sends."
   claim: abp-templates-exist
@@ -103,13 +123,15 @@
   checkout_mode: fixed
   checkout_url: ""
   pay_now_pct: 100
-  post_when: "Within one working day, by email."
-  post_does: "Nothing. It arrives."
-  post_done: "The email carries a link to a zip whose content hash matches the hash published for that shape."
-  post_check: "Compare the hash on the page with the hash of what you downloaded."
+  post_when: "Immediately. The page you land on after paying IS the download, with the size and the sha256 printed beside the link."
+  post_does: "Download the zip and check the hash. The page does the hashing in your own browser, against the hash it publishes."
+  post_done: "You hold the zip, and the hash computed in your browser matches the hash that shape publishes."
+  post_check: "The check runs on the page. Nothing is uploaded and nothing is asked for."
+  post_url: "https://riskmandate.ai/paid-t1.html"
+  post_carries: [order, shape]
   post_key: "Not applicable. There is no vault at this level and so there is no key."
   delivery_says:
-    - "One email, carrying a download link to a zip of the whole pack for the shape you chose — a link rather than an attachment, because an attachment has a size limit and a link does not."
+    - "A download, on the page you land on the moment the payment goes through — the zip of the whole pack for the shape you chose, with its size and its sha256 beside it."
     - "The behaviour policy, the grant, the mandate, the delta and the barrier on each row."
     - "The prompts and documents you hand the agent, and the business case for a control."
   not_promised:
@@ -133,8 +155,10 @@
   checkout_mode: fixed
   checkout_url: ""
   pay_now_pct: 100
-  post_when: "Within one working day."
-  post_does: "Nothing, until the key arrives. Then clone it."
+  post_when: "A person follows up within 24 hours of the payment landing. The vault key comes by a separate message."
+  post_does: "Nothing until the follow-up. Then clone the vault with the key."
+  post_url: "https://riskmandate.ai/paid-t2.html"
+  post_carries: [order]
   post_done: "A vault exists, the licence file in it carries your name, the public key is off it, and you have opened it with your key."
   post_check: "Your first clone. The licence file is in the tree."
   post_key: "Out of band, and never on a page. A vault key is never published and never committed, so it reaches you by a separate route agreed when the vault is made."
@@ -163,8 +187,10 @@
   checkout_mode: fixed
   checkout_url: ""
   pay_now_pct: 20
-  post_when: "The prompt within one working day. The corrected vault within three of your reply."
-  post_does: "Run the prompt below where the agent runs, and send back what it prints."
+  post_when: "A person follows up within 24 hours. The corrected vault follows what the prompt produced."
+  post_does: "Run MAP-A-GRANT.md where the agent runs — it ships in every template zip and in every vault, so you have it before and after paying — and send back the two files it writes, grant.json and mandate.json, and the session record, with no secret in them and your order reference on the message."
+  post_url: "https://riskmandate.ai/paid-t3.html"
+  post_carries: [order]
   post_done: "The corrected mandate and the recomputed delta are committed, with the note of what changed and why committed beside them."
   post_check: "The commit is in your history and the note names every changed row."
   post_key: "Out of band, and never on a page."
@@ -194,8 +220,10 @@
   checkout_mode: fixed
   checkout_url: ""
   pay_now_pct: 20
-  post_when: "The first session is scheduled with you. The record and the sign-off follow the second."
-  post_does: "Book the first session. A route to do that comes with this page."
+  post_when: "A person follows up within 24 hours to book the first session. The vault follows the second."
+  post_does: "Reply with two or three slots and who will be in the room."
+  post_url: "https://riskmandate.ai/paid-t4.html"
+  post_carries: [order]
   post_done: "Both sessions have been held, the record of what was asked and answered is committed, and the sign-off file is committed with the professional's name and the date."
   post_check: "Three files in the tree, and the sessions dated in the record."
   post_key: "Out of band, and never on a page."

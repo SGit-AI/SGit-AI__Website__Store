@@ -1,6 +1,6 @@
 ---
 title: Every agent needs a licence to operate
-description: "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels — the pack by email at £5, a vault you hold the keys to at £50, corrected for your situation at £500, and two sessions with a security professional signing it at £1,500."
+description: "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels — the pack downloaded at £5, a vault you hold the keys to at £50, corrected for your situation at £500, and two sessions with a security professional signing it at £1,500."
 lead: "**You know what you asked for. You do not know what it can do.** An Agent Behaviour Policy is the document that puts both on one page, for one agent in one deployment: what it can do, what you authorised, the gap between them, and what actually stands in the way. **Fifteen applications, four levels, from £5 to £1,500.** The templates are free and public — what is priced here is yours, with the mandate corrected and your name on the licence."
 order: 1
 toc: true

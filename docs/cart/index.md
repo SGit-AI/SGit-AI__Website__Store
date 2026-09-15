@@ -4,7 +4,7 @@ Your order lives in your own browser. The payment provider takes your name, your
 
 ## The levels
 
-- `E` — £5 — The pack, by email
+- `P` — £5 — The pack, downloaded
 - `V` — £50 — A working vault
 - `C` — £500 — Corrected for your situation
 - `S` — £1,500 — Two sessions, and a professional signs it

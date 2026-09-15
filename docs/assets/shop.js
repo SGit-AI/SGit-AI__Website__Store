@@ -25,6 +25,15 @@
      corner — is a worse trade. */
   var modelEl = document.getElementById('shop-model');
   if (!modelEl) {
+    /* A discount code arrives in the address, off a printed card or a QR. If it
+       lands on a page that carries no catalogue there is nothing here to check
+       it against, so it is carried to the one that does rather than dropped. */
+    var stray = /[?&#]code=([A-Za-z0-9]{1,32})/.exec(
+      window.location.search + ' ' + window.location.hash);
+    if (stray) {
+      window.location.replace('/policies/index.html?code=' + stray[1]);
+      return;
+    }
     try {
       var got = JSON.parse(window.localStorage.getItem(KEY_ONLY) || 'null');
       paintBadge(got && got.n, got && got.label);
@@ -37,6 +46,156 @@
   M.levels.forEach(function (l) { LEVELS[l.id] = l; });
   var SHAPES = {};
   M.shapes.forEach(function (s) { SHAPES[s.slug] = s; });
+  var CODES = {};
+  (M.codes || []).forEach(function (c) { CODES[c.id] = c; });
+  var CKEY = M.code_storage;
+  var CODE_NOTE = null;     // what to say about a code that just arrived
+
+  /* ------------------------------------------------------------- sha256 ----
+     Here because the page has to RECOGNISE a discount code without CARRYING
+     one. What ships in the model is sha256 of the upper-cased code; the browser
+     hashes what it was handed and compares. crypto.subtle would do the same,
+     but only in a secure context and only as a promise — and this site is built
+     to work from a local directory as well as over https, so it is done here
+     and every renderer stays synchronous.
+
+     data/discounts.yml says what a hash is and is not worth: a nine-character
+     code can be ground out of one, and the thing that stops a stranger paying
+     nothing is not this function — it is that a browser does not take money. */
+  function sha256(str) {
+    var K = [
+      0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
+      0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+      0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786,
+      0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+      0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
+      0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+      0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b,
+      0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+      0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a,
+      0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+      0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2];
+    var H = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+             0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+
+    /* utf-8, three bytes at most: a code is letters and digits, and the build
+       refuses one that is not, so a surrogate pair cannot reach here. */
+    var b = [], i, c;
+    for (i = 0; i < str.length; i++) {
+      c = str.charCodeAt(i);
+      if (c < 0x80) { b.push(c); }
+      else if (c < 0x800) { b.push(0xc0 | (c >> 6), 0x80 | (c & 63)); }
+      else { b.push(0xe0 | (c >> 12), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63)); }
+    }
+    var bits = b.length * 8;
+    b.push(0x80);
+    while (b.length % 64 !== 56) b.push(0);
+    b.push(0, 0, 0, 0,
+           (bits >>> 24) & 255, (bits >>> 16) & 255, (bits >>> 8) & 255, bits & 255);
+
+    function rr(x, n) { return (x >>> n) | (x << (32 - n)); }
+    var w = new Array(64);
+    for (var off = 0; off < b.length; off += 64) {
+      for (i = 0; i < 16; i++) {
+        w[i] = (b[off + i * 4] << 24) | (b[off + i * 4 + 1] << 16) |
+               (b[off + i * 4 + 2] << 8) | b[off + i * 4 + 3];
+      }
+      for (i = 16; i < 64; i++) {
+        var s0 = rr(w[i - 15], 7) ^ rr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+        var s1 = rr(w[i - 2], 17) ^ rr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+      }
+      var a = H[0], bb = H[1], cc = H[2], d = H[3],
+          e = H[4], f = H[5], g = H[6], h = H[7];
+      for (i = 0; i < 64; i++) {
+        var S1 = rr(e, 6) ^ rr(e, 11) ^ rr(e, 25);
+        var ch = (e & f) ^ (~e & g);
+        var t1 = (h + S1 + ch + K[i] + w[i]) | 0;
+        var S0 = rr(a, 2) ^ rr(a, 13) ^ rr(a, 22);
+        var mj = (a & bb) ^ (a & cc) ^ (bb & cc);
+        var t2 = (S0 + mj) | 0;
+        h = g; g = f; f = e; e = (d + t1) | 0;
+        d = cc; cc = bb; bb = a; a = (t1 + t2) | 0;
+      }
+      H[0] = (H[0] + a) | 0; H[1] = (H[1] + bb) | 0;
+      H[2] = (H[2] + cc) | 0; H[3] = (H[3] + d) | 0;
+      H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0;
+      H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
+    }
+    return H.map(function (x) { return ('00000000' + (x >>> 0).toString(16)).slice(-8); }).join('');
+  }
+
+  /* --------------------------------------------------------- the code ----
+     A code is never typed: no page on this site has a text field and the gate
+     refuses one. It arrives in the address — ?code=... or #code=... — which is
+     what a card at a stand hands somebody anyway. What is kept afterwards is the
+     RECORD'S ID, not the code, so nothing in this browser's storage carries one
+     either. It comes off the price of every line it applies to; the deposit
+     split is then taken on what is left, and never moves. */
+
+  function ymd(d) {
+    function two(n) { return (n < 10 ? '0' : '') + n; }
+    return d.getFullYear() + '-' + two(d.getMonth() + 1) + '-' + two(d.getDate());
+  }
+
+  function held() {
+    var id;
+    try { id = window.localStorage.getItem(CKEY); } catch (e) { return null; }
+    if (!id) return null;
+    var c = CODES[id];
+    if (!c) return { rec: null, ok: false, why: 'That code is not on the store any more.' };
+    if (ymd(new Date()) > c.until) {
+      return { rec: c, ok: false, why: 'That code ran out on ' + c.until + '.' };
+    }
+    return { rec: c, ok: true, why: '' };
+  }
+
+  function discount() { var h = held(); return h && h.ok ? h.rec : null; }
+
+  function dropCode() {
+    try { window.localStorage.removeItem(CKEY); } catch (e) { /* as above */ }
+    CODE_NOTE = null;
+    render();
+  }
+
+  /* Recognise what was in the address, keep the id, and take the code back out
+     of the address bar — a screenshot of a checkout should not carry one, and a
+     code that was NOT recognised should not sit there looking as though it was. */
+  function takeCodeFromAddress() {
+    var m = /[?&#]code=([A-Za-z0-9]{1,32})/.exec(
+      window.location.search + ' ' + window.location.hash);
+    if (!m) return;
+    var h = sha256(m[1].toUpperCase()), hit = null;
+    (M.codes || []).forEach(function (c) { if (c.hash === h) hit = c; });
+    if (!hit) {
+      CODE_NOTE = { ok: false, text: 'That code is not one of ours. Nothing has changed.' };
+    } else if (ymd(new Date()) > hit.until) {
+      CODE_NOTE = { ok: false, text: hit.label + ' ran out on ' + hit.until + '.' };
+    } else {
+      try { window.localStorage.setItem(CKEY, hit.id); } catch (e) { /* as above */ }
+      CODE_NOTE = { ok: true, text: hit.pct + '% off, applied to your order.' };
+    }
+    if (window.history && window.history.replaceState) {
+      var q = window.location.search.replace(/^\?/, '').split('&').filter(function (kv) {
+        return kv && kv.slice(0, 5).toLowerCase() !== 'code=';
+      }).join('&');
+      var hash = /^#code=/i.test(window.location.hash) ? '' : window.location.hash;
+      window.history.replaceState(null, '',
+        window.location.pathname + (q ? '?' + q : '') + hash);
+    }
+  }
+
+  function pctFor(level) {
+    var d = discount();
+    if (!d) return 0;
+    if (d.levels !== 'all' && d.levels.indexOf(level) < 0) return 0;
+    return d.pct;
+  }
+
+  function unitOf(level) {
+    var list = LEVELS[level].price, pct = pctFor(level);
+    return pct ? Math.round(list * (100 - pct) / 100) : list;
+  }
 
   function paintBadge(n, label) {
     Array.prototype.forEach.call(document.querySelectorAll('[data-cart-count]'), function (e) {
@@ -103,11 +262,21 @@
   }
 
   function lines() {
-    return Object.keys(S.items).map(function (k) {
+    return Object.keys(S.items).filter(function (k) {
+      /* A level can be renamed between releases, and a cart is local storage that
+         outlives one. A key naming a level this build does not have is dropped
+         rather than rendered — the alternative is a cart page that throws and a
+         reader who cannot even empty it. */
+      var p = k.split('|');
+      return LEVELS[p[1]] && S.items[k] > 0;
+    }).map(function (k) {
       var p = k.split('|'), slug = p[0], level = p[1];
+      var unit = unitOf(level);
       return { slug: slug, level: level, qty: S.items[k],
                shape: SHAPES[slug], lvl: LEVELS[level],
-               sku: sku(slug, level), sum: LEVELS[level].price * S.items[k] };
+               sku: sku(slug, level), unit: unit, list: LEVELS[level].price,
+               off: (LEVELS[level].price - unit) * S.items[k],
+               sum: unit * S.items[k] };
     }).sort(function (a, b) { return a.lvl.n - b.lvl.n || a.slug.localeCompare(b.slug); });
   }
 
@@ -128,7 +297,7 @@
      whole amount on one side of the table before anybody has done anything. */
   function splitOf(line) {
     var pct = line.lvl.pay_now_pct == null ? 100 : line.lvl.pay_now_pct;
-    var now = Math.round(line.lvl.price * pct / 100) * line.qty;
+    var now = Math.round(line.unit * pct / 100) * line.qty;
     return { now: now, later: line.sum - now, pct: pct };
   }
 
@@ -139,6 +308,12 @@
   function dueLater() {
     return lines().reduce(function (t, l) { return t + splitOf(l).later; }, 0);
   }
+
+  function listTotal() {
+    return lines().reduce(function (t, l) { return t + l.list * l.qty; }, 0);
+  }
+
+  function saved() { return listTotal() - total(); }
 
   /* ---------------------------------------------------------- the wallet ----
      A DEMONSTRATION, and every screen it appears on says so before it says
@@ -191,6 +366,7 @@
       w.balance -= now;
       w.spent += now;
     }
+    var d = discount();
     var order = {
       ref: ref(),
       at: new Date().toISOString(),
@@ -198,11 +374,15 @@
       paid_now: now,
       due_later: dueLater(),
       total: total(),
+      list_total: listTotal(),
+      /* the code's LABEL and its percentage, never the code */
+      code: d ? { id: d.id, pct: d.pct, label: d.label, off: saved() } : null,
       lines: lines().map(function (l) {
         var s = splitOf(l);
         return { sku: l.sku, slug: l.slug, level: l.level, qty: l.qty,
                  title: l.shape ? l.shape.title : l.slug, lvl: l.lvl.name,
-                 sum: l.sum, now: s.now, later: s.later };
+                 sum: l.sum, list: l.list * l.qty, off: l.off,
+                 now: s.now, later: s.later };
       }),
     };
     w.orders = [order].concat(w.orders || []).slice(0, 25);
@@ -235,6 +415,42 @@
     b.type = 'button';
     b.addEventListener('click', fn);
     return b;
+  }
+
+  /* The code, said once at the top of whatever page the reader is on. It is a
+     chip and a button rather than a field, and it names what came off rather
+     than repeating the code — which is not in this browser's storage to repeat. */
+  function renderCodeBar() {
+    var old = document.querySelector('.codebar');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var h = held();
+    if (!h && !CODE_NOTE) return;
+    var main = document.querySelector('main');
+    if (!main) return;
+
+    var ok = (h && h.ok) || (!h && CODE_NOTE && CODE_NOTE.ok);
+    var bar = el('div', 'codebar' + (ok ? '' : ' codebar-off'));
+    if (h && h.ok) {
+      var chip = el('span', 'cb-chip');
+      chip.appendChild(el('b', null, h.rec.pct + '% off'));
+      chip.appendChild(document.createTextNode(' \u00b7 ' + h.rec.label));
+      bar.appendChild(chip);
+      bar.appendChild(el('span', 'cb-why', h.rec.pct === 100
+        ? 'Nothing is due on this order. It still places, and it still lands on the page that says what happens next \u2014 which is the whole point of a code at a hundred per cent.'
+        : 'It comes off the price of every line. Where a level takes a deposit, the deposit is then taken on what is left.'));
+      bar.appendChild(btn('cb-x', 'Remove', dropCode));
+    } else {
+      bar.appendChild(el('span', 'cb-chip cb-bad', 'No discount'));
+      bar.appendChild(el('span', 'cb-why',
+        (h && h.why) || (CODE_NOTE && CODE_NOTE.text) || ''));
+      if (h) bar.appendChild(btn('cb-x', 'Clear it', dropCode));
+    }
+    /* after the title rather than above the breadcrumb: it belongs to the page,
+       not to the site furniture, and a reader's eye lands on the heading first. */
+    var h1 = main.querySelector('h1');
+    if (h1 && h1.nextSibling) { main.insertBefore(bar, h1.nextSibling); }
+    else if (h1) { main.appendChild(bar); }
+    else { main.insertBefore(bar, main.firstChild); }
   }
 
   function levelRow(slug, level) {
@@ -401,7 +617,13 @@
       q.appendChild(el('span', 'qty-n', String(l.qty)));
       q.appendChild(btn('qty-b', '+', function () { add(l.slug, l.level, 1); }));
       row.appendChild(q);
-      row.appendChild(el('div', 'cl-sum', money(l.sum)));
+      var s2 = el('div', 'cl-sum');
+      if (l.off > 0) {
+        s2.appendChild(el('s', 'cl-was', money(l.list * l.qty)));
+        s2.appendChild(document.createTextNode(' '));
+      }
+      s2.appendChild(el('span', null, money(l.sum)));
+      row.appendChild(s2);
       row.appendChild(btn('cl-x', '×', function () { add(l.slug, l.level, -l.qty); }));
       tbl.appendChild(row);
     });
@@ -409,6 +631,11 @@
 
     var tot = el('div', 'carttotal');
     tot.appendChild(el('span', 'ct-lab', count() + ' item' + (count() === 1 ? '' : 's')));
+    if (saved() > 0) {
+      var dc = discount();
+      tot.appendChild(el('span', 'ct-off',
+        '\u2212' + money(saved()) + ' \u00b7 ' + dc.label + ' ' + dc.pct + '%'));
+    }
     tot.appendChild(el('span', 'ct-sum', money(total())));
     root.appendChild(tot);
 
@@ -435,7 +662,8 @@
     var acts = el('div', 'cartfoot');
     var go = el('a', 'buy buy-big');
     go.href = M.root + 'pay/index.html';
-    go.textContent = 'Pay ' + money(dueNow()) + ' \u2192';
+    go.textContent = (dueNow() === 0 ? 'Place the order \u2014 nothing to pay'
+                                     : 'Pay ' + money(dueNow())) + ' \u2192';
     acts.appendChild(go);
     acts.appendChild(btn('linkish', 'Empty the order', function () {
       S.items = {}; S.ref = null; save(); render();
@@ -496,6 +724,14 @@
       sum.appendChild(el('p', 'ps-later',
         money(dueLater()) + ' on delivery \u00b7 ' + money(total()) + ' in total'));
     }
+    if (saved() > 0) {
+      var dsc = discount();
+      sum.appendChild(el('p', 'ps-off',
+        dsc.label + ' ' + dsc.pct + '% \u00b7 ' + money(saved()) + ' off ' + money(listTotal()) +
+        (dueNow() === 0
+          ? '. There is nothing to take, so the order is placed rather than paid for.'
+          : '.')));
+    }
     var ul = el('ul', 'ps-lines');
     ls.forEach(function (l) {
       var s = splitOf(l);
@@ -503,7 +739,8 @@
       li.appendChild(el('span', 'ps-sku', l.sku + (l.qty > 1 ? ' \u00d7' + l.qty : '')));
       li.appendChild(el('span', 'ps-what', (l.shape ? l.shape.title : l.slug) + ' \u2014 ' + l.lvl.name));
       li.appendChild(el('span', 'ps-amt',
-        s.later > 0 ? money(s.now) + ' now, ' + money(s.later) + ' later' : money(s.now)));
+        (l.off > 0 ? money(l.list * l.qty) + ' \u2192 ' : '') +
+        (s.later > 0 ? money(s.now) + ' now, ' + money(s.later) + ' later' : money(s.now))));
       ul.appendChild(li);
     });
     sum.appendChild(ul);
@@ -525,13 +762,20 @@
         bal.appendChild(el('b', null, money(w.balance)));
         bal.appendChild(document.createTextNode(' in the wallet'));
         box.appendChild(bal);
-        box.appendChild(btn('buy', 'Pay ' + money(dueNow()) + ' from the wallet', function () {
+        box.appendChild(btn('buy', dueNow() === 0
+          ? 'Place the order \u2014 nothing to pay'
+          : 'Pay ' + money(dueNow()) + ' from the wallet', function () {
           placeOrder('wallet');
         }));
         box.appendChild(el('p', 'rail-note',
           'Nothing is charged and nothing leaves this browser. The balance is local storage on ' +
           'your own machine and it goes when you clear site data. It tops itself back up when it ' +
           'empties, because the interesting part is the page after this one.'));
+      } else if (dueNow() === 0) {
+        box.appendChild(el('span', 'buy buy-off', 'Nothing to take'));
+        box.appendChild(el('p', 'rail-note',
+          'A code took the whole price off, so there is no amount to hand ' + r.name +
+          '. Place the order above and it goes through the same flow.'));
       } else if (r.url) {
         var u = r.url + (r.url.indexOf('?') >= 0 ? '&' : '?') +
                 encodeURIComponent(r.ref_param) + '=' + encodeURIComponent(orderString());
@@ -558,6 +802,35 @@
     root.appendChild(foot);
   }
 
+  /* ------------------------------------------------ the handover ----------
+     THE PAGE AFTER PAYMENT IS NOT ON THIS SITE, and that is deliberate.
+     riskmandate.ai publishes one page per level — paid-t1 to paid-t4 — and since
+     its v1.19.2 the level-1 page IS the download: the zip, its size, its sha256,
+     and a hash check that runs in the buyer's own browser against a manifest its
+     build stamps. Copying a size and a hash over here would mean two of each,
+     and one of them would go stale the first time a template changed.
+
+     Its contract is two optional plain-text parameters and nothing else. `order`
+     is this store's reference, which it shows back and puts in the subject line
+     of every mailto on the page. `shape`, at level one only, is the slug of the
+     template — the same slug this store uses at /p/<slug>/, which is the whole
+     reason the two sites keep their slugs in step. Nothing is posted, there is no
+     callback and no session, and the page works with no parameters at all. */
+  function handoff(o, line) {
+    var lv = LEVELS[line.level];
+    if (!lv || !lv.post_url) return '';
+    var carries = lv.post_carries || [], q = [];
+    /* their rule, applied on this side too: letters, digits, dot, underscore and
+       hyphen, at most sixty-four characters. Ours are six and an SG- prefix. */
+    if (carries.indexOf('order') >= 0 && o.ref) {
+      q.push('order=' + encodeURIComponent(String(o.ref).replace(/[^A-Za-z0-9._-]/g, '').slice(0, 64)));
+    }
+    if (carries.indexOf('shape') >= 0 && line.slug && SHAPES[line.slug]) {
+      q.push('shape=' + encodeURIComponent(line.slug));
+    }
+    return lv.post_url + (q.length ? '?' + q.join('&') : '');
+  }
+
   /* --------------------------------------------------- after the payment ---- */
   function renderOrder(root) {
     root.textContent = '';
@@ -577,7 +850,12 @@
     head.appendChild(el('span', 'oh-lab', 'Paid \u00b7 keep this reference'));
     head.appendChild(el('code', 'oh-ref', o.ref));
     var amt = el('p', 'oh-amt');
-    amt.appendChild(el('b', null, money(o.paid_now) + ' paid'));
+    amt.appendChild(el('b', null, o.paid_now === 0 ? 'Nothing to pay'
+                                                   : money(o.paid_now) + ' paid'));
+    if (o.code) {
+      amt.appendChild(document.createTextNode(' \u00b7 ' + o.code.label + ' ' + o.code.pct +
+        '%, ' + money(o.code.off) + ' off ' + money(o.list_total)));
+    }
     if (o.due_later > 0) {
       amt.appendChild(document.createTextNode(' \u00b7 ' + money(o.due_later) +
         ' due on delivery, invoiced when the work is in your hands'));
@@ -616,6 +894,23 @@
       });
       card.appendChild(dl);
 
+      var go = handoff(o, l);
+      if (go) {
+        var hv = el('div', 'ac-go');
+        var ga = el('a', 'buy buy-big');
+        ga.href = go;
+        ga.rel = 'noopener';
+        ga.textContent = (l.level === 'pack' ? 'Download it now' : 'Open your page for this level') +
+          ' \u2192';
+        hv.appendChild(ga);
+        hv.appendChild(el('p', 'ac-gonote',
+          'This opens riskmandate.ai, which is where the vault and the download live. It carries ' +
+          'your order reference' + (l.level === 'pack' ? ' and the shape you bought' : '') +
+          ', and nothing else \u2014 no account, no session, nothing posted. That page names the ' +
+          'mailbox to write to and puts your reference in the subject.'));
+        card.appendChild(hv);
+      }
+
       if (lv.prompt) {
         var pw = el('div', 'ac-prompt');
         pw.appendChild(el('span', 'ac-plab', 'The prompt to run'));
@@ -641,7 +936,9 @@
 
     var tail = el('div', 'aftertail');
     tail.appendChild(el('p', null,
-      'If nothing arrives, write to a person rather than a form. Quote ' + o.ref + '.'));
+      'Keep ' + o.ref + '. It is the reference on your receipt and it is what every message about ' +
+      'this order is matched by. If nothing arrives, the page above names a person\u2019s mailbox ' +
+      'and puts that reference in the subject for you \u2014 there is no form to fill in, here or there.'));
     var keep = el('a', 'linkish');
     keep.href = M.root + 'policies/index.html';
     keep.textContent = 'Back to the catalogue';
@@ -663,9 +960,11 @@
     if (pay) renderPay(pay);
     var ord = document.getElementById('order');
     if (ord) renderOrder(ord);
+    renderCodeBar();
     renderBadge();
   }
 
   load();
+  takeCodeFromAddress();
   render();
 })();

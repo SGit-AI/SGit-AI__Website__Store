@@ -1,12 +1,12 @@
 {
- "version": "v0.1.8",
+ "version": "v0.1.9",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
   {
    "url": "/",
    "title": "Every agent needs a licence to operate",
-   "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack by email at \u00a35, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
+   "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack downloaded at \u00a35, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
    "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy is the document that puts both on one page, for one agent in one deployment: what it can do, what you authorised, the gap between them, and what actually stands in the way. Fifteen applications, four levels, from \u00a35 to \u00a31,500. The templates are free and public \u2014 what is priced here is yours, with the mandate corrected and your name on the licence.",
    "headings": [
     "Which agent do you run?",
@@ -158,6 +158,9 @@
     "Why the marketplace is a conversation and not a button",
     "One correction, carried here rather than dropped",
     "Where each code lands",
+    "A discount code, and why there is nowhere to type one",
+    "What happens after the money moves",
+    "What that handover still owes, in the order it blocks a sale",
     "What this site does with a payment"
    ],
    "kind": "page"
@@ -165,7 +168,7 @@
   {
    "url": "/policies/",
    "title": "Which agent do you run?",
-   "description": "Fifteen Agent Behaviour Policies, one per application, at four levels: the pack by email at \u00a35, a working vault you hold the keys to at \u00a350, corrected against your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
+   "description": "Fifteen Agent Behaviour Policies, one per application, at four levels: the pack downloaded at \u00a35, a working vault you hold the keys to at \u00a350, corrected against your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
    "lead": "Pick the application closest to yours. Each one is an Agent Behaviour Policy: everything that agent can do, what you authorised it to do, the gap between them, and what actually stands in the way. The templates are free and public on riskmandate.ai, with published read keys \u2014 go and read one. What is priced here is that template with the mandate corrected, a name on the licence and no public key, and at the upper two levels the correction done with you rather than by you.",
    "headings": [
     "The catalogue",
@@ -597,6 +600,48 @@
    "state": "docs",
    "date": "10 Sep 2026",
    "claim": "A ruling of 10 September placed a storefront under the risk product rather than on the platform domain. The instruction in hand overrode it and named this host. The ruling stands on the record, unedited, in the pack \u2014 and the build treats the host as moveable: every internal link is relative, the host appears in no copy, and the offer identifiers are stable."
+  },
+  {
+   "id": "post-sale-pages-exist",
+   "state": "exists",
+   "date": "15 Sep 2026",
+   "claim": "riskmandate.ai publishes one page per level \u2014 paid-t1 to paid-t4 \u2014 and since its v1.19.2 the level-one page is the download itself: the zip, its size, its sha256 and a check that hashes the file in the buyer's own browser against the hash that shape publishes. The size and the hash are stamped by their build, not typed, and a stale manifest fails their CI. This store does not copy any of it, because two copies of a hash is one hash that will go stale."
+  },
+  {
+   "id": "sale-notification-absent",
+   "state": "absent",
+   "date": "15 Sep 2026",
+   "claim": "Nothing carries a sale from this store to the people who follow up. Their pages promise a person within 24 hours at the three vault levels, and that person needs the level, the order reference, the address paid with and \u2014 at \u00a3500 \u2014 the template chosen. A static site cannot send it: no page here opens a connection and none ever will. So until a rail exists whose receipt reaches them, the channel is the buyer's own first message from the page they land on. This is the one thing that gates the first paid order at those levels, and it is written here rather than assumed."
+  },
+  {
+   "id": "receipt-reference-untested",
+   "state": "unlocated",
+   "date": "15 Sep 2026",
+   "claim": "Their pages tell the buyer the order reference is on their receipt. No rail has issued a receipt yet, so what a real receipt says \u2014 and whether it carries the reference under that name or another \u2014 is not known. The store generates SG- plus six characters from an alphabet with no 0/O or 1/I, and hands it to the provider with the amount. What comes back on the receipt is the provider's to decide and has not been seen once."
+  },
+  {
+   "id": "level3-return-by-email",
+   "state": "partial",
+   "date": "15 Sep 2026",
+   "claim": "At \u00a3500 the buyer runs MAP-A-GRANT.md where the agent runs and sends back grant.json, mandate.json and the session record, with no secret in them. That route is email today. A write-only vault the buyer drops the files into is the intended route and does not exist yet; when it does, their level-three page changes and this store's wording changes with it."
+  },
+  {
+   "id": "follow-up-owner-unnamed",
+   "state": "unlocated",
+   "date": "15 Sep 2026",
+   "claim": "The four pages name one mailbox, and who owns it past the first orders is settled on neither site. This store names nobody: it links to the page that carries the address, so that when the person or the address changes it is one change on four pages there and none here. A mailbox duplicated onto a fifth page is a mailbox that will one day be wrong on one of them."
+  },
+  {
+   "id": "opinion-add-on-has-no-page-there",
+   "state": "absent",
+   "date": "15 Sep 2026",
+   "claim": "The opinion add-on is listed here and has no page there. Their brief says: if the store lists it, say so and the page will be built in the same shape as the four. This store lists it \u2014 at [/d/add-opinion/](/d/add-opinion/), marked absent, with the wording for a signed opinion recorded as not existing. The page after payment for it does not exist on either site, and nothing here says otherwise."
+  },
+  {
+   "id": "discount-code-is-in-the-browser",
+   "state": "partial",
+   "date": "15 Sep 2026",
+   "claim": "A discount code is recognised by the page, not by a rail. What ships is sha256 of the code and never the code, checked on every release against every byte of the built site \u2014 but a short code can be ground out of a hash, and that is said rather than dressed up. The thing that stops a stranger paying nothing is that a browser does not take money: a code changes the amount a payment link is issued for, and the rail decides what is charged. No rail exists yet, so today a code at a hundred per cent is how the whole flow gets walked without money."
   }
  ]
 }

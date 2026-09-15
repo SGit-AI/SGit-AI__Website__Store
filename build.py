@@ -1279,9 +1279,38 @@ for _l in PRODUCTS["levels"]:
                        post_when=_o.get("post_when", ""), post_does=_o.get("post_does", ""),
                        post_key=_o.get("post_key", ""), post_done=_o.get("post_done", ""),
                        post_check=_o.get("post_check", ""),
+                       post_url=(_o.get("post_url") or "").strip(),
+                       post_carries=_o.get("post_carries") or [],
                        # only the corrected level asks the buyer to run anything
                        prompt=LEVEL3_PROMPT if _l["id"] == "custom" else ""))
 LEVELS_BY_ID = {l["id"]: l for l in LEVELS}
+
+# The discount codes. The code itself NEVER reaches the built site: what ships is
+# sha256 of the upper-cased code, and the browser hashes what it was handed and
+# compares. data/discounts.yml says at length why, and tools/check_site.py greps
+# the built output for every code below so that this stays a fact.
+DISCOUNTS = yaml_load((DATA / "discounts.yml").read_text())
+_seen_codes = set()
+for _d in DISCOUNTS:
+    _c = str(_d["code"]).strip().upper()
+    if _c != _d["code"] or not re.fullmatch(r"[A-Z0-9]{4,24}", _c):
+        raise SystemExit(f"build: discount {_d['id']!r} has code {_d['code']!r}. A code is typed "
+                         "into an address bar off a printed card, so it is upper case, four to "
+                         "twenty-four characters, letters and digits only.")
+    if _c in _seen_codes:
+        raise SystemExit(f"build: discount code {_d['id']!r} is a duplicate of another code. Two "
+                         "records sharing a code means the discount taken cannot be said.")
+    _seen_codes.add(_c)
+    if not 1 <= int(_d["pct"]) <= 100:
+        raise SystemExit(f"build: discount {_d['id']!r} is {_d['pct']} per cent, which is not a "
+                         "discount between one and a hundred.")
+    _d["hash"] = hashlib.sha256(_c.encode()).hexdigest()
+    _bad = [x for x in (_d.get("levels") if isinstance(_d.get("levels"), list) else [])
+            if x not in LEVELS_BY_ID]
+    if _bad:
+        raise SystemExit(f"build: discount {_d['id']!r} names level(s) {', '.join(_bad)}, which "
+                         "are not in data/products.yml.")
+
 SHAPE_CODES = PRODUCTS["shape_codes"]
 CUSTOM_SHAPE = PRODUCTS["custom_shape"]
 
@@ -1343,8 +1372,15 @@ def shop_model(prefix):
                     "lede": l["lede"], "pay_now_pct": l["pay_now_pct"],
                     "post_when": l["post_when"], "post_does": l["post_does"],
                     "post_key": l["post_key"], "post_done": l["post_done"],
-                    "post_check": l["post_check"], "prompt": l["prompt"]}
+                    "post_check": l["post_check"], "prompt": l["prompt"],
+                    "post_url": l["post_url"], "post_carries": l["post_carries"]}
                    for l in LEVELS],
+        # The code is not here and is not anywhere in docs/. See data/discounts.yml.
+        "codes": [{"id": d["id"], "hash": d["hash"], "pct": int(d["pct"]),
+                   "label": d["label"], "levels": d.get("levels", "all"),
+                   "until": str(d["until"])}
+                  for d in DISCOUNTS],
+        "code_storage": "sgit.store.code.v1",
         "shapes": [{"slug": s["slug"], "code": s["code"], "title": s["title"],
                     "summary": s["summary"], "glyph": s["glyph"], "family": s["family"],
                     "counts": s["counts"], "open_questions": s["open_questions"],
@@ -1558,6 +1594,25 @@ PAY_NOTE = (
     '<p><b>The split belongs to the offer and not to the rail.</b> A card tapped on a terminal at '
     'the stand takes the same deposit as a link opened on a phone, because what is being split is '
     'the risk on a thing that has never run, and that does not change with how the card is read.</p>'
+    '<h2 id="a-discount-code">A discount code, and why there is nowhere to type one</h2>'
+    '<p><b>A code arrives in the address, not in a field.</b> There is no text input anywhere in '
+    'this site\u2019s output and the gate refuses one, so a code is handed over the way a printed '
+    'card or a QR at a stand hands it over anyway \u2014 '
+    '<code>store.sgit.ai/policies/?code=\u2026</code>. The store recognises it, shows it as a chip '
+    'that can be removed, and takes it back out of the address bar, because a screenshot of a '
+    'checkout should not carry one.</p>'
+    '<p><b>What ships is the hash of the code and never the code.</b> A page that recognised a '
+    'code by carrying it would be publishing it the moment it was built, so the browser hashes '
+    'what it was handed and compares. That is worth what it is worth and no more: a short code can '
+    'be ground out of a hash, and the thing that actually stops a stranger paying nothing is that '
+    'a browser does not take money \u2014 a code changes the amount a payment link is issued '
+    '<em>for</em>, and the rail decides what is charged.</p>'
+    '<p><b>It comes off the price, and the deposit is then taken on what is left.</b> Half off the '
+    '\u00a3500 level is \u00a3250, of which \u00a350 is taken now and \u00a3200 on delivery. A '
+    'code never moves the split, which is a property of the offer. <b>A code at a hundred per cent '
+    'still places an order</b> and still lands on the page that says what happens next \u2014 '
+    'which is the whole use of one: the flow can be walked end to end before a single real payment '
+    'link exists.</p>'
     '<h2 id="what-the-store-never-sees">What the store never sees</h2>'
     '<p>No name, no contact, no card. There is <b>no form, input, textarea or select anywhere in '
     'this site\u2019s output</b> and a build check holds that line; the provider takes all three '
@@ -1571,6 +1626,24 @@ POST_SALE_NOTE = (
     'committed file. So this page says <em>how</em> a key reaches you and never carries one. '
     'Anything that looks like a key on a page like this is a security incident rather than a '
     'convenience, and a build check refuses the release if one lands here.</p>'
+    '<h2 id="the-page-after-this-one">The page after this one is not on this site</h2>'
+    '<p><b>riskmandate.ai publishes one page per level</b> \u2014 <code>paid-t1</code> to '
+    '<code>paid-t4</code> \u2014 and since its v1.19.2 <b>the level-one page is the download '
+    'itself</b>: the zip, its size, its sha256, and a check that hashes the file in your own '
+    'browser against the hash that shape publishes. Your order above carries a link to the page '
+    'for each line you bought.</p>'
+    '<p><b>What the link carries is two things and nothing else.</b> Your order reference, which '
+    'that page shows back to you and puts in the subject line of every message it offers; and, at '
+    'level one only, the shape you bought \u2014 the same slug this store uses at '
+    '<code>/p/&lt;slug&gt;/</code>, which is why the two sites keep their slugs in step. Nothing '
+    'is posted, there is no callback and no session, and the page is a static file that works with '
+    'no parameters at all.</p>'
+    '<p><b>Twenty-four hours is the commitment at the three vault levels</b>, and it is theirs '
+    'rather than ours: a person follows up within a day of the payment landing. The store said '
+    '\u201cone working day\u201d until v0.1.9, which was a day slower than the page the buyer '
+    'actually lands on \u2014 two sites promising different things about the same follow-up is '
+    'the drift that a shared brief exists to stop, and the number that stands is the one that is '
+    'committed to in public.</p>'
     '<h2 id="done-is-a-commit">Done is a commit</h2>'
     '<p>Every level has a definition of done you can check yourself, and at the three vault levels '
     'it is <b>a commit in your own history</b> rather than somebody\u2019s word: the licence file '
@@ -1725,7 +1798,7 @@ def shape_pages(out_dir, ctx_shared):
             "fm": {"title": s["title"],
                    "description": f"An Agent Behaviour Policy for {s['title']}: "
                                   f"{s['summary'][:120]}",
-                   "head_css": "/assets/shop.css", "head_js": "/assets/shop.js"},
+                   "head_css": "/assets/shop.css"},
             "url": url,
             "crumb": f' / <a href="/policies/">policies</a> / {html.escape(s["slug"])}',
             "nav_match": "/policies/",
@@ -1782,7 +1855,7 @@ def shape_pages(out_dir, ctx_shared):
         "fm": {"title": "Your order",
                "description": "What you have picked, what it costs, your order reference, and the "
                               "two payment rails. Nothing on this page is collected by us.",
-               "head_css": "/assets/shop.css", "head_js": "/assets/shop.js"},
+               "head_css": "/assets/shop.css"},
         "url": url,
         "crumb": " / your order",
         "nav_match": "/policies/",
@@ -1836,7 +1909,7 @@ def shape_pages(out_dir, ctx_shared):
               + (POST_SALE_NOTE if slug == "order" else PAY_NOTE))
         pg2 = {
             "fm": {"title": title, "description": desc,
-                   "head_css": "/assets/shop.css", "head_js": "/assets/shop.js"},
+                   "head_css": "/assets/shop.css"},
             "url": u2, "crumb": crumb, "nav_match": "/policies/",
             "src_md": tail_md,
         }
@@ -2143,6 +2216,10 @@ def page_html(page, ctx, body):
 {f'<link rel="stylesheet" href="{fm["head_css"]}">' if fm.get('head_css') else ''}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <script src="/assets/site.js" defer></script>
+<!-- shop.js is on EVERY page because the nav carries an order badge on every page.
+     So a shop page must NOT name it again in head_js: two tags is two copies of the
+     cart engine running against one document, and the second one undoes what the
+     first one did. check_site holds every page to loading each script once. -->
 <script src="/assets/shop.js" defer></script>
 {f'<script src="{fm["head_js"]}" defer></script>' if fm.get('head_js') else ''}
 </head>

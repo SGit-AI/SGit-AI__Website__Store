@@ -73,6 +73,44 @@ def texts():
             continue
 
 
+def offer_block(oid, src=None):
+    """One record out of data/offers.yml, as raw text. Nothing in this file imports
+    build.py: a gate that asks the thing it is checking what it did is not a gate,
+    so the sources are read the way a stranger would read them."""
+    src = (ROOT / "data" / "offers.yml").read_text() if src is None else src
+    m = re.search(rf"(?ms)^- id: {re.escape(oid)}\n(.*?)(?=^- id: |\Z)", src)
+    return m.group(1) if m else ""
+
+
+def yml_records(name, *fields):
+    """Every `- id:` record in one of the one-line-per-value data files, as dicts of
+    strings. Enough to check a table against a ruling and no more."""
+    src = (ROOT / "data" / name).read_text()
+    out = []
+    for block in re.split(r"(?m)^- id: ", src)[1:]:
+        rec = {"id": block.split("\n", 1)[0].strip()}
+        for k in fields:
+            m = re.search(rf'(?m)^  {re.escape(k)}: "?(.*?)"?$', block)
+            if m:
+                rec[k] = m.group(1).strip()
+        out.append(rec)
+    return out
+
+
+def shop_model_island():
+    """The cart's model as it SHIPS, read out of a built page. The island is the
+    artefact a browser gets, so it is the thing worth checking."""
+    for p in (OUT / "cart" / "index.html", OUT / "pay" / "index.html",
+              OUT / "order" / "index.html"):
+        if not p.exists():
+            continue
+        m = re.search(r'<script type="application/json" id="shop-model">(.*?)</script>',
+                      p.read_text(), re.S)
+        if m:
+            return json.loads(m.group(1))
+    return {}
+
+
 def strip_tags(text):
     text = re.sub(r"(?s)<(script|style)\b.*?</\1>", " ", text)
     return re.sub(r"<[^>]+>", " ", text)
@@ -245,7 +283,7 @@ def check_naming_collision():
 #
 # RE-POINTED 15 SEPTEMBER 2026, BY RULING. The four tiers of the 10 September pack
 # were replaced by the project lead with four levels of one product: the pack by
-# email, a working vault, corrected for your situation, and two sessions with a
+# pack downloaded, a working vault, corrected for your situation, and two sessions with a
 # professional signing it. The check did not loosen — it was re-pointed at the new
 # numbers, in the commit that says so, which is exactly the mechanism this table
 # exists for. The previous table is in the history and in the ledger.
@@ -515,6 +553,22 @@ def check_no_network():
         for bad in ("fetch(", "XMLHttpRequest", "navigator.sendBeacon", "new WebSocket"):
             if bad in text:
                 fail(f"assets/{js.name}: uses {bad}")
+
+
+def check_each_script_loads_once():
+    """Two <script> tags for one file is two copies of it running against one
+    document, and the second undoes what the first did. It happened: shop.js is on
+    every page for the order badge, and the shop pages named it a second time —
+    which quietly broke the one branch of the discount bar that nothing had
+    clicked yet. A duplicate script tag is a bug that hides until it doesn't."""
+    for p in pages():
+        rel = str(p.relative_to(OUT)).replace(os.sep, "/")
+        srcs = re.findall(r'<script[^>]+src="([^"]+)"', p.read_text())
+        seen = [s.rsplit("/", 1)[-1] for s in srcs]
+        for name in set(seen):
+            if seen.count(name) > 1:
+                fail(f"{rel}: loads {name} {seen.count(name)} times. One document, one copy of "
+                     "a script — the second run starts from an empty state and undoes the first")
 
 
 def check_no_credentials_in_output():
@@ -995,6 +1049,131 @@ def check_wallet_is_marked():
                  "appears on")
 
 
+# THE DISCOUNT CODES, AND THE THING THAT MAKES THEM SAFE TO HAVE.
+#
+# A percentage off a price is a price, so it is frozen here the way the prices and
+# the deposit shares are, keyed on the record's stable id. The id rather than the
+# code, deliberately: a frozen table naming SUMMIT50 would put the code in a file
+# that is read far more often than data/discounts.yml, and the whole point is that
+# the code lives in exactly one place.
+#
+# The second check is the load-bearing one. What ships is sha256 of the code, and
+# the browser hashes what it was handed and compares — so the built site must not
+# contain any code anywhere, in any casing, in a page or in a script or in a JSON
+# island. That is the same rule as "no vault key on any page" and it is here for
+# the same reason: a static site publishes everything it carries, so what it must
+# not give away it must not carry.
+EXPECTED_DISCOUNTS = {"summit-25": 25, "summit-50": 50, "summit-100": 100, "loop-check": 100}
+
+
+def check_discount_percentages():
+    got = {c["id"]: int(c["pct"]) for c in yml_records("discounts.yml", "pct")}
+    for cid, pct in EXPECTED_DISCOUNTS.items():
+        if cid not in got:
+            fail(f"discount {cid}: in the frozen table and not in data/discounts.yml. A code that "
+                 "was printed on something and then deleted is a code somebody will try")
+        elif got[cid] != pct:
+            fail(f"discount {cid}: takes {got[cid]}% off, the ruling sets {pct}% — what comes off "
+                 "a price is a price")
+    for cid in got:
+        if cid not in EXPECTED_DISCOUNTS:
+            fail(f"discount {cid}: in data/discounts.yml and not in the frozen table. A discount "
+                 "arrives by ruling, in the commit that says so")
+
+
+def check_discount_codes_are_not_printed():
+    """No code reaches the built site. Every byte of docs/ — pages, scripts, JSON
+    islands, the markdown twins — against every code, in any casing."""
+    codes = yml_records("discounts.yml", "code")
+    everything = list(OUT.rglob("*"))
+    for c in codes:
+        rx = re.compile(re.escape(str(c["code"])), re.I)
+        for f in everything:
+            if not f.is_file():
+                continue
+            try:
+                text = f.read_text()
+            except (UnicodeDecodeError, OSError):
+                continue
+            if rx.search(text):
+                rel = str(f.relative_to(OUT)).replace(os.sep, "/")
+                fail(f"{rel}: carries discount code {c['id']!r} in plain text. What ships is the "
+                     "hash and only the hash — a code in the built output is a code published")
+    js = (OUT / "assets" / "shop.js").read_text()
+    if "sha256" not in js:
+        fail("assets/shop.js: does not hash anything, so it cannot be recognising a code by its "
+             "hash — check what it is comparing instead")
+    model = shop_model_island()
+    if not model.get("codes"):
+        fail("the shipped model carries no discount codes, so no code can be recognised")
+    for c in model.get("codes", []):
+        if not re.fullmatch(r"[0-9a-f]{64}", c.get("hash", "")):
+            fail(f"discount {c.get('id')!r} ships {c.get('hash')!r}, which is not a sha256")
+        if "code" in c:
+            fail(f"discount {c.get('id')!r} ships the code itself in the model")
+
+
+def check_handover_contract():
+    """riskmandate.ai publishes one page per level and its level-one page IS the
+    download. The contract it published is two optional plain-text parameters —
+    `order` everywhere, `shape` at level one — and this holds the store to it,
+    because a success address that carries the wrong thing lands a paying buyer on
+    a page that cannot tell them what they bought."""
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offers = {o["id"]: o for o in index["offers"]}
+    expect = {"t1": "[order, shape]", "t2": "[order]", "t3": "[order]", "t4": "[order]"}
+    for oid, carries in expect.items():
+        b = offer_block(oid)
+        m = re.search(r'(?m)^  post_url: "(.*?)"$', b)
+        url = m.group(1) if m else ""
+        want = f"https://riskmandate.ai/paid-{oid}.html"
+        if url != want:
+            fail(f"offer {oid}: hands the buyer over to {url!r}, and the page riskmandate.ai "
+                 f"publishes for that level is {want}")
+        m = re.search(r"(?m)^  post_carries: (.*)$", b)
+        if not m or m.group(1).strip() != carries:
+            fail(f"offer {oid}: the handover carries "
+                 f"{m.group(1).strip() if m else 'nothing'}; the contract is {carries}, and "
+                 "nothing else is read at the other end")
+    model = shop_model_island()
+    for lv in model.get("levels", []):
+        if not lv.get("post_url"):
+            fail(f"level {lv['id']}: the shipped model has no page to hand the buyer to, so the "
+                 "flow stops at this store and the buyer never reaches the download")
+    js = (OUT / "assets" / "shop.js").read_text()
+    for needed in ("post_carries", "order=", "shape="):
+        if needed not in js:
+            fail(f"assets/shop.js: does not build {needed!r} into the handover")
+
+
+def check_follow_up_is_twenty_four_hours():
+    """Two sites promising different things about the same follow-up is the drift
+    the shared brief exists to stop. riskmandate.ai commits to twenty-four hours on
+    its own pages, so that is the number here, and 'one working day' — which was a
+    day behind it — must not come back."""
+    for rel, text in texts():
+        # The release history is a RECORD, and a record that cannot name the thing
+        # it corrected is a record that quietly drops the correction — which is the
+        # failure mode this site has a whole section about. So the version pages may
+        # quote the old promise; no page that is selling anything may make it.
+        if rel.startswith("versions/"):
+            continue
+        m = re.search(r"\bwithin (?:one|1) working day\b", text, re.I)
+        if m:
+            fail(f"{rel}: promises a follow-up 'within one working day'. The page the buyer lands "
+                 "on says twenty-four hours, and the slower of two promises is the one that gets "
+                 "quoted back")
+    for oid in ("t2", "t3", "t4"):
+        m = re.search(r'(?m)^  post_when: "(.*?)"$', offer_block(oid))
+        if not m or "24 hours" not in m.group(1):
+            fail(f"offer {oid}: does not say a person follows up within 24 hours. That sentence "
+                 "is the whole of what is bought at this level until the vault arrives")
+    m = re.search(r'(?m)^  post_when: "(.*?)"$', offer_block("t1"))
+    if not m or "Immediately" not in m.group(1):
+        fail("offer t1: since riskmandate.ai v1.19.2 the page a level-one buyer lands on IS the "
+             "download, so nothing is waited for and this store must not say anything is")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -1004,6 +1183,7 @@ def main():
         check_version_agreement, check_links, check_relative_urls, check_canonical_host,
         check_cname, check_markdown_twins, check_licence_stamp, check_shortcodes,
         check_no_unrendered_markdown, check_no_network, check_no_credentials_in_output,
+        check_each_script_loads_once,
         # the store pack's hard rules
         check_barred_word, check_no_conformity_language, check_compliance_assessment_only_denied,
         check_banned_words, check_cannot_read_sentence_absent, check_tamper_wording,
@@ -1012,6 +1192,8 @@ def main():
         check_checkout_links, check_no_forms, check_buyer_groups,
         check_deposits, check_deposit_not_beside_the_marketplace, check_offer_claims_exist,
         check_payment_split, check_post_sale_page, check_wallet_is_marked,
+        check_discount_percentages, check_discount_codes_are_not_printed,
+        check_handover_contract, check_follow_up_is_twenty_four_hours,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,

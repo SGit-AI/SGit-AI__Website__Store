@@ -1,10 +1,27 @@
 {
-  "current": "v0.1.8",
+  "current": "v0.1.9",
   "releases": [
+    {
+      "version": "v0.1.9",
+      "date": "2026-09-15",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the handover to the page after payment, and a discount code that arrives in the address",
+      "summary": "The loop closes. riskmandate.ai published the contract for what happens after the money moves \u2014 one page per level, and since its v1.19.2 the \u00a35 page IS the download, with the zip's size and sha256 stamped by their build and a hash check that runs in the buyer's own browser. This release hands the buyer over to it: every line of an order carries a link to the page for its level, with the store's order reference and, at level one, the shape's slug \u2014 the two plain-text parameters that contract allows, and nothing else. Nothing is copied here, because two copies of a hash is one hash that will go stale.\n\nThree things that were wrong are right. The follow-up said \u201cwithin one working day\u201d, a day slower than the twenty-four hours their pages commit to in public, and a check now refuses the phrase. Level one said the pack arrives by email; it is a download on the page you land on, so the level is renamed and its SKU letter moves from E to P. Level three said \u201csend back what it printed\u201d and named no route; it now names MAP-A-GRANT.md, grant.json, mandate.json and the session record, with no secret in them and the order reference on the message.\n\nDiscount codes, at 25, 50 and 100 per cent. A code arrives in the address rather than in a field, because this site has no text input and the gate refuses one \u2014 which is how a printed card or a QR hands one over anyway. What ships is sha256 of the code and never the code, and a check reads every byte of the built site against every code to keep it that way. It comes off the price of every line and the deposit is taken on what is left; a code at a hundred per cent still places an order and still lands on the page that says what happens next, which is how the whole flow gets walked before a rail exists.\n\nWhat the handover still owes is on the ledger rather than in somebody's head: nothing carries a sale from this store to the person who follows up, no receipt has ever been issued, the level-three files come back by email until a write-only vault exists, the follow-up mailbox has no named owner, and the opinion add-on is listed here with no page there. The first of those gates the first paid order at \u00a350, \u00a3500 and \u00a31,500.\n\nOne bug found by driving it: shop.js was loaded twice on the cart, paying and order pages \u2014 the cart engine running twice against one document, the second copy undoing what the first did. A check now holds every page to one copy of each script.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.1.8",
       "date": "2026-09-15",
-      "commit": "",
+      "commit": "41985da6ef0533bd9295b49e1f1ae33b580e3d67",
       "site": "store.sgit.ai",
       "title": "the flow runs end to end on a simulated wallet, and two levels take a fifth on the order",
       "summary": "The whole purchase runs end to end without a payment link existing: catalogue, order, paying, and the page that says what happens now. Paying is a demonstration wallet \u2014 a balance in the reader's own browser, charging nothing, labelled as simulated on every screen it appears on, beside the three real rails which still say no link has been issued. The two levels that are somebody's work take a fifth on the order and the rest on delivery: \u00a3100 of \u00a3500, \u00a3300 of \u00a31,500, frozen in the gate exactly as a price is, and the split belongs to the offer rather than the rail so a card tapped at the stand takes the same deposit as a link on a phone. The post-sale page is new and is a different page from the delivery page: per line it carries the reference, what arrives and when, what the buyer does next, how a key reaches them \u2014 never the key \u2014 and what done means, which at the vault levels is a commit in their own history. Level three now says what the buyer actually does and carries the prompt they run; the add-on that cannot be bought has a page instead of a 404; and the two-word shortening a ruling forbids is gone from the pages that carried it.",

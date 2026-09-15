@@ -183,7 +183,35 @@ pre.ac-pre{margin:0 0 .7rem;font-size:.74rem;line-height:1.65;max-height:22rem;o
 .aftertail{margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--line);display:flex;gap:1.2rem;
   align-items:center;flex-wrap:wrap}
 .aftertail p{margin:0;font-size:.84rem;color:var(--dim);flex:1 1 auto}
+/* THE DISCOUNT CODE. A chip and a button, because a code never gets typed here:
+   there is no text field on this site and the gate refuses one. It arrives in the
+   address off a printed card, and what the bar names is what came off — not the
+   code, which is not in this browser's storage to name. */
+.codebar{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .9rem;margin:1.2rem 0 0;
+  padding:.7rem .95rem;border:1px solid rgba(15,118,110,.34);border-radius:11px;
+  background:rgba(15,118,110,.06)}
+.codebar-off{border-color:var(--line2);background:var(--panel2)}
+.cb-chip{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:var(--accent-dk);
+  background:var(--panel);border:1px solid rgba(15,118,110,.3);border-radius:999px;padding:.2rem .7rem}
+.cb-chip b{font-weight:800}
+.cb-bad{color:var(--dim2);border-color:var(--line2)}
+.cb-why{flex:1 1 16rem;font-size:.79rem;line-height:1.55;color:var(--ink)}
+.cb-x{cursor:pointer;background:none;border:1px solid var(--line2);border-radius:999px;
+  font:600 .72rem/1 var(--sans);color:var(--dim);padding:.35rem .8rem}
+.cb-x:hover{color:var(--fg);border-color:var(--dim2)}
+.ct-off{font-family:var(--mono);font-size:.74rem;color:var(--accent-dk)}
+.cl-was{color:var(--dim2);font-weight:400}
+.ps-off{margin:.45rem 0 0;font-size:.79rem;line-height:1.55;color:var(--accent-dk)}
+
+/* The handover. The page after payment is riskmandate.ai's, one per level, and
+   the level-one page IS the download — so this is a link out and it is the most
+   important control on the page. */
+.ac-go{margin:1rem 0 0;padding-top:.9rem;border-top:1px solid var(--line)}
+.ac-gonote{margin:.6rem 0 0;font-size:.78rem;line-height:1.55;color:var(--dim)}
+
 @media(max-width:640px){
+  .codebar{gap:.5rem}
+  .ct-off{flex:1 0 100%}
   .sp-row{grid-template-columns:1fr}
   .ps-lines li{grid-template-columns:1fr}
   .ac-row{grid-template-columns:1fr;gap:.15rem}

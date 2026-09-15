@@ -1,6 +1,6 @@
 # Tier 1 — Can I just have the pack?
 
-Every file in the vault for the shape you picked, sent to you: the behaviour policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent.
+Every file in the vault for the shape you picked, downloaded by you: the behaviour policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, the prompts, the business case, and the two files you hand the agent.
 
 - Offer id: `t1`
 - Price: £5
@@ -10,7 +10,7 @@ Every file in the vault for the shape you picked, sent to you: the behaviour pol
 
 ## What arrives
 
-- One email, carrying a download link to a zip of the whole pack for the shape you chose — a link rather than an attachment, because an attachment has a size limit and a link does not.
+- A download, on the page you land on the moment the payment goes through — the zip of the whole pack for the shape you chose, with its size and its sha256 beside it.
 - The behaviour policy, the grant, the mandate, the delta and the barrier on each row.
 - The prompts and documents you hand the agent, and the business case for a control.
 

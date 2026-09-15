@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.1.8
+> site v0.1.9
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
@@ -26,7 +26,7 @@ site can move host without reprinting a card or reissuing a link.
 Licence: This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0).
 
 ## Pages
-- [Every agent needs a licence to operate](https://store.sgit.ai/): Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels — the pack by email at £5, a vault you hold the keys to at £50, corrected for your situation at £500, and two sessions with a security professional signing it at £1,500.
+- [Every agent needs a licence to operate](https://store.sgit.ai/): Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels — the pack downloaded at £5, a vault you hold the keys to at £50, corrected for your situation at £500, and two sessions with a security professional signing it at £1,500.
 - [The three buyers, and what each one buys](https://store.sgit.ai/audiences/): Three buyers, ordered by opportunity rather than presented as three equal doors: a team running agents they already granted credentials to, an investor backing a company, and a startup about to meet diligence. Which of the six offers each one is shown, which were actually built for them, and — for one of the three — that none were.
 - [Booking a person](https://store.sgit.ai/booking/): Two of the four tiers are a booking rather than a download: a person reviewing your situation, and an assessment by a team. What a booking commits, what it does not, and why a signature is a separate thing you cannot buy yet.
 - [What is not for sale yet](https://store.sgit.ai/catalogue/): Eight further offers are specified and none of them is for this week. They are listed so that nobody proposes them as new, and so that the four that are for sale are not quietly widened to include them.
@@ -37,7 +37,7 @@ Licence: This document is released under the Creative Commons Attribution 4.0 In
 - [Every claim on this site, with its state](https://store.sgit.ai/ledger/): One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first.
 - [All six, side by side](https://store.sgit.ai/offers/): The four tiers and the two add-ons in one table: the question each answers, its price, what is true of the thing behind it today, how it is paid, and the stable offer identifier a printed code redirects to.
 - [The two rails, and why they never meet](https://store.sgit.ai/paying/): Payment links with printed codes for everything at the event and everything below about a thousand pounds; the cloud marketplace for business buyers above it, after a conversation. They are strictly separated, the separation is a rule rather than a preference, and no link has been issued yet.
-- [Which agent do you run?](https://store.sgit.ai/policies/): Fifteen Agent Behaviour Policies, one per application, at four levels: the pack by email at £5, a working vault you hold the keys to at £50, corrected against your situation at £500, and two sessions with a security professional signing it at £1,500.
+- [Which agent do you run?](https://store.sgit.ai/policies/): Fifteen Agent Behaviour Policies, one per application, at four levels: the pack downloaded at £5, a working vault you hold the keys to at £50, corrected against your situation at £500, and two sessions with a security professional signing it at £1,500.
 - [Release history](https://store.sgit.ai/versions/): Every release of this site, what changed in it, and the commit it was built from. The version is owned by one file, the release commit's subject repeats it, and the pipeline refuses to tag if the two disagree.
 
 ## Who each offer was built for

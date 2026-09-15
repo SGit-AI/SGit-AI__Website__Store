@@ -1,0 +1,73 @@
+# The discount codes. THIS FILE IS THE ONLY PLACE A CODE EXISTS IN PLAIN TEXT,
+# and the built site never carries one.
+#
+# WHY A HASH AND NOT THE CODE. A static page that recognises a typed code has to
+# carry something to recognise it by, and if that something is the code then the
+# code is published the moment the page is. So the build ships sha256 of the
+# upper-cased code and the browser hashes what it was handed and compares. There
+# is a check in tools/check_site.py that greps every byte of docs/ for each code
+# below and fails the build if one is found — the same shape as the rule that no
+# vault key ever reaches a page, and for the same reason: a rule with a test
+# behind it is a rule, and one without is a preference.
+#
+# WHAT A HASH IS AND IS NOT WORTH. SUMMIT50 is nine characters out of a small
+# alphabet and anybody who wants to grind the hash can. That is said here rather
+# than dressed up, because the thing that actually stops a stranger paying £0 is
+# not the hash: it is that the browser does not take money. A recognised code
+# changes the amount the payment link is issued FOR, and it is the rail that
+# decides what is charged. Today there is no rail, the wallet is a simulation,
+# and a 100 per cent code is how the whole flow gets walked without money moving.
+# When a rail exists the same codes are configured on it and the page stops being
+# the only thing that knows them.
+#
+# HOW A CODE ARRIVES. Not by typing: no page on this site has a text field, and
+# the gate refuses one. A code arrives in the address — ?code=... or #code=... on
+# any page of the store — which is what a printed card or a QR at a stand hands
+# somebody anyway. The store holds it, shows it as a chip that can be removed,
+# and takes it back out of the address bar so a screenshot of the checkout does
+# not carry it.
+#
+# WHAT A CODE DOES TO THE ARITHMETIC. It comes off the price of the line, and the
+# deposit split is then taken on what is left: a 50 per cent code on the £500
+# level is £250, of which £50 is taken now and £200 on delivery. It never changes
+# `pay_now_pct`, which is a property of the offer.
+#
+# `id` is stable and is what the frozen table in tools/check_site.py keys on, so
+# that the percentages are ruled rather than typed — and so that no code has to
+# be written into a test file to be checked.
+#
+# `until` is the last day the code works, in the buyer's own clock, because the
+# page has no other. A code past its day is refused with the date said out loud
+# rather than silently ignored.
+
+- id: summit-25
+  code: SUMMIT25
+  pct: 25
+  label: Startup Summit
+  why: "For the room at the Startup Summit. A quarter off, on anything on the store."
+  levels: all
+  until: "2026-12-31"
+
+- id: summit-50
+  code: SUMMIT50
+  pct: 50
+  label: Startup Summit
+  why: "Half off, for a conversation at the stand that got as far as a shape and a level."
+  levels: all
+  until: "2026-12-31"
+
+- id: summit-100
+  code: SUMMIT100
+  pct: 100
+  label: Startup Summit
+  why: "The whole price off. Handed to somebody who should have the thing and be asked what they made of it, rather than be sold it."
+  levels: all
+  until: "2026-12-31"
+
+- id: loop-check
+  code: LOOPCHECK
+  pct: 100
+  label: Walkthrough
+  why: "Not for a buyer. It exists so the flow from the catalogue to the page after payment can be walked end to end, by a person or by a browser in a test, without money and without a rail."
+  levels: all
+  until: "2027-12-31"

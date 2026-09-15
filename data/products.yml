@@ -22,7 +22,7 @@
 # the project lead's to change.
 #
 # WHY THE LADDER IS THIS SHAPE. The first two levels differ only in the form the
-# same bytes arrive in — an email of the pack, or a vault you hold the keys to.
+# same bytes arrive in — the pack downloaded, or a vault you hold the keys to.
 # The third and fourth differ in who does the correcting: level three you tell us
 # the situation and it is corrected for you, level four you are interviewed and a
 # security professional signs what comes back. The line between three and four is
@@ -34,17 +34,17 @@ meta:
   ruling: "Prices set by the project lead, 15 September 2026, replacing the four tiers of the 10 September pack."
 
 levels:
-  - id: email
-    code: E
+  - id: pack
+    code: P
     n: 1
-    name: The pack, by email
+    name: The pack, downloaded
     offer: t1
-    lede: "Every file in the vault, sent to you. Yours to use, keep and hand to your agent."
+    lede: "Every file in the vault, downloaded by you. Yours to use, keep and hand to your agent."
     who: "You want the material and you do not want to run anything."
     gets:
       - "The whole pack for the shape you picked: the behaviour policy, the grant and the mandate as markdown and as JSON, the pinned vocabulary, and the two files you hand the agent."
       - "The prompts, the documents and the business case that come with it."
-      - "One email. Nothing to clone, nothing to install, nothing to hold a key for."
+      - "One download, on the page you land on the moment the payment goes through, with its size and its sha256 beside it. Nothing to clone, nothing to install, nothing to hold a key for."
     not:
       - "Not a vault. There is no history, no app and no read key to hand anybody — that is the next level up."
       - "Not corrected for you. The mandate in it is the starting mandate, written to be corrected, and correcting it is yours to do."
