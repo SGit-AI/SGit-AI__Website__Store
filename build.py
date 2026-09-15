@@ -2496,13 +2496,30 @@ def llms_full(rendered):
         LICENCE_STAMP,
         "",
     ]
+    # /admin/ is left out, and llms.txt still lists it with its description and its
+    # address. The walkthrough page is noindex because it prints working discount
+    # codes and "public" and "advertised" are different things — and a bulk file
+    # that IS indexed, carrying the same codes, would make that sentence false.
+    # An agent that wants the walkthrough follows the link in llms.txt and reads
+    # /admin/try/index.md, which is the markdown twin every page here has.
     for url, (page, _ctx, _body) in sorted(rendered.items()):
+        if url.startswith("/admin/"):
+            continue
         parts += [
             "\n" + "=" * 78,
             f"PAGE {url}  —  {page['fm']['title']}",
             "=" * 78 + "\n",
             page["src_md"].strip(),
         ]
+    parts += [
+        "\n" + "=" * 78,
+        "NOT INCLUDED ABOVE",
+        "=" * 78 + "\n",
+        "/admin/ and /admin/try/ are omitted from this file on purpose. They are public and",
+        "linked from llms.txt; they are noindex, out of sitemap.xml and out of this file because",
+        "the walkthrough prints working discount codes. Read them at their own addresses, or as",
+        "markdown at /admin/try/index.md.",
+    ]
     return "\n".join(parts) + "\n"
 
 

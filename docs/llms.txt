@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.1.10
+> site v0.1.11
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.

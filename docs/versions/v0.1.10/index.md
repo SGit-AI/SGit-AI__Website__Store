@@ -11,7 +11,7 @@ TWO BUGS, ONE OF THEM VISIBLE ON EVERY POST-SALE PAGE. `.doc code` is more speci
 /admin/ is a new page and gathers the internal surfaces — the walkthrough, the ledger, the dev packs, the release history, the lab. It is public, because every page here is and a static site could not pretend otherwise, and it is noindex and out of sitemap.xml, because public and advertised are different things: somebody handed the address can read it, and nobody arrives by searching for a discount code.
 
 - Released: 2026-09-15
-- Built from commit: ``
+- Built from commit: `456b3bddb55e3f25b0aa83a59197a99e24b38a0b`
 - Reconstructed: no
 
 ---

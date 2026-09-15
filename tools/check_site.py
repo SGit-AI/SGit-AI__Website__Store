@@ -1175,8 +1175,10 @@ def check_printable_codes_need_a_dead_rail():
         if not f.is_file() or f.suffix.lower() in {".png", ".jpg", ".svg", ".ico"}:
             continue
         rel = str(f.relative_to(OUT)).replace(os.sep, "/")
-        if rel.startswith("admin/") or rel in ("llms-full.txt", "sitemap.xml",
-                                               "assets/site-index.json"):
+        # /admin/ is where they are printed. Everything else — including
+        # llms-full.txt, which IS indexed — must not carry one, or the reason
+        # printed on /admin/ for being noindex would not be true.
+        if rel.startswith("admin/"):
             continue
         try:
             body = f.read_text()

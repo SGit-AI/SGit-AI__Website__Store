@@ -30,8 +30,12 @@ every step, and a script an agent can follow without a person in the loop.
 every byte it carries: there is no server to ask who you are, and a page that
 pretended otherwise would be lying about how it works. So this page is not
 protected — it is simply **not advertised**. It carries `noindex` and it is kept
-out of `sitemap.xml`, which means somebody handed the address can read it and
-nobody arrives by searching for a discount code.
+out of `sitemap.xml` and out of `llms-full.txt` — which *is* indexed, and would
+have made this paragraph false by carrying the same codes in a bulk file. Somebody
+handed the address can read it; nobody arrives by searching for a discount code.
+[`llms.txt`](/llms.txt) still lists both pages with their descriptions, so an
+agent finds the walkthrough and reads it at
+[`/admin/try/index.md`](/admin/try/index.md).
 
 **The walkthrough codes are the one thing on this site that is deliberately
 published and deliberately not linked from a selling page.** They take a hundred
