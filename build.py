@@ -3765,6 +3765,9 @@ def memo_pages(out_dir, ctx_shared):
     body = (
         f'<p class="lead">{html.escape(MEMOS["_what_this_is"])}</p>'
         f'<div class="rows">{"".join(rows)}</div>'
+        '<p><b><a href="/admin/status/">What happened to each of them &rarr;</a></b> \u2014 every ' 
+        'unit of work a memo became, whether it is done, the page it built and the release ' 
+        'it shipped in, on one page.</p>' 
         '<h2 id="the-process">The four steps</h2>'
         f'<ol class="steps">{steps}</ol>'
         '<h2 id="why-verbatim">Why the memo is kept word for word</h2>'
@@ -4833,6 +4836,189 @@ def block_code_offer(ctx):
 
 BLOCKS["code-offer"] = block_code_offer
 
+
+# ---------------------------------------------------- the memo status page ----
+# THE JOIN NOBODY COULD MAKE UNTIL NOW.
+#
+# The queue said what arrived, the board said what it became, and the release
+# history said what shipped — and no page put the three together. So the honest
+# answer to "what happened to that memo I sent you" was to read three pages and
+# hold the join in your head.
+#
+# This is that join, and it is generated: a memo, the units it produced, whether
+# each one is done, the PAGE it built, and the RELEASE it went out in. A unit
+# claiming to be done with nothing to point at is the failure this page exists to
+# make visible, and check_every_done_unit_points_at_something refuses one.
+STATUS_URL = "/admin/status/"
+
+
+DASH = '<span class="dim">&mdash;</span>'
+
+
+def _unit_row(t):
+    sh = t.get("shipped") or {}
+    urls = sh.get("urls") or []
+    where = " ".join(
+        f'<a href="{u}"><code>{html.escape(u)}</code></a>' for u in urls)
+    ver = (f'<a href="/versions/{sh["version"]}/">{html.escape(sh["version"])}</a>'
+           if sh.get("version") else "")
+    st = t["status"]
+    rank = {"done": 4, "in-progress": 3, "next": 2, "queued": 3}[st]
+    lab = {"done": "done", "in-progress": "in progress", "next": "next", "queued": "queued"}[st]
+    return (
+        f'<tr class="st-{st}"><td class="u-id"><code>{html.escape(t["id"])}</code></td>'
+        f'<td class="u-t"><b>{html.escape(t["title"])}</b>'
+        + (f'<span class="u-block">Blocked on {t["blocked"]}</span>' if t.get("blocked") else "")
+        + (f'<span class="u-who">yours</span>' if t.get("owner") == "lead" else "")
+        + "</td>"
+        f'<td class="u-s"><span class="st st--{rank}">{lab}</span></td>'
+        f'<td class="u-w">{where or DASH}</td>'
+        f'<td class="u-v">{ver or DASH}</td></tr>')
+
+
+def status_page(out_dir, ctx_shared):
+    rows = []
+    # COUNTED ONCE EACH, ACROSS THE WHOLE BOARD. Two memos can name the same
+    # workstream \u2014 "keep the record" came out of the first and the third \u2014
+    # so a per-memo tally added to a running total counts those units twice. The
+    # first version of this page did exactly that and printed 55 done against a
+    # board that had 47. The per-memo counts below are still per-memo, which is
+    # right; the headline is the set.
+    counted = set()
+    totals = {"done": 0, "open": 0, "yours": 0}
+    for m in MEMOS["memos"]:
+        ws_ids = [i for i in m["workstreams"] if i in WORK_BY_ID]
+        units = [t for i in ws_ids for t in WORK_BY_ID[i]["tasks"]
+                 if t.get("memo") == m["id"] or not t.get("memo")]
+        # a unit belongs to the memo that names it; fall back to the workstream's
+        units = [t for i in ws_ids for t in WORK_BY_ID[i]["tasks"]]
+        seen, uniq = set(), []
+        for t in units:
+            if t["id"] not in seen:
+                seen.add(t["id"]); uniq.append(t)
+        d = sum(1 for t in uniq if t["status"] == "done")
+        for task in uniq:
+            if task["id"] in counted:
+                continue
+            counted.add(task["id"])
+            totals["done" if task["status"] == "done" else "open"] += 1
+            if task.get("owner") == "lead" and task["status"] != "done":
+                totals["yours"] += 1
+        pages = sorted({u for t in uniq for u in (t.get("shipped") or {}).get("urls", [])})
+        vers = sorted({(t.get("shipped") or {}).get("version") for t in uniq
+                       if (t.get("shipped") or {}).get("version")},
+                      key=lambda v: [int(x) for x in v.lstrip("v").split(".")])
+        rows.append(
+            f'<section class="memo-block" id="memo-{m["id"]}">'
+            f'<div class="page-head"><div>'
+            f'<h2><a href="{MEMO_ROOT}{m["id"]}/">{html.escape(m["title"])}</a></h2>'
+            f'<p>{html.escape(m["date"])} \u00b7 {html.escape(m["form"])}. '
+            f'{html.escape(m["summary"])}</p></div>'
+            f'<span class="st st--{4 if d == len(uniq) else 2}">{d} of {len(uniq)} done</span>'
+            "</div>"
+            + (f'<p class="memo-out"><b>What it built:</b> '
+               + " ".join(f'<a href="{u}"><code>{html.escape(u)}</code></a>' for u in pages)
+               + "</p>" if pages else "")
+            + (f'<p class="memo-out"><b>Released in:</b> '
+               + " \u00b7 ".join(f'<a href="/versions/{v}/">{html.escape(v)}</a>' for v in vers)
+               + "</p>" if vers else "")
+            + '<div class="tablewrap"><table class="units"><thead><tr>'
+            '<th></th><th>Unit of work</th><th>State</th><th>Where it landed</th><th>Release</th>'
+            "</tr></thead><tbody>"
+            + "".join(_unit_row(t) for t in uniq)
+            + "</tbody></table></div></section>")
+
+    # WORKSTREAMS THAT NO MEMO NAMES. "Close the loop after payment" predates the
+    # queue — it came out of the partner review rather than a memo — and a page
+    # organised by memo would have left it off entirely while its units still
+    # counted on the board. A status page that is silently incomplete is worse
+    # than one that says where its own edges are.
+    orphan_ids = [w["id"] for w in WORK["workstreams"]
+                  if not any(w["id"] in m["workstreams"] for m in MEMOS["memos"])]
+    for wid in orphan_ids:
+        ws = WORK_BY_ID[wid]
+        uniq = ws["tasks"]
+        d = sum(1 for x in uniq if x["status"] == "done")
+        for task in uniq:
+            if task["id"] in counted:
+                continue
+            counted.add(task["id"])
+            totals["done" if task["status"] == "done" else "open"] += 1
+            if task.get("owner") == "lead" and task["status"] != "done":
+                totals["yours"] += 1
+        rows.append(
+            f'<section class="memo-block" id="ws-{wid}">'
+            f'<div class="page-head"><div>'
+            f'<h2><a href="{WORK_ROOT}{wid}/">{html.escape(ws["title"])}</a></h2>'
+            f'<p><b>Not from a memo.</b> {html.escape(ws["description"])}</p></div>'
+            f'<span class="st st--{4 if d == len(uniq) else 2}">{d} of {len(uniq)} done</span>'
+            "</div>"
+            '<div class="tablewrap"><table class="units"><thead><tr>'
+            '<th></th><th>Unit of work</th><th>State</th><th>Where it landed</th><th>Release</th>'
+            "</tr></thead><tbody>"
+            + "".join(_unit_row(x) for x in uniq)
+            + "</tbody></table></div></section>")
+
+    body = (
+        '<p class="lead">Every memo, what it became, and where each piece of it landed. '
+        '<b>This page is a join rather than a list</b> \u2014 the queue says what arrived, the '
+        'board says what it became and the release history says what shipped, and until this page '
+        'existed the only way to answer \u201cwhat happened to that memo\u201d was to read three '
+        'pages and hold the join in your head.</p>'
+        '<p class="small dim"><b>A workstream can belong to two memos</b>, and where it does its ' 
+        'units appear under both \u2014 which is right for reading one memo and wrong for adding ' 
+        'up. The four numbers below count every unit once.</p>' 
+        f'<div class="tiles">'
+        f'<div class="tile r4"><b>{totals["done"]}</b><span>units done</span></div>'
+        f'<div class="tile r3"><b>{totals["open"]}</b><span>still open</span></div>'
+        f'<div class="tile r2"><b>{totals["yours"]}</b><span>waiting on you</span>'
+        '<em>a decision, not a build</em></div>'
+        f'<div class="tile r3"><b>{len(MEMOS["memos"])}</b><span>memos</span></div>'
+        "</div>"
+        + "".join(rows)
+        + '<h2 id="how-this-is-built">How this page is built</h2>'
+        '<p>Every row is generated. A memo names its workstreams, a workstream holds its units, and '
+        'a unit that is done carries the pages it produced and the release it went out in. '
+        '<b>A unit that claims to be done and points at nothing fails the release</b> \u2014 '
+        'because "done" with nothing to open is the one status that can be wrong without anybody '
+        'noticing.</p>'
+        '<p>The memos themselves are kept word for word at <a href="/admin/memos/">the queue</a>, '
+        'with the reading of each one held separately from the memo. The board at '
+        '<a href="/admin/work/">/admin/work/</a> is the same units arranged by workstream rather '
+        'than by where they came from.</p>')
+    md = ["# What happened to each memo\n",
+          f"**{totals['done']} units done \u00b7 {totals['open']} open \u00b7 "
+          f"{totals['yours']} waiting on the project lead \u00b7 "
+          f"{len(MEMOS['memos'])} memos.**\n"]
+    for m in MEMOS["memos"]:
+        ws_ids = [i for i in m["workstreams"] if i in WORK_BY_ID]
+        seen, uniq = set(), []
+        for i in ws_ids:
+            for t in WORK_BY_ID[i]["tasks"]:
+                if t["id"] not in seen:
+                    seen.add(t["id"]); uniq.append(t)
+        d = sum(1 for t in uniq if t["status"] == "done")
+        md.append(f"\n## {m['date']} \u2014 {m['title']} ({d}/{len(uniq)} done)\n")
+        md.append(f"{m['summary']}  \n{SITE['base']}{MEMO_ROOT}{m['id']}/\n")
+        for t in uniq:
+            sh = t.get("shipped") or {}
+            tail = ""
+            if sh.get("urls"):
+                tail = " \u2014 " + ", ".join(SITE["base"] + u for u in sh["urls"])
+            if sh.get("version"):
+                tail += f" ({sh['version']})"
+            md.append(f"- `{t['id']}` **{t['title']}** \u2014 {t['status']}{tail}")
+    return {STATUS_URL: _console_page(
+        out_dir, ctx_shared, STATUS_URL,
+        {"title": "What happened to each memo",
+         "description": ("Every memo from the project lead, the units of work it became, whether "
+                         "each is done, the page it built and the release it shipped in. "
+                         "Generated, so it cannot disagree with the board."),
+         "blurb": (f"<b>{totals['done']} done \u00b7 {totals['open']} open \u00b7 "
+                   f"{totals['yours']} waiting on you.</b> A memo, what it became, and where "
+                   "every piece of it landed.")},
+        ' / <a href="/admin/">admin</a> / status', body, "\n".join(md))}
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -4916,6 +5102,7 @@ def build(out_dir):
     extra.update(rails_pages(out_dir, ctx_shared))
     extra.update(work_pages(out_dir, ctx_shared))
     extra.update(memo_pages(out_dir, ctx_shared))
+    extra.update(status_page(out_dir, ctx_shared))
     extra.update(audience_pages(out_dir, ctx_shared))
     extra.update(reviewer_pages(out_dir, ctx_shared))
     extra.update(paid_pages(out_dir, ctx_shared))

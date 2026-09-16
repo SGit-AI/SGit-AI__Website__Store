@@ -2508,6 +2508,72 @@ def check_the_capability_vocabulary_is_promoted_not_invented():
                      "does not leave their browser")
 
 
+def check_every_done_unit_points_at_something():
+    """"Done" with nothing to open is the one status that can be wrong without
+    anybody noticing.
+
+    Every other state on the board is a statement about the future and is
+    unfalsifiable by design. `done` is a claim about the past, and it is the claim
+    a reader of the status page is actually relying on — so a unit marked done has
+    to name the release it went out in and at least one page it produced or
+    changed, both of which can be opened.
+
+    The version has to be one this site has released. The pages have to be pages
+    this build emits. A done unit pointing at a 404 is a status page that is worse
+    than no status page, because it looks like evidence."""
+    work = json.loads((ROOT / "data" / "admin" / "work.json").read_text())
+    rel = json.loads((ROOT / "data" / "releases.json").read_text())
+    versions = {r["version"] for r in rel["releases"]}
+    for ws in work["workstreams"]:
+        for task in ws["tasks"]:
+            if task["status"] != "done":
+                if task.get("shipped"):
+                    fail(f"unit {task['id']}: is {task['status']!r} and carries a shipped record. "
+                         "A thing that has not shipped cannot say where it landed")
+                continue
+            sh = task.get("shipped") or {}
+            if not sh.get("version"):
+                fail(f"unit {task['id']}: is done and names no release. Done with nothing to open "
+                     "is the one status that can be wrong without anybody noticing")
+                continue
+            if sh["version"] not in versions:
+                fail(f"unit {task['id']}: names release {sh['version']!r}, which this site has "
+                     "never released")
+            urls = sh.get("urls") or []
+            if not urls:
+                fail(f"unit {task['id']}: is done and points at no page")
+            for u in urls:
+                path = u.split("#")[0].strip("/")
+                f = (OUT / path / "index.html") if path else (OUT / "index.html")
+                if not f.exists():
+                    fail(f"unit {task['id']}: says it landed at {u!r} and this build emits no page "
+                         "there. A done unit pointing at a 404 is worse than no status page, "
+                         "because it looks like evidence")
+                elif "#" in u:
+                    anchor = u.split("#", 1)[1]
+                    if f'id="{anchor}"' not in f.read_text():
+                        fail(f"unit {task['id']}: points at {u!r} and that page has no section "
+                             f"with id {anchor!r}")
+    page = OUT / "admin" / "status" / "index.html"
+    if not page.exists():
+        fail("admin/status/: the page joining memos to what they became was not built")
+    else:
+        # EVERY UNIT ON THE BOARD IS ON THE STATUS PAGE. It is organised by memo,
+        # and one workstream predates the queue — so a page built only from memos
+        # would have left it off while its units still counted on the board. A
+        # status page that is silently incomplete is worse than one that says
+        # where its own edges are.
+        body = page.read_text()
+        missing = [task["id"] for ws in work["workstreams"] for task in ws["tasks"]
+                   if f'<code>{task["id"]}</code>' not in body]
+        if missing:
+            fail(f"admin/status/: {len(missing)} unit(s) on the board are not on the status page "
+                 f"({', '.join(missing[:5])}). A status page that is silently incomplete is worse "
+                 "than one that says where its own edges are")
+        if not (OUT / "admin" / "status" / "index.md").exists():
+            fail("admin/status/: has no markdown twin")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2545,6 +2611,7 @@ def main():
         check_a_leaked_code_cannot_buy_somebody_s_day,
         check_the_network_claim_is_qualified,
         check_the_capability_vocabulary_is_promoted_not_invented,
+        check_every_done_unit_points_at_something,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

@@ -15,7 +15,7 @@ AND ONE ASSERTION WAS WRONG ABOUT THE DATA AND THE DATA WON. The first version r
 One more thing caught by the gate rather than by reading: explaining that a clause was removed for using a barred word, by quoting the clause. The rule demonstrating itself. It is described now and not quoted, the same way the disclosures page has always handled it.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `44c6f6e36ffa740dd345cfc08f858386c7d1c8fd`
 - Reconstructed: no
 
 ---

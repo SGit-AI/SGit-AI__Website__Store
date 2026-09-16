@@ -304,3 +304,31 @@ a.bcard:hover{text-decoration:none;box-shadow:0 2px 10px rgba(20,24,30,.08);
   padding:var(--c-3) var(--c-4);font-size:13px;line-height:1.55;color:#5b4720;max-width:78ch}
 .withheld-note a{color:#8a4b06;text-decoration:underline}
 .blocked-on{color:var(--c-r2);font-size:13px}
+
+/* ------------------------------------------ what happened to each memo ----
+   A join, not a list: the memo, the units, where each landed and which release
+   carried it. Every row is generated, so the page cannot disagree with the
+   board it is drawn from. */
+.memo-block{margin:var(--c-7) 0 0;padding-top:var(--c-5);border-top:1px solid var(--c-line)}
+.memo-block .page-head{margin-bottom:var(--c-3)}
+.memo-block h2{margin:0;font-size:18px;font-weight:650;letter-spacing:-.01em;
+  text-transform:none;color:var(--c-ink)}
+.memo-block h2 a{color:inherit}
+.memo-out{margin:var(--c-2) 0;font-size:13px;color:var(--c-muted)}
+.memo-out code{font-size:11.5px}
+table.units{width:100%;border-collapse:collapse;font-size:13px}
+table.units th{background:var(--c-head);text-align:left;padding:6px 8px;font-size:10.5px;
+  font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--c-muted)}
+table.units td{padding:7px 8px;border-bottom:1px solid var(--c-line);vertical-align:top}
+table.units tr:last-child td{border-bottom:0}
+table.units .u-id{width:64px}
+table.units .u-id code{font-size:11px;color:var(--c-faint)}
+table.units .u-t b{font-weight:600;color:var(--c-ink)}
+table.units .u-s{width:96px;white-space:nowrap}
+table.units .u-v{width:72px;white-space:nowrap}
+table.units .u-block{display:block;margin-top:2px;font-size:11.5px;color:var(--c-r2)}
+table.units .u-who{display:inline-block;margin-top:2px;margin-left:6px;font-size:10px;
+  letter-spacing:.06em;text-transform:uppercase;padding:0 6px;border-radius:9px;
+  background:var(--c-r2-soft);color:var(--c-r2)}
+table.units .u-w code{font-size:11px}
+table.units tr.st-done{background:color-mix(in srgb,var(--c-r4-soft) 45%,transparent)}

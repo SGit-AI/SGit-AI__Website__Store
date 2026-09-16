@@ -2,7 +2,7 @@
 
 The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.
 
-**17 workstreams · 100 units of work · 53 not done.**
+**17 workstreams · 101 units of work · 53 not done.**
 
 
 ## Take money at all — next
@@ -78,6 +78,7 @@ The reviews, the ledger, the console and this board. The part of the store that 
 - **TR-4 · Operationalise the review proposals** — `in-progress` — Eighteen proposals across two reviews, each with a stance. The ones marked do-now are units of work and were not tracked anywhere until this board existed. The generated proposals board is the join.
 - **TR-5 · Capture the next review** — `queued` — The register takes a file and a line. The interesting one to run next is a second synthetic pass after the rail is live, because every finding in the first one stopped at a checkout that did not exist. _Blocked on: TM-7._
 - **TR-7 · Execute the memos in sequence, pushing often** — `in-progress` — Set as the working method: catalogue each memo exactly, plan, then execute bit by bit and keep pushing to production. Minor versions for most of it; a major version where a change is big enough to deserve one.
+- **TR-8 · Join the memos to what they became** — `done` — Shipped in v0.3.6 at /admin/status/. The queue said what arrived, the board said what it became and the release history said what shipped — and no page put the three together, so the only way to answer “what happened to that memo” was to read three pages and hold the join in your head. Every done unit now carries the pages it produced and the release it went out in, and a check refuses one that claims to be done and points at nothing.
 
 
 ## Qualify who is reading — next

@@ -49,7 +49,13 @@
           "description": "<b>Done by the project lead on 16 September.</b> Six products, GBP, and the shape is theirs rather than the one this plan first guessed: <b>the two upper levels are a DEPOSIT and a DELIVERY that sum to the price</b>, so a buyer paying in full adds both lines and a buyer starting adds one. That is the store's own “a fifth now and the rest on delivery” as two rows instead of a rule somebody has to apply. The dashboard's CSV export is committed and the build reconciles against it every release.",
           "owner": "lead",
           "source": "lead",
-          "memo": "2026-09-16-stripe-end-to-end"
+          "memo": "2026-09-16-stripe-end-to-end",
+          "shipped": {
+            "version": "v0.2.2",
+            "urls": [
+              "/admin/rails/stripe/"
+            ]
+          }
         },
         {
           "id": "TM-2",
@@ -83,7 +89,16 @@
           "status": "done",
           "description": "Shipped in v0.3.0. The success address is this site's own page for the level, so there is nothing to settle with another team. The two parameters are unchanged; what moved is the origin.",
           "source": "self",
-          "memo": "2026-09-16-one-site-one-flow"
+          "memo": "2026-09-16-one-site-one-flow",
+          "shipped": {
+            "version": "v0.3.0",
+            "urls": [
+              "/paid/t1/",
+              "/paid/t2/",
+              "/paid/t3/",
+              "/paid/t4/"
+            ]
+          }
         },
         {
           "id": "TM-6",
@@ -114,7 +129,13 @@
           "title": "SumUp — parked for the MVP",
           "status": "done",
           "description": "<b>Taken off the store on 16 September.</b> The finding that produced this task — that <code>check_checkout_links</code> pinned every destination to Stripe's hosts and would have refused a SumUp URL with a message about Stripe — is now moot rather than fixed, and stays written down because it will be true again the day the rail comes back. The plan is kept at <code>/admin/rails/sumup/</code> rather than deleted.",
-          "source": "self"
+          "source": "self",
+          "shipped": {
+            "version": "v0.2.6",
+            "urls": [
+              "/admin/rails/sumup/"
+            ]
+          }
         },
         {
           "id": "TM-10",
@@ -122,7 +143,15 @@
           "status": "done",
           "description": "Shipped in v0.1.18 at /admin/rails/stripe/ and /admin/rails/sumup/, generated from data/admin/rails.json.",
           "source": "lead",
-          "memo": "2026-09-16-stripe-end-to-end"
+          "memo": "2026-09-16-stripe-end-to-end",
+          "shipped": {
+            "version": "v0.1.18",
+            "urls": [
+              "/admin/rails/",
+              "/admin/rails/stripe/",
+              "/admin/rails/sumup/"
+            ]
+          }
         },
         {
           "id": "TM-11",
@@ -158,7 +187,13 @@
           "description": "<b>Ruled on 16 September: no cap, and the reasoning is recorded rather than the concern being dropped.</b> Purchases are managed directly, so a redemption is seen rather than discovered in a total. Abuse at a volume worth doing is abuse at a volume that shows. And what the code skips paying for is already published free — it removes a payment for material anybody could download, and it does not remove the work at the upper levels, which a person does and would notice. The gate now reports the state every release instead of failing on it.",
           "owner": "lead",
           "source": "self",
-          "memo": "2026-09-16-stripe-end-to-end"
+          "memo": "2026-09-16-stripe-end-to-end",
+          "shipped": {
+            "version": "v0.2.4",
+            "urls": [
+              "/admin/rails/stripe/"
+            ]
+          }
         },
         {
           "id": "TM-15",
@@ -185,7 +220,15 @@
           "description": "Shipped in v0.2.0. £10, with all three moves of the price kept on the page.",
           "owner": "lead",
           "source": "lead",
-          "memo": "2026-09-16-ten-pounds-and-a-licence"
+          "memo": "2026-09-16-ten-pounds-and-a-licence",
+          "shipped": {
+            "version": "v0.2.0",
+            "urls": [
+              "/d/t1/",
+              "/offers/",
+              "/ledger/"
+            ]
+          }
         },
         {
           "id": "PL-2",
@@ -194,7 +237,15 @@
           "description": "Shipped in v0.2.0. The public files stay CC BY; the buyer gets a commercial licence over the same material. The wording is not drafted and the ledger says so.",
           "owner": "lead",
           "source": "lead",
-          "memo": "2026-09-16-ten-pounds-and-a-licence"
+          "memo": "2026-09-16-ten-pounds-and-a-licence",
+          "shipped": {
+            "version": "v0.2.0",
+            "urls": [
+              "/d/t1/",
+              "/offers/",
+              "/ledger/"
+            ]
+          }
         },
         {
           "id": "PL-3",
@@ -235,7 +286,13 @@
           "status": "done",
           "description": "Shipped in v0.2.9 as data/reviewers.yml and /who/. Built for a list on the day it had one name on it — adding the second is adding a record; the page, the twin, the register entry and the links from the level pages are generated.",
           "source": "lead",
-          "memo": "2026-09-16-ten-pounds-and-a-licence"
+          "memo": "2026-09-16-ten-pounds-and-a-licence",
+          "shipped": {
+            "version": "v0.2.9",
+            "urls": [
+              "/who/"
+            ]
+          }
         },
         {
           "id": "WD-2",
@@ -243,7 +300,13 @@
           "status": "done",
           "description": "Shipped in v0.2.9 at /who/dinis-cruz/. <b>Every line read off open-source.sgit.ai's published author page and the vault catalogue</b>, both named on the page with the date they were read. No count of years: the published record starts in 2008 and a reader can do that arithmetic and check every step of it.",
           "source": "lead",
-          "memo": "2026-09-16-ten-pounds-and-a-licence"
+          "memo": "2026-09-16-ten-pounds-and-a-licence",
+          "shipped": {
+            "version": "v0.2.9",
+            "urls": [
+              "/who/dinis-cruz/"
+            ]
+          }
         },
         {
           "id": "WD-3",
@@ -287,7 +350,14 @@
           "description": "<b>Answered by what the code can reach rather than by where it sits.</b> The journeys are the two level pages the code applies to — /d/t1/ and /d/t2/ — because a code at the end of a level page discounts a decision somebody is in the middle of making, and a code on a first screen discounts one nobody has made yet. Not the home page.",
           "owner": "lead",
           "source": "lead",
-          "memo": "2026-09-16-stripe-end-to-end"
+          "memo": "2026-09-16-stripe-end-to-end",
+          "shipped": {
+            "version": "v0.3.1",
+            "urls": [
+              "/d/t1/",
+              "/d/t2/"
+            ]
+          }
         },
         {
           "id": "LC-2",
@@ -295,21 +365,40 @@
           "status": "done",
           "description": "Shipped in v0.3.1. The code is printed and the same code is a one-click link that applies it and lands on the shop with the two prices repainted.",
           "source": "lead",
-          "memo": "2026-09-16-stripe-end-to-end"
+          "memo": "2026-09-16-stripe-end-to-end",
+          "shipped": {
+            "version": "v0.3.1",
+            "urls": [
+              "/d/t1/",
+              "/d/t2/"
+            ]
+          }
         },
         {
           "id": "LC-3",
           "title": "Give every leaked code a cap and an expiry before it is printed",
           "status": "done",
           "description": "<b>Superseded by the ruling of 16 September</b>: no caps, because purchases are managed directly and what this code gives away is already published free. What replaces a cap is stronger than one — the code cannot reach a level that is somebody's time, held by check_a_leaked_code_cannot_buy_somebody_s_day, which is absolute.",
-          "source": "self"
+          "source": "self",
+          "shipped": {
+            "version": "v0.2.4",
+            "urls": [
+              "/admin/rails/stripe/"
+            ]
+          }
         },
         {
           "id": "LC-4",
           "title": "Keep the codes out of the built site except where they are meant to be",
           "status": "done",
           "description": "check_discount_codes_are_not_printed fails the release if a code appears anywhere outside /admin/. Extending it to a named set of journeys is a change to that check, not a hole in it.",
-          "source": "self"
+          "source": "self",
+          "shipped": {
+            "version": "v0.1.11",
+            "urls": [
+              "/admin/try/"
+            ]
+          }
         }
       ],
       "memo": "2026-09-16-stripe-end-to-end"
@@ -357,21 +446,39 @@
           "title": "Give the admin surface its own console UI",
           "status": "done",
           "description": "Shipped in v0.1.18. Rail, counts read from the same files the pages are built from, and a shell that is not the shop's.",
-          "source": "lead"
+          "source": "lead",
+          "shipped": {
+            "version": "v0.1.18",
+            "urls": [
+              "/admin/"
+            ]
+          }
         },
         {
           "id": "TR-2",
           "title": "Build this board",
           "status": "done",
           "description": "Shipped in v0.1.18 at /admin/work/, modelled on the workstreams board at sgraph.ai. Three boards: this one authored, and two generated from the reviews and the ledger so they cannot drift.",
-          "source": "lead"
+          "source": "lead",
+          "shipped": {
+            "version": "v0.1.18",
+            "urls": [
+              "/admin/work/"
+            ]
+          }
         },
         {
           "id": "TR-3",
           "title": "Link the admin console from the main site's top-level nav",
           "status": "done",
           "description": "It was reachable only by knowing the address. Public and unadvertised was the intent; unfindable by the people building it was not.",
-          "source": "lead"
+          "source": "lead",
+          "shipped": {
+            "version": "v0.1.18",
+            "urls": [
+              "/admin/"
+            ]
+          }
         },
         {
           "id": "TR-6",
@@ -379,7 +486,13 @@
           "status": "done",
           "description": "Shipped in v0.1.18 at /admin/memos/. A memo is kept verbatim, read into a brief, broken into units of work, and the units appear on the board carrying the memo they came from. Set as the process by the memo it is generated from, and applied backwards to the two before it.",
           "source": "lead",
-          "memo": "2026-09-16-five-audiences"
+          "memo": "2026-09-16-five-audiences",
+          "shipped": {
+            "version": "v0.1.18",
+            "urls": [
+              "/admin/memos/"
+            ]
+          }
         },
         {
           "id": "TR-4",
@@ -403,6 +516,20 @@
           "description": "Set as the working method: catalogue each memo exactly, plan, then execute bit by bit and keep pushing to production. Minor versions for most of it; a major version where a change is big enough to deserve one.",
           "source": "lead",
           "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "TR-8",
+          "title": "Join the memos to what they became",
+          "status": "done",
+          "description": "Shipped in v0.3.6 at /admin/status/. The queue said what arrived, the board said what it became and the release history said what shipped — and no page put the three together, so the only way to answer “what happened to that memo” was to read three pages and hold the join in your head. <b>Every done unit now carries the pages it produced and the release it went out in, and a check refuses one that claims to be done and points at nothing.</b>",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences",
+          "shipped": {
+            "version": "v0.3.6",
+            "urls": [
+              "/admin/status/"
+            ]
+          }
         }
       ]
     },
@@ -428,7 +555,13 @@
           "status": "done",
           "description": "Shipped in v0.2.7 as data/audiences.yml. One record per audience: who they are, what they arrive asking, which level the view leads with, which are quieted, and the one published vault that speaks to them.",
           "source": "lead",
-          "memo": "2026-09-16-five-audiences"
+          "memo": "2026-09-16-five-audiences",
+          "shipped": {
+            "version": "v0.2.7",
+            "urls": [
+              "/are/"
+            ]
+          }
         },
         {
           "id": "QB-3",
@@ -437,7 +570,13 @@
           "description": "<b>Shown differently. Nothing is hidden from anybody.</b> Each view leads with the level that usually fits the question somebody arrived with and quiets the ones that usually do not; every level stays present, reachable and priced on every view. The alternative would have meant this site showing different catalogues to different readers, which is a thing that has to be said out loud before it is built. <code>check_the_five_audiences_hide_nothing</code> is what stops <em>quiet</em> quietly becoming <em>absent</em> — that change is one CSS rule away and would look like a tidy-up in a diff.",
           "owner": "lead",
           "source": "self",
-          "memo": "2026-09-16-five-audiences"
+          "memo": "2026-09-16-five-audiences",
+          "shipped": {
+            "version": "v0.2.7",
+            "urls": [
+              "/are/investor/"
+            ]
+          }
         },
         {
           "id": "QB-4",
@@ -445,7 +584,17 @@
           "status": "done",
           "description": "Shipped in v0.2.7. Five paths at /are/, generated — a sixth audience is a file.",
           "source": "lead",
-          "memo": "2026-09-16-five-audiences"
+          "memo": "2026-09-16-five-audiences",
+          "shipped": {
+            "version": "v0.2.7",
+            "urls": [
+              "/are/founder/",
+              "/are/investor/",
+              "/are/exec/",
+              "/are/security/",
+              "/are/governance/"
+            ]
+          }
         },
         {
           "id": "QB-5",
@@ -577,7 +726,13 @@
           "status": "done",
           "description": "<b>Done in v0.3.3, with a consumer rather than on spec.</b> The no-network rule was narrowed a second time to admit the vault embed on the page a buyer lands on. The half that carries the claim did not move: every page that SELLS anything opens nothing at all, and there is now a check that refuses an embed on one by name. Five deliberate breaks run.",
           "source": "self",
-          "memo": "2026-09-16-one-site-one-flow"
+          "memo": "2026-09-16-one-site-one-flow",
+          "shipped": {
+            "version": "v0.3.3",
+            "urls": [
+              "/paid/t2/"
+            ]
+          }
         },
         {
           "id": "OS-2",
@@ -585,7 +740,16 @@
           "status": "done",
           "description": "Shipped in v0.3.0. /paid/t1/ to /paid/t4/ are on this site: the order reference filled from the browser that placed it, what was bought, when it arrives, who does it, what done looks like and how to check it. Every page noindex, and correct with no script at all — a browser that blocked it still reads what happens next.",
           "source": "lead",
-          "memo": "2026-09-16-one-site-one-flow"
+          "memo": "2026-09-16-one-site-one-flow",
+          "shipped": {
+            "version": "v0.3.0",
+            "urls": [
+              "/paid/t1/",
+              "/paid/t2/",
+              "/paid/t3/",
+              "/paid/t4/"
+            ]
+          }
         },
         {
           "id": "OS-3",
@@ -593,7 +757,15 @@
           "status": "done",
           "description": "Shipped in v0.3.3. The three levels that are a vault embed a published one on the page after payment, labelled <b>an example, not yours</b> in its first sentence — because at the moment somebody pays there is nothing of theirs to show yet, and a page that pretended otherwise would be lying at the one moment a buyer is paying most attention.",
           "source": "lead",
-          "memo": "2026-09-16-one-site-one-flow"
+          "memo": "2026-09-16-one-site-one-flow",
+          "shipped": {
+            "version": "v0.3.3",
+            "urls": [
+              "/paid/t2/",
+              "/paid/t3/",
+              "/paid/t4/"
+            ]
+          }
         },
         {
           "id": "OS-4",
@@ -638,7 +810,13 @@
           "status": "done",
           "description": "Shipped in v0.3.2 at /boundary/ — indexed, with a markdown twin, in llms.txt, so another team's agent can find it. The store owns e-commerce; riskmandate.ai owns the products and the material; the reader never crosses the seam.",
           "source": "lead",
-          "memo": "2026-09-16-one-site-one-flow"
+          "memo": "2026-09-16-one-site-one-flow",
+          "shipped": {
+            "version": "v0.3.2",
+            "urls": [
+              "/boundary/"
+            ]
+          }
         },
         {
           "id": "WO-2",
@@ -646,7 +824,13 @@
           "status": "done",
           "description": "Shipped in v0.3.2 as the second half of /boundary/: four asks in the order that makes each one useful on its own, and an explicit list of what is NOT being asked for — no callback, no session, no shared state, no account. <b>Status open, and it will be recorded there when it is answered including if the answer is no</b>, because a brief that only appears when it succeeds is a brief nobody should trust.",
           "source": "lead",
-          "memo": "2026-09-16-one-site-one-flow"
+          "memo": "2026-09-16-one-site-one-flow",
+          "shipped": {
+            "version": "v0.3.2",
+            "urls": [
+              "/boundary/#the-brief-addressed-to-the-riskmandate-team"
+            ]
+          }
         },
         {
           "id": "WO-3",
@@ -654,7 +838,13 @@
           "status": "done",
           "description": "Done in v0.3.2. The one file on the wrong side is named on /boundary/ with what makes it survivable: data/abp-catalogue.json is promoted at build time with the source URL, the retrieval time and a sha256, so it cannot drift silently. It is still the wrong arrangement and the page says so.",
           "source": "self",
-          "memo": "2026-09-16-one-site-one-flow"
+          "memo": "2026-09-16-one-site-one-flow",
+          "shipped": {
+            "version": "v0.3.2",
+            "urls": [
+              "/boundary/#debt-marked-as-debt"
+            ]
+          }
         },
         {
           "id": "WO-4",
@@ -681,7 +871,13 @@
           "description": "<b>Answered by building it the other way round.</b> A row goes on the table only when each of its five cells can be pointed at — a price in data/offers.yml, a gets sentence, a not-promised line, or a ruling. A row whose cells would be a promise is not on the table at all. Fourteen rows qualified.",
           "owner": "lead",
           "source": "self",
-          "memo": "2026-09-16-the-comparison-table"
+          "memo": "2026-09-16-the-comparison-table",
+          "shipped": {
+            "version": "v0.2.8",
+            "urls": [
+              "/compare/"
+            ]
+          }
         },
         {
           "id": "CT-2",
@@ -689,7 +885,13 @@
           "status": "done",
           "description": "Shipped in v0.2.8 as data/comparison.yml. Fourteen rows in four groups, each carrying the sentence that says what the reader is actually buying.",
           "source": "lead",
-          "memo": "2026-09-16-the-comparison-table"
+          "memo": "2026-09-16-the-comparison-table",
+          "shipped": {
+            "version": "v0.2.8",
+            "urls": [
+              "/compare/"
+            ]
+          }
         },
         {
           "id": "CT-3",
@@ -698,7 +900,13 @@
           "description": "<b>Settled by reading what the level already says.</b> £10 is explicitly not a vault — its own page has said so since it was written — and £50 is where a vault starts. It was never a proposal; it was already true.",
           "owner": "lead",
           "source": "self",
-          "memo": "2026-09-16-the-comparison-table"
+          "memo": "2026-09-16-the-comparison-table",
+          "shipped": {
+            "version": "v0.2.8",
+            "urls": [
+              "/compare/"
+            ]
+          }
         },
         {
           "id": "CT-4",
@@ -715,7 +923,13 @@
           "status": "done",
           "description": "Shipped in v0.2.8 at /compare/, free column first.",
           "source": "lead",
-          "memo": "2026-09-16-the-comparison-table"
+          "memo": "2026-09-16-the-comparison-table",
+          "shipped": {
+            "version": "v0.2.8",
+            "urls": [
+              "/compare/"
+            ]
+          }
         },
         {
           "id": "CT-6",
@@ -741,7 +955,13 @@
           "status": "done",
           "description": "Shipped in v0.3.4 at /lab/product/ — in the surface that already protects it, because a page that looks like a shop and is not one is the most dangerous thing this site could publish and /lab/ says so on its own face with a check behind it.",
           "source": "lead",
-          "memo": "2026-09-16-product-pages"
+          "memo": "2026-09-16-product-pages",
+          "shipped": {
+            "version": "v0.3.4",
+            "urls": [
+              "/lab/product/"
+            ]
+          }
         },
         {
           "id": "PP-2",
@@ -749,7 +969,13 @@
           "status": "done",
           "description": "Counted: seven screenshots exist, of which three are of this store's own screens and usable. The prototype has seven slots and the four empty ones say what belongs in them.",
           "source": "self",
-          "memo": "2026-09-16-product-pages"
+          "memo": "2026-09-16-product-pages",
+          "shipped": {
+            "version": "v0.3.4",
+            "urls": [
+              "/lab/product/"
+            ]
+          }
         },
         {
           "id": "PP-3",
@@ -776,7 +1002,13 @@
           "description": "Done in the prototype: the section says there are none, says what will fill them, and says there will be <b>no star average, now or later</b> — a rating out of five on a product nobody has bought is the one piece of furniture on that page that could not be honest.",
           "blocked": "PP-1.",
           "source": "lead",
-          "memo": "2026-09-16-product-pages"
+          "memo": "2026-09-16-product-pages",
+          "shipped": {
+            "version": "v0.3.4",
+            "urls": [
+              "/lab/product/#reviews"
+            ]
+          }
         },
         {
           "id": "PP-6",
@@ -784,7 +1016,13 @@
           "status": "done",
           "description": "Shipped in v0.3.4 as a first cut: five edition buttons that change one sentence. <b>The open question is on the page</b> — whether an edition should change the pictures too, which is what would make it an edition rather than a label.",
           "source": "lead",
-          "memo": "2026-09-16-product-pages"
+          "memo": "2026-09-16-product-pages",
+          "shipped": {
+            "version": "v0.3.4",
+            "urls": [
+              "/lab/product/"
+            ]
+          }
         }
       ]
     },
@@ -801,7 +1039,13 @@
           "status": "done",
           "description": "Fifty-two claims re-read one at a time in v0.2.1. The offer states, the ledger's own legend for specified-never-run and the home page's headline sentence were wrong as written; the rest were precise and were being misread.",
           "source": "self",
-          "memo": "2026-09-16-the-homepage-sells"
+          "memo": "2026-09-16-the-homepage-sells",
+          "shipped": {
+            "version": "v0.2.1",
+            "urls": [
+              "/ledger/"
+            ]
+          }
         },
         {
           "id": "WH-2",
@@ -809,7 +1053,13 @@
           "status": "done",
           "description": "Shipped in v0.2.1. data/evidence.yml carries six published vaults, quoted from the catalogue that generates them, on the home page. Every URL returns 200 and a check holds them to the domain that publishes them.",
           "source": "self",
-          "memo": "2026-09-16-the-homepage-sells"
+          "memo": "2026-09-16-the-homepage-sells",
+          "shipped": {
+            "version": "v0.2.1",
+            "urls": [
+              "/"
+            ]
+          }
         },
         {
           "id": "WH-3",
@@ -817,7 +1067,15 @@
           "status": "done",
           "description": "Shipped in v0.2.1. The disclosure now says what is true: a first buyer is the first through this checkout, not the first to have the work done.",
           "source": "lead",
-          "memo": "2026-09-16-the-homepage-sells"
+          "memo": "2026-09-16-the-homepage-sells",
+          "shipped": {
+            "version": "v0.2.1",
+            "urls": [
+              "/",
+              "/d/t3/",
+              "/d/t4/"
+            ]
+          }
         },
         {
           "id": "WH-4",
@@ -852,7 +1110,16 @@
           "status": "done",
           "description": "Shipped in v0.2.0, frozen in the gate beside the prices.",
           "source": "lead",
-          "memo": "2026-09-16-the-homepage-sells"
+          "memo": "2026-09-16-the-homepage-sells",
+          "shipped": {
+            "version": "v0.2.0",
+            "urls": [
+              "/d/t1/",
+              "/d/t2/",
+              "/d/t3/",
+              "/d/t4/"
+            ]
+          }
         },
         {
           "id": "DT-2",
@@ -860,7 +1127,14 @@
           "status": "done",
           "description": "Shipped in v0.2.0. The claim that said there was no measurement to quote now carries an estimate labelled as one.",
           "source": "self",
-          "memo": "2026-09-16-the-homepage-sells"
+          "memo": "2026-09-16-the-homepage-sells",
+          "shipped": {
+            "version": "v0.2.0",
+            "urls": [
+              "/paying/",
+              "/ledger/"
+            ]
+          }
         },
         {
           "id": "DT-3",
@@ -868,7 +1142,13 @@
           "status": "done",
           "description": "Shipped in v0.2.0. The constraint is named as one person's calendar.",
           "source": "self",
-          "memo": "2026-09-16-the-homepage-sells"
+          "memo": "2026-09-16-the-homepage-sells",
+          "shipped": {
+            "version": "v0.2.0",
+            "urls": [
+              "/d/t4/"
+            ]
+          }
         },
         {
           "id": "DT-4",
@@ -911,7 +1191,14 @@
           "status": "done",
           "description": "Shipped in v0.2.7. Five doors on the home page and at /are/, five across on a laptop, two on a tablet, one on a phone. One tap to a view that opens on the level that fits.",
           "source": "lead",
-          "memo": "2026-09-16-the-homepage-sells"
+          "memo": "2026-09-16-the-homepage-sells",
+          "shipped": {
+            "version": "v0.2.7",
+            "urls": [
+              "/",
+              "/are/"
+            ]
+          }
         },
         {
           "id": "SF-4",
@@ -945,7 +1232,13 @@
           "status": "done",
           "description": "Done in v0.2.4. The store now says <b>“Two sessions and a custom vault”</b>, following the project lead's rename in Stripe — it says what the buyer ends up holding rather than what happens to it. The professional signing it is on the level's own page, where it is a property of the thing rather than the name of it.",
           "source": "lead",
-          "memo": "2026-09-16-stripe-end-to-end"
+          "memo": "2026-09-16-stripe-end-to-end",
+          "shipped": {
+            "version": "v0.2.4",
+            "urls": [
+              "/d/t4/"
+            ]
+          }
         }
       ]
     },
@@ -962,7 +1255,13 @@
           "status": "done",
           "description": "<b>Got, rather than invented.</b> Twenty-three primitives on a verb.object.reach grammar, read out of riskmandate.ai's own template vault with its published read key and promoted by tools/promote_capabilities.py with the hash of the bytes. The ultimate source is what-can-it-do.games.sgit.ai — one of the games the memo was pointing at.",
           "source": "self",
-          "memo": "2026-09-16-describe-your-agent"
+          "memo": "2026-09-16-describe-your-agent",
+          "shipped": {
+            "version": "v0.3.5",
+            "urls": [
+              "/lab/agent-canvas/#the-vocabulary"
+            ]
+          }
         },
         {
           "id": "DA-2",
@@ -970,7 +1269,13 @@
           "status": "done",
           "description": "Shipped in v0.3.5 at /lab/agent-canvas/. All nine families on one screen, click to give a capability to the agent, click again to take it away.",
           "source": "lead",
-          "memo": "2026-09-16-describe-your-agent"
+          "memo": "2026-09-16-describe-your-agent",
+          "shipped": {
+            "version": "v0.3.5",
+            "urls": [
+              "/lab/agent-canvas/"
+            ]
+          }
         },
         {
           "id": "DA-3",
@@ -978,7 +1283,13 @@
           "status": "done",
           "description": "Shipped in v0.3.5 at /lab/agent-sequence/. Same twenty-three primitives, one family per screen, with what each reach means.",
           "source": "lead",
-          "memo": "2026-09-16-describe-your-agent"
+          "memo": "2026-09-16-describe-your-agent",
+          "shipped": {
+            "version": "v0.3.5",
+            "urls": [
+              "/lab/agent-sequence/"
+            ]
+          }
         },
         {
           "id": "DA-4",
@@ -995,7 +1306,13 @@
           "status": "done",
           "description": "Shipped in v0.3.5. Markdown to the clipboard or JSON to your downloads, carrying the grammar and the reach glossary with it so the session reading it does not have to guess what <code>world</code> means. Nothing is sent anywhere and a check refuses a fetch in that file.",
           "source": "lead",
-          "memo": "2026-09-16-describe-your-agent"
+          "memo": "2026-09-16-describe-your-agent",
+          "shipped": {
+            "version": "v0.3.5",
+            "urls": [
+              "/lab/agent-canvas/"
+            ]
+          }
         },
         {
           "id": "DA-6",
@@ -1012,7 +1329,13 @@
           "status": "done",
           "description": "Shipped in v0.3.5, and held by a check: every prototype has to say it produces the <b>grant</b> only. A reader who thought this was the whole document would be taking three quarters of the £500 level for nothing in their own head.",
           "source": "self",
-          "memo": "2026-09-16-describe-your-agent"
+          "memo": "2026-09-16-describe-your-agent",
+          "shipped": {
+            "version": "v0.3.5",
+            "urls": [
+              "/lab/agent-canvas/#what-this-produces"
+            ]
+          }
         },
         {
           "id": "DA-8",
