@@ -1,0 +1,751 @@
+{
+  "schema": "store-work-v1",
+  "_what_this_is": "The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.",
+  "_how_to_add": "A unit of work is an object in this file. The board, the counts, the rail badge and the per-workstream page are generated from it, and a build check fails the release on a task with a status this board does not have or a source that names a review that does not exist. Adding work is adding a line; there is no second place to update.",
+  "columns": [
+    {
+      "key": "queued",
+      "label": "Queued",
+      "color": "#94a3b8",
+      "meaning": "Written down and agreed. Nobody has started and nothing is waiting on it."
+    },
+    {
+      "key": "next",
+      "label": "Up Next",
+      "color": "#f59e0b",
+      "meaning": "The next thing in this workstream to be picked up."
+    },
+    {
+      "key": "in-progress",
+      "label": "In Progress",
+      "color": "#3b82f6",
+      "meaning": "Being worked on now, in this release or the one being cut."
+    },
+    {
+      "key": "done",
+      "label": "Done",
+      "color": "#22c55e",
+      "meaning": "Shipped and checked. A task here names the release it landed in."
+    }
+  ],
+  "sources": {
+    "lead": "The project lead, in conversation",
+    "partner": "The partner walkthrough, 15 September",
+    "synthetic": "The synthetic-user run, vault g2hei4u6",
+    "self": "Found while building, by the build or by reading the diff",
+    "memo": "A memo from the project lead, kept verbatim at /admin/memos/"
+  },
+  "workstreams": [
+    {
+      "id": "take-money",
+      "title": "Take money at all",
+      "color": "#95230f",
+      "description": "No payment rail is live. Every checkout_url in data/checkout.yml is empty, so the store can be walked end to end and cannot be bought from. This is the workstream that ends that, and the shape of it changed on 16 September: the rail is no longer an amount-only link, it is Stripe's own catalogue and a real customer record behind every order including the free ones.",
+      "tasks": [
+        {
+          "id": "TM-1",
+          "title": "Create six Stripe products and eight prices",
+          "status": "next",
+          "description": "GBP, one-off, lookup keys SG-T1 to SG-ADD-OPINION. Copied from the generated catalogue file rather than typed out by hand. A price does not vary by shape, which is why this is eight rows and not sixty-two.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-2",
+          "title": "Set customer creation to always, and prove it on a £0 order",
+          "status": "next",
+          "description": "The single setting most likely to be missed. Without it a hundred-per-cent order completes, the buyer sees a confirmation, and no customer record exists — which is the exact opposite of why this rail was chosen. Proof is a Customer visible in the dashboard after one free order, not a screenshot of the toggle.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-3",
+          "title": "Create three coupons and seven promotion codes over them",
+          "status": "queued",
+          "description": "25, 50 and 100 per cent. The seven strings are the ones data/discounts.yml already holds, so a code printed on a PDF at v0.1.11 still works. Every promotion code gets a redemption cap and an expiry.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-4",
+          "title": "Enable promotion codes on every link, prefill where a code was leaked",
+          "status": "queued",
+          "description": "A link with the field switched off refuses a valid code with no explanation and the buyer blames themselves. Where a page publishes a code as part of a journey, the link on that page carries it already applied.",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-5",
+          "title": "Bring the return address onto this site",
+          "status": "next",
+          "description": "<b>Superseded by the later memo the same day.</b> This was “settle the ?order= contract with the RiskMandate team” and it was blocked on them. The buyer no longer leaves the store, so the success address is ours to render and the block is gone. What survives from the original is the real constraint: a standing Stripe link substitutes a session id and nothing else, so the landing page has to work from that.",
+          "source": "self",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "TM-6",
+          "title": "Stand up the checkout.session.completed webhook",
+          "status": "queued",
+          "description": "The step that unblocks a first paid order at £50, £500 and £1,500. Listen to the session, not the payment: a hundred-per-cent order creates no charge, so a handler keyed on a succeeded payment sees every paid order and none of the free ones.",
+          "blocked": "Runs off this site. This site is static and opens no connection.",
+          "source": "self"
+        },
+        {
+          "id": "TM-7",
+          "title": "Take one real £10 payment and read the receipt",
+          "status": "queued",
+          "description": "Every sentence on the rails page about what a receipt says is unverified. This is the task that makes them checkable.",
+          "blocked": "TM-1 and TM-6.",
+          "source": "self"
+        },
+        {
+          "id": "TM-8",
+          "title": "Retire the browser-side discount arithmetic",
+          "status": "queued",
+          "description": "A code is honoured in the browser today and the page says it is a demonstration. Once a promotion code exists on the rail there are two implementations of one rule, and the browser one can be edited by the person it is discounting.",
+          "blocked": "TM-3.",
+          "source": "self"
+        },
+        {
+          "id": "TM-9",
+          "title": "Take SumUp's hosts from the rails, not from a constant",
+          "status": "next",
+          "description": "check_checkout_links pins every destination to Stripe's two hosts. data/checkout.yml has declared SumUp's hosts since the rail was added and the check has never read them, so a SumUp URL pasted in today is refused by the gate with a message about Stripe. Five lines.",
+          "source": "self"
+        },
+        {
+          "id": "TM-10",
+          "title": "Write the two rails up as plans rather than intentions",
+          "status": "done",
+          "description": "Shipped in v0.1.18 at /admin/rails/stripe/ and /admin/rails/sumup/, generated from data/admin/rails.json.",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        }
+      ],
+      "memo": "2026-09-16-stripe-end-to-end"
+    },
+    {
+      "id": "price-and-licence",
+      "title": "The entry price, and what it buys",
+      "color": "#b45309",
+      "description": "Two reviewers independently said the entry level reads as a commodity at £5 — one human partner and one invented buyer who had never met them. The answer ruled on 16 September is not a larger number for the same thing: the level goes to £10 and gains a commercial licence, which is a different product rather than a dearer one.",
+      "tasks": [
+        {
+          "id": "PL-1",
+          "title": "Move the entry level from £5 to £10",
+          "status": "next",
+          "description": "Ruled by the project lead on 16 September. The floor was £10 on 10 September, £5 on 15 September and £10 again now; the ledger keeps all three and the reason each time, because a price that moves quietly is a price nobody can argue with. Touches data/offers.yml, the frozen price table, the home page range and the walkthrough.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-ten-pounds-and-a-licence"
+        },
+        {
+          "id": "PL-2",
+          "title": "Dual-licence the pack: CC BY public, commercial to the buyer",
+          "status": "next",
+          "description": "What anybody can download is CC BY and carries an attribution obligation. What the buyer gets is a commercial licence to use that vault however they want. This is grantable because the copyright in the pack is ours — and it is the answer to the commodity reading, because the free templates and the paid pack stop being the same artefact at a different price.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-ten-pounds-and-a-licence"
+        },
+        {
+          "id": "PL-3",
+          "title": "Research the cleanest way to grant it",
+          "status": "next",
+          "description": "The licence is to the buyer and does not name them, which is the interesting part: a grant to an unnamed holder has to be worded so it is clearly a grant and not a public re-licence of the same bytes. Open questions: does it travel with the file or with the order reference, what happens on resale, and does it survive the buyer's company changing name.",
+          "source": "lead",
+          "memo": "2026-09-16-ten-pounds-and-a-licence"
+        },
+        {
+          "id": "PL-4",
+          "title": "Put the licence text where the buyer reads it before paying",
+          "status": "queued",
+          "description": "Not in the pack, not in a footer. The difference between the free version and the paid one is now the main thing the entry level sells, so it belongs on the card and on the level page above the fold.",
+          "blocked": "PL-2.",
+          "source": "self"
+        },
+        {
+          "id": "PL-5",
+          "title": "Record the price arc as one claim, not three",
+          "status": "queued",
+          "description": "The ledger already carries £10 → £5 with the card-fee arithmetic. Adding £5 → £10 as a separate claim would leave a reader assembling the story from three entries. One claim, three dates, all the reasoning kept.",
+          "blocked": "PL-1.",
+          "source": "self"
+        }
+      ],
+      "memo": "2026-09-16-ten-pounds-and-a-licence"
+    },
+    {
+      "id": "who-does-the-work",
+      "title": "Who runs the review",
+      "color": "#1d4ed8",
+      "description": "The two upper levels are somebody's work and the store has never said whose. A buyer spending £1,500 on a security review is buying a person, and the site asks them to buy it from nobody in particular. First reviewer named 16 September; the surface is built for several, because there will be.",
+      "tasks": [
+        {
+          "id": "WD-1",
+          "title": "Build the reviewer register and a page per reviewer",
+          "status": "next",
+          "description": "data/reviewers/ as the register, one page each, generated — same idiom as the reviews. Built for a list from the first day so adding the second is adding a file rather than a refactor.",
+          "source": "lead",
+          "memo": "2026-09-16-ten-pounds-and-a-licence"
+        },
+        {
+          "id": "WD-2",
+          "title": "Write the first reviewer's page",
+          "status": "next",
+          "description": "Dinis Cruz, who runs the £500 and £1,500 reviews today. Material exists on the open-source site, on sgit.ai and on LinkedIn. Nothing on the page gets written that is not traceable to one of those — a biography this site invented would be the worst possible thing to put next to a price.",
+          "blocked": "Source material from the project lead.",
+          "source": "lead",
+          "memo": "2026-09-16-ten-pounds-and-a-licence"
+        },
+        {
+          "id": "WD-3",
+          "title": "Let the buyer choose their reviewer at £500 and £1,500",
+          "status": "queued",
+          "description": "A selection, carried in the order reference the way the shape already is. With one reviewer it is a statement rather than a choice, and it should still be on the page, because what it says is that there is a name behind the work.",
+          "blocked": "WD-1, WD-2.",
+          "source": "lead",
+          "memo": "2026-09-16-ten-pounds-and-a-licence"
+        },
+        {
+          "id": "WD-4",
+          "title": "Recruit the rest",
+          "status": "queued",
+          "description": "The project lead is contacting people they know. The page has to be worth being listed on before anybody is asked, which is the real reason WD-2 comes first.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-ten-pounds-and-a-licence"
+        },
+        {
+          "id": "WD-5",
+          "title": "Say what happens when the chosen reviewer cannot take the work",
+          "status": "queued",
+          "description": "Both upper levels already disclose they have never been sold. A named reviewer adds a second thing that can fail and the pages do not cover it.",
+          "blocked": "WD-3.",
+          "source": "self"
+        }
+      ],
+      "memo": "2026-09-16-ten-pounds-and-a-licence"
+    },
+    {
+      "id": "leak-the-codes",
+      "title": "Leak the codes on purpose",
+      "color": "#7c3aed",
+      "description": "Seven discount codes exist and only the walkthrough page prints any of them. The ask is to publish codes on the main site on specific journeys — a code is a reason to complete a purchase, and a purchase is how a visitor becomes a customer record.",
+      "tasks": [
+        {
+          "id": "LC-1",
+          "title": "Decide which journeys carry a code",
+          "status": "next",
+          "description": "Not the home page. A code on a first screen discounts a decision nobody has made yet; a code at the end of a level page discounts one somebody is in the middle of making.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "LC-2",
+          "title": "Print the code on the journey, with the link carrying it applied",
+          "status": "queued",
+          "description": "Re-typing a code you just read is a step that loses people. The published code and the prefilled link are the same fact rendered twice.",
+          "blocked": "LC-1, TM-4.",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "LC-3",
+          "title": "Give every leaked code a cap and an expiry before it is printed",
+          "status": "queued",
+          "description": "A printed code cannot be recalled. The cap is what makes printing it survivable.",
+          "blocked": "TM-3.",
+          "source": "self"
+        },
+        {
+          "id": "LC-4",
+          "title": "Keep the codes out of the built site except where they are meant to be",
+          "status": "done",
+          "description": "check_discount_codes_are_not_printed fails the release if a code appears anywhere outside /admin/. Extending it to a named set of journeys is a change to that check, not a hole in it.",
+          "source": "self"
+        }
+      ],
+      "memo": "2026-09-16-stripe-end-to-end"
+    },
+    {
+      "id": "close-the-loop",
+      "title": "Close the loop after payment",
+      "color": "#0f766e",
+      "description": "The store hands a buyer to riskmandate.ai and promises a person within 24 hours. Nothing carries the sale to that person, and nobody owns the mailbox it would arrive in.",
+      "tasks": [
+        {
+          "id": "CL-1",
+          "title": "Name the owner of the follow-up mailbox",
+          "status": "next",
+          "description": "Open since the 24-hour promise was written. It is one name and it is blocking nothing technical, which is exactly why it has stayed open.",
+          "owner": "lead",
+          "source": "self"
+        },
+        {
+          "id": "CL-2",
+          "title": "Route the level-3 brief back to a person",
+          "status": "queued",
+          "description": "At £500 the buyer writes a brief. It is a file they keep and there is no route by which the person doing the work receives it.",
+          "blocked": "CL-1.",
+          "source": "self"
+        },
+        {
+          "id": "CL-3",
+          "title": "Verify the handover contract against a real landing",
+          "status": "queued",
+          "description": "The store builds the address riskmandate.ai's pages document. Nobody has watched a real buyer arrive on one.",
+          "blocked": "TM-5, TM-7.",
+          "source": "self"
+        }
+      ]
+    },
+    {
+      "id": "the-record",
+      "title": "Keep the record",
+      "color": "#6366f1",
+      "description": "The reviews, the ledger, the console and this board. The part of the store that exists so a decision taken today can be argued with in a month.",
+      "tasks": [
+        {
+          "id": "TR-1",
+          "title": "Give the admin surface its own console UI",
+          "status": "done",
+          "description": "Shipped in v0.1.18. Rail, counts read from the same files the pages are built from, and a shell that is not the shop's.",
+          "source": "lead"
+        },
+        {
+          "id": "TR-2",
+          "title": "Build this board",
+          "status": "done",
+          "description": "Shipped in v0.1.18 at /admin/work/, modelled on the workstreams board at sgraph.ai. Three boards: this one authored, and two generated from the reviews and the ledger so they cannot drift.",
+          "source": "lead"
+        },
+        {
+          "id": "TR-3",
+          "title": "Link the admin console from the main site's top-level nav",
+          "status": "done",
+          "description": "It was reachable only by knowing the address. Public and unadvertised was the intent; unfindable by the people building it was not.",
+          "source": "lead"
+        },
+        {
+          "id": "TR-6",
+          "title": "Build the memo queue",
+          "status": "done",
+          "description": "Shipped in v0.1.18 at /admin/memos/. A memo is kept verbatim, read into a brief, broken into units of work, and the units appear on the board carrying the memo they came from. Set as the process by the memo it is generated from, and applied backwards to the two before it.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "TR-4",
+          "title": "Operationalise the review proposals",
+          "status": "in-progress",
+          "description": "Eighteen proposals across two reviews, each with a stance. The ones marked do-now are units of work and were not tracked anywhere until this board existed. The generated proposals board is the join.",
+          "source": "lead"
+        },
+        {
+          "id": "TR-5",
+          "title": "Capture the next review",
+          "status": "queued",
+          "description": "The register takes a file and a line. The interesting one to run next is a second synthetic pass after the rail is live, because every finding in the first one stopped at a checkout that did not exist.",
+          "blocked": "TM-7.",
+          "source": "self"
+        }
+      ]
+    },
+    {
+      "id": "qualify-the-buyer",
+      "title": "Qualify who is reading",
+      "color": "#be185d",
+      "memo": "2026-09-16-five-audiences",
+      "description": "The store shows four paid levels identically to whoever arrives, which sells to everybody and therefore to nobody. Five audiences — founders, investors, C-level executives, cybersecurity professionals, and risk and governance or GRC professionals — each with its own path and its own subset of the offers. The front door stays exactly as it is.",
+      "tasks": [
+        {
+          "id": "QB-1",
+          "title": "Decide what happens to the three buyer groups",
+          "status": "next",
+          "description": "The store already has three, cut by situation rather than by role, each with a page in the nav and in the sitemap and claims citing them. Five new ones is a replacement and the memo does not say whether the old three are retired, re-cut or kept alongside. Nothing else in this workstream can start without the answer.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "QB-2",
+          "title": "Write the five audiences down as data",
+          "status": "next",
+          "description": "One record each: who they are, what they arrive worried about, which offers they see, and the words that change. The store's existing buyer groups are already data — this is the same file shape with visibility added, which is the field the catalogue has no concept of today.",
+          "blocked": "QB-1.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "QB-3",
+          "title": "Answer: hidden, or shown differently?",
+          "status": "next",
+          "description": "An offer absent from an audience's view and an offer present with different words are very different promises, and one of them means this site shows a different catalogue to different readers. That needs saying out loud on the disclosures page before it is built, not after.",
+          "owner": "lead",
+          "source": "self",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "QB-4",
+          "title": "Build the five paths",
+          "status": "queued",
+          "description": "A path, not a page: the entry, the offers that audience sees, the language, and where it hands over. Generated from QB-2 so a sixth audience is a file.",
+          "blocked": "QB-2, QB-3, and the component work in decouple-the-views.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "QB-5",
+          "title": "Run a synthetic pass over the five paths",
+          "status": "queued",
+          "description": "Named in the memo as the feedback loop for this work. The method exists and has been run once; the second run is the one that tells us whether it generalises.",
+          "blocked": "QB-4.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        }
+      ]
+    },
+    {
+      "id": "board-readable",
+      "title": "The version the board can read",
+      "color": "#0369a1",
+      "memo": "2026-09-16-five-audiences",
+      "description": "“Can I have this in a form my board can read?” Every vault should already contain one — the policy re-cut for the people who have to sign it off. Not a paid extra and not an add-on: every vault, including the ones anybody can download for nothing.",
+      "tasks": [
+        {
+          "id": "BR-1",
+          "title": "Specify what a board-readable cut actually is",
+          "status": "next",
+          "description": "Length, what it leads with, what it leaves out, and what a reader is expected to do with it. It is the whole deliverable, so specifying it badly is worse than not shipping it.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "BR-2",
+          "title": "Decide who writes it, per vault",
+          "status": "next",
+          "description": "Fifteen shapes. Generated, written once per shape, or written per sale — the answer changes what the entry level costs to fulfil and therefore whether £10 is the right number.",
+          "owner": "lead",
+          "source": "self",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "BR-3",
+          "title": "Say on the site what is inside a vault",
+          "status": "next",
+          "description": "The memo's own diagnosis: the store never explains this well. It is the gap the board-readable cut sits in, and it is worth closing on its own even if BR-1 takes a while.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "BR-4",
+          "title": "Put it in the free vaults first",
+          "status": "queued",
+          "description": "“Including the ones you can download for free.” Doing the free ones first is the harder order and the right one: it proves the cut is generated rather than hand-finished for a paying customer.",
+          "blocked": "BR-1, BR-2.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "BR-5",
+          "title": "Re-read the entry level once it carries one",
+          "status": "queued",
+          "description": "A £10 pack that contains a version the board can read is a different argument from a £10 pack that does not. This is where the commodity finding finally gets answered rather than deflected.",
+          "blocked": "BR-4, PL-2.",
+          "source": "self",
+          "memo": "2026-09-16-five-audiences"
+        }
+      ]
+    },
+    {
+      "id": "decouple-the-views",
+      "title": "Decouple the views",
+      "color": "#475569",
+      "memo": "2026-09-16-five-audiences",
+      "description": "Five audiences across the surfaces they touch is not writeable by hand. The store is already data-driven at the content layer and hand-written at the view layer, and that seam is what the memo is pointing at: JSON configuration, components, and the same generate-and-check discipline coding.sgit.ai and nfrs.sgit.ai both teach.",
+      "tasks": [
+        {
+          "id": "DV-1",
+          "title": "Read the two guidance sites properly and write down what applies",
+          "status": "in-progress",
+          "description": "coding.sgit.ai measures its conventions by counting the code rather than asserting them; nfrs.sgit.ai runs one rule — link the measurement, never restate it, generate or date every number — and fails its build otherwise. This store already runs both of those; what is not yet written down is which of their component conventions apply to a site that ships no framework.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "DV-2",
+          "title": "Settle: custom elements at runtime, or generated partials at build?",
+          "status": "next",
+          "description": "<b>This is the decision the rest depends on and it has a hard constraint on it.</b> Every selling page on this site opens no connection and a build check fails the release if one does. Components that fetch their own configuration would negotiate with that rule. Components that are rendered at build from the same JSON would not, and would still give the memo what it asked for.",
+          "owner": "lead",
+          "source": "self",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "DV-3",
+          "title": "Lift the view layer out of build.py into declared blocks",
+          "status": "queued",
+          "description": "Three thousand lines, of which the page shells and the block renderers are the part five audiences would multiply. Extract those first; leave the markdown renderer and the gate alone.",
+          "blocked": "DV-2.",
+          "source": "lead",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "DV-4",
+          "title": "One JSON file per view, and a check that fails on an unused one",
+          "status": "queued",
+          "description": "The store's own idiom, applied to views: a register with no file and a file with no register entry both fail the build, the way the reviews already do.",
+          "blocked": "DV-3.",
+          "source": "self",
+          "memo": "2026-09-16-five-audiences"
+        },
+        {
+          "id": "DV-5",
+          "title": "Prove it by adding the sixth audience as a file",
+          "status": "queued",
+          "description": "The acceptance test for the whole workstream. If adding an audience is still a code change, the refactor did not land.",
+          "blocked": "DV-4, QB-4.",
+          "source": "self",
+          "memo": "2026-09-16-five-audiences"
+        }
+      ]
+    },
+    {
+      "id": "one-site-one-flow",
+      "title": "Never leave the site",
+      "color": "#c2410c",
+      "memo": "2026-09-16-one-site-one-flow",
+      "description": "A buyer does the whole thing here — catalogue, cart, payment, receipt, and the vault they just bought, embedded on the page they land on. Today the store hands them to another domain at the moment they pay, which a synthetic buyer called out as the point they got confused.",
+      "tasks": [
+        {
+          "id": "OS-1",
+          "title": "Narrow the no-network rule before the first cross-origin read",
+          "status": "next",
+          "description": "Every selling page opens no connection and check_no_network fails the release if one does. Reading riskmandate.ai's catalogue over CORS breaks that as written. <b>The rule gets narrowed, never loosened</b> — the absolute half stays absolute, the exception is named in the check, and a deliberate break is run against the new check before anything ships. That is how the vault embed was admitted and it is the only way this one gets in.",
+          "source": "self",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "OS-2",
+          "title": "Move the post-sale page onto this site",
+          "status": "next",
+          "description": "The success address goes from riskmandate.ai's page for the level to one here. This is what unblocks the Stripe return-address task, which was blocked on another team until this memo arrived.",
+          "blocked": "OS-1 for anything it needs to read.",
+          "source": "lead",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "OS-3",
+          "title": "Embed the bought vault on the page they land on",
+          "status": "next",
+          "description": "“You should see the vault.” The mechanism is already in this repository and already passing the gate: a frame built at runtime, opened carrying nothing, handed a published read key by message with the origin pinned. What is new is which page it runs on.",
+          "blocked": "OS-2.",
+          "source": "lead",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "OS-4",
+          "title": "Read the product data from the side that owns it",
+          "status": "queued",
+          "description": "The shapes belong to riskmandate.ai. The store reads them over CORS and renders them in the store's own CSS — somebody else's data, never somebody else's interface.",
+          "blocked": "OS-1, and the other side publishing a stable file.",
+          "source": "lead",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "OS-5",
+          "title": "Make the store feel like a shop",
+          "status": "queued",
+          "description": "“Fundamentally like Amazon.” More detail is coming from the project lead. Several pages here are an essay with a buy button under them, which is the gap.",
+          "owner": "lead",
+          "blocked": "More information from the project lead.",
+          "source": "lead",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "OS-6",
+          "title": "Re-run the synthetic buyer who got confused",
+          "status": "queued",
+          "description": "The finding has a name and a persona attached. The same walk, after the flow is one site, is the only way to know this worked.",
+          "blocked": "OS-2, OS-3.",
+          "source": "self",
+          "memo": "2026-09-16-one-site-one-flow"
+        }
+      ]
+    },
+    {
+      "id": "who-owns-what",
+      "title": "Who owns what",
+      "color": "#334155",
+      "memo": "2026-09-16-one-site-one-flow",
+      "description": "Two sites, one purchase. The store owns e-commerce — cart, workflow, redirections, payments. riskmandate.ai owns the products, the policies, the information and the screenshots. Written down where both sides' agents can read it, because a boundary nobody published is a boundary that moves.",
+      "tasks": [
+        {
+          "id": "WO-1",
+          "title": "Publish the ownership boundary as a page both agents can read",
+          "status": "next",
+          "description": "Not a note in a commit. A page with a markdown twin, in llms.txt, stating which side owns each surface and which file lives where — the estate's own convention for anything another team's agent has to act on.",
+          "source": "lead",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "WO-2",
+          "title": "Brief the RiskMandate team to do the reverse",
+          "status": "next",
+          "description": "Asked for explicitly. Their side reads the store's e-commerce surfaces rather than re-implementing a cart, exactly as the store reads their products. The estate has a form for this already: a cross-team brief, addressed, status-tracked, and corrected in public when it turns out to be wrong.",
+          "blocked": "WO-1.",
+          "source": "lead",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "WO-3",
+          "title": "Mark the files that are on the wrong side",
+          "status": "queued",
+          "description": "The memo permits a few files living here that will move. Permitted debt is fine; invisible debt is not. Each one carries which side owns it, and a check counts them so the number can only go down.",
+          "blocked": "WO-1.",
+          "source": "self",
+          "memo": "2026-09-16-one-site-one-flow"
+        },
+        {
+          "id": "WO-4",
+          "title": "Agree the contract for the shared files",
+          "status": "queued",
+          "description": "Both directions need a stable address, a stable shape and a version. CORS makes the read possible; it does not make it safe to depend on.",
+          "blocked": "WO-2.",
+          "source": "self",
+          "memo": "2026-09-16-one-site-one-flow"
+        }
+      ]
+    },
+    {
+      "id": "the-comparison-table",
+      "title": "The comparison table",
+      "color": "#0d9488",
+      "memo": "2026-09-16-the-comparison-table",
+      "description": "Features down the left, five columns across — free, £10, £50, £500, £1,500. The page that makes the differences between the levels legible, and the one that finally explains the entry price, because a licence is only a difference next to a column that does not have it.",
+      "tasks": [
+        {
+          "id": "CT-1",
+          "title": "Decide what every cell is allowed to say",
+          "status": "next",
+          "description": "<b>The hard part, and it comes first.</b> Most of the cells in the memo are proposals rather than facts, and this store fails its own release when a page states an unproven thing as a fact. Either each cell carries a state the way every claim does, or the table waits until the cells are true. Both are defensible; publishing a confident table over unproven cells is not.",
+          "owner": "lead",
+          "source": "self",
+          "memo": "2026-09-16-the-comparison-table"
+        },
+        {
+          "id": "CT-2",
+          "title": "Write the feature list as data",
+          "status": "next",
+          "description": "One row per feature, one cell per level, each cell carrying its state and the claim it rests on. Generated, so the table cannot disagree with the level pages beside it.",
+          "blocked": "CT-1.",
+          "source": "lead",
+          "memo": "2026-09-16-the-comparison-table"
+        },
+        {
+          "id": "CT-3",
+          "title": "Settle whether £10 includes a vault",
+          "status": "next",
+          "description": "Offered in the memo as an example and it contradicts what the level page says today. It has to be decided before the table exists, because the table is where the contradiction becomes visible.",
+          "owner": "lead",
+          "source": "self",
+          "memo": "2026-09-16-the-comparison-table"
+        },
+        {
+          "id": "CT-4",
+          "title": "Decide what support means, and who answers",
+          "status": "next",
+          "description": "Email support on the paid levels is floated rather than decided. It is also the second promise on this site with no name on the mailbox.",
+          "owner": "lead",
+          "source": "self",
+          "memo": "2026-09-16-the-comparison-table"
+        },
+        {
+          "id": "CT-5",
+          "title": "Build the page, free column first",
+          "status": "queued",
+          "description": "Five columns with the free one leading, because what you can have for nothing is the first row of the argument rather than an objection to be handled.",
+          "blocked": "CT-2.",
+          "source": "lead",
+          "memo": "2026-09-16-the-comparison-table"
+        },
+        {
+          "id": "CT-6",
+          "title": "Render it as a PDF",
+          "status": "queued",
+          "description": "Asked for as a brochure. The store already generates PDFs from built HTML, so this is a build target rather than a second artefact.",
+          "blocked": "CT-5.",
+          "source": "lead",
+          "memo": "2026-09-16-the-comparison-table"
+        }
+      ]
+    },
+    {
+      "id": "product-pages",
+      "title": "Product pages that show the product",
+      "color": "#9333ea",
+      "memo": "2026-09-16-product-pages",
+      "description": "“We go there, we don’t know what we’re buying.” Description, price and a buy button, a carousel of what you actually get, specs and SKUs, and a place for reviews. Prototyped in the lab first, reviewed, then wired in.",
+      "tasks": [
+        {
+          "id": "PP-1",
+          "title": "Prototype one product page in the lab",
+          "status": "next",
+          "description": "Asked for explicitly: prototypes on the side, reviewed, then wired up. <code>/lab/</code> is already that surface and every page on it states on its own face that nothing there can be bought — which an Amazon-style prototype needs more than anything else the lab has held.",
+          "source": "lead",
+          "memo": "2026-09-16-product-pages"
+        },
+        {
+          "id": "PP-2",
+          "title": "Find out which screenshots exist and which have to be taken",
+          "status": "next",
+          "description": "The synthetic run alone produced 43, and the review pages embed a live vault. Before commissioning anything, count what is already here.",
+          "source": "self",
+          "memo": "2026-09-16-product-pages"
+        },
+        {
+          "id": "PP-3",
+          "title": "Put a version on every piece of product media",
+          "status": "queued",
+          "description": "A product page is where a store goes stale first. The walkthrough PDFs already carry the version in the filename for exactly this reason.",
+          "blocked": "PP-2.",
+          "source": "self",
+          "memo": "2026-09-16-product-pages"
+        },
+        {
+          "id": "PP-4",
+          "title": "Print the specs and the SKUs",
+          "status": "queued",
+          "description": "The store has 62 and shows none. The same data the Stripe rail is about to need.",
+          "blocked": "TM-1.",
+          "source": "lead",
+          "memo": "2026-09-16-product-pages"
+        },
+        {
+          "id": "PP-5",
+          "title": "Add the review section, and say it is empty",
+          "status": "queued",
+          "description": "Reviews are coming, given away in exchange for comment. An empty section that says it is empty is this site's house style — it is what the two upper levels already do about never having been sold. No stars: a rating on a product nobody has bought is the one piece of furniture here that could not be honest.",
+          "blocked": "PP-1.",
+          "source": "lead",
+          "memo": "2026-09-16-product-pages"
+        },
+        {
+          "id": "PP-6",
+          "title": "Make the page switchable by audience",
+          "status": "queued",
+          "description": "Framed in the memo as editions of one product rather than separate paths — the same switch the five-audience memo asked for, arriving from the other side. One mechanism serves both.",
+          "blocked": "PP-1, QB-2.",
+          "source": "lead",
+          "memo": "2026-09-16-product-pages"
+        }
+      ]
+    }
+  ]
+}

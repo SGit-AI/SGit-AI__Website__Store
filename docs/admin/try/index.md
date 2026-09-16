@@ -5,6 +5,7 @@ lead: "**Go from the catalogue to the page that says what happens after payment,
 order: 91
 robots: "noindex,follow"
 toc: true
+console: true
 ---
 
 ## What you are looking at, in one minute

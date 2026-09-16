@@ -1,54 +1,60 @@
 ---
-title: Admin
-description: "The internal surfaces of this store in one place: the walkthrough anybody can run end to end, the claim ledger, the dev packs, the release history and the purchase lab. Public, like every page here, and kept out of the sitemap because it is not a selling surface."
-lead: "**Everything here is public**, because every page on this site is — there is no login, no account and nothing to gate. What this page is, is *findable*: one address that gathers the parts of the store that are for the people building it rather than for somebody buying."
+title: The console
+description: "The operations surface for this store: what is blocking a first paid order, the units of work in flight, the memo queue behind them, the payment rails, the reviews and the walkthrough. Public, like every page here, and kept out of the sitemap because it is not a selling surface."
+lead: ""
 order: 90
 robots: "noindex,follow"
+console: true
+blurb: "<b>Everything here is public</b>, because every page on this site is — no login, no account, nothing gated. What is different is that it is not <em>advertised</em>: noindex, out of the sitemap, out of <code>llms-full.txt</code>. Anybody handed the address reads every word."
 ---
 
-## Start here
+{{console-dash}}
 
-**[Run the whole flow yourself →](/admin/try/)** — the walkthrough. A beta tester
-or an agent goes from the catalogue to the page after payment in about four
-minutes, for nothing, with a discount code printed on the page. Screenshots of
-every step, and a script an agent can follow without a person in the loop.
+## The queue, and how work gets here
 
-**The same thing as PDFs**, for sharing or for reading away from a screen —
+**[The memo queue →](/admin/memos/)** — a memo from the project lead arrives
+spoken, is kept here word for word, is read into a brief, and the brief is broken
+into units of work. The reading is kept separate from the memo on purpose: what
+somebody said and what we made of it are two different objects, and only one of
+them is allowed to be wrong.
+
+**[The board →](/admin/work/)** — those units, in four columns, grouped into
+workstreams. A workstream never moves by hand; it moves because a task inside it
+moved, so the summary cannot contradict the detail.
+
+## Next: taking money
+
+**[Both rails →](/admin/rails/)** — no payment rail is live, which is the single
+fact that most shapes this store. {{claim:checkout-links-not-issued}}
+
+| | |
+|---|---|
+| [Stripe](/admin/rails/stripe/) | The rail that turns a buyer into a customer, including a buyer who pays nothing. Six products, eight prices, three coupons — and a webhook that has to listen to the session rather than the payment, because a hundred-per-cent order creates no charge at all. |
+| [SumUp](/admin/rails/sumup/) | Amount-only, no catalogue, and the one with a card reader behind it. Run as a second rail on purpose. |
+
+## Run it yourself
+
+**[The walkthrough →](/admin/try/)** — a beta tester or an agent goes from the
+catalogue to the page after payment in about four minutes, for nothing, with a
+discount code printed on the page. Screenshots of every step, and a script an
+agent can follow without a person in the loop.
+
+The same thing as PDFs, for sharing or for reading away from a screen —
 [by hand](/admin/downloads/store-walkthrough-by-hand-v0.1.11.pdf) (11 pages, every
 screenshot) and [as an agent](/admin/downloads/store-walkthrough-as-an-agent-v0.1.11.pdf)
 (7 pages, the assertions). Both are snapshots; the page is the source of truth.
 
-## The rest of it
+## The record
 
 | | |
 |---|---|
+| [Reviews, dated and kept](/admin/reviews/) | Every review of this store, newest first. A review is a moment locked: the version it was taken against, the screenshots, and a stance on every proposal in it. |
 | [The claim ledger](/ledger/) | Every factual claim this site makes, with the state it earned and the date. Pages cite a claim and the chip links back here. |
 | [What we do not say, and why](/disclosures/) | The words this site will not use, the sentence it will not print, and the naming collision that is still open. |
 | [The dev packs](/dev-packs/) | The working documents behind the store, and the manifest of which of them are held back and why. |
 | [Release history](/versions/) | Every release, what changed, and the commit it is. |
 | [The purchase lab](/lab/) | The tool that turns a described deployment into a depth band. Nothing on it can be bought. |
 | [What is not for sale yet](/catalogue/) | The offers that exist as specifications and have not been built. |
-
-## Why this page is noindex and not private
-
-**Nothing here is a secret and nothing here could be.** A static site publishes
-every byte it carries: there is no server to ask who you are, and a page that
-pretended otherwise would be lying about how it works. So this page is not
-protected — it is simply **not advertised**. It carries `noindex` and it is kept
-out of `sitemap.xml` and out of `llms-full.txt` — which *is* indexed, and would
-have made this paragraph false by carrying the same codes in a bulk file. Somebody
-handed the address can read it; nobody arrives by searching for a discount code.
-[`llms.txt`](/llms.txt) still lists both pages with their descriptions, so an
-agent finds the walkthrough and reads it at
-[`/admin/try/index.md`](/admin/try/index.md).
-
-**The walkthrough codes are the one thing on this site that is deliberately
-published and deliberately not linked from a selling page.** They take a hundred
-per cent off, which costs nothing today because no payment rail is live and the
-only checkout that completes is a demonstration wallet that charges nobody. That
-is not a promise, it is a build check: `check_printable_codes_need_a_dead_rail`
-fails the release the moment a real payment link and a printed hundred-per-cent
-code exist in the same build.
 
 ---
 

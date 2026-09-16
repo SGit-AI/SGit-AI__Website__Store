@@ -1,0 +1,14 @@
+# The memo queue
+
+The queue. A memo from the project lead arrives spoken, is kept here verbatim, is read into a brief, and the brief is broken into units of work that appear on the board. This file is the first of those four and the only one written by hand — the brief page and the board cards are generated from it, so a memo cannot be captured and then quietly not acted on.
+
+- **2026-09-16 — Stripe end to end, with their SKUs — and a customer even at 100% off** — Run the real Stripe purchase flow rather than an amount-only link, so a buyer handed a hundred-per-cent code still becomes a customer with an email. Then leak codes on specific journeys. And start capturing the work as units on a board. — https://store.sgit.ai/admin/memos/2026-09-16-stripe-end-to-end/
+- **2026-09-16 — £10, a commercial licence, and a name on the review** — The entry level goes to £10 and gains a commercial licence over the CC BY version anybody can download. And the two upper levels get a named reviewer, starting with the project lead, on a surface built for several. — https://store.sgit.ai/admin/memos/2026-09-16-ten-pounds-and-a-licence/
+- **2026-09-16 — Five audiences, decoupled views, and the version the board can read** — The store does not qualify who is reading it. Five audiences, each with its own view and path and its own subset of the offers; the views driven by JSON and built as components rather than written out; and every vault — free ones included — carrying a version its reader’s board can read. — https://store.sgit.ai/admin/memos/2026-09-16-five-audiences/
+- **2026-09-16 — Never leave the site — and write down who owns what** — The whole purchase, and everything after it, happens on store.sgit.ai. The store owns e-commerce; riskmandate.ai owns the products and the policies; the two read each other's files over CORS rather than sending each other's visitors away. Do the store first, then brief the other side. — https://store.sgit.ai/admin/memos/2026-09-16-one-site-one-flow/
+- **2026-09-16 — One table, five columns, and the free one first** — The comparison table every pricing page has and this store does not: features down the left, five columns across — free, £10, £50, £500, £1,500 — and a cell for every one. New page, so it can be reviewed before it is wired in. — https://store.sgit.ai/admin/memos/2026-09-16-the-comparison-table/
+- **2026-09-16 — Make a product page feel like a product page** — Description, price and buy button, a carousel of screenshots of what you actually get, specs and SKUs, and a place for reviews. Built as prototypes first, then wired in — and eventually switchable by audience, the way a product has editions. — https://store.sgit.ai/admin/memos/2026-09-16-product-pages/
+
+---
+
+This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0).

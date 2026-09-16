@@ -1,5 +1,5 @@
 {
- "version": "v0.1.17",
+ "version": "v0.1.18",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -20,13 +20,14 @@
   },
   {
    "url": "/admin/",
-   "title": "Admin",
-   "description": "The internal surfaces of this store in one place: the walkthrough anybody can run end to end, the claim ledger, the dev packs, the release history and the purchase lab. Public, like every page here, and kept out of the sitemap because it is not a selling surface.",
-   "lead": "Everything here is public, because every page on this site is \u2014 there is no login, no account and nothing to gate. What this page is, is findable: one address that gathers the parts of the store that are for the people building it rather than for somebody buying.",
+   "title": "The console",
+   "description": "The operations surface for this store: what is blocking a first paid order, the units of work in flight, the memo queue behind them, the payment rails, the reviews and the walkthrough. Public, like every page here, and kept out of the sitemap because it is not a selling surface.",
+   "lead": "",
    "headings": [
-    "Start here",
-    "The rest of it",
-    "Why this page is noindex and not private"
+    "The queue, and how work gets here",
+    "Next: taking money",
+    "Run it yourself",
+    "The record"
    ],
    "kind": "page"
   },

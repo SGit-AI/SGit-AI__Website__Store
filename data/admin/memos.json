@@ -1,0 +1,334 @@
+{
+  "schema": "store-memos-v1",
+  "_what_this_is": "The queue. A memo from the project lead arrives spoken, is kept here verbatim, is read into a brief, and the brief is broken into units of work that appear on the board. This file is the first of those four and the only one written by hand — the brief page and the board cards are generated from it, so a memo cannot be captured and then quietly not acted on.",
+  "_why_verbatim": "A memo is dictated, so it arrives with the repetitions and the self-corrections of speech in it. It is kept exactly as it arrived. The reading of it is written underneath and kept separate, which is the same rule the reviews follow: what somebody said and what we made of it are two different objects, and only one of them is allowed to be wrong.",
+  "_the_process": [
+    [
+      "1 · Capture",
+      "The memo goes in this file verbatim, dated, the moment it arrives. Nothing is trimmed."
+    ],
+    [
+      "2 · Read",
+      "A brief: what was asked, what it changes, what it contradicts, and what is not yet decidable."
+    ],
+    [
+      "3 · Break",
+      "Units of work, each one small enough to be finished, each naming the memo it came from."
+    ],
+    [
+      "4 · Track",
+      "The units go on the board at /admin/work/ and move there. The memo page shows their live state."
+    ]
+  ],
+  "memos": [
+    {
+      "id": "2026-09-16-stripe-end-to-end",
+      "date": "2026-09-16",
+      "title": "Stripe end to end, with their SKUs — and a customer even at 100% off",
+      "summary": "Run the real Stripe purchase flow rather than an amount-only link, so a buyer handed a hundred-per-cent code still becomes a customer with an email. Then leak codes on specific journeys. And start capturing the work as units on a board.",
+      "form": "Voice memo, transcribed",
+      "workstreams": [
+        "take-money",
+        "leak-the-codes",
+        "the-record"
+      ],
+      "verbatim": "Okay, so just some quick comments on the Stripe and um, sum up integration. Um, let's now create a workflow where we basically do an end-to-end flow with Stripe uh, using their SKUs and using their um, their workflows. But with the um, still the purchasing workflow, because we at least want to capture their emails and their contacts and have them as a client in Stripe. Stripe supports payments with 100% discount, which is what we want to do. So let's just figure out that workflow. Um, and basically then what we do is we start using discount codes, which we can leak on the main site uh, on specific journeys. But um, I really want to have that sort of end-to-end flow with, with Stripe. Um, yeah, but so that's now a task. And what I'm going to do next is I'm going to do a brain dump of tons of tasks and tons of activities, which I want to do, but can you capture them as units of work in our admin environment and actually even create a Kanban board, which I'll give you the link below for where to be inspired. And, um, and then let's start capturing all these workloads so that we're ready for the event.",
+      "read": [
+        [
+          "The ask is the customer record, not the discount",
+          "A hundred-per-cent code is a means. What it buys is somebody standing at a stand going through a real purchase and coming out the other side as a row in Stripe with an email on it. That reading is what makes the rest of the memo coherent — SKUs, their workflows, capture the contacts, and only then the discount."
+        ],
+        [
+          "It reverses a position this store had published",
+          "<b>The rails plan said in as many words that neither provider gets a product list, a price list or a shape</b>, and gave a good reason: a catalogue in two places will one day disagree. That is now overruled for Stripe. The overrule is written on the rails page above the old reasoning rather than instead of it, and the drift it re-opens is a named task rather than a risk somebody remembered."
+        ],
+        [
+          "Sixty-two SKUs turned out to be eight prices",
+          "The objection was sized wrong. A price on this store does not vary by shape — level two is £50 whether the subject is a browser agent or a payments bot — so Stripe needs four levels, two add-ons and two deposits. Eight rows that move when a price moves is a duplication worth living with; sixty-two would not have been."
+        ],
+        [
+          "One finding came out of writing it down",
+          "A hundred-per-cent order creates no charge, so a webhook keyed on a succeeded payment would see every paid order and none of the free ones — exactly the set this rail exists to capture. Listen to the session, not the payment."
+        ]
+      ],
+      "not_decided": [
+        [
+          "Which journeys carry a leaked code",
+          "The memo says specific journeys and does not say which. A code on a first screen discounts a decision nobody has made yet; a code at the end of a level page discounts one somebody is in the middle of making. That is the project lead's call and it is a queued task."
+        ],
+        [
+          "What the buyer lands on",
+          "A standing Stripe link cannot fill in the <code>?order=</code> the handover contract documents. Resolving it needs the RiskMandate team."
+        ]
+      ]
+    },
+    {
+      "id": "2026-09-16-ten-pounds-and-a-licence",
+      "date": "2026-09-16",
+      "title": "£10, a commercial licence, and a name on the review",
+      "summary": "The entry level goes to £10 and gains a commercial licence over the CC BY version anybody can download. And the two upper levels get a named reviewer, starting with the project lead, on a surface built for several.",
+      "form": "Voice memo, transcribed — arrived twice, as a raw transcript and a cleaned one. The cleaned copy is below; the two differ only in punctuation and disfluency, and nothing in the substance moved.",
+      "workstreams": [
+        "price-and-licence",
+        "who-does-the-work"
+      ],
+      "verbatim": ", which um, I think is okay to charge 10 quid, just it's a bit different because there were some comments about the five pounds. But one of the changes I want us to add to this, which I think will be quite interesting and is worth doing a little bit of research on just the easiest way of doing this is I want to offer a dual license on this. So I want to offer a commercial license for the vault. So fundamentally what they get from here is something they can download, but the version they download is Creative Commons by, which actually means they have to attribute. What we can do is we can give them a commercial license for them um, that is basically to the buyer. I don't think we need to name them. I think we can just say it. But it's basically a commercial license to the buyer to use that vault in whatever way they want, right? And we can do that because we own the copyright of everything that's in the vault. So I think that's quite a nice big change. Um, and again, we should be trying to explore that on that. Another change to make, and this is also come from the feedback that we had, which is um, was very good from the review, is Add me as the one that will run the 500 and 1500 quid review. So you should create a page for me. In fact, you should create a page for security professionals that will be doing the security review because I want to contact a lot of people I know to do this. Uh, so for now, you only have one, which is me, but we will have more soon. So. Again, when somebody purchases something, they should be choosing who they want to do the assessment. And for now, you can start with me. And there's already a, a couple of pages that have quite a lot of information about me. So you can use uh, materials from there. Uh, if not, let me know. But uh, the open source site already has, and uh, the Eskit site also has information about me. And you also have the latest about me on LinkedIn, which again, I can give you, right? Because I just published new information there. So that might be a good one for you to capture. But basically, you know, I, I have cybersecurity expertise, right? And I've been doing agentic stuff and I'm, you know, a knowledge expert in a lot of these areas. Um, so, but fundamentally, this is, I'm the credibly, you know, I'm the one that is going to do the reviews of the 500 and the 1,000, uh, the 1,500 reviews uh, on that.",
+      "read": [
+        [
+          "The price rise is not the change. The licence is",
+          "Two reviewers said £5 reads as a commodity — a human partner and an invented buyer who had never met them. A larger number for the same artefact answers neither. <b>What changes is what is bought:</b> the public download is CC BY and carries an attribution obligation, and the buyer gets a commercial licence to use that vault however they want. The free templates and the paid pack stop being the same thing at two prices, which is the actual answer to the commodity reading."
+        ],
+        [
+          "It is grantable because the copyright is ours",
+          "Stated in the memo and it is the load-bearing fact. Everything in the pack was written here, so a second licence over the same bytes is ours to give. A pack containing third-party material could not carry this offer, which makes it a constraint on what goes in a pack from now on."
+        ],
+        [
+          "The licensee is unnamed on purpose",
+          "“A commercial licence to the buyer… I don’t think we need to name them.” That is the part worth research rather than drafting: a grant to an unnamed holder has to read as a grant and not as a public re-licence of the same bytes, or it gives away what it is selling."
+        ],
+        [
+          "A named reviewer is the answer to a real hole",
+          "The two upper levels are somebody’s work and the store has never said whose. Asking for £1,500 for a security review from nobody in particular is a worse problem than any price. The memo also says what to build for: a list, not a person — “for now you only have one, which is me, but we will have more soon.”"
+        ],
+        [
+          "And the buyer chooses",
+          "“When somebody purchases something, they should be choosing who they want to do the assessment.” With one reviewer that is a statement rather than a choice, and it should still be on the page, because what it says is that there is a name behind the work."
+        ]
+      ],
+      "not_decided": [
+        [
+          "The licence wording, and what it travels with",
+          "Does the grant attach to the file, or to the order reference? What happens on resale? Does it survive the buyer’s company changing name? None of this is drafted and none of it should be guessed at on a selling page."
+        ],
+        [
+          "The reviewer’s own page",
+          "<b>Nothing goes on it that is not traceable to a published source.</b> The memo names the open-source site, sgit.ai and a LinkedIn profile the project lead will supply. A biography this site invented would be the worst possible thing to stand next to a £1,500 price."
+        ]
+      ]
+    },
+    {
+      "id": "2026-09-16-five-audiences",
+      "date": "2026-09-16",
+      "title": "Five audiences, decoupled views, and the version the board can read",
+      "summary": "The store does not qualify who is reading it. Five audiences, each with its own view and path and its own subset of the offers; the views driven by JSON and built as components rather than written out; and every vault — free ones included — carrying a version its reader’s board can read.",
+      "form": "Voice memo, transcribed",
+      "workstreams": [
+        "qualify-the-buyer",
+        "board-readable",
+        "decouple-the-views",
+        "the-record"
+      ],
+      "verbatim": "Okay, so on the store, I think that one of the problems that we have with the store right now is that we're not qualifying who the user is. So if you think about it, we have the free, the, you know, basically three core products, four core products, but the positioning of those products, what we're selling, even the features, even the angle of that, I think we need to, in a way, everywhere which is relevant, we need to take into account, and I think we should have five audiences, which is the founders, the investors, the C-level exec, the cybersecurity professionals, and the risk and governance slash GRC professionals. And in a way, not all products should be visible to all. You know, you, you can argue to an investor, you know, you're not going to sell, you know, five quid, 10 quid licenses, sorry, and 50 quid. I mean, you, you want to sell the more expensive ones, right? Because they need that. In fact, they might need in quantity, right? So I think what we need to have is we need to have the view that we have right now, which is kind of like this store, you know, out of the box. And I have more comments on that in a second. But then we need to have these very specific views and very specific paths, which is why you need to have from, um, from an architecture point of view, you need to decouple um, fundamentally a lot of the functionality to like JSON configuration files. So you can just slap on that. So think of it from a refactoring and a web components point of view, which is what you should be following from the coding.sgit.ai guidance and the um, nfrs.sgit.ai uh, support, sort of guidance, sorry. And, um, You know, everything should be web components, right? So if you should be able to refactor a lot of these views and, you know, without a lot of code changes, right? Because in a way, we, in fact, we should be changing this and we should be adapting. In fact, we then, you know, we'll run our synthetic users to it and we get feedback on that. Um, so I think that's, that's very important. Um, another important comment here, which is when you say, Can I have this in a form that my board can read? So this is where I feel like we, we really are missing a good explanation of what's inside the vault, because the point is every single vault should have one of these, right? Every single vault should have an, um, basically, um, should have uh, a version of the vault, a version of the policy that is adapted and is focused. On the, um, on the board, on the execs, so multiple audiences. So that's not a special offering. Like every vault has that, including the ones you, you can download for free. Well, one more thing, by the way, all these memos that I'm doing, you need to basically put them on your queue and then process them, create a brief out of it and add them to the queue, break them into units of work and then add them to the, um, the queue of of work that we have there.",
+      "read": [
+        [
+          "The store sells to everybody and therefore to nobody",
+          "Four paid levels shown identically to whoever arrives. The memo names five audiences — founders, investors, C-level executives, cybersecurity professionals, and risk and governance or GRC professionals — and says the positioning, the features and the angle all move with who is reading."
+        ],
+        [
+          "This is not the three buyer groups the store already has",
+          "<b>The store has three</b>: you run agents today, you are backing a company, you are a startup. The memo has five, cut differently — by role rather than by situation, with the two professional audiences having no equivalent today at all. So this is a replacement, not an addition, and the old group pages have to go somewhere rather than quietly stop being linked."
+        ],
+        [
+          "Not every product is shown to every audience",
+          "“You are not going to sell a ten-quid licence to an investor… in fact they might need the expensive ones in quantity.” That is visibility as a property of the audience, which the catalogue has no concept of. It also raises a question nobody has answered: is the entry level <em>hidden</em> from an investor, or shown differently?"
+        ],
+        [
+          "The current store stays",
+          "“We need the view that we have right now, which is kind of like this store, out of the box.” The audience views are additional paths into the same catalogue, not a replacement for the front door."
+        ],
+        [
+          "The architecture ask is the load-bearing one",
+          "Five audiences times the surfaces they touch is not writeable by hand, and the memo says so before asking for it: decouple the functionality into JSON configuration, refactor to components, following coding.sgit.ai and nfrs.sgit.ai. <b>Both of those sites teach the same discipline this store already runs</b> — generate every number from the data, never restate a measurement, fail the build when the two drift. The store is already data-driven at the content layer and hand-written at the view layer, and that is exactly the seam the memo is pointing at."
+        ],
+        [
+          "The board-readable version is the sharpest single idea in the memo",
+          "“Can I have this in a form my board can read?” — and the answer is that every vault should already contain one. Not a paid extra: <b>every vault, including the free downloads</b>, carries the policy re-cut for the audience that has to sign it off. That turns the thing being sold from a document into a document that has already been translated for the people who decide, and it is the clearest answer yet to the commodity reading of the entry level."
+        ],
+        [
+          "And the memo sets the process this page is",
+          "“All these memos that I’m doing, you need to put them on your queue and then process them, create a brief out of it, break them into units of work.” That is what this page and the board are. It was written for this memo and applied to the two before it."
+        ]
+      ],
+      "not_decided": [
+        [
+          "Whether the three existing buyer groups are retired or re-cut",
+          "Three pages exist, are linked from the nav, are in the sitemap and carry claims. Replacing them is a bigger change than adding five, and the memo does not say which."
+        ],
+        [
+          "Hidden, or shown differently",
+          "An offer absent from an audience’s view and an offer present with different words are very different promises. One of them means this site shows different prices to different readers, which is a thing that needs saying out loud before it is built."
+        ],
+        [
+          "What web components buy on a site that ships no framework",
+          "The store is a dependency-free static build whose pages open no connection. Components are a good answer to five views over one catalogue; the question is whether they are custom elements at runtime or generated partials at build time, and the answer has to keep the no-network rule intact rather than negotiate with it."
+        ],
+        [
+          "Who the board-readable version is written by",
+          "Every vault carrying one is a per-vault deliverable across fifteen shapes. Whether that is generated, written once per shape, or written per sale is undecided and it changes what the entry level costs to fulfil."
+        ]
+      ]
+    },
+    {
+      "id": "2026-09-16-one-site-one-flow",
+      "date": "2026-09-16",
+      "title": "Never leave the site — and write down who owns what",
+      "summary": "The whole purchase, and everything after it, happens on store.sgit.ai. The store owns e-commerce; riskmandate.ai owns the products and the policies; the two read each other's files over CORS rather than sending each other's visitors away. Do the store first, then brief the other side.",
+      "form": "Voice memo, transcribed",
+      "workstreams": [
+        "one-site-one-flow",
+        "who-owns-what"
+      ],
+      "verbatim": "Okay, so this is now a very important concept, which there's two elements to this. So um, what I think we need to do here is let's do it all on the store docket. And then can you create a brief for the risk mandate to do also the reverse there? And the key here is that we now have two very distinct paths to experience the shopping cart experience and the sale. And I think what's important is to define very clearly, and again in guidelines and in pages that both agents can access, who owns what. So the point here is we have the store.eskit.ai, which is basically the e-commerce store, and we have the riskmandate.ai, which is the sort of the main commercialization path into it. Um, the store needs to look, and I have some more information about that coming soon, really like an e-commerce store, right? It's fundamentally like Amazon, right? Um, uh, that's the that's the vibe that we have. The risk mandate is going to be very focused on the risk, the, the structure, the, the guidance, the information, even showing the policies, showing it work, et cetera. The point is that you should be able to have the whole flow without leaving the site. So remember that all these sites have cores enabled. So cores, C-R-R-S, which is the cross-site um, origin in the browser. So um, that means that we can reuse the files and the JSON files from both. So the point here is that everything to do with e-commerce, everything to do with shopping cart, everything to do with the logic and the functionality of e-commerce and the workflows, and the redirections and the payments and all that stuff has to happen inside store.eskit.ai and everything that comes from the, the products, the lists, the, the, the, the, the access behavior policies that we have, the information, a lot of even some screenshots, etc. that comes from riskmandate.ai. So what I want to start with is that when you are in one of those websites, you never go to the other website, which is one of the findings that we had from our users where they correctly says, oh, I'm confused. Suddenly I just did a whole shopping experience in store.eskit and now it's suddenly I jump into risk mandate, which is a completely different UI, different briefing. So we should not do that. So what we want is to make sure that all of that and also all the branding elements and all the stuff in the CSS should come from the respective site, right? So we, first of all, let's do this for the store. Let's get the whole flow there. And then let's brief the risk mandate. And it might be okay in the short term to have a couple of files that on store that eventually will move to risk mandate, but eventually let's do this refactoring. But first, let's get the full experience end-to-end inside the store, right? Which basically means that when you get to the point of selling and you sold A vault, you should just see the link, you should see the vault, you should see everything because of me just embedding stuff, right? And actually, the vaults all come from public keys anyway, exposed keys. So this is quite um, a big element here.",
+      "read": [
+        [
+          "The handover was a finding, and this is the fix",
+          "A synthetic buyer said it plainly: they did a whole shopping experience on one site and were dropped onto another with a different interface and a different voice at the exact moment they had just paid. <b>That was logged as a confusion and treated as a copy problem.</b> It was an architecture problem, and this memo says so."
+        ],
+        [
+          "The boundary is stated as ownership, not as a link list",
+          "<b>The store owns</b> the cart, the e-commerce logic and workflows, the redirections and the payments. <b>riskmandate.ai owns</b> the products, the lists, the Agent Behaviour Policies, the information and the screenshots. Everything else follows from that sentence, including which side a file that exists in the wrong place has to move to."
+        ],
+        [
+          "CORS is the mechanism, and it is already on",
+          "“All these sites have CORS enabled… that means we can reuse the files and the JSON files from both.” So the store does not copy the product data — it reads it from the side that owns it, and the same holds in reverse once the other side is briefed."
+        ],
+        [
+          "The branding stays with the site the reader is on",
+          "Reading somebody else's data is not wearing their interface. The store renders riskmandate.ai's products in the store's own CSS, which is the whole reason the reader never notices the seam."
+        ],
+        [
+          "After the sale, show them the thing",
+          "“When you sold a vault, you should just see the link, you should see the vault, you should see everything.” The vaults are opened with published read keys, so there is nothing to gate — and the store already has a working embed on the review pages, built at runtime with the key handed over by message and never in a URL. <b>The hard part is already solved and is in the repository.</b>"
+        ],
+        [
+          "The order is explicit, and it is the store first",
+          "Do the whole flow here, then write the brief for the other side. It is acceptable, for now, for a few files to live on the store that will eventually move — named as temporary rather than discovered as debt later."
+        ],
+        [
+          "And the target feel is named",
+          "“Fundamentally like Amazon.” That is a shop, with a cart and a catalogue and a receipt, rather than an essay with a buy button under it — which is close to what several of the existing pages are."
+        ]
+      ],
+      "not_decided": [
+        [
+          "<b>It contradicts the memo from earlier the same day</b>",
+          "The Stripe memo has the buyer land on riskmandate.ai's page for their level, and the whole handover contract is built for that. This memo says they never leave the store. <b>Both were given on 16 September and the later one wins</b>, but the change is not free: the success address moves to this site, the <code>?order=</code> contract becomes ours to render, and the task that was blocked on another team stops being blocked at all. That is written into the work rather than left for somebody to notice."
+        ],
+        [
+          "It runs into this store's hardest rule",
+          "<b>Every selling page on this site opens no connection, and a build check fails the release if one does.</b> Reading a catalogue from riskmandate.ai over CORS is opening a connection on a selling page. The rule has been narrowed before and never loosened — the review pages embed one vault from one named host and the check names that exception. The same discipline applies here and the narrowing has to be written before the first fetch, not after."
+        ],
+        [
+          "Where the product data lives while the other side is unbriefed",
+          "The store holds the shapes today. The memo permits that in the short term. What it does not say is how a reader can tell which side owns a file they are looking at, which is the thing that makes the debt visible instead of permanent."
+        ],
+        [
+          "What “like Amazon” means here, concretely",
+          "More information is coming. Until it does, the risk of guessing is real: a store that sells four things is not improved by a mega-menu, and the site's whole argument is that it says what it does not know."
+        ]
+      ]
+    },
+    {
+      "id": "2026-09-16-the-comparison-table",
+      "date": "2026-09-16",
+      "title": "One table, five columns, and the free one first",
+      "summary": "The comparison table every pricing page has and this store does not: features down the left, five columns across — free, £10, £50, £500, £1,500 — and a cell for every one. New page, so it can be reviewed before it is wired in.",
+      "form": "Voice memo, transcribed",
+      "workstreams": [
+        "the-comparison-table"
+      ],
+      "verbatim": "Okay, so now this next memo is actually super important because one of the things that I feel is really missing and I think we really make the site look a lot more professional and will allow for a much more e-commerce experience on both sides, but again, let's do it in the store, is the sort of vertical comparison of the four different product lines. So if you think about it, in normal... you know, SaaS services, and you go to a website and you see, oh, I got four different things. I got the, um, what's it called? I got premium and I got the standard and I got the um, XYZ version, right? And you have these vertical, you know, sort of shopping experiences where you kind of have features on the left, line, line, line. And then for every one of those vertical columns, each representing one of the products, you have a checkbox or maybe some extra details of how many you've got. So that's the typical sort of pricing page. I think you need that. So let's create that here. Again, let's create that new page. So again, as a new page, so we can review it. But I think this will make a massive difference in the understanding of what you actually get. Because here's where we can, for example, say the stuff that we just mentioned. Let's say, oh, you get a vault. And for example, you only get a vault in the 50 quid version. You don't get a vault in the 10 quid version. But the dual licensing go on everything. And the, the version for board members, the, ver the policy, the mapping to standards. So it's actually quite cool because we can actually list all of the core features. of the vault that we're selling. And actually in here, you should even have the free version. So you actually start with the free because it's the one that you download. And of course the free has the Creative Commons license, right? So it's different, right? And also it's not packaged, right? It's it's basically get from the website. And, um, and um, and you don't get, sort of support, right? And again, we can say that we have, you know, a first level of support, right? Um, uh, or maybe, um, yeah, actually we, we could say, let's think about this, what kind of support we can provide. Yeah, we can provide email support, right? Um, not on the paid version. So as soon as you pay, you get that, right? You get support, you get an engagement, right? You get a, a, a little bit of help from us, right? So I think this will make it massive in terms of understanding. Also, this would also make really good brochures and PDFs that we can share, we can page. And it's almost like in one viewing, you get a good sense of the products, the features, the capabilities, and also what each of the, you know, like four levels gives you, right? So where you have the, the, the third level for 500 quid, you can say, oh, this... So this one is you're going to get a customized policy, right, in your in your environment. For the 1,500 quid, oh, you're going to get reviews by a security expert, right? And um, you get time with the security expert, and you're going to get more customization, right? So they are um, different in there.",
+      "read": [
+        [
+          "The table is not a pricing page. It is the explanation",
+          "“This will make a massive difference in the understanding of what you actually get.” The store today explains each level on its own page, which means nobody ever sees the four side by side. Every difference the memo lists — a vault or not, dual licence, the board version, the mapping to standards, support — is a <em>difference</em>, and a difference is only legible next to the thing it differs from."
+        ],
+        [
+          "The free column goes first, and it is the whole argument",
+          "“You actually start with the free because it’s the one that you download.” The templates being free has been treated on this site as an objection to answer. Putting the free column first turns it into the first row of the sales argument: here is what you can have for nothing, here is what each step buys, and the licence column alone explains the first step."
+        ],
+        [
+          "It finally makes the entry level explicable",
+          "Two reviewers said £5 read as a commodity. In a table, £10 is not a price for a template — it is CC BY turning into a commercial licence, on a line of its own, next to a free column that does not have it."
+        ],
+        [
+          "The upper two levels get named content for the first time",
+          "£500 is “a customised policy in your environment.” £1,500 is “reviews by a security expert, time with the security expert, more customisation.” Those are the first concrete descriptions either level has had, and they line up with the reviewer work from the earlier memo."
+        ],
+        [
+          "And it wants to be a PDF",
+          "“This would also make really good brochures and PDFs.” The store already generates PDFs of the walkthrough pages from the built HTML, so a table that renders well on paper is a build target rather than a second artefact."
+        ]
+      ],
+      "not_decided": [
+        [
+          "<b>Most of the cells are proposals, not facts</b>",
+          "The memo says so itself — “let’s think about this, what kind of support we can provide”, “you only get a vault in the 50 quid version” offered as an example. <b>This store fails its own release when a page states an unproven thing as a fact.</b> So every cell carries a state the way every claim does, and a table where half the cells read <em>specified, never run</em> is either the most honest pricing page on the internet or unsellable. That is a judgement, and it is not the builder’s."
+        ],
+        [
+          "Does the £10 level really not include a vault?",
+          "Offered as an example rather than a ruling, and it contradicts what the level page says today. It needs deciding before the table is published, because the table is the place the contradiction becomes visible."
+        ],
+        [
+          "What support actually means, and who answers",
+          "Email support on the paid levels is floated, not decided. It is also the second promise on this site with nobody’s name on the mailbox — the 24-hour follow-up is the first, and it has been open since it was written."
+        ]
+      ]
+    },
+    {
+      "id": "2026-09-16-product-pages",
+      "date": "2026-09-16",
+      "title": "Make a product page feel like a product page",
+      "summary": "Description, price and buy button, a carousel of screenshots of what you actually get, specs and SKUs, and a place for reviews. Built as prototypes first, then wired in — and eventually switchable by audience, the way a product has editions.",
+      "form": "Voice memo, transcribed",
+      "workstreams": [
+        "product-pages"
+      ],
+      "verbatim": "Okay, so now this one is about really creating an Amazon style experience, right? So I think what's missing from these product pages is they need to feel like a product page. In fact, I, we go there, we don't know what we're buying. So imagine that we're buying a laptop. Imagine that we're buying, you know, some kind of you know, product, which we are, right? So what we need to have, and again, we can start with a couple, but then we add more, but we already have quite a lot of good materials and maybe do some with more, others with less. Same thing with Amazon, right? But my point here is that for every, you know, it's almost like, imagine like when I go to Amazon, what I see is I see the product description, what is there. I see the price on the right with the buy button. I see the, um, and this is the product page itself, right? Not the search results, which is kind of where we start in other, or this sort of the category navigation. But when I go to the product page, I should see, and I see screenshots. I see tons of screenshots. I should see fundamentally here screenshots of the vote, screenshots of the grant, the mandate. We have lovely screenshots that we can take, even infographics and videos and notebook LM infographics, right? Like we can add all sorts of stuff, right? The point is we need these placeholders so we can put tons and tons of examples and screenshots of actually what you get from that particular product, right? And I think that's very important, right? And Um, you know, what's the, um, you know, like what's the board version of the guidance, right? What does the mandate look like? What does the, the things look like? So it's almost like a really cool kind of like, you know, carousel style environment that we have that. And eventually, yeah, we can add videos to it. We should have product specs, right? Because again, it depends where you buy, you have different product specs. We, you know, we should have SKUs and technical details and also add a section for reviews and comments, which we're about to get very soon because, I want to sort of give this service to a lot of people and then get them to comment and do a review in exchange. We will we'll have a lot of reviews very soon, but it's okay. Like, you know, this product is Amazon that don't have stars and don't have reviews. So, so let's, um, you know, let's, um, um, you know, add the placeholder for that, which is, and it's in comments, right? So fundamentally, this should really feel like an Amazon or e-commerce, typical e-commerce kind of page, right? Um, and of course, that some of these data eventually should come from riskmandate.ai, but we can create it for now and then add it. And again, this becomes very product specific. And every time we add a product, we add one of these, right? And, and fundamentally, that's what we're selling, right? And, and I think this will um, really make a massive difference. And again, start by creating prototypes of this on the side, and then we review it, and then we, we wire it up, right? And but I think this will really make a difference. And again, starting with the four product lines, and eventually we should be also customizing this to the audience, right? Because again, the audience, if you think about it, these screenshots should be different depending on the audience, because you know there's more technical audience, less technical audience, so this becomes everything. Um, and it's it's almost like different editions, like you know when you know when you have a, a product that has different colors or different sort of features, uh, or you can flick. You know, do you want this in blue and red, etc.? And here it's almost like, do you want it? In, you know, do you want this for the startup founder? Do you want this for the investor version? Do you want this? So you should be able to switch also easily, um, depending where you are, right? So you should be able to see your you know the different audiences and different kind of mini SKUs, almost like the product has.",
+      "read": [
+        [
+          "The diagnosis is blunt and it is right",
+          "“We go there, we don’t know what we’re buying.” A level page on this store argues about what a policy is. A product page shows the thing. Those are different documents and the store has only ever written the first one."
+        ],
+        [
+          "Screenshots are the substance, not decoration",
+          "“Screenshots of the vault, screenshots of the grant, the mandate… what does the board version of the guidance look like.” Every one of those exists already — the synthetic run alone produced 43, and the review pages embed a live vault. What is missing is a place on a selling page to put them."
+        ],
+        [
+          "Specs and SKUs, because a product has them",
+          "The store has 62 of them and prints none. Stripe is about to need the catalogue anyway, so the spec block and the rail's product list are the same data."
+        ],
+        [
+          "Reviews, with the emptiness admitted",
+          "“There’s no product on Amazon that doesn’t have stars and reviews.” The memo asks for the placeholder now and says the reviews are coming, given away in exchange for comment. <b>An empty review section that says it is empty is this site’s house style</b> — it is what the two upper levels already do about never having been sold."
+        ],
+        [
+          "Editions, which is the five-audience memo arriving from the other side",
+          "“Do you want this for the startup founder? Do you want the investor version?” Framed here as a product variant rather than a separate path — same switch, same data, on the product page instead of at the front door. The two memos want one mechanism."
+        ],
+        [
+          "Prototype first, and there is already a place for that",
+          "“Start by creating prototypes on the side, then we review it, then we wire it up.” <code>/lab/</code> is exactly that surface: five prototypes of one flow, every one of them stating on its own face that nothing there can be bought. A prototype product page belongs there and inherits that protection for free."
+        ]
+      ],
+      "not_decided": [
+        [
+          "A prototype that looks like a shop is the most dangerous page here",
+          "The lab exists because a page that looks like a checkout and is not one is the worst thing this site could publish, and a build check fails the release if a lab page stops saying so. An Amazon-style prototype is the closest anything has come to that line."
+        ],
+        [
+          "How many screenshots, and whose",
+          "“Tons and tons.” They have to be current, or the product page becomes the place the store goes stale first. The walkthrough PDFs already carry a version in their filename for exactly this reason."
+        ],
+        [
+          "Where the product media lives",
+          "The memo says it should eventually come from riskmandate.ai, and the ownership memo says the same. Building it here first is explicitly allowed; it is debt, and it needs marking as debt."
+        ],
+        [
+          "Stars",
+          "Not asked for. A rating out of five on a product nobody has bought would be the one piece of furniture on this page that could not be honest."
+        ]
+      ]
+    }
+  ]
+}

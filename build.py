@@ -118,6 +118,14 @@ NAV = [
         ("Release history", "/versions/"),
         ("Run the whole flow yourself", "/admin/try/"),
     ]),
+    ("Admin", "/admin/", [
+        ("The console", "/admin/"),
+        ("The work", "/admin/work/"),
+        ("The memo queue", "/admin/memos/"),
+        ("Taking money", "/admin/rails/"),
+        ("Reviews, dated and kept", "/admin/reviews/"),
+        ("Run the whole flow yourself", "/admin/try/"),
+    ]),
 ]
 
 LICENCE_STAMP = (
@@ -1609,6 +1617,175 @@ to the front of it. That single move answers F-2, F-3, R-1, the first four steps
 what the &pound;5 is <em>for</em> &mdash; which is most of the answer to F-5 and R-3 as well.</figcaption></figure>
 '''
 
+# ------------------------------------------------------- the admin console ----
+# THE ADMIN PAGES ARE A CONSOLE, NOT DOCUMENTS, and until v0.1.18 they were
+# wearing the shop's clothes: warm paper, serif headings, a 960px measure and a
+# nav built for somebody deciding whether to buy. A page whose job is "what is
+# blocking a first sale" wants the opposite of that, so it gets its own shell and
+# its own stylesheet. assets/console.css says what changed and why, and credits
+# the console at pt.newsroom.sgit.ai/newsroom/ that the architecture comes from.
+#
+# THE RAIL CARRIES COUNTS AND THE COUNTS ARE COMPUTED. A rail whose numbers are
+# typed is a rail that lies within a release. Every number below is read from the
+# same files the pages are built from, so a number cannot disagree with the page
+# it points at.
+CONSOLE_CSS = "/assets/console.css"
+# claims.yml is read inside build() for the ledger; the console needs the same
+# records to count with, and reading a file twice is cheaper than threading it
+# through four call sites.
+CLAIMS_ALL = yaml_load((DATA / "claims.yml").read_text())
+
+
+def console_counts():
+    """What the rail and the dashboard count. Read, never typed.
+
+    The ranks are the console's, not the ledger's: r1 is what blocks a first paid
+    order, r2 is what is waiting on a ruling nobody has made, and the rest is
+    state. A claim's own state lives in data/claims.yml and is a different scale
+    on purpose — one says how true a sentence is, the other says what it costs."""
+    rails = CHECKOUT_RAILS["rails"]
+    live_rails = [r for r in rails if (r.get("url") or "").strip()]
+    real_rails = [r for r in rails if not r.get("simulated")]
+    blockers = [c for c in CLAIMS_ALL if c["state"] == "absent"
+                and "gates" in c["claim"].lower() or c["id"] == "sale-notification-absent"]
+    rulings = sum(1 for rid in REVIEW_ORDER for p in REVIEWS[rid]["proposals"]
+                  if p["stance"] == "ruling")
+    proposals = sum(len(REVIEWS[rid]["proposals"]) for rid in REVIEW_ORDER)
+    unrun = [o for o in OFFERS if o["state_badge"] in ("unrun", "absent", "partial")]
+    return {
+        "reviews": len(REVIEW_ORDER),
+        "proposals": proposals,
+        "rulings": rulings,
+        "rails_live": len(live_rails),
+        "rails_total": len(real_rails),
+        "offers": len(OFFERS),
+        "offers_unproven": len(unrun),
+        "claims": len(CLAIMS_ALL),
+        "blockers": len(blockers),
+        "shapes": len(ABP["shapes"]),
+        "memos": len(MEMOS["memos"]),
+        "workstreams": len(WORK["workstreams"]),
+        "work_total": sum(len(w["tasks"]) for w in WORK["workstreams"]),
+        "work_open": sum(1 for w in WORK["workstreams"] for t in w["tasks"]
+                         if t["status"] != "done"),
+        "work_next": sum(1 for w in WORK["workstreams"] for t in w["tasks"]
+                         if t["status"] in ("next", "in-progress")),
+        # Not shapes times four: the catch-all shape has no template, so its first
+        # two levels do not exist and it carries two SKUs rather than four.
+        "skus": sum(len(s["levels"]) for s in SHOP_SHAPES),
+        "version": SITE["version"],
+    }
+
+
+# The rail. One list, so a page cannot be in the console and not in the rail.
+# `out` marks a link that leaves the console for a selling page — the console is
+# not a second copy of the shop and says which door it is opening.
+CONSOLE_RAIL = [
+    ("Where it stands", [
+        ("Console", "/admin/", None, False),
+        ("Reviews", "/admin/reviews/", "reviews", False),
+        ("Run the flow yourself", "/admin/try/", None, False),
+    ]),
+    ("The work", [
+        ("The board", "/admin/work/", "work_open", False),
+        ("The memo queue", "/admin/memos/", "memos", False),
+    ]),
+    ("Next: taking money", [
+        ("Both rails", "/admin/rails/", "blockers", False),
+        ("Stripe", "/admin/rails/stripe/", None, False),
+        ("SumUp", "/admin/rails/sumup/", None, False),
+    ]),
+    ("The record", [
+        ("Claim ledger", "/ledger/", None, True),
+        ("What we do not say", "/disclosures/", None, True),
+        ("Release history", "/versions/", None, True),
+        ("The dev packs", "/dev-packs/", None, True),
+        ("The purchase lab", "/lab/", None, True),
+        ("Not for sale yet", "/catalogue/", None, True),
+    ]),
+]
+
+
+def console_rail(current, counts):
+    out = ['<nav class="rail">',
+           '<a class="rail__brand" href="/admin/"><b>store<i>.sgit.ai</i></b>'
+           f'<span>admin console · {html.escape(counts["version"])}</span></a>']
+    for group, items in CONSOLE_RAIL:
+        out.append(f'<div class="rail__group"><h3>{html.escape(group)}</h3>')
+        for label, url, count_key, external in items:
+            here = ' aria-current="page"' if url == current else ""
+            badge = ""
+            if count_key:
+                n = counts.get(count_key, 0)
+                cls = "count r1" if count_key == "blockers" and n else "count"
+                badge = f'<span class="{cls}">{n}</span>'
+            arrow = '<span class="out">↗</span>' if external else ""
+            out.append(f'<a class="nav" href="{url}"{here}>{html.escape(label)}{arrow}{badge}</a>')
+        out.append("</div>")
+    out.append(
+        '<p class="rail__note"><b>Public, and not advertised.</b> Every page here is '
+        'noindex, out of <code>sitemap.xml</code> and out of <code>llms-full.txt</code>. '
+        'Anybody handed the address reads every word. '
+        '<a href="/">Back to the shop</a>.</p>')
+    out.append("</nav>")
+    return "".join(out)
+
+
+def console_html(page, ctx, body):
+    """The console shell. Deliberately NOT page_html: no shop nav, no disclosure
+    strip built for a buyer, no footer arguing the offer. What crosses over is one
+    strip that says where you are and how to get back."""
+    fm = page["fm"]
+    counts = console_counts()
+    prefix = rel_prefix(page["url"])
+    crumb = page.get("crumb") or fm.get("crumb", "")
+    head_actions = fm.get("head_actions", "")
+    return relativise(f"""<!doctype html>
+<html lang="en" data-root="{prefix}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{html.escape(fm['title'])} · store.sgit.ai admin</title>
+<meta name="description" content="{html.escape(fm.get('description', ''))}">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="{SITE['base']}{page['url']}">
+<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="{CONSOLE_CSS}">
+{f'<link rel="stylesheet" href="{fm["head_css"]}">' if fm.get('head_css') else ''}
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+{f'<script src="{fm["head_js"]}" defer></script>' if fm.get('head_js') else ''}
+{f'<script src="{fm["head_js2"]}" defer></script>' if fm.get('head_js2') else ''}
+</head>
+<body class="console">
+<div class="c-strip"><div class="row">
+<b>store.sgit.ai</b> <span class="c-sep">/</span> <a href="/admin/">admin</a>
+<span class="c-sep">·</span> <a href="/">the shop</a>
+<span class="c-sep">·</span> <a href="/ledger/">the ledger</a>
+<span class="c-sep">·</span> <a href="index.md">this page as markdown</a>
+<span class="c-noindex">noindex · not in the sitemap</span>
+</div></div>
+<div class="c-disc"><div class="row">{MODEL_GENERATED}</div></div>
+<div class="shell">
+{console_rail(page['url'], counts)}
+<main class="main">
+{f'<p class="crumb">{crumb}</p>' if crumb else ''}
+<div class="page-head"><div>
+<h1>{html.escape(fm['title'])}</h1>
+{f"<p>{fm['blurb']}</p>" if fm.get('blurb') else ''}
+</div>{head_actions}</div>
+{body}
+<div class="c-foot"><b>An operations surface</b> for the people
+building this store, public because every page here is. It is not a selling page and
+nothing on it is an offer. <a href="/">The shop is here</a> ·
+<a href="/ledger/">every claim, with its state</a> ·
+<a href="/admin/reviews/">the reviews</a></div>
+</main>
+</div>
+</body>
+</html>
+""", prefix)
+
+
 def review_markdown(rv):
     """A review as markdown, for the twin. Every page here is served as markdown at
     <page>/index.md and an agent reads that rather than the HTML; a twin carrying a
@@ -1974,7 +2151,7 @@ def review_pages(out_dir, ctx_shared):
         }
         target = out_dir / url.strip("/") / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(page_html(page, ctx, body))
+        target.write_text(console_html(page, ctx, body))
         (target.parent / "index.md").write_text(
             page["src_md"].rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
         made[url] = rv["title"]
@@ -2036,7 +2213,7 @@ def review_pages(out_dir, ctx_shared):
     }
     target = out_dir / root.strip("/") / "index.html"
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(page_html(idx_page, idx_ctx, shortcodes_inline(idx_body, idx_ctx)))
+    target.write_text(console_html(idx_page, idx_ctx, shortcodes_inline(idx_body, idx_ctx)))
     (target.parent / "index.md").write_text(
         idx_page["src_md"].rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
     made[root] = "Reviews"
@@ -2886,6 +3063,521 @@ def read_page(path):
     return {"path": path, "fm": fm, "body": body.lstrip("\n"), "url": url, "src_md": text}
 
 
+# ------------------------------------------------------- the rails, the board ----
+# THREE FILES, AND NONE OF THEM IS A PAGE. data/admin/rails.json is how each
+# payment rail gets turned on; data/admin/work.json is the units of work;
+# data/admin/memos.json is the queue the units came out of. Every page below is
+# generated from one of them, so the only way to change what the console says is
+# to change what the console knows.
+RAIL_PLANS = json.loads((DATA / "admin" / "rails.json").read_text())
+WORK = json.loads((DATA / "admin" / "work.json").read_text())
+MEMOS = json.loads((DATA / "admin" / "memos.json").read_text())
+WORK_COLS = WORK["columns"]
+WORK_BY_ID = {w["id"]: w for w in WORK["workstreams"]}
+MEMO_BY_ID = {m["id"]: m for m in MEMOS["memos"]}
+
+
+def ws_status(ws):
+    """Where a workstream sits, DERIVED from the tasks in it.
+
+    A workstream is never moved by hand. It moves because a task moved, which is
+    the only arrangement in which the summary board and the detail board cannot
+    disagree — and disagreeing is the one failure that makes a board worse than
+    no board. An explicit `status` on a workstream is honoured because a
+    workstream can be parked for a reason that is not in its tasks; nothing in
+    the file uses one today."""
+    if ws.get("status"):
+        return ws["status"]
+    ts = [t["status"] for t in ws["tasks"]]
+    if not ts:
+        return "queued"
+    if all(t == "done" for t in ts):
+        return "done"
+    for s in ("in-progress", "next"):
+        if s in ts:
+            return s
+    return "queued"
+
+
+def _pips(ts):
+    n = {c["key"]: sum(1 for t in ts if t["status"] == c["key"]) for c in WORK_COLS}
+    out = []
+    for key, short, cls in (("queued", "Q", ""), ("next", "N", "n"),
+                            ("in-progress", "P", "p"), ("done", "D", "d")):
+        if n[key]:
+            out.append(f'<span class="{cls}">{short}&nbsp;{n[key]}</span>')
+    return f'<div class="bpips">{"".join(out)}</div>' if out else ""
+
+
+def _cols(items_for):
+    """The four columns, drawn once and used by both boards."""
+    out = []
+    for col in WORK_COLS:
+        cards = items_for(col["key"])
+        out.append(
+            f'<div class="bcol" style="--col:{col["color"]}">'
+            f'<h3><span class="dot"></span>{html.escape(col["label"])}'
+            f'<span class="n">{len(cards)}</span></h3>'
+            + ("".join(cards) if cards else '<p class="empty">—</p>')
+            + "</div>")
+    return f'<div class="board">{"".join(out)}</div>'
+
+
+def work_board(root):
+    """The top board: one card per workstream, in the column its tasks put it in."""
+    def cards(key):
+        out = []
+        for ws in WORK["workstreams"]:
+            if ws_status(ws) != key:
+                continue
+            ts = ws["tasks"]
+            done = sum(1 for t in ts if t["status"] == "done")
+            pct = round(done * 100 / len(ts)) if ts else 0
+            out.append(
+                f'<a class="bcard" href="{root}{ws["id"]}/" style="--ws:{ws["color"]}">'
+                f'<b>{html.escape(ws["title"])}</b>'
+                f'<div class="bbar"><i style="width:{pct}%"></i></div>'
+                + _pips(ts) + "</a>")
+        return out
+    return _cols(cards)
+
+
+def ws_board(ws, root):
+    """One workstream's own board: the same four columns, carrying its tasks."""
+    def cards(key):
+        out = []
+        for t in ws["tasks"]:
+            if t["status"] != key:
+                continue
+            memo = t.get("memo")
+            who = []
+            if t.get("owner"):
+                who.append(WORK["sources"].get(t["owner"], t["owner"]))
+            if memo:
+                who.append(f'<a href="{MEMO_ROOT}{memo}/">memo {MEMO_BY_ID[memo]["date"]}</a>')
+            out.append(
+                f'<div class="bcard" style="--ws:{ws["color"]}" id="{html.escape(t["id"])}">'
+                f'<span class="tid">{html.escape(t["id"])}</span>'
+                f'<b>{html.escape(t["title"])}</b>'
+                f'<p>{t["description"]}</p>'
+                + (f'<span class="blocked"><b>Blocked on</b> {t["blocked"]}</span>'
+                   if t.get("blocked") else "")
+                + (f'<span class="who">{" · ".join(who)}</span>' if who else "")
+                + "</div>")
+        return out
+    return _cols(cards)
+
+
+WORK_ROOT = "/admin/work/"
+MEMO_ROOT = "/admin/memos/"
+RAIL_ROOT = "/admin/rails/"
+
+
+def _console_page(out_dir, ctx_shared, url, fm, crumb, body, src_md):
+    """Emit one console page and its markdown twin. Every generated admin page
+    goes through here, so none of them can quietly miss a twin — an agent reads
+    the markdown and a page without one is a page it cannot see."""
+    ctx = dict(ctx_shared)
+    ctx.update({"page": url, "page_url": url, "fm": fm, "toc": []})
+    fm.setdefault("robots", "noindex,follow")
+    page = {"fm": fm, "url": url, "crumb": crumb, "nav_match": "/ledger/", "src_md": src_md}
+    target = out_dir / url.strip("/") / "index.html"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(console_html(page, ctx, shortcodes_inline(body, ctx)))
+    (target.parent / "index.md").write_text(src_md.rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
+    return fm["title"]
+
+
+def _strip(s):
+    return html.unescape(re.sub(r"<[^>]+>", "", s))
+
+
+
+# ------------------------------------------- hard rule 12, and somebody's words ----
+# The rule bars three words from this site, with NO ALLOWLIST — and the check that
+# holds it says in its own comment why: an allowance is a thing that widens, one
+# section becoming one page becoming "in context".
+#
+# A memo is somebody else's words and is kept word for word, and one of them uses a
+# barred term in passing. That is a real collision between two things this site is
+# right about, and there are only three ways out: edit the quotation, widen the
+# rule, or say what happened.
+#
+# IT SAYS WHAT HAPPENED. The term is withheld in place — a visible marker where the
+# word was, counted, named by which of the three it is, and linked to the page that
+# explains the ruling. The source file keeps the memo intact; only the rendering
+# withholds. And the promise on the page changes with it: "nothing trimmed" becomes
+# "nothing trimmed, one term withheld and marked", because a promise that is nearly
+# true is worse than a smaller one that is exactly true.
+#
+# Whether a quotation should have been in scope at all is not the builder's call.
+# It is a ruling, it is on the board, and if it goes the other way this function is
+# deleted rather than adjusted.
+WITHHELD_TERMS = [
+    (re.compile(r"\bzero[- ]knowledge\b", re.I), "the contested encryption term"),
+    (re.compile(r"\bmemory\b", re.I), "the contested durability term"),
+    (re.compile(r"\bagentic\b", re.I), "the contested autonomy term"),
+]
+
+
+def withhold(text):
+    """(text with every barred term replaced by a marker, [which terms])."""
+    found = []
+
+    def swap(label):
+        def f(_m):
+            found.append(label)
+            return f"\u27e6withheld \u2014 {label}\u27e7"
+        return f
+
+    for rx, label in WITHHELD_TERMS:
+        text = rx.sub(swap(label), text)
+    return text, found
+
+def work_pages(out_dir, ctx_shared):
+    """The board, and one page per workstream."""
+    made = {}
+    cols_note = "".join(
+        f'<div class="row2"><div><b>{html.escape(c["label"])}</b><p>{html.escape(c["meaning"])}</p>'
+        f"</div><span class=\"st st--{i + 1}\">{html.escape(c['key'])}</span></div>"
+        for i, c in enumerate(WORK_COLS))
+    total = sum(len(w["tasks"]) for w in WORK["workstreams"])
+    open_n = sum(1 for w in WORK["workstreams"] for t in w["tasks"] if t["status"] != "done")
+
+    body = (
+        f'<p class="lead">{html.escape(WORK["_what_this_is"])}</p>'
+        + work_board(WORK_ROOT)
+        + '<h2 id="how-a-unit-of-work-gets-here">How a unit of work gets here</h2>'
+        f'<p>{html.escape(WORK["_how_to_add"])}</p>'
+        '<p><b>A workstream is never dragged.</b> The column a workstream card sits in is computed '
+        'from the tasks inside it — all done and it is done, anything in progress and it is in '
+        'progress — so the board above cannot say something the board inside a card contradicts. '
+        'The progress bar is <em>done over total</em> and nothing else; it is not an estimate and it '
+        'is not a percentage of effort.</p>'
+        '<h2 id="the-four-columns">The four columns</h2>'
+        f'<div class="rows">{cols_note}</div>'
+        '<h2 id="where-this-shape-came-from">Where this shape came from</h2>'
+        '<p>The two-level board — workstream cards whose column is derived, opening into that '
+        'workstream’s own tasks in the same four columns — is the one running at '
+        '<a href="https://sgraph.ai/en-gb/dev/workstreams/">sgraph.ai/en-gb/dev/workstreams/</a>, '
+        'read on 16 September 2026. The column names and their colours are that board’s, kept '
+        'deliberately, so somebody who reads both reads one scale rather than two.</p>'
+        '<p><b>What is not adopted is how it is fed.</b> That board reads its JSON out of an '
+        'encrypted vault at runtime with a published read key, which is the right answer for a site '
+        'built to do that. This one renders at build time from a file in the repository, because '
+        'every page on this store opens no connection and '
+        '{{claim:lab-brief-stays-local}}</p>')
+
+    md = [f"# The work\n\n{_strip(WORK['_what_this_is'])}\n",
+          f"**{len(WORK['workstreams'])} workstreams · {total} units of work · {open_n} not done.**\n"]
+    for ws in WORK["workstreams"]:
+        md.append(f"\n## {ws['title']} — {ws_status(ws)}\n\n{_strip(ws['description'])}\n")
+        for t in ws["tasks"]:
+            md.append(f"- **{t['id']} · {t['title']}** — `{t['status']}` — {_strip(t['description'])}"
+                      + (f" _Blocked on: {_strip(t['blocked'])}_" if t.get("blocked") else ""))
+        md.append("")
+    made[WORK_ROOT] = _console_page(
+        out_dir, ctx_shared, WORK_ROOT,
+        {"title": "The work",
+         "description": ("Every unit of work for this store as a two-level board: nine workstreams "
+                         "whose column is derived from the tasks inside them, and one page per "
+                         "workstream. Generated from data/admin/work.json."),
+         "blurb": (f"<b>{len(WORK['workstreams'])} workstreams · {total} units of work · "
+                   f"{open_n} not done.</b> Every card is generated from one file, and a workstream "
+                   "moves only because a task in it moved.")},
+        ' / <a href="/admin/">admin</a> / work', body, "\n".join(md))
+
+    for ws in WORK["workstreams"]:
+        url = f"{WORK_ROOT}{ws['id']}/"
+        ts = ws["tasks"]
+        done = sum(1 for t in ts if t["status"] == "done")
+        memo = ws.get("memo")
+        wb = (
+            (f'<div class="panel r2"><p><b>This workstream came out of a memo.</b> '
+               f'<a href="{MEMO_ROOT}{memo}/">{html.escape(MEMO_BY_ID[memo]["title"])}</a>, '
+               f'{html.escape(MEMO_BY_ID[memo]["date"])} — kept verbatim, read into a brief, and '
+               f'broken into the units below.</p></div>' if memo else "")
+            + ws_board(ws, WORK_ROOT)
+            + f'<p><a href="{WORK_ROOT}">← every workstream</a></p>')
+        m = [f"# {ws['title']}\n\n{_strip(ws['description'])}\n",
+             f"**{done} of {len(ts)} done.** Status: `{ws_status(ws)}`.\n"]
+        if memo:
+            m.append(f"From the memo *{MEMO_BY_ID[memo]['title']}* "
+                     f"({MEMO_BY_ID[memo]['date']}) — {SITE['base']}{MEMO_ROOT}{memo}/\n")
+        for t in ts:
+            m.append(f"- **{t['id']} · {t['title']}** — `{t['status']}` — {_strip(t['description'])}"
+                     + (f" _Blocked on: {_strip(t['blocked'])}_" if t.get("blocked") else ""))
+        made[url] = _console_page(
+            out_dir, ctx_shared, url,
+            {"title": ws["title"],
+             "description": _strip(ws["description"])[:300],
+             "blurb": f"<b>{done} of {len(ts)} units done.</b> {html.escape(ws['description'])}"},
+            f' / <a href="{WORK_ROOT}">work</a> / {html.escape(ws["id"])}', wb, "\n".join(m))
+    return made
+
+
+def memo_pages(out_dir, ctx_shared):
+    """The queue: one page per memo, kept verbatim, with what we read in it and
+    the units of work it produced — pulled live off the board rather than listed
+    here a second time."""
+    made = {}
+    steps = "".join(f"<li><b>{html.escape(a)}</b><p>{html.escape(b)}</p></li>"
+                    for a, b in MEMOS["_the_process"])
+    rows = []
+    for m in MEMOS["memos"]:
+        ws_ids = [i for i in m["workstreams"] if i in WORK_BY_ID]
+        n = sum(len(WORK_BY_ID[i]["tasks"]) for i in ws_ids)
+        done = sum(1 for i in ws_ids for t in WORK_BY_ID[i]["tasks"] if t["status"] == "done")
+        rows.append(
+            f'<div class="row2"><div><b><a href="{MEMO_ROOT}{m["id"]}/">'
+            f'{html.escape(m["title"])}</a></b><p>{html.escape(m["summary"])}</p></div>'
+            f'<span class="st st--{4 if done == n else 2}">{m["date"]} · {done}/{n}</span></div>')
+
+    body = (
+        f'<p class="lead">{html.escape(MEMOS["_what_this_is"])}</p>'
+        f'<div class="rows">{"".join(rows)}</div>'
+        '<h2 id="the-process">The four steps</h2>'
+        f'<ol class="steps">{steps}</ol>'
+        '<h2 id="why-verbatim">Why the memo is kept word for word</h2>'
+        f'<p>{html.escape(MEMOS["_why_verbatim"])}</p>')
+    md = ["# The memo queue\n", _strip(MEMOS["_what_this_is"]), ""]
+    for m in MEMOS["memos"]:
+        md.append(f"- **{m['date']} — {m['title']}** — {m['summary']} — "
+                  f"{SITE['base']}{MEMO_ROOT}{m['id']}/")
+    made[MEMO_ROOT] = _console_page(
+        out_dir, ctx_shared, MEMO_ROOT,
+        {"title": "The memo queue",
+         "description": ("Every memo from the project lead, kept verbatim, read into a brief and "
+                         "broken into units of work on the board. Three so far."),
+         "blurb": (f"<b>{len(MEMOS['memos'])} memos.</b> Captured word for word, read into a brief, "
+                   "broken into units of work. The state below is read off the board, not typed.")},
+        ' / <a href="/admin/">admin</a> / memos', body, "\n".join(md))
+
+    for m in MEMOS["memos"]:
+        url = f"{MEMO_ROOT}{m['id']}/"
+        ws_ids = [i for i in m["workstreams"] if i in WORK_BY_ID]
+        units = "".join(
+            f'<div class="row2"><div><b><a href="{WORK_ROOT}{i}/">'
+            f'{html.escape(WORK_BY_ID[i]["title"])}</a></b>'
+            f'<p>{html.escape(WORK_BY_ID[i]["description"])}</p></div>'
+            f'<span class="st st--{4 if ws_status(WORK_BY_ID[i]) == "done" else 2}">'
+            f'{sum(1 for t in WORK_BY_ID[i]["tasks"] if t["status"] == "done")}'
+            f'/{len(WORK_BY_ID[i]["tasks"])}</span></div>' for i in ws_ids)
+        said, held = withhold(m["verbatim"])
+        verb = "".join(f"<p>{html.escape(par)}</p>"
+                       for par in said.split("\n\n") if par.strip())
+        held_note = ("" if not held else
+                     '<p class="withheld-note"><b>Something was withheld, and this is it.</b> '
+                     + ("A term" if len(held) == 1 else f"{len(held)} terms")
+                     + " in the memo "
+                     + ("is" if len(held) == 1 else "are")
+                     + " barred from this site by a ruling \u2014 "
+                     + ", ".join(sorted(set(held)))
+                     + ' \u2014 so '
+                     + ("it is" if len(held) == 1 else "they are")
+                     + ' marked in place rather than cut quietly or the rule bent to admit '
+                     + ("it" if len(held) == 1 else "them")
+                     + '. The memo itself is intact in <code>data/admin/memos.json</code>. '
+                     '<a href="/disclosures/">Why these words are not used here</a>.</p>')
+        body = (
+            '<h2 id="verbatim">The memo, word for word</h2>'
+            + f'<p>{html.escape(m["form"].rstrip("."))}. Nothing trimmed, reordered or paraphrased'
+            + ('.' if not held else
+               f', and {len(held)} term{"" if len(held) == 1 else "s"} withheld and marked.')
+            + ' The reading of it below is ours and is kept separate on purpose.</p>'
+            + held_note
+            + f'<div class="panel">{verb}</div>' 
+            '<h2 id="what-we-read-in-it">What we read in it</h2>'
+            + "".join(f'<div class="panel"><h3>{html.escape(h)}</h3><p>{t}</p></div>'
+                      for h, t in m["read"])
+            + '<h2 id="not-decided">What this does not decide</h2>'
+            '<p>Written down rather than guessed at. A memo is a direction; these are the places it '
+            'stops, and every one of them is somebody’s call rather than a gap in the transcript.</p>'
+            + "".join(f'<div class="panel r2"><h3>{html.escape(h)}</h3><p>{t}</p></div>'
+                      for h, t in m["not_decided"])
+            + '<h2 id="the-work-it-produced">The work it produced</h2>'
+            '<p>Live off the board. If a unit below moves, this moves with it.</p>'
+            f'<div class="rows">{units}</div>'
+            f'<p><a href="{MEMO_ROOT}">← the queue</a></p>')
+        md = [f"# {m['title']}\n", f"*{m['date']} · {m['form']}*\n", m["summary"], "",
+              "## The memo, word for word\n"]
+        if held:
+            md.append("*" + ", ".join(sorted(set(held)))
+                      + f" \u2014 {len(held)} term(s) withheld in place and marked. "
+                      + 'See /disclosures/.*\n')
+        md += ["> " + said.replace("\n", "\n> "), "",
+              "## What we read in it\n"]
+        md += [f"### {h}\n\n{_strip(t)}\n" for h, t in m["read"]]
+        md += ["## What this does not decide\n"]
+        md += [f"### {h}\n\n{_strip(t)}\n" for h, t in m["not_decided"]]
+        md += ["## The work it produced\n"]
+        md += [f"- **{WORK_BY_ID[i]['title']}** — {SITE['base']}{WORK_ROOT}{i}/" for i in ws_ids]
+        made[url] = _console_page(
+            out_dir, ctx_shared, url,
+            {"title": m["title"], "description": m["summary"],
+             "blurb": f"<b>{m['date']}.</b> {html.escape(m['summary'])}"},
+            f' / <a href="{MEMO_ROOT}">memos</a> / {html.escape(m["date"])}', body, "\n".join(md))
+    return made
+
+
+def stripe_catalogue():
+    """What Stripe's product list would be, emitted from data/offers.yml.
+
+    THE POINT IS THAT NOBODY TYPES A PRICE TWICE. The Stripe rail needs a
+    catalogue on its side, which re-opens exactly the drift this store spent the
+    last release closing. It is survivable for one reason: a price here does not
+    vary by shape, so this is eight rows rather than sixty-two. This file is what
+    gets copied from, and it cannot disagree with the offers because it is made
+    out of them."""
+    rows = []
+    for o in OFFERS:
+        # An offer priced as a band has no single number, so it has no Stripe price
+        # and it is not quietly given one. Two of the six are bands today.
+        if not o["price_min"] or o["price_min"] != o["price_max"]:
+            continue
+        rows.append({"lookup_key": f"SG-{o['id'].upper()}", "product": o["question"],
+                     "currency": "gbp", "unit_amount": o["price_min"],
+                     "label": o["price_label"], "offer": o["id"], "kind": "full"})
+        pct = o.get("pay_now_pct", 100)
+        if pct != 100:
+            rows.append({"lookup_key": f"SG-{o['id'].upper()}-DEPOSIT",
+                         "product": o["question"], "currency": "gbp",
+                         "unit_amount": o["price_min"] * pct // 100,
+                         "label": f"{pct}% deposit on {o['price_label']}",
+                         "offer": o["id"], "kind": "deposit"})
+    return {"_what_this_is": ("The Stripe catalogue, generated from data/offers.yml at build time. "
+                             "Create these in the dashboard and copy from here rather than by "
+                             "eye. A price on this store does not vary by shape, which is why "
+                             "this is a short file."),
+            "_never_here": ("No key of any kind, and no shape. The fifteen shapes are a selection "
+                            "carried in the order reference and resolved on this side."),
+            "version": SITE["version"], "currency": "gbp", "prices": rows}
+
+
+def rails_pages(out_dir, ctx_shared):
+    """One page per payment rail, plus the index that compares them."""
+    made = {}
+    shared = RAIL_PLANS["shared"]
+    sh = ("<h2 id=\"what-both-rails-are-handed\">" + html.escape(shared["title"]) + "</h2>"
+          f'<div class="panel r2"><p>{shared["note"]}</p></div>'
+          + '<h3>Given</h3><div class="rows">'
+          + "".join(f'<div class="row2"><div><b>{a}</b><p>{b}</p></div></div>'
+                    for a, b in shared["given"]) + "</div>"
+          + '<h3>Never given</h3><div class="rows">'
+          + "".join(f'<div class="row2"><div><b>{a}</b><p>{b}</p></div></div>'
+                    for a, b in shared["never_given"]) + "</div>")
+
+    rows = "".join(
+        f'<div class="row2"><div><b><a href="{r["url"]}">{html.escape(r["name"])}</a></b>'
+        f'<p>{html.escape(r["one_line"])}</p></div>'
+        f'<span class="st st--{r["rank"]}">{html.escape(r["state"])}</span></div>'
+        for r in RAIL_PLANS["rails"])
+    body = (
+        '<p class="lead">Two rails, neither of them live. '
+        '{{claim:checkout-links-not-issued}} These are the plans that end that — what each provider '
+        'is handed, what has to exist before a first real order, and in what order.</p>'
+        f'<div class="rows">{rows}</div>' + sh)
+    md = ["# Turning on a payment rail\n", _strip(RAIL_PLANS["_what_this_is"]), ""]
+    md += [f"- **{r['name']}** — {r['state']} — {r['one_line']} — {SITE['base']}{r['url']}"
+           for r in RAIL_PLANS["rails"]]
+    made[RAIL_ROOT] = _console_page(
+        out_dir, ctx_shared, RAIL_ROOT,
+        {"title": "Taking money",
+         "description": ("How each payment rail gets turned on: what the provider is handed, what "
+                         "it is never handed, and what has to exist before a first real order."),
+         "blurb": "<b>Two rails. Neither is live.</b> What each one is handed, and the order the "
+                  "steps have to happen in."},
+        ' / <a href="/admin/">admin</a> / rails', body, "\n".join(md))
+
+    for r in RAIL_PLANS["rails"]:
+        steps = "".join(
+            f"<li><b>{a}</b><p>{b}</p>"
+            + (f'<p class="blocked-on"><b>Blocked on.</b> {c}</p>' if c else "")
+            + "</li>" for a, b, c in r["steps"])
+        body = (
+            "".join(f'<div class="panel"><p>{w}</p></div>' for w in r["why"])
+            + '<h2 id="the-contract">What this rail is handed</h2><div class="rows">'
+            + "".join(f'<div class="row2"><div><b>{a}</b><p>{b}</p></div></div>'
+                      for a, b in r["contract"]) + "</div>"
+            + f'<h2 id="the-steps">The steps, in order</h2><ol class="steps">{steps}</ol>'
+            + '<h2 id="still-open">Still open</h2>'
+            + "".join(f'<div class="panel r2"><h3>{html.escape(a)}</h3><p>{b}</p></div>'
+                      for a, b in r["open"])
+            + (('<h2 id="the-catalogue">The catalogue, generated</h2>'
+                '<p>Eight prices across six products, emitted from <code>data/offers.yml</code> at '
+                'build time and served beside this page as '
+                f'<a href="{r["url"]}catalogue.json"><code>catalogue.json</code></a>. <b>Copy from '
+                'it rather than by eye.</b> It carries no key and no shape.</p>'
+                '<div class="rows">'
+                + "".join(
+                    f'<div class="row2"><div><b><code>{p["lookup_key"]}</code></b>'
+                    f'<p>{html.escape(p["product"])} — {html.escape(p["label"])}</p></div>'
+                    f'<span class="st st--3">{p["unit_amount"]}p</span></div>'
+                    for p in stripe_catalogue()["prices"]) + "</div>")
+               if r["id"] == "stripe" else "")
+            + f'<p><a href="{RAIL_ROOT}">← both rails</a></p>')
+        md = [f"# {r['name']}\n", f"**{r['state']}** — {r['one_line']}\n", "## Why\n"]
+        md += [_strip(w) + "\n" for w in r["why"]]
+        md += ["## What this rail is handed\n"] + [f"- **{_strip(a)}** — {_strip(b)}"
+                                                   for a, b in r["contract"]] + [""]
+        md += ["## The steps, in order\n"]
+        md += [f"{i}. **{_strip(a)}** — {_strip(b)}"
+               + (f" _Blocked on: {_strip(c)}_" if c else "")
+               for i, (a, b, c) in enumerate(r["steps"], 1)] + [""]
+        md += ["## Still open\n"] + [f"- **{_strip(a)}** — {_strip(b)}" for a, b in r["open"]]
+        made[r["url"]] = _console_page(
+            out_dir, ctx_shared, r["url"],
+            {"title": r["name"], "description": r["one_line"],
+             "blurb": f"<b>{html.escape(r['state'])}</b> {html.escape(r['one_line'])}"},
+            f' / <a href="{RAIL_ROOT}">rails</a> / {html.escape(r["id"])}', body, "\n".join(md))
+        if r["id"] == "stripe":
+            (out_dir / r["url"].strip("/") / "catalogue.json").write_text(
+                json.dumps(stripe_catalogue(), indent=2) + "\n")
+    return made
+
+
+def block_console_dash(ctx):
+    """The dashboard. Every number on it is computed by console_counts() from the
+    same files the pages are built from, so a tile cannot disagree with the page
+    it points at. Nothing here is typed."""
+    c = console_counts()
+    tiles = [
+        ("r1", c["blockers"], "blocking a first paid order",
+         "no rail is live" if not c["rails_live"] else ""),
+        ("r2", c["work_next"], "units of work in flight",
+         f"of {c['work_total']} across {c['workstreams']}"),
+        ("r3", c["memos"], "memos in the queue", "captured, read, broken up"),
+        ("r3", c["reviews"], "reviews, dated and kept", f"{c['proposals']} proposals"),
+        ("r4", c["claims"], "claims in the ledger", f"{c['rulings']} awaiting a ruling"),
+        ("r3", c["skus"], "things that can be bought",
+         f"{c['shapes']} shapes, {c['offers']} offers"),
+    ]
+    tile_html = "".join(
+        f'<div class="tile {r}"><b>{n}</b><span>{html.escape(lab)}</span>'
+        + (f"<em>{html.escape(sub)}</em>" if sub else "") + "</div>"
+        for r, n, lab, sub in tiles)
+
+    # What is next, read off the board rather than listed here a second time.
+    nxt = [(ws, task) for ws in WORK["workstreams"] for task in ws["tasks"]
+           if task["status"] in ("next", "in-progress")]
+    rows = "".join(
+        f'<div class="row2"><div><b><a href="{WORK_ROOT}{ws["id"]}/#{t["id"]}">'
+        f'{html.escape(t["title"])}</a></b>'
+        f'<p>{html.escape(ws["title"])}'
+        + (f' · <b>blocked on</b> {_strip(t["blocked"])}' if t.get("blocked") else "")
+        + f'</p></div><span class="st st--{2 if t.get("blocked") else 3}">'
+        f'{html.escape(t["id"])}</span></div>' for ws, t in nxt)
+
+    return (f'<div class="tiles">{tile_html}</div>'
+            f'<h2 id="in-flight">In flight — {len(nxt)} units of work</h2>'
+            '<p>Read off <a href="/admin/work/">the board</a>. A unit is here because it is next in '
+            'its workstream or being worked on now; it is not here because somebody added it to a '
+            'list twice.</p>'
+            f'<div class="rows">{rows}</div>')
+
+
+BLOCKS["console-dash"] = block_console_dash
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -2936,7 +3628,8 @@ def build(out_dir):
     for url, (page, ctx, body) in rendered.items():
         target = out_dir / url.strip("/") / "index.html" if url != "/" else out_dir / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(page_html(page, ctx, body))
+        shell = console_html if page["fm"].get("console") else page_html
+        target.write_text(shell(page, ctx, body))
         twin = page["src_md"].rstrip("\n")
         if LICENCE_STAMP not in twin:
             twin += f"\n\n---\n\n{LICENCE_STAMP}\n"
@@ -2962,6 +3655,12 @@ def build(out_dir):
     extra.update(shape_pages(out_dir, ctx_shared))
     extra.update(release_pages(out_dir, ctx_shared))
     extra.update(review_pages(out_dir, ctx_shared))
+    # The console's own generated surfaces. They come last because the memo pages
+    # read the live state of the board and the board reads the offers, so nothing
+    # here may be built before the thing it counts.
+    extra.update(rails_pages(out_dir, ctx_shared))
+    extra.update(work_pages(out_dir, ctx_shared))
+    extra.update(memo_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The
     # documents are held; the hashes are not, so a reader holding the pack can

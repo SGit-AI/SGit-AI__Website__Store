@@ -13,7 +13,7 @@ The twelve-second fallback is stated rather than glossed: if the handshake does 
 One thing found on the way. site.css already carried the estate's embed rules with a comment saying the surface is deliberately wider than the text column — and `.sgv-uiembed iframe` at (0,1,1) beat the component's own `.sgv-breakout` at (0,1,0), so the frame had always been exactly the width of the column and the comment described something that was not happening. The breakout moved to the container, and review.css stopped keeping a second copy of rules site.css owns.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `ad46c8f1b75492fe77974a0044f4f3e322370ba4`
 - Reconstructed: no
 
 ---

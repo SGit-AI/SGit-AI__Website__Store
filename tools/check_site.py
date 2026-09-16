@@ -792,10 +792,26 @@ def check_checkout_links():
     # Nothing may link to a checkout that is not one of the declared ones. A payment
     # destination typed into a paragraph is a payment destination no data file knows
     # about and no check can hold to a price.
+    #
+    # NARROWED ONCE, ON 16 SEPTEMBER, AND SAY EXACTLY HOW FAR. The pattern was any
+    # absolute URL with a provider's name anywhere in it, which was right while no
+    # page here had a provider's name in its own address. /admin/rails/stripe/ does,
+    # so the check started failing the release over this site linking to itself.
+    # A false positive is how a check gets deleted, so it is narrowed instead.
+    #
+    # WHAT STAYS ABSOLUTE: an off-site URL naming a provider is still a checkout and
+    # still has to be declared, on any page, in any file. The exception is ONE
+    # origin, this one, and what makes it safe is a fact rather than a convenience —
+    # nothing on store.sgit.ai takes a payment, so a URL on store.sgit.ai cannot be
+    # a payment destination. check_no_forms is what keeps that true.
+    own = f"https://{DOMAIN}/"
     for rel, text in texts():
         for m in re.finditer(r'href="(https?://[^"]*stripe[^"]*)"', text, re.I):
-            if m.group(1) not in declared:
-                fail(f"{rel}: links to a checkout {m.group(1)!r} that no offer declares — "
+            url = m.group(1)
+            if url.startswith(own):
+                continue
+            if url not in declared:
+                fail(f"{rel}: links to a checkout {url!r} that no offer declares — "
                      "every payment destination comes from data/offers.yml or it does not exist")
         for m in re.finditer(r"\bpk_(?:live|test)_[A-Za-z0-9]{8,}", text):
             fail(f"{rel}: a publishable payment key is in the output. Nothing on this site talks "
@@ -1583,6 +1599,116 @@ def check_follow_up_is_twenty_four_hours():
              "download, so nothing is waited for and this store must not say anything is")
 
 
+# ------------------------------------------- the queue, the board, the catalogue ---
+# THREE FILES FEED THE CONSOLE AND NONE OF THEM IS CHECKED BY ANYTHING ELSE.
+# data/admin/memos.json is the queue, data/admin/work.json is the board, and the
+# Stripe catalogue is generated from the offers. A board is only worth having if
+# it cannot quietly disagree with itself, so what these hold is exactly that:
+# every reference resolves, every status is one the board can draw, and the price
+# list handed to a payment provider says what data/offers.yml says.
+WORK_COLUMNS = ("queued", "next", "in-progress", "done")
+
+
+def _admin_json(name):
+    return json.loads((ROOT / "data" / "admin" / name).read_text())
+
+
+def check_the_board_is_whole():
+    work = _admin_json("work.json")
+    memos = _admin_json("memos.json")
+    cols = tuple(c["key"] for c in work["columns"])
+    if cols != WORK_COLUMNS:
+        fail(f"the board's columns are {cols}, and the four it is drawn with are {WORK_COLUMNS} — "
+             "a fifth column is a design change, not a data edit")
+    ws_ids = {w["id"] for w in work["workstreams"]}
+    memo_ids = {m["id"] for m in memos["memos"]}
+    seen = set()
+    for w in work["workstreams"]:
+        if w.get("memo") and w["memo"] not in memo_ids:
+            fail(f"workstream {w['id']}: names memo {w['memo']!r}, which is not in the queue")
+        if not w["tasks"]:
+            fail(f"workstream {w['id']}: has no units of work. An empty workstream is a heading "
+                 "pretending to be a plan")
+        for task in w["tasks"]:
+            if task["id"] in seen:
+                fail(f"task {task['id']}: appears twice on the board")
+            seen.add(task["id"])
+            if task["status"] not in cols:
+                fail(f"task {task['id']}: status {task['status']!r} is not a column on this board, "
+                     "so the card would be built and never drawn")
+            if task.get("memo") and task["memo"] not in memo_ids:
+                fail(f"task {task['id']}: names memo {task['memo']!r}, which is not in the queue")
+            if task.get("source") and task["source"] not in work["sources"]:
+                fail(f"task {task['id']}: source {task['source']!r} is not one this board names")
+    # A memo that produced no work is a memo that was filed and not acted on. That
+    # is the exact failure this queue exists to make impossible.
+    for m in memos["memos"]:
+        if not m["workstreams"]:
+            fail(f"memo {m['id']}: names no workstream — captured and never broken into work")
+        for wid in m["workstreams"]:
+            if wid not in ws_ids:
+                fail(f"memo {m['id']}: names workstream {wid!r}, which is not on the board")
+
+
+def check_the_board_pages_agree_with_the_board():
+    """The rendered board is generated, so this checks the arithmetic rather than
+    the wiring: a workstream is drawn in the column its own tasks put it in."""
+    work = _admin_json("work.json")
+    for w in work["workstreams"]:
+        ts = [t["status"] for t in w["tasks"]]
+        want = ("done" if all(s == "done" for s in ts)
+                else "in-progress" if "in-progress" in ts
+                else "next" if "next" in ts else "queued")
+        want = w.get("status", want)
+        page = OUT / "admin" / "work" / "index.md"
+        if not page.exists():
+            fail("admin/work/index.md: the board has no markdown twin")
+            return
+        if f"## {w['title']} — {want}" not in page.read_text():
+            fail(f"workstream {w['id']}: its tasks put it in {want!r} and the board's twin does not "
+                 "say so — the summary and the detail have come apart")
+
+
+def check_the_stripe_catalogue_is_the_offers():
+    """A catalogue on the provider's side is a second copy of the prices, which is
+    the drift this store spent a release closing. It is admitted for one reason —
+    it is eight rows, not sixty-two — and this is what keeps it honest."""
+    f = OUT / "admin" / "rails" / "stripe" / "catalogue.json"
+    if not f.exists():
+        fail("admin/rails/stripe/catalogue.json: the generated Stripe catalogue is missing")
+        return
+    cat = json.loads(f.read_text())
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offers = {o["id"]: o for o in index["offers"]}
+    for row in cat["prices"]:
+        o = offers.get(row["offer"])
+        if not o:
+            fail(f"the Stripe catalogue prices offer {row['offer']!r}, which this site does not sell")
+            continue
+        if row["kind"] == "full" and row["label"] != o["price"]:
+            fail(f"Stripe catalogue {row['lookup_key']}: says {row['label']!r} and the offer says "
+                 f"{o['price']!r} — data/offers.yml is the only place a price exists")
+        if row["currency"] != "gbp":
+            fail(f"Stripe catalogue {row['lookup_key']}: currency {row['currency']!r}, not gbp")
+    for bad in ("sk_live", "sk_test", "whsec_", "pk_live", "pk_test"):
+        if bad in json.dumps(cat):
+            fail(f"the Stripe catalogue carries {bad!r}. It is a price list; a key is never in one")
+
+
+def check_a_withheld_term_is_declared():
+    """Hard rule 12 has no allowlist, so a memo quoting a barred word renders a
+    marker in its place. A marker without the sentence that explains it would be
+    a silent edit of somebody's words, which is the thing the marker exists to
+    prevent."""
+    for p in pages():
+        rel = str(p.relative_to(OUT)).replace(os.sep, "/")
+        text = p.read_text()
+        if "\u27e6withheld" in text or "⟦withheld" in text:
+            if "withheld and marked" not in text and "withheld in place" not in text:
+                fail(f"{rel}: a term is withheld in place and the page does not say so. A quotation "
+                     "that has been altered says it has been altered")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -1612,6 +1738,8 @@ def main():
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,
+        check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
+        check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,
     ]:
         fn()
     if failures:

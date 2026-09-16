@@ -79,8 +79,15 @@ def main() -> int:
         # ship a release that still has none.
         "commit": "",
         "site": "store.sgit.ai",
-        "title": summary,
-        "summary": summary,
+        # THE FIRST LINE IS THE TITLE AND THE REST IS THE NOTE. Both fields used to
+        # take the whole argument and the title was trimmed by hand afterwards —
+        # which worked until the first release whose note ran to four paragraphs,
+        # and put all 3,794 characters of it inside <title>. The gate caught it
+        # because the unrendered bold markers reached the page; that was luck, and
+        # the split belongs here.
+        "title": summary.strip().split("\n", 1)[0].strip(),
+        "summary": (summary.strip().split("\n", 1)[1].strip()
+                    if "\n" in summary.strip() else summary.strip()),
         "changes": sorted({f.split("/")[0] for f in subprocess.run(
             ["git", "diff", "--name-only", "HEAD"], capture_output=True, text=True,
             cwd=ROOT).stdout.split() if not f.startswith("docs/")})[:12],

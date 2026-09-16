@@ -1,0 +1,213 @@
+{
+  "_what_this_is": "How each payment rail gets turned on. One record per rail, and each is a plan rather than a description: what the store hands the provider, what the provider is never handed, what has to exist before a first real order, and in what order. Written while every checkout_url in data/checkout.yml is still empty, which is the state these pages exist to end.",
+  "shared": {
+    "title": "What both rails are handed, and what neither ever is",
+    "note": "<b>This block changed on 16 September 2026 and the change is worth naming.</b> Until that day it said the provider is handed an amount and a reference and nothing else — <i>“neither provider gets a product list, a price list or a shape”</i> — and the reason given was that a catalogue maintained in two places will one day disagree. That was the right instinct and the wrong conclusion, because it bought consistency by giving up the thing the store actually needs: <b>a buyer who is a customer rather than a card charge</b>. An amount-only link takes money from a stranger. A catalogue-backed checkout takes money from somebody with an email address, a name and a record, and it can charge them nothing at all and still do it. So Stripe now gets a catalogue, the drift risk is real, and the mitigation is written into the plan below rather than wished away.",
+    "given": [
+      [
+        "An amount, in pence",
+        "What is due NOW, which is the whole price at the two produced levels and a fifth at the two that are somebody's work. The split is a property of the offer and is computed here, not there."
+      ],
+      [
+        "An order reference",
+        "<code>SG-</code> and six characters from an alphabet with no <code>0</code>/<code>O</code> or <code>1</code>/<code>I</code>, so it survives being read down a phone. It is generated in the buyer's browser and exists nowhere else until they pay."
+      ],
+      [
+        "The product codes, inside that reference",
+        "<code>SG-4A7434 ABP-GML-P ABP-GML-C</code>. The reference is the whole order; the catalogue entry below is only what it cost."
+      ],
+      [
+        "<b>Stripe only:</b> the offer catalogue — eight prices, not sixty-two",
+        "Six products and eight prices, because <b>a price here does not vary by shape</b>. Level two costs £50 whether the subject is a browser agent or a payments bot, so Stripe needs the four levels, the two add-ons and the two deposits — and never the fifteen shapes. That is what makes the two-places objection survivable: the thing duplicated is eight rows that change when a price changes, not a product line that changes every week."
+      ],
+      [
+        "<b>Stripe only:</b> an email address, typed by the buyer on Stripe's page",
+        "Which becomes a Customer, which is the entire reason for this rail. It is typed on Stripe's domain, into Stripe's form, and it never touches this one — there is no field on this site it could go in and a build check refuses to let one exist."
+      ]
+    ],
+    "never_given": [
+      [
+        "The shape, and the brief",
+        "Fifteen shapes, and at level three a written brief. Neither is a price and neither goes to a provider. The shape rides in the order reference and is resolved here; the brief is a file the buyer keeps. A provider that knew which agent a company was worried about would know more about that company than the shop does."
+      ],
+      [
+        "Anything about somebody who did not buy",
+        "No account, no cookie, no analytics, no name learned anywhere. The catalogue going to Stripe does not change that by one byte: it describes what is for sale, not who looked at it."
+      ],
+      [
+        "A secret key, anywhere in this repository",
+        "<code>sk_live_</code>, <code>sk_test_</code> and <code>whsec_</code> are refused everywhere by tools/secret-scan.sh, which runs on every release over the whole tree including the built site. A key lives in the provider's dashboard and in whatever runs the webhook, and in neither case in here. <b>The publishable key is a different object</b> and is not needed either, because this site loads nothing from Stripe."
+      ]
+    ]
+  },
+  "rails": [
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "url": "/admin/rails/stripe/",
+      "rank": 3,
+      "state": "Account set up. No product, no price, no link, no coupon.",
+      "one_line": "The rail for everything bought from a screen, and the one that turns a buyer into a customer — including a buyer who pays nothing.",
+      "why": [
+        "<b>The point of this rail is not the money. It is the customer record.</b> A hundred-per-cent discount code taken on this rail produces a Stripe Customer with an email, a name, a country and a completed checkout against a named product at a stated price — for £0. That is the whole shape of what the event needs: hand somebody a code, they go through the real purchase, and at the end of it there is a person in a system rather than a business card in a pocket.",
+        "<b>A payment link is an online payment, so no cross-border rule applies to it.</b> That is the reason this store is links rather than a card reader: a United Kingdom card account cannot tap in Portugal, the provider declines on detecting a different country, and a reader bought for the event would have been a box that says no in public to the first person who tried it.",
+        "<b>And a catalogue-backed checkout is the only version that can discount.</b> A link that asks the buyer to type an amount has nothing to take a percentage of. Once the price is an object in Stripe, a coupon is a percentage of it, a promotion code is a string a human can be handed, and the arithmetic happens on the rail rather than in a browser where it is a demonstration."
+      ],
+      "contract": [
+        [
+          "The catalogue, in full",
+          "<b>Six products, eight prices, all in GBP, all one-off.</b> <code>SG-T1</code> £5 · <code>SG-T2</code> £50 · <code>SG-T3</code> £500 with a second price of £100 for the deposit · <code>SG-T4</code> £1,500 with a second price of £300 · <code>SG-ADD-FORMATS</code> · <code>SG-ADD-OPINION</code>. Every number is read from <code>data/offers.yml</code>, which stays the only place a price exists on this side."
+        ],
+        [
+          "Who the buyer becomes",
+          "A <b>Customer</b>. Stripe Checkout always collects an email; what is not the default is keeping it — in payment mode Stripe creates a Customer only <i>if required</i>, and a £0 order requires nothing. <b>Customer creation has to be set to always, or the hundred-per-cent code produces a completed checkout and no customer, which is the exact opposite of why this rail was chosen.</b> This is the single setting most likely to be missed."
+        ],
+        [
+          "What the discount is",
+          "A <b>Coupon</b> carrying the percentage, and a <b>Promotion Code</b> carrying the string a person is handed. Three coupons — 25, 50 and 100 — and one promotion code per audience, each with its own redemption cap and expiry, so a code printed on a card at a stand can be killed without touching the code given to a beta tester."
+        ],
+        [
+          "What the link carries",
+          "<code>client_reference_id</code>, set to the order reference. Stripe stores it against the session and shows it in the dashboard. Optionally <code>prefilled_promo_code</code>, which is what a leaked-on-the-page code actually is: a link the buyer follows with the discount already applied and visible before they type anything."
+        ],
+        [
+          "Where it lands",
+          "riskmandate.ai's page for that level. <b>The store's existing contract is <code>?order=</code> filled in by us, and a standing link cannot do that</b> — the redirect URL is fixed per link and the only thing Stripe will substitute into it is the session id. So either the handover contract gains a session parameter and riskmandate.ai resolves it, or the buyer carries their reference on paper. That is a decision with another team in it and it is written up as one."
+        ],
+        [
+          "What the buyer types",
+          "Email, name, and — unless the total is zero — a card. On Stripe's pages. Nothing on this domain has a field any of it could go in, and check_no_forms fails the release if one appears."
+        ]
+      ],
+      "steps": [
+        [
+          "Create the six products and the eight prices",
+          "By hand in the dashboard is fine for eight rows and is the honest first version. What must not happen is a price typed out by hand: the build emits <code>/admin/rails/stripe/catalogue.json</code> from <code>data/offers.yml</code>, and that file is what gets copied from. Give every product the <code>SG-</code> code as its lookup key so a dashboard row can be matched to an offer without reading the description.",
+          null
+        ],
+        [
+          "Turn on customer creation, and prove it on a £0 order",
+          "<b>Set customer creation to always.</b> Then run one hundred-per-cent order end to end and look for the Customer in the dashboard. If it is not there the rail is doing the wrong job silently, and it will look like it worked — the buyer still sees a confirmation, the session still completes, and nothing anywhere says the record was dropped.",
+          null
+        ],
+        [
+          "Create three coupons and the promotion codes over them",
+          "25, 50 and 100 per cent. Then one promotion code per audience over the right coupon, with a redemption cap and an expiry on every one of them. <b>The seven codes this store already honours in the browser are the list to create</b> — same strings, so a code printed on a PDF at v0.1.11 still works once the rail is real. <code>data/discounts.yml</code> is the register; it ships the SHA-256 of each code and never the code itself.",
+          null
+        ],
+        [
+          "Enable promotion codes on every link, and prefill where a code was leaked deliberately",
+          "A link with the promotion-code field switched off refuses a valid code with no explanation, which is the worst failure available here — the buyer blames themselves. Where the store publishes a code on a page as part of a journey, the link on that page should carry it already applied rather than ask the buyer to re-type what they just read.",
+          null
+        ],
+        [
+          "Put the reference in <code>client_reference_id</code> and settle the return address",
+          "The reference is already in the URL the pay page builds. What is unsettled is the landing: the <code>?order=</code> contract cannot be filled by a standing link. Resolve it with the RiskMandate team before a first sale, not after — a buyer who lands on a page that cannot name what they bought has been failed at the one moment they were paying attention.",
+          "Blocked on another team. Everything above it is not."
+        ],
+        [
+          "Stand up the webhook",
+          "<b>This is the step that unblocks a first paid order at £50, £500 and £1,500.</b> Their pages promise a person within 24 hours and nothing carries a sale from here to that person. A <code>checkout.session.completed</code> handler that emails the follow-up mailbox the level, the reference, the customer and — at £500 — the template chosen is the smallest thing that closes it. <b>Listen to the session event, not to the payment.</b> A hundred-per-cent order creates no charge, so a handler keyed on a succeeded payment sees every paid order and none of the free ones, which is precisely the set this rail exists to capture.",
+          "It does not run on this site. This site is static and opens no connection; the handler is somebody else's process holding the signing secret, and it never appears in this repository."
+        ],
+        [
+          "Take one real payment, for £5, and read the receipt",
+          "Against the live rail, with a real card. Then read what the receipt actually says, whether the reference is on it under a name the buyer would recognise, and what the fee was. Every sentence on this page about a receipt is currently unverified.",
+          null
+        ],
+        [
+          "Retire the browser-side discount arithmetic",
+          "A code is recognised in the browser today, which is a demonstration and the page says so. The moment a promotion code exists on the rail there are two implementations of one rule, and the browser one is the one that can be edited by the person it is discounting. It comes out; the code field becomes a thing that carries a string to Stripe rather than a thing that computes.",
+          "Blocked on the coupons above."
+        ]
+      ],
+      "open": [
+        [
+          "Does the deposit want one payment or two?",
+          "The two upper levels take a fifth now and the rest on delivery, which is why there are eight prices and not six. Simplest: charge the deposit price and invoice the balance, which is what every page already says. The alternative — an authorisation held and captured later — changes what the buyer sees at the moment they pay, and the pages would have to change with it."
+        ],
+        [
+          "What happens to a deposit on a run that cannot be scheduled?",
+          "Both upper levels disclose that they have never been sold. Neither says what happens to the money if the first one goes badly. That is a hole the honesty opened and the rail cannot close it."
+        ],
+        [
+          "Does a £0 checkout collect an address, and should it?",
+          "A hundred-per-cent order collects no card, and the address fields Stripe would otherwise gather come with the card. If the event's purpose is a contact record then an address is probably worth asking for explicitly — and probably is not worth making required, because the person is standing at a stand and every extra field is somebody walking away."
+        ],
+        [
+          "Eight rows in two places. What catches the drift?",
+          "Nothing yet. The generated catalogue file makes the copy mechanical; it does not make it checked, because this site cannot read Stripe. The candidate is a small script run by hand at release that lists prices from the dashboard and diffs them against the file — out of the build, because the build opens no connection and that rule is not moving for this."
+        ]
+      ]
+    },
+    {
+      "id": "sumup",
+      "name": "SumUp",
+      "url": "/admin/rails/sumup/",
+      "rank": 2,
+      "state": "Being set up. No link created.",
+      "one_line": "The second rail, run on purpose — amount-only, no catalogue, and the one with a card reader behind it.",
+      "why": [
+        "<b>Running two rails is deliberate and it is a question, not a hedge.</b> Which one gives the better workflow is a thing to find out rather than to assume. <b>The cost of dropping one is no longer symmetric</b>, though, and that is new: Stripe now holds eight catalogue rows and the customer records behind them, and SumUp holds nothing but amounts. Dropping SumUp costs a line in a config file. Dropping Stripe costs the customer list.",
+        "<b>SumUp takes the amount on the URL</b>, which is the opposite trade from Stripe. A link can be built for an exact amount without the buyer typing one — better at a stand, worse for a cart whose total the seller does not know in advance. The store already knows how to build either, because <code>amount_param</code> is a field in <code>data/checkout.yml</code> rather than a branch in the code.",
+        "<b>And it cannot do the thing Stripe was just chosen for.</b> An amount-only link has no product to discount and no customer to create. That does not make it the wrong rail — it makes it the rail for a tap at a stand, where the interaction is a payment and the contact was collected by a person standing there. Naming that now stops the two rails being compared on a test only one of them was built to pass.",
+        "<b>And it is the rail with a card reader behind it.</b> The store lists contactless as a fourth rail for the tap at a stand. The deposit split works there exactly as it does online: what is taken on the tap is the amount due now and the rest is invoiced on delivery. The rail changes; the offer does not."
+      ],
+      "contract": [
+        [
+          "What the link carries",
+          "<code>reference</code> for the order line and <code>amount</code> for what is due now, both on the URL. The pay page already builds exactly that shape."
+        ],
+        [
+          "Where it lands",
+          "The same four success addresses as Stripe. Nothing about the handover is per-rail, which is the point of the handover being a contract rather than an integration."
+        ],
+        [
+          "Where the URL goes",
+          "The same one line in <code>data/checkout.yml</code>, which already declares <code>pay.sumup.com</code> and <code>checkout.sumup.com</code> as this rail's hosts."
+        ],
+        [
+          "The cross-border limit, restated",
+          "A United Kingdom card account cannot tap in Portugal and the terminal says so in public. The reader is for a seller standing where their account is; the link is for everywhere else, and at the Lisbon event the link is the rail."
+        ]
+      ],
+      "steps": [
+        [
+          "Finish the account",
+          "It is the half-done one. Stripe is set up and this is not, which is the only reason Stripe is first rather than a judgement that it is better.",
+          null
+        ],
+        [
+          "Fix the host check before pasting a URL, not after",
+          "<b>check_checkout_links pins every destination to <code>buy.stripe.com</code> or <code>checkout.stripe.com</code> — Stripe's hosts only.</b> <code>data/checkout.yml</code> has declared SumUp's two hosts since the rail was added, and the check has never read them. A SumUp URL pasted in today is refused by the gate with a message about Stripe. The check should take its allowed hosts from the rails rather than from a constant.",
+          "Blocked on nothing. It is a five-line change and it is this page's first finding."
+        ],
+        [
+          "Build the link with the amount on it",
+          "<code>amount</code> is computed here from the cart and the deposit split, which means a link is per-order rather than standing. That is a different flow from Stripe's one-link-many-prices and the pay page already renders both correctly — what is untested is whether a per-order link can be generated without a person in the loop.",
+          null
+        ],
+        [
+          "Decide what the reader is for",
+          "Contactless is listed as a rail and has never been used. If the answer is “the tap at a stand, for the amount due now” then the receipt has to carry the order reference — written on it by hand if the terminal will not — or the buyer lands on a page that cannot tell them what they bought.",
+          null
+        ],
+        [
+          "Compare the two rails on one real sale each",
+          "The reason both exist. What to compare: whether the reference survives to the receipt, what the buyer sees at the moment they pay, what the refund path looks like, and what the fee actually was.",
+          "Blocked on a first real payment on each, which is blocked on the webhook above."
+        ]
+      ],
+      "open": [
+        [
+          "Which rail wins?",
+          "Unanswerable until one real sale has gone through each. Writing a preference down now would be the assumption this whole arrangement was built to avoid."
+        ],
+        [
+          "Does the terminal ever make sense for this product?",
+          "Every level is bought by somebody looking at a screen, including at an event. A reader may turn out to be a thing the store carries because it was easy rather than because anybody used it."
+        ]
+      ]
+    }
+  ]
+}

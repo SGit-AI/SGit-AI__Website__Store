@@ -3,103 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Admin &mdash; the store</title>
-<meta name="description" content="The internal surfaces of this store in one place: the walkthrough anybody can run end to end, the claim ledger, the dev packs, the release history and the purchase lab. Public, like every page here, and kept out of the sitemap because it is not a selling surface.">
+<title>The console · store.sgit.ai admin</title>
+<meta name="description" content="The operations surface for this store: what is blocking a first paid order, the units of work in flight, the memo queue behind them, the payment rails, the reviews and the walkthrough. Public, like every page here, and kept out of the sitemap because it is not a selling surface.">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="https://store.sgit.ai/admin/">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="store.sgit.ai">
-<meta property="og:url" content="https://store.sgit.ai/admin/">
-<meta property="og:title" content="Admin">
-<meta property="og:description" content="The internal surfaces of this store in one place: the walkthrough anybody can run end to end, the claim ledger, the dev packs, the release history and the purchase lab. Public, like every page here, and kept out of the sitemap because it is not a selling surface.">
-<meta name="twitter:card" content="summary">
 <link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/console.css">
 
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-<script src="../assets/site.js" defer></script>
-<!-- shop.js is on EVERY page because the nav carries an order badge on every page.
-     So a shop page must NOT name it again in head_js: two tags is two copies of the
-     cart engine running against one document, and the second one undoes what the
-     first one did. check_site holds every page to loading each script once. -->
-<script src="../assets/shop.js" defer></script>
 
 
 </head>
-<body>
-<nav class="site"><div class="row"><a class="brand" href="../index.html">store<span>.sgit.ai</span></a><a class="parent" href="https://sgit.ai/llms.txt" rel="noopener" title="sgit.ai — the platform this sells instances of. The free public library lives there">&#8599; part of <b>sgit.ai</b></a><span class="stage-pill">every offer here is an instance</span><a class="ver" href="../versions/v0.1.17/index.html" title="What changed in v0.1.17, and the commit it was built from">v0.1.17</a><button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">Menu</button><div class="nav-items"><div class="ni"><a class="nl" href="../index.html">What is for sale</a></div><div class="ni ni-has"><a class="nl" href="../policies/index.html">The policies<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../policies/index.html">Which agent do you run?</a><a class="sl" href="../policies/index.html#the-four-levels">The four levels</a><a class="sl" href="../p/your-own/index.html">Something not on the list</a><a class="sl" href="../offers/index.html">The price list</a><a class="sl" href="../cart/index.html">Your order</a></div></div><div class="ni ni-has"><a class="nl" href="../how-it-works/index.html">How buying works<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../how-it-works/index.html">The three steps</a><a class="sl" href="../paying/index.html">The two rails</a><a class="sl" href="../booking/index.html">What a session is</a><a class="sl" href="../order/index.html">What happens after you pay</a></div></div><div class="ni ni-has"><a class="nl" href="../audiences/index.html">Who it is for<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../audiences/index.html">The three buyers</a><a class="sl" href="../for/agents/index.html">You run agents today</a><a class="sl" href="../for/investors/index.html">You are backing a company</a><a class="sl" href="../for/startups/index.html">You are a startup</a></div></div><div class="ni ni-has"><a class="nl" href="../ledger/index.html">Evidence<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../ledger/index.html">The claim ledger</a><a class="sl" href="../admin/reviews/index.html">Reviews, dated and kept</a><a class="sl" href="../disclosures/index.html">What we do not say, and why</a><a class="sl" href="../catalogue/index.html">What is not for sale yet</a><a class="sl" href="../dev-packs/index.html">The dev packs</a><a class="sl" href="../lab/index.html">The purchase lab</a><a class="sl" href="../versions/index.html">Release history</a><a class="sl" href="../admin/try/index.html">Run the whole flow yourself</a></div></div></div><a class="cartlink" href="../cart/index.html">Your order <b data-cart-count hidden></b><span data-cart-total></span></a><a class="gh" href="https://github.com/SGit-AI/SGit-AI__Website__Store" rel="noopener">&#9733; Source</a></div></nav>
-<div class="disclosure-strip"><div class="row"><b>Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.</b>
-Nothing on this site is a compliance assessment, and no page claims conformity to any standard.
-<a href="../disclosures/index.html">What we do not say, and why</a> &middot;
-<a href="../ledger/index.html">how every claim here is evidenced</a></div></div>
-<main class="doc">
-<p class="crumb"><a href="../index.html">store.sgit.ai</a> / Admin</p>
-<h1>Admin</h1>
-<p class="lead"><strong>Everything here is public</strong>, because every page on this site is — there is no login, no account and nothing to gate. What this page is, is <em>findable</em>: one address that gathers the parts of the store that are for the people building it rather than for somebody buying.</p>
-
-<h2 id="start-here">Start here</h2>
-<p><strong><a href="../admin/try/index.html">Run the whole flow yourself →</a></strong> — the walkthrough. A beta tester or an agent goes from the catalogue to the page after payment in about four minutes, for nothing, with a discount code printed on the page. Screenshots of every step, and a script an agent can follow without a person in the loop.</p>
-<p><strong>The same thing as PDFs</strong>, for sharing or for reading away from a screen — <a href="../admin/downloads/store-walkthrough-by-hand-v0.1.11.pdf">by hand</a> (11 pages, every screenshot) and <a href="../admin/downloads/store-walkthrough-as-an-agent-v0.1.11.pdf">as an agent</a> (7 pages, the assertions). Both are snapshots; the page is the source of truth.</p>
-<h2 id="the-rest-of-it">The rest of it</h2>
-<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><a href="../ledger/index.html">The claim ledger</a></td><td>Every factual claim this site makes, with the state it earned and the date. Pages cite a claim and the chip links back here.</td></tr><tr><td><a href="../disclosures/index.html">What we do not say, and why</a></td><td>The words this site will not use, the sentence it will not print, and the naming collision that is still open.</td></tr><tr><td><a href="../dev-packs/index.html">The dev packs</a></td><td>The working documents behind the store, and the manifest of which of them are held back and why.</td></tr><tr><td><a href="../versions/index.html">Release history</a></td><td>Every release, what changed, and the commit it is.</td></tr><tr><td><a href="../lab/index.html">The purchase lab</a></td><td>The tool that turns a described deployment into a depth band. Nothing on it can be bought.</td></tr><tr><td><a href="../catalogue/index.html">What is not for sale yet</a></td><td>The offers that exist as specifications and have not been built.</td></tr></tbody></table></div>
-<h2 id="why-this-page-is-noindex-and-not-private">Why this page is noindex and not private</h2>
-<p><strong>Nothing here is a secret and nothing here could be.</strong> A static site publishes every byte it carries: there is no server to ask who you are, and a page that pretended otherwise would be lying about how it works. So this page is not protected — it is simply <strong>not advertised</strong>. It carries <code>noindex</code> and it is kept out of <code>sitemap.xml</code> and out of <code>llms-full.txt</code> — which <em>is</em> indexed, and would have made this paragraph false by carrying the same codes in a bulk file. Somebody handed the address can read it; nobody arrives by searching for a discount code. <a href="../llms.txt"><code>llms.txt</code></a> still lists both pages with their descriptions, so an agent finds the walkthrough and reads it at <a href="../admin/try/index.md"><code>/admin/try/index.md</code></a>.</p>
-<p><strong>The walkthrough codes are the one thing on this site that is deliberately published and deliberately not linked from a selling page.</strong> They take a hundred per cent off, which costs nothing today because no payment rail is live and the only checkout that completes is a demonstration wallet that charges nobody. That is not a promise, it is a build check: <code>check_printable_codes_need_a_dead_rail</code> fails the release the moment a real payment link and a printed hundred-per-cent code exist in the same build.</p>
-<p class="pagenav"><a href="../policies/index.html">Which agent do you run? &rarr;</a>
-<a href="../how-it-works/index.html">How buying works &rarr;</a>
-<a href="../ledger/index.html">Every claim, with its state &rarr;</a></p>
+<body class="console">
+<div class="c-strip"><div class="row">
+<b>store.sgit.ai</b> <span class="c-sep">/</span> <a href="../admin/index.html">admin</a>
+<span class="c-sep">·</span> <a href="../index.html">the shop</a>
+<span class="c-sep">·</span> <a href="../ledger/index.html">the ledger</a>
+<span class="c-sep">·</span> <a href="index.md">this page as markdown</a>
+<span class="c-noindex">noindex · not in the sitemap</span>
+</div></div>
+<div class="c-disc"><div class="row">Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.</div></div>
+<div class="shell">
+<nav class="rail"><a class="rail__brand" href="../admin/index.html"><b>store<i>.sgit.ai</i></b><span>admin console · v0.1.18</span></a><div class="rail__group"><h3>Where it stands</h3><a class="nav" href="../admin/index.html" aria-current="page">Console</a><a class="nav" href="../admin/reviews/index.html">Reviews<span class="count">2</span></a><a class="nav" href="../admin/try/index.html">Run the flow yourself</a></div><div class="rail__group"><h3>The work</h3><a class="nav" href="../admin/work/index.html">The board<span class="count">64</span></a><a class="nav" href="../admin/memos/index.html">The memo queue<span class="count">6</span></a></div><div class="rail__group"><h3>Next: taking money</h3><a class="nav" href="../admin/rails/index.html">Both rails<span class="count r1">1</span></a><a class="nav" href="../admin/rails/stripe/index.html">Stripe</a><a class="nav" href="../admin/rails/sumup/index.html">SumUp</a></div><div class="rail__group"><h3>The record</h3><a class="nav" href="../ledger/index.html">Claim ledger<span class="out">↗</span></a><a class="nav" href="../disclosures/index.html">What we do not say<span class="out">↗</span></a><a class="nav" href="../versions/index.html">Release history<span class="out">↗</span></a><a class="nav" href="../dev-packs/index.html">The dev packs<span class="out">↗</span></a><a class="nav" href="../lab/index.html">The purchase lab<span class="out">↗</span></a><a class="nav" href="../catalogue/index.html">Not for sale yet<span class="out">↗</span></a></div><p class="rail__note"><b>Public, and not advertised.</b> Every page here is noindex, out of <code>sitemap.xml</code> and out of <code>llms-full.txt</code>. Anybody handed the address reads every word. <a href="../index.html">Back to the shop</a>.</p></nav>
+<main class="main">
+<p class="crumb"> / The console</p>
+<div class="page-head"><div>
+<h1>The console</h1>
+<p><b>Everything here is public</b>, because every page on this site is — no login, no account, nothing gated. What is different is that it is not <em>advertised</em>: noindex, out of the sitemap, out of <code>llms-full.txt</code>. Anybody handed the address reads every word.</p>
+</div></div>
+<div class="tiles"><div class="tile r1"><b>1</b><span>blocking a first paid order</span><em>no rail is live</em></div><div class="tile r2"><b>31</b><span>units of work in flight</span><em>of 70 across 13</em></div><div class="tile r3"><b>6</b><span>memos in the queue</span><em>captured, read, broken up</em></div><div class="tile r3"><b>2</b><span>reviews, dated and kept</span><em>18 proposals</em></div><div class="tile r4"><b>50</b><span>claims in the ledger</span><em>4 awaiting a ruling</em></div><div class="tile r3"><b>62</b><span>things that can be bought</span><em>15 shapes, 6 offers</em></div></div><h2 id="in-flight">In flight — 31 units of work</h2><p>Read off <a href="../admin/work/index.html">the board</a>. A unit is here because it is next in its workstream or being worked on now; it is not here because somebody added it to a list twice.</p><div class="rows"><div class="row2"><div><b><a href="../admin/work/take-money/index.html#TM-1">Create six Stripe products and eight prices</a></b><p>Take money at all</p></div><span class="st st--3">TM-1</span></div><div class="row2"><div><b><a href="../admin/work/take-money/index.html#TM-2">Set customer creation to always, and prove it on a £0 order</a></b><p>Take money at all</p></div><span class="st st--3">TM-2</span></div><div class="row2"><div><b><a href="../admin/work/take-money/index.html#TM-5">Bring the return address onto this site</a></b><p>Take money at all</p></div><span class="st st--3">TM-5</span></div><div class="row2"><div><b><a href="../admin/work/take-money/index.html#TM-9">Take SumUp&#x27;s hosts from the rails, not from a constant</a></b><p>Take money at all</p></div><span class="st st--3">TM-9</span></div><div class="row2"><div><b><a href="../admin/work/price-and-licence/index.html#PL-1">Move the entry level from £5 to £10</a></b><p>The entry price, and what it buys</p></div><span class="st st--3">PL-1</span></div><div class="row2"><div><b><a href="../admin/work/price-and-licence/index.html#PL-2">Dual-licence the pack: CC BY public, commercial to the buyer</a></b><p>The entry price, and what it buys</p></div><span class="st st--3">PL-2</span></div><div class="row2"><div><b><a href="../admin/work/price-and-licence/index.html#PL-3">Research the cleanest way to grant it</a></b><p>The entry price, and what it buys</p></div><span class="st st--3">PL-3</span></div><div class="row2"><div><b><a href="../admin/work/who-does-the-work/index.html#WD-1">Build the reviewer register and a page per reviewer</a></b><p>Who runs the review</p></div><span class="st st--3">WD-1</span></div><div class="row2"><div><b><a href="../admin/work/who-does-the-work/index.html#WD-2">Write the first reviewer&#x27;s page</a></b><p>Who runs the review · <b>blocked on</b> Source material from the project lead.</p></div><span class="st st--2">WD-2</span></div><div class="row2"><div><b><a href="../admin/work/leak-the-codes/index.html#LC-1">Decide which journeys carry a code</a></b><p>Leak the codes on purpose</p></div><span class="st st--3">LC-1</span></div><div class="row2"><div><b><a href="../admin/work/close-the-loop/index.html#CL-1">Name the owner of the follow-up mailbox</a></b><p>Close the loop after payment</p></div><span class="st st--3">CL-1</span></div><div class="row2"><div><b><a href="../admin/work/the-record/index.html#TR-4">Operationalise the review proposals</a></b><p>Keep the record</p></div><span class="st st--3">TR-4</span></div><div class="row2"><div><b><a href="../admin/work/qualify-the-buyer/index.html#QB-1">Decide what happens to the three buyer groups</a></b><p>Qualify who is reading</p></div><span class="st st--3">QB-1</span></div><div class="row2"><div><b><a href="../admin/work/qualify-the-buyer/index.html#QB-2">Write the five audiences down as data</a></b><p>Qualify who is reading · <b>blocked on</b> QB-1.</p></div><span class="st st--2">QB-2</span></div><div class="row2"><div><b><a href="../admin/work/qualify-the-buyer/index.html#QB-3">Answer: hidden, or shown differently?</a></b><p>Qualify who is reading</p></div><span class="st st--3">QB-3</span></div><div class="row2"><div><b><a href="../admin/work/board-readable/index.html#BR-1">Specify what a board-readable cut actually is</a></b><p>The version the board can read</p></div><span class="st st--3">BR-1</span></div><div class="row2"><div><b><a href="../admin/work/board-readable/index.html#BR-2">Decide who writes it, per vault</a></b><p>The version the board can read</p></div><span class="st st--3">BR-2</span></div><div class="row2"><div><b><a href="../admin/work/board-readable/index.html#BR-3">Say on the site what is inside a vault</a></b><p>The version the board can read</p></div><span class="st st--3">BR-3</span></div><div class="row2"><div><b><a href="../admin/work/decouple-the-views/index.html#DV-1">Read the two guidance sites properly and write down what applies</a></b><p>Decouple the views</p></div><span class="st st--3">DV-1</span></div><div class="row2"><div><b><a href="../admin/work/decouple-the-views/index.html#DV-2">Settle: custom elements at runtime, or generated partials at build?</a></b><p>Decouple the views</p></div><span class="st st--3">DV-2</span></div><div class="row2"><div><b><a href="../admin/work/one-site-one-flow/index.html#OS-1">Narrow the no-network rule before the first cross-origin read</a></b><p>Never leave the site</p></div><span class="st st--3">OS-1</span></div><div class="row2"><div><b><a href="../admin/work/one-site-one-flow/index.html#OS-2">Move the post-sale page onto this site</a></b><p>Never leave the site · <b>blocked on</b> OS-1 for anything it needs to read.</p></div><span class="st st--2">OS-2</span></div><div class="row2"><div><b><a href="../admin/work/one-site-one-flow/index.html#OS-3">Embed the bought vault on the page they land on</a></b><p>Never leave the site · <b>blocked on</b> OS-2.</p></div><span class="st st--2">OS-3</span></div><div class="row2"><div><b><a href="../admin/work/who-owns-what/index.html#WO-1">Publish the ownership boundary as a page both agents can read</a></b><p>Who owns what</p></div><span class="st st--3">WO-1</span></div><div class="row2"><div><b><a href="../admin/work/who-owns-what/index.html#WO-2">Brief the RiskMandate team to do the reverse</a></b><p>Who owns what · <b>blocked on</b> WO-1.</p></div><span class="st st--2">WO-2</span></div><div class="row2"><div><b><a href="../admin/work/the-comparison-table/index.html#CT-1">Decide what every cell is allowed to say</a></b><p>The comparison table</p></div><span class="st st--3">CT-1</span></div><div class="row2"><div><b><a href="../admin/work/the-comparison-table/index.html#CT-2">Write the feature list as data</a></b><p>The comparison table · <b>blocked on</b> CT-1.</p></div><span class="st st--2">CT-2</span></div><div class="row2"><div><b><a href="../admin/work/the-comparison-table/index.html#CT-3">Settle whether £10 includes a vault</a></b><p>The comparison table</p></div><span class="st st--3">CT-3</span></div><div class="row2"><div><b><a href="../admin/work/the-comparison-table/index.html#CT-4">Decide what support means, and who answers</a></b><p>The comparison table</p></div><span class="st st--3">CT-4</span></div><div class="row2"><div><b><a href="../admin/work/product-pages/index.html#PP-1">Prototype one product page in the lab</a></b><p>Product pages that show the product</p></div><span class="st st--3">PP-1</span></div><div class="row2"><div><b><a href="../admin/work/product-pages/index.html#PP-2">Find out which screenshots exist and which have to be taken</a></b><p>Product pages that show the product</p></div><span class="st st--3">PP-2</span></div></div>
+<h2 id="the-queue-and-how-work-gets-here">The queue, and how work gets here</h2>
+<p><strong><a href="../admin/memos/index.html">The memo queue →</a></strong> — a memo from the project lead arrives spoken, is kept here word for word, is read into a brief, and the brief is broken into units of work. The reading is kept separate from the memo on purpose: what somebody said and what we made of it are two different objects, and only one of them is allowed to be wrong.</p>
+<p><strong><a href="../admin/work/index.html">The board →</a></strong> — those units, in four columns, grouped into workstreams. A workstream never moves by hand; it moves because a task inside it moved, so the summary cannot contradict the detail.</p>
+<h2 id="next-taking-money">Next: taking money</h2>
+<p><strong><a href="../admin/rails/index.html">Both rails →</a></strong> — no payment rail is live, which is the single fact that most shapes this store. <a class="chip st-x" href="../ledger/index.html#claim-checkout-links-not-issued" title="It does not exist. It is listed so that nobody proposes it as new.">does not exist yet 11 Sep 2026</a></p>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><a href="../admin/rails/stripe/index.html">Stripe</a></td><td>The rail that turns a buyer into a customer, including a buyer who pays nothing. Six products, eight prices, three coupons — and a webhook that has to listen to the session rather than the payment, because a hundred-per-cent order creates no charge at all.</td></tr><tr><td><a href="../admin/rails/sumup/index.html">SumUp</a></td><td>Amount-only, no catalogue, and the one with a card reader behind it. Run as a second rail on purpose.</td></tr></tbody></table></div>
+<h2 id="run-it-yourself">Run it yourself</h2>
+<p><strong><a href="../admin/try/index.html">The walkthrough →</a></strong> — a beta tester or an agent goes from the catalogue to the page after payment in about four minutes, for nothing, with a discount code printed on the page. Screenshots of every step, and a script an agent can follow without a person in the loop.</p>
+<p>The same thing as PDFs, for sharing or for reading away from a screen — <a href="../admin/downloads/store-walkthrough-by-hand-v0.1.11.pdf">by hand</a> (11 pages, every screenshot) and <a href="../admin/downloads/store-walkthrough-as-an-agent-v0.1.11.pdf">as an agent</a> (7 pages, the assertions). Both are snapshots; the page is the source of truth.</p>
+<h2 id="the-record">The record</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><a href="../admin/reviews/index.html">Reviews, dated and kept</a></td><td>Every review of this store, newest first. A review is a moment locked: the version it was taken against, the screenshots, and a stance on every proposal in it.</td></tr><tr><td><a href="../ledger/index.html">The claim ledger</a></td><td>Every factual claim this site makes, with the state it earned and the date. Pages cite a claim and the chip links back here.</td></tr><tr><td><a href="../disclosures/index.html">What we do not say, and why</a></td><td>The words this site will not use, the sentence it will not print, and the naming collision that is still open.</td></tr><tr><td><a href="../dev-packs/index.html">The dev packs</a></td><td>The working documents behind the store, and the manifest of which of them are held back and why.</td></tr><tr><td><a href="../versions/index.html">Release history</a></td><td>Every release, what changed, and the commit it is.</td></tr><tr><td><a href="../lab/index.html">The purchase lab</a></td><td>The tool that turns a described deployment into a depth band. Nothing on it can be bought.</td></tr><tr><td><a href="../catalogue/index.html">What is not for sale yet</a></td><td>The offers that exist as specifications and have not been built.</td></tr></tbody></table></div>
+<div class="c-foot"><b>An operations surface</b> for the people
+building this store, public because every page here is. It is not a selling page and
+nothing on it is an offer. <a href="../index.html">The shop is here</a> ·
+<a href="../ledger/index.html">every claim, with its state</a> ·
+<a href="../admin/reviews/index.html">the reviews</a></div>
 </main>
-<footer class="site"><div class="cols">
-  <div>
-    <div class="brandline">store<span>.sgit.ai</span></div>
-    <p class="nonaff"><b>Every agent needs a licence to operate.</b> This is where you buy one.
-       Six offers, four of them with a price and a code, two of them listed and not yet buyable,
-       grouped by which of three buyers each was built for.
-       <b>The paid thing is not access and it is not customisation. It is independence.</b></p>
-    <p>Nothing here is a compliance assessment, nothing here is a mark of conformity to any standard, and no opinion here is
-       personal: <b>the company issues every opinion</b>, and the person who sells is never the
-       person who signs. Outputs are model generated and marked as such.</p>
-    <p class="licence">This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). The code that builds it is Apache-2.0.</p>
-    <p class="verline">site <a href="../versions/index.html">v0.1.17</a> &middot;
-       <a href="../ledger/index.html">the ledger</a> &middot; <a href="../disclosures/index.html">what we do not say</a> &middot;
-       <a href="index.md" title="The same page as plain markdown">this page as markdown</a></p>
-  </div>
-  <div>
-    <h4>The offers</h4>
-    <a href="../offers/index.html">All six, side by side</a>
-    <a href="../offers/index.html#the-two-add-ons">The two add-ons</a>
-    <a href="../catalogue/index.html">What is not for sale yet</a>
-  </div>
-  <div>
-    <h4>Who it is for</h4>
-    <a href="../audiences/index.html">The three buyers</a>
-    <a href="../for/agents/index.html">You run agents today</a>
-    <a href="../for/investors/index.html">You are backing a company</a>
-    <a href="../for/startups/index.html">You are a startup</a>
-  </div>
-  <div>
-    <h4>Paying</h4>
-    <a href="../paying/index.html">The two rails</a>
-    <a href="../paying/index.html#why-a-link-and-not-a-card-reader">Why a link, not a reader</a>
-    <a href="../booking/index.html">Booking a person</a>
-  </div>
-  <div>
-    <h4>Evidence</h4>
-    <a href="../ledger/index.html">Every claim, with its state</a>
-    <a href="../admin/reviews/index.html">Reviews, dated and kept</a>
-    <a href="../disclosures/index.html">What we do not say, and why</a>
-    <a href="../dev-packs/index.html">The dev packs</a>
-    <a href="../versions/index.html">Release history</a>
-    <a href="../admin/index.html">Admin</a>
-  </div>
 </div>
-<div class="footnote"><p>No analytics. No cookies. No third-party fonts, scripts or CDN &mdash; every byte of this
-site is served from this domain. <b>Every page that sells anything opens no network connection at all</b>, and a build
-check holds that line. The one exception is named and narrow: a <a href="../admin/reviews/index.html">review</a> of a vault embeds
-that vault from one host, through one vendored component, and says so on itself. Nothing anywhere here sends anything
-about you &mdash; no fetch, no beacon, no socket, on any page. Paying happens on the payment provider&rsquo;s own pages, which is the only place a card number should ever be
-typed: nothing on this site collects one. Prices are in pounds &mdash; pricing in euros while settling in pounds adds
-about two per cent.</p></div>
-</footer>
 </body>
 </html>

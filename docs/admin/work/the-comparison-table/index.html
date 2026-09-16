@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" data-root="../../../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The comparison table · store.sgit.ai admin</title>
+<meta name="description" content="Features down the left, five columns across — free, £10, £50, £500, £1,500. The page that makes the differences between the levels legible, and the one that finally explains the entry price, because a licence is only a difference next to a column that does not have it.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://store.sgit.ai/admin/work/the-comparison-table/">
+<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="../../../assets/console.css">
+
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+
+
+</head>
+<body class="console">
+<div class="c-strip"><div class="row">
+<b>store.sgit.ai</b> <span class="c-sep">/</span> <a href="../../../admin/index.html">admin</a>
+<span class="c-sep">·</span> <a href="../../../index.html">the shop</a>
+<span class="c-sep">·</span> <a href="../../../ledger/index.html">the ledger</a>
+<span class="c-sep">·</span> <a href="index.md">this page as markdown</a>
+<span class="c-noindex">noindex · not in the sitemap</span>
+</div></div>
+<div class="c-disc"><div class="row">Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.</div></div>
+<div class="shell">
+<nav class="rail"><a class="rail__brand" href="../../../admin/index.html"><b>store<i>.sgit.ai</i></b><span>admin console · v0.1.18</span></a><div class="rail__group"><h3>Where it stands</h3><a class="nav" href="../../../admin/index.html">Console</a><a class="nav" href="../../../admin/reviews/index.html">Reviews<span class="count">2</span></a><a class="nav" href="../../../admin/try/index.html">Run the flow yourself</a></div><div class="rail__group"><h3>The work</h3><a class="nav" href="../../../admin/work/index.html">The board<span class="count">64</span></a><a class="nav" href="../../../admin/memos/index.html">The memo queue<span class="count">6</span></a></div><div class="rail__group"><h3>Next: taking money</h3><a class="nav" href="../../../admin/rails/index.html">Both rails<span class="count r1">1</span></a><a class="nav" href="../../../admin/rails/stripe/index.html">Stripe</a><a class="nav" href="../../../admin/rails/sumup/index.html">SumUp</a></div><div class="rail__group"><h3>The record</h3><a class="nav" href="../../../ledger/index.html">Claim ledger<span class="out">↗</span></a><a class="nav" href="../../../disclosures/index.html">What we do not say<span class="out">↗</span></a><a class="nav" href="../../../versions/index.html">Release history<span class="out">↗</span></a><a class="nav" href="../../../dev-packs/index.html">The dev packs<span class="out">↗</span></a><a class="nav" href="../../../lab/index.html">The purchase lab<span class="out">↗</span></a><a class="nav" href="../../../catalogue/index.html">Not for sale yet<span class="out">↗</span></a></div><p class="rail__note"><b>Public, and not advertised.</b> Every page here is noindex, out of <code>sitemap.xml</code> and out of <code>llms-full.txt</code>. Anybody handed the address reads every word. <a href="../../../index.html">Back to the shop</a>.</p></nav>
+<main class="main">
+<p class="crumb"> / <a href="../../../admin/work/index.html">work</a> / the-comparison-table</p>
+<div class="page-head"><div>
+<h1>The comparison table</h1>
+<p><b>0 of 6 units done.</b> Features down the left, five columns across — free, £10, £50, £500, £1,500. The page that makes the differences between the levels legible, and the one that finally explains the entry price, because a licence is only a difference next to a column that does not have it.</p>
+</div></div>
+<div class="panel r2"><p><b>This workstream came out of a memo.</b> <a href="../../../admin/memos/2026-09-16-the-comparison-table/index.html">One table, five columns, and the free one first</a>, 2026-09-16 — kept verbatim, read into a brief, and broken into the units below.</p></div><div class="board"><div class="bcol" style="--col:#94a3b8"><h3><span class="dot"></span>Queued<span class="n">2</span></h3><div class="bcard" style="--ws:#0d9488" id="CT-5"><span class="tid">CT-5</span><b>Build the page, free column first</b><p>Five columns with the free one leading, because what you can have for nothing is the first row of the argument rather than an objection to be handled.</p><span class="blocked"><b>Blocked on</b> CT-2.</span><span class="who"><a href="../../../admin/memos/2026-09-16-the-comparison-table/index.html">memo 2026-09-16</a></span></div><div class="bcard" style="--ws:#0d9488" id="CT-6"><span class="tid">CT-6</span><b>Render it as a PDF</b><p>Asked for as a brochure. The store already generates PDFs from built HTML, so this is a build target rather than a second artefact.</p><span class="blocked"><b>Blocked on</b> CT-5.</span><span class="who"><a href="../../../admin/memos/2026-09-16-the-comparison-table/index.html">memo 2026-09-16</a></span></div></div><div class="bcol" style="--col:#f59e0b"><h3><span class="dot"></span>Up Next<span class="n">4</span></h3><div class="bcard" style="--ws:#0d9488" id="CT-1"><span class="tid">CT-1</span><b>Decide what every cell is allowed to say</b><p><b>The hard part, and it comes first.</b> Most of the cells in the memo are proposals rather than facts, and this store fails its own release when a page states an unproven thing as a fact. Either each cell carries a state the way every claim does, or the table waits until the cells are true. Both are defensible; publishing a confident table over unproven cells is not.</p><span class="who">The project lead, in conversation · <a href="../../../admin/memos/2026-09-16-the-comparison-table/index.html">memo 2026-09-16</a></span></div><div class="bcard" style="--ws:#0d9488" id="CT-2"><span class="tid">CT-2</span><b>Write the feature list as data</b><p>One row per feature, one cell per level, each cell carrying its state and the claim it rests on. Generated, so the table cannot disagree with the level pages beside it.</p><span class="blocked"><b>Blocked on</b> CT-1.</span><span class="who"><a href="../../../admin/memos/2026-09-16-the-comparison-table/index.html">memo 2026-09-16</a></span></div><div class="bcard" style="--ws:#0d9488" id="CT-3"><span class="tid">CT-3</span><b>Settle whether £10 includes a vault</b><p>Offered in the memo as an example and it contradicts what the level page says today. It has to be decided before the table exists, because the table is where the contradiction becomes visible.</p><span class="who">The project lead, in conversation · <a href="../../../admin/memos/2026-09-16-the-comparison-table/index.html">memo 2026-09-16</a></span></div><div class="bcard" style="--ws:#0d9488" id="CT-4"><span class="tid">CT-4</span><b>Decide what support means, and who answers</b><p>Email support on the paid levels is floated rather than decided. It is also the second promise on this site with no name on the mailbox.</p><span class="who">The project lead, in conversation · <a href="../../../admin/memos/2026-09-16-the-comparison-table/index.html">memo 2026-09-16</a></span></div></div><div class="bcol" style="--col:#3b82f6"><h3><span class="dot"></span>In Progress<span class="n">0</span></h3><p class="empty">—</p></div><div class="bcol" style="--col:#22c55e"><h3><span class="dot"></span>Done<span class="n">0</span></h3><p class="empty">—</p></div></div><p><a href="../../../admin/work/index.html">← every workstream</a></p>
+<div class="c-foot"><b>An operations surface</b> for the people
+building this store, public because every page here is. It is not a selling page and
+nothing on it is an offer. <a href="../../../index.html">The shop is here</a> ·
+<a href="../../../ledger/index.html">every claim, with its state</a> ·
+<a href="../../../admin/reviews/index.html">the reviews</a></div>
+</main>
+</div>
+</body>
+</html>

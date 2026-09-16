@@ -1,0 +1,306 @@
+/* ============================================================================
+   store.sgit.ai admin — console.css
+
+   THE POINT OF THIS FILE IS THAT IT IS NOT site.css.
+
+   The admin pages used to load the store's stylesheet, so a page whose job is
+   "what is blocking a first sale" was set in the same warm paper, the same
+   serif headings and the same generous measure as a page whose job is to
+   explain an offer slowly to somebody deciding whether to buy it. Those two
+   want opposite things:
+
+       a shop wants                 a console wants
+       --------------------------   ----------------------------------
+       linear, unhurried reading    scan, compare, jump
+       one accent, spent carefully  a status scale where rank is visible
+       every claim argued in prose  every state countable at a glance
+       the seller's voice           the operator's
+
+   So: cool neutrals, a dark rail that is always there, system sans, tabular
+   numerals, and a four-rank status scale.
+
+   PROVENANCE. The architecture is adopted, not invented here. It is the console
+   shipped at pt.newsroom.sgit.ai/newsroom/ (repo SGit-AI__Website__Newsroom__PT,
+   assets/console.css), read on 16 September 2026: the persistent rail with
+   counts, the shell grid, the page head that NAMES the place rather than
+   describing it, and the rule that only one rank is filled. What is not adopted
+   is its palette or its component set — this console answers different questions
+   — and the ranks mean what they mean HERE, which is written below.
+
+   WHAT THE RANKS MEAN ON THIS SITE. The rail's counts are the reason the rail
+   exists: they say there is something waiting on you without you opening the
+   page. So the scale is about what a number COSTS, not what it is about.
+
+       r1  blocks a first paid order. The only filled rank.
+       r2  waiting on a ruling that is not the builder's to make.
+       r3  built and running.
+       r4  done, and checked by the gate.
+
+   Only r1 is filled. A second filled meaning would give the eye two things to
+   rank and it would rank neither.
+   ============================================================================ */
+
+:root{
+  --c-bg:#f2f4f7;        /* the console ground */
+  --c-card:#ffffff;
+  --c-rail:#15181e;      /* the persistent rail */
+  --c-rail-2:#212730;    /* a raised block inside it */
+  --c-rail-tx:#e8ebf0;   /* 14.9:1 on the rail */
+  --c-rail-dim:#929bab;  /*  6.2:1 on the rail */
+  --c-ink:#12161c;       /* 17.6:1 on card */
+  --c-muted:#545b67;     /*  6.9:1 on card */
+  --c-line:#d9dee6;
+  --c-line-2:#b8c0cb;
+  --c-link:#17578f;      /*  7.1:1 on card */
+  --c-focus:#2f7fd4;
+  --c-on-fill:#ffffff;
+  --c-head:#eef1f5;      /* a table's own head row */
+  --c-hover:#f7f9fb;
+
+  /* the four ranks */
+  --c-r1:#95230f;  --c-r1-soft:#fdeeeb;   /* blocks a first paid order */
+  --c-r2:#8a4b06;  --c-r2-soft:#fdf3e7;   /* waiting on a ruling */
+  --c-r3:#545b67;  --c-r3-soft:#eef1f5;   /* built and running */
+  --c-r4:#2f6b4f;  --c-r4-soft:#ecf4ef;   /* done, and checked */
+
+  /* the store's own accent, kept for the two places the console points back at
+     the shop: the brand in the rail, and a link out to a selling page. */
+  --c-store:#0f766e;
+
+  --c-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --c-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --c-1:4px; --c-2:8px; --c-3:12px; --c-4:16px; --c-5:24px; --c-6:32px; --c-7:48px; --c-8:64px;
+  --c-rad:5px;
+  --c-rail-w:242px;
+  color-scheme:light;
+}
+
+/* THE COMPONENTS THAT CAME FROM THE SHOP, RE-POINTED RATHER THAN REWRITTEN.
+   The review pages are built out of components styled in review.css against the
+   store's tokens. Rather than fork that file for the console, the tokens it
+   reads are redefined inside the shell — so a panel is a console panel here and
+   a shop panel there, from one set of rules. This is a bridge with a stated end
+   state: when a component is console-only it should be written against --c-*
+   directly, and this block should shrink. */
+.shell{
+  --paper:var(--c-bg); --panel:var(--c-card); --panel2:var(--c-head);
+  --bg:var(--c-bg); --fg:var(--c-ink); --ink:var(--c-ink);
+  --dim:var(--c-muted); --dim2:#7b8494;
+  --line:var(--c-line); --line2:var(--c-line-2);
+  --accent:var(--c-link); --accent-dk:var(--c-link);
+  --warm:var(--c-r2); --yellow:var(--c-r2); --red:var(--c-r1);
+  --shadow:0 1px 2px rgba(18,22,28,.05),0 3px 10px rgba(18,22,28,.04);
+  --serif:var(--c-sans);
+}
+
+*{box-sizing:border-box}
+body.console{margin:0;background:var(--c-bg);color:var(--c-ink);
+  font:15px/1.6 var(--c-sans);-webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums}
+body.console a{color:var(--c-link);text-decoration:none}
+body.console a:hover{text-decoration:underline}
+body.console code,body.console pre{font-family:var(--c-mono)}
+:focus-visible{outline:2px solid var(--c-focus);outline-offset:2px;border-radius:3px}
+
+/* --- the strip: the one piece of the shop that crosses over ---------------
+   It names where you are and gets you back. It keeps the store's own ground so
+   that crossing from the shop into the console is a visible change of place
+   rather than a page that looks broken. */
+.c-strip{background:#faf9f5;border-bottom:1px solid #e5e1d5;font-size:13px}
+.c-strip .row{max-width:none;margin:0;padding:8px max(16px,env(safe-area-inset-left));
+  display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.c-strip b{color:#1c1d21;font-weight:700}
+.c-strip a{color:#115e59}
+.c-strip .c-sep{color:#8a8d94}
+.c-strip .c-noindex{margin-left:auto;font-family:var(--c-mono);font-size:11px;color:#8a8d94;
+  border:1px solid #d5d0c2;border-radius:999px;padding:2px 9px;white-space:nowrap}
+
+/* --- the shell ------------------------------------------------------------
+   A rail rather than a line of links across the top. The rail is what makes
+   nine pages feel like one application: it is always there, it groups, and it
+   carries the counts. */
+.shell{display:grid;grid-template-columns:var(--c-rail-w) 1fr;min-height:100vh;
+  /* The rail is sticky and start-aligned, so it does not stretch to the height
+     of the page and its dark ground stops where its last item ends. Painting the
+     column here runs it full height with no wrapper. */
+  background:linear-gradient(to right,var(--c-rail) 0 var(--c-rail-w),var(--c-bg) var(--c-rail-w))}
+.rail{background:var(--c-rail);color:var(--c-rail-tx);padding:var(--c-5) 0 var(--c-6);
+  position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto}
+.rail__brand{display:block;padding:0 var(--c-5) var(--c-5)}
+.rail__brand b{display:block;font-size:15px;font-weight:650;color:var(--c-on-fill)}
+.rail__brand b i{font-style:normal;color:#3ec9b8}
+.rail__brand span{display:block;font-family:var(--c-mono);font-size:11px;letter-spacing:.06em;
+  color:var(--c-rail-dim);margin-top:3px}
+.rail__note{margin:var(--c-4) var(--c-5) 0;padding-top:var(--c-3);
+  border-top:1px solid var(--c-rail-2);font-size:11.5px;line-height:1.55;color:var(--c-rail-dim)}
+.rail__note a{color:var(--c-rail-tx);text-decoration:underline;text-underline-offset:2px}
+.rail__group{padding:var(--c-4) 0 0}
+.rail__group h3{margin:0 0 var(--c-2);padding:0 var(--c-5);font-size:10.5px;font-weight:650;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--c-rail-dim)}
+.rail a.nav{display:flex;align-items:center;gap:var(--c-2);justify-content:flex-start;
+  font-size:14px;padding:7px var(--c-5);color:var(--c-rail-tx);
+  border-left:3px solid transparent;text-align:left}
+.rail a.nav:hover{background:var(--c-rail-2);text-decoration:none}
+.rail a.nav[aria-current="page"]{background:var(--c-rail-2);border-left-color:var(--c-on-fill);
+  font-weight:600}
+.rail a.nav .out{font-size:11px;color:var(--c-rail-dim)}
+.rail .count{margin-left:auto;font-family:var(--c-mono);font-size:11px;padding:1px 7px;
+  border-radius:999px;background:var(--c-rail-2);color:var(--c-rail-dim)}
+.rail .count.r1{background:var(--c-r1);color:var(--c-on-fill);font-weight:600}
+
+.main{min-width:0;padding:var(--c-6) var(--c-7) var(--c-8);max-width:1180px}
+@media(max-width:1000px){
+  .shell{grid-template-columns:1fr;background:var(--c-bg)}
+  .rail{position:static;max-height:none}
+  .main{padding:var(--c-5) max(16px,env(safe-area-inset-left)) var(--c-7)}
+}
+
+/* --- page head: an h1 that NAMES the place ------------------------------- */
+.page-head{display:flex;align-items:flex-start;gap:var(--c-5);flex-wrap:wrap;
+  margin-bottom:var(--c-6)}
+.page-head h1{margin:0;font-size:26px;line-height:1.15;font-weight:650;letter-spacing:-.015em;
+  color:var(--c-ink)}
+.page-head p{margin:var(--c-1) 0 0;color:var(--c-muted);font-size:14.5px;max-width:72ch}
+.page-head .crumb{font-family:var(--c-mono);font-size:11px;letter-spacing:.06em;
+  color:#7b8494;margin:0 0 6px}
+
+.main h2{margin:var(--c-7) 0 var(--c-3);font-size:13px;font-weight:650;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--c-muted);border:0;padding:0}
+.main h3{margin:var(--c-5) 0 var(--c-2);font-size:15.5px;font-weight:650;color:var(--c-ink)}
+.main p{margin:var(--c-3) 0;max-width:78ch}
+.main ul,.main ol{max-width:78ch}
+.main li{margin:var(--c-2) 0}
+
+/* --- the numbers row ----------------------------------------------------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:var(--c-3)}
+.tile{background:var(--c-card);border:1px solid var(--c-line);border-radius:var(--c-rad);
+  padding:var(--c-4);border-top:3px solid var(--c-line-2)}
+.tile.r1{border-top-color:var(--c-r1)} .tile.r2{border-top-color:var(--c-r2)}
+.tile.r3{border-top-color:var(--c-r3)} .tile.r4{border-top-color:var(--c-r4)}
+.tile b{display:block;font-size:30px;line-height:1;font-weight:650;color:var(--c-ink)}
+.tile span{display:block;font-size:12px;line-height:1.45;color:var(--c-muted);margin-top:6px}
+.tile em{display:block;font-style:normal;font-family:var(--c-mono);font-size:10.5px;
+  letter-spacing:.08em;text-transform:uppercase;color:#7b8494;margin-top:8px}
+
+/* --- rows ---------------------------------------------------------------- */
+.rows{border:1px solid var(--c-line);border-radius:var(--c-rad);background:var(--c-card);
+  overflow:hidden}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--c-4);align-items:baseline;
+  padding:var(--c-3) var(--c-4);border-bottom:1px solid var(--c-line)}
+.row2:last-child{border-bottom:0}
+.row2:hover{background:var(--c-hover)}
+.row2 b{font-weight:600;color:var(--c-ink);font-size:14.5px}
+.row2 p{margin:3px 0 0;font-size:13px;line-height:1.55;color:var(--c-muted);max-width:none}
+.row2 code{font-size:12px;background:var(--c-head);border-radius:3px;padding:1px 5px}
+
+/* --- status ranks: one filled, three outlined ---------------------------- */
+.st{display:inline-block;font-family:var(--c-mono);font-size:10.5px;font-weight:650;
+  letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:3px 9px;
+  border:1px solid;white-space:nowrap}
+.st--1{background:var(--c-r1);border-color:var(--c-r1);color:var(--c-on-fill)}
+.st--2{background:var(--c-r2-soft);border-color:var(--c-r2);color:var(--c-r2)}
+.st--3{background:var(--c-r3-soft);border-color:var(--c-line-2);color:var(--c-r3)}
+.st--4{background:var(--c-r4-soft);border-color:var(--c-r4);color:var(--c-r4)}
+
+/* --- a panel of prose inside a console ----------------------------------- */
+.panel{background:var(--c-card);border:1px solid var(--c-line);border-radius:var(--c-rad);
+  padding:var(--c-4) var(--c-5);margin:var(--c-4) 0}
+.panel.r1{border-left:3px solid var(--c-r1)}
+.panel.r2{border-left:3px solid var(--c-r2)}
+.panel.r4{border-left:3px solid var(--c-r4)}
+.panel > :first-child{margin-top:0} .panel > :last-child{margin-bottom:0}
+.panel h3{margin-top:0}
+
+/* --- a numbered sequence of steps ---------------------------------------- */
+.steps{list-style:none;counter-reset:s;padding:0;margin:var(--c-4) 0;max-width:none}
+.steps > li{counter-increment:s;position:relative;padding:var(--c-3) 0 var(--c-3) var(--c-6);
+  border-bottom:1px solid var(--c-line);margin:0}
+.steps > li:last-child{border-bottom:0}
+.steps > li::before{content:counter(s);position:absolute;left:0;top:var(--c-3);
+  width:22px;height:22px;border-radius:50%;background:var(--c-head);border:1px solid var(--c-line-2);
+  color:var(--c-muted);display:grid;place-items:center;font:650 11px/1 var(--c-mono)}
+.steps > li b{display:block;color:var(--c-ink);font-size:14.5px;margin-bottom:3px}
+.steps > li p{margin:4px 0 0;font-size:13.5px;color:var(--c-muted)}
+.steps .blocked{color:var(--c-r1);font-weight:650}
+
+/* --- key/value, for a contract ------------------------------------------- */
+.kv{width:100%;border-collapse:collapse;margin:var(--c-4) 0;font-size:13.5px}
+.kv th{text-align:left;font:650 10.5px/1.4 var(--c-sans);letter-spacing:.09em;text-transform:uppercase;
+  color:#7b8494;padding:var(--c-2) var(--c-3);border-bottom:1px solid var(--c-line-2);
+  background:var(--c-head);white-space:nowrap}
+.kv td{padding:var(--c-3);border-bottom:1px solid var(--c-line);vertical-align:top;
+  background:var(--c-card)}
+.kv tr:last-child td{border-bottom:0}
+.kv td code{font-size:12.5px;background:var(--c-head);border-radius:3px;padding:1px 5px}
+.kvwrap{overflow-x:auto;border:1px solid var(--c-line);border-radius:var(--c-rad)}
+.kvwrap .kv{margin:0}
+
+body.console pre{background:#0d1117;color:#c9d1d9;border-radius:var(--c-rad);
+  padding:var(--c-3) var(--c-4);overflow-x:auto;font-size:12.5px;line-height:1.65;max-width:none}
+body.console pre code{background:none;padding:0;color:inherit;font-size:inherit}
+body.console p code,body.console li code,body.console td code{background:var(--c-head);
+  border:1px solid var(--c-line);border-radius:3px;padding:.06em .35em;font-size:.86em;
+  color:var(--c-ink);overflow-wrap:anywhere}
+
+.c-foot{margin-top:var(--c-8);padding-top:var(--c-4);border-top:1px solid var(--c-line-2);
+  font-size:12.5px;line-height:1.6;color:var(--c-muted)}
+.c-foot b{color:var(--c-ink)}
+
+@media print{.rail,.c-strip{display:none!important}.shell{display:block;background:#fff}}
+
+/* --------------------------------------------------------------- the board --
+   Two levels, adopted from the workstreams board at sgraph.ai/en-gb/dev/
+   workstreams/ (read 16 September 2026): a top board whose cards are
+   workstreams and whose column is DERIVED from the tasks inside, and a
+   per-workstream board whose cards are those tasks. Nothing is dragged, because
+   nothing here is live — a card moves when the file moves, which is the only
+   way a summary and its detail cannot disagree.
+
+   The column colours are that board's, deliberately, so somebody who reads
+   both reads one scale. They are the only place on this console where a colour
+   means something other than the four ranks above, and they are scoped to
+   .board so they cannot leak into one. */
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--c-4);
+  align-items:start;margin:var(--c-4) 0 var(--c-6)}
+.bcol{min-width:0}
+.bcol > h3{display:flex;align-items:center;gap:6px;margin:0 0 var(--c-3);font-size:11px;
+  font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--col)}
+.bcol > h3 .dot{width:7px;height:7px;border-radius:50%;background:var(--col);flex:0 0 auto}
+.bcol > h3 .n{margin-left:auto;font-family:var(--c-mono);font-size:10.5px;font-weight:600;
+  padding:1px 7px;border-radius:9px;background:color-mix(in srgb,var(--col) 14%,transparent);
+  color:var(--col)}
+.bcol .empty{font-size:12.5px;color:var(--c-faint);padding:var(--c-2) 0}
+.bcard{display:block;background:var(--c-card);border:1px solid var(--c-line);
+  border-left:3px solid var(--ws,var(--c-line-2));border-radius:var(--c-rad);
+  padding:var(--c-3) var(--c-4);margin-bottom:var(--c-3);color:inherit}
+a.bcard:hover{text-decoration:none;box-shadow:0 2px 10px rgba(20,24,30,.08);
+  border-color:var(--c-line-2)}
+.bcard > b{display:block;font-weight:600;font-size:13.5px;line-height:1.35;color:var(--c-ink)}
+.bcard .tid{display:block;font-family:var(--c-mono);font-size:10px;letter-spacing:.05em;
+  color:var(--c-faint);margin-bottom:3px}
+.bcard p{margin:5px 0 0;font-size:12.5px;line-height:1.5;color:var(--c-muted);max-width:none}
+.bcard .blocked{display:block;margin-top:6px;padding-top:5px;border-top:1px solid var(--c-line);
+  font-size:11.5px;line-height:1.45;color:var(--c-r2)}
+.bcard .who{display:inline-block;margin-top:6px;font-family:var(--c-mono);font-size:10px;
+  letter-spacing:.04em;color:var(--c-faint)}
+/* the progress bar on a workstream card: done over total, and nothing else */
+.bbar{height:4px;border-radius:9px;background:var(--c-head);overflow:hidden;margin:7px 0 6px}
+.bbar i{display:block;height:100%;background:var(--ws,var(--c-r3));border-radius:9px}
+.bpips{display:flex;gap:4px;flex-wrap:wrap;font-family:var(--c-mono);font-size:10px}
+.bpips span{padding:1px 6px;border-radius:9px;background:var(--c-head);color:var(--c-muted)}
+.bpips span.d{background:var(--c-r4-soft);color:var(--c-r4)}
+.bpips span.p{background:#dbeafe;color:#1d4ed8}
+.bpips span.n{background:var(--c-r2-soft);color:var(--c-r2)}
+@media (max-width:1000px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.board{grid-template-columns:minmax(0,1fr)}}
+
+/* Hard rule 5 puts the model-generated disclosure above the fold, so on a
+   console page it is a second strip rather than a footer. It sits under the
+   place-strip because the first thing a reader needs is where they are. */
+.c-disc{background:#fffdf7;border-bottom:1px solid #eadfc4;font-size:12.5px;
+  line-height:1.5;color:#5b5334}
+.c-disc .row{max-width:none;margin:0;padding:7px max(16px,env(safe-area-inset-left))}
+.withheld-note{background:var(--c-r2-soft);border:1px solid #e8d9bd;border-radius:var(--c-rad);
+  padding:var(--c-3) var(--c-4);font-size:13px;line-height:1.55;color:#5b4720;max-width:78ch}
+.withheld-note a{color:#8a4b06;text-decoration:underline}
+.blocked-on{color:var(--c-r2);font-size:13px}

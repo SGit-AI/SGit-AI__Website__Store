@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-root="../../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>v0.1.18 — the admin section becomes a console, with its own UI, the two payment rails written up as plans, a board of the work, and the queue the work comes out of &mdash; the store</title>
+<meta name="description" content="The admin pages ran on the shop&#x27;s stylesheet, so a page whose job is *what is blocking a first sale* was set in the same warm paper and generous measure as a page explaining an offer slowly to somebody deciding whether to buy it. Those two want opposite things. /admin/ now has its own shell — a dark rail carrying counts, a four-rank status scale where only rank one is filled, and a page head that names the place rather than describing it. The architecture is adopted from the console at pt.newsroom.sgit.ai and credited in the stylesheet; the palette and the ranks are this store&#x27;s.
+
+Every number on it is computed from the files the pages are built from, so a tile cannot disagree with the page it points at. Admin also joins the top-level nav: it was public and unadvertised by design, and unfindable by the people building it by accident.
+
+**Taking money, as two plans rather than two intentions.** /admin/rails/ carries what each provider is handed, what it is never handed, the steps in order, and what is still open. The Stripe plan changed shape this release on a ruling: the rail is no longer an amount-only link but Stripe&#x27;s own catalogue, with a Customer created from the buyer&#x27;s email even when a hundred-per-cent code means they pay nothing — which is the entire point of it. That reverses a position this store had published, and the reversal is written above the old reasoning rather than instead of it. Two findings came out of writing it down: a hundred-per-cent order creates no charge, so a webhook keyed on a succeeded payment would see every paid order and none of the free ones; and the host check pins every destination to Stripe&#x27;s hosts, so a SumUp URL pasted in today is refused by the gate with a message about Stripe.
+
+The catalogue Stripe needs is eight prices across six products, not sixty-two, because a price here does not vary by shape. It is generated from data/offers.yml and served beside the page, and a check compares the two.
+
+**A board, and the queue behind it.** /admin/work/ is thirteen workstreams and seventy units of work in four columns, modelled on the board at sgraph.ai/en-gb/dev/workstreams/ — a workstream is never dragged; its column is computed from its own tasks, so the summary cannot contradict the detail. /admin/memos/ is where the work comes from: six memos kept word for word, each read into a brief and broken into units that carry the memo they came from. One memo contradicts another from the same day about where a buyer lands after paying, and the board says so rather than quietly resolving it.
+
+**Hard rule twelve met a quotation, and the rule won.** A memo uses a barred word in passing. The check that holds the rule says in its own comment that an allowance is a thing that widens, so the term is withheld in place — a visible marker, counted, named, linked to the ruling — and the promise on the page changes from *nothing trimmed* to *nothing trimmed, one term withheld and marked*. The memo itself is intact in the data file. Whether a quotation should have been in scope is a ruling and it is on the board.
+
+**One check narrowed, and exactly how far.** The stray-checkout check matched any absolute URL with a provider&#x27;s name in it, which was right until a page here had a provider&#x27;s name in its own address. It now exempts one origin, this one, and the reason is a fact rather than a convenience: nothing on store.sgit.ai takes a payment. Four checks added — the board is whole, the rendered board agrees with its own arithmetic, the Stripe catalogue is the offers, and a withheld term is declared. Seven deliberate breaks were run against them before shipping.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://store.sgit.ai/versions/v0.1.18/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="store.sgit.ai">
+<meta property="og:url" content="https://store.sgit.ai/versions/v0.1.18/">
+<meta property="og:title" content="v0.1.18 — the admin section becomes a console, with its own UI, the two payment rails written up as plans, a board of the work, and the queue the work comes out of">
+<meta property="og:description" content="The admin pages ran on the shop&#x27;s stylesheet, so a page whose job is *what is blocking a first sale* was set in the same warm paper and generous measure as a page explaining an offer slowly to somebody deciding whether to buy it. Those two want opposite things. /admin/ now has its own shell — a dark rail carrying counts, a four-rank status scale where only rank one is filled, and a page head that names the place rather than describing it. The architecture is adopted from the console at pt.newsroom.sgit.ai and credited in the stylesheet; the palette and the ranks are this store&#x27;s.
+
+Every number on it is computed from the files the pages are built from, so a tile cannot disagree with the page it points at. Admin also joins the top-level nav: it was public and unadvertised by design, and unfindable by the people building it by accident.
+
+**Taking money, as two plans rather than two intentions.** /admin/rails/ carries what each provider is handed, what it is never handed, the steps in order, and what is still open. The Stripe plan changed shape this release on a ruling: the rail is no longer an amount-only link but Stripe&#x27;s own catalogue, with a Customer created from the buyer&#x27;s email even when a hundred-per-cent code means they pay nothing — which is the entire point of it. That reverses a position this store had published, and the reversal is written above the old reasoning rather than instead of it. Two findings came out of writing it down: a hundred-per-cent order creates no charge, so a webhook keyed on a succeeded payment would see every paid order and none of the free ones; and the host check pins every destination to Stripe&#x27;s hosts, so a SumUp URL pasted in today is refused by the gate with a message about Stripe.
+
+The catalogue Stripe needs is eight prices across six products, not sixty-two, because a price here does not vary by shape. It is generated from data/offers.yml and served beside the page, and a check compares the two.
+
+**A board, and the queue behind it.** /admin/work/ is thirteen workstreams and seventy units of work in four columns, modelled on the board at sgraph.ai/en-gb/dev/workstreams/ — a workstream is never dragged; its column is computed from its own tasks, so the summary cannot contradict the detail. /admin/memos/ is where the work comes from: six memos kept word for word, each read into a brief and broken into units that carry the memo they came from. One memo contradicts another from the same day about where a buyer lands after paying, and the board says so rather than quietly resolving it.
+
+**Hard rule twelve met a quotation, and the rule won.** A memo uses a barred word in passing. The check that holds the rule says in its own comment that an allowance is a thing that widens, so the term is withheld in place — a visible marker, counted, named, linked to the ruling — and the promise on the page changes from *nothing trimmed* to *nothing trimmed, one term withheld and marked*. The memo itself is intact in the data file. Whether a quotation should have been in scope is a ruling and it is on the board.
+
+**One check narrowed, and exactly how far.** The stray-checkout check matched any absolute URL with a provider&#x27;s name in it, which was right until a page here had a provider&#x27;s name in its own address. It now exempts one origin, this one, and the reason is a fact rather than a convenience: nothing on store.sgit.ai takes a payment. Four checks added — the board is whole, the rendered board agrees with its own arithmetic, the Stripe catalogue is the offers, and a withheld term is declared. Seven deliberate breaks were run against them before shipping.">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="../../assets/site.css">
+
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../assets/site.js" defer></script>
+<!-- shop.js is on EVERY page because the nav carries an order badge on every page.
+     So a shop page must NOT name it again in head_js: two tags is two copies of the
+     cart engine running against one document, and the second one undoes what the
+     first one did. check_site holds every page to loading each script once. -->
+<script src="../../assets/shop.js" defer></script>
+
+
+</head>
+<body>
+<nav class="site"><div class="row"><a class="brand" href="../../index.html">store<span>.sgit.ai</span></a><a class="parent" href="https://sgit.ai/llms.txt" rel="noopener" title="sgit.ai — the platform this sells instances of. The free public library lives there">&#8599; part of <b>sgit.ai</b></a><span class="stage-pill">every offer here is an instance</span><a class="ver" href="../../versions/v0.1.18/index.html" title="What changed in v0.1.18, and the commit it was built from">v0.1.18</a><button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">Menu</button><div class="nav-items"><div class="ni"><a class="nl" href="../../index.html">What is for sale</a></div><div class="ni ni-has"><a class="nl" href="../../policies/index.html">The policies<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../../policies/index.html">Which agent do you run?</a><a class="sl" href="../../policies/index.html#the-four-levels">The four levels</a><a class="sl" href="../../p/your-own/index.html">Something not on the list</a><a class="sl" href="../../offers/index.html">The price list</a><a class="sl" href="../../cart/index.html">Your order</a></div></div><div class="ni ni-has"><a class="nl" href="../../how-it-works/index.html">How buying works<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../../how-it-works/index.html">The three steps</a><a class="sl" href="../../paying/index.html">The two rails</a><a class="sl" href="../../booking/index.html">What a session is</a><a class="sl" href="../../order/index.html">What happens after you pay</a></div></div><div class="ni ni-has"><a class="nl" href="../../audiences/index.html">Who it is for<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../../audiences/index.html">The three buyers</a><a class="sl" href="../../for/agents/index.html">You run agents today</a><a class="sl" href="../../for/investors/index.html">You are backing a company</a><a class="sl" href="../../for/startups/index.html">You are a startup</a></div></div><div class="ni ni-has"><a class="nl here" href="../../ledger/index.html">Evidence<span class="caret">&#9662;</span></a><div class="sub"><a class="sl here" href="../../ledger/index.html">The claim ledger</a><a class="sl" href="../../admin/reviews/index.html">Reviews, dated and kept</a><a class="sl" href="../../disclosures/index.html">What we do not say, and why</a><a class="sl" href="../../catalogue/index.html">What is not for sale yet</a><a class="sl" href="../../dev-packs/index.html">The dev packs</a><a class="sl" href="../../lab/index.html">The purchase lab</a><a class="sl" href="../../versions/index.html">Release history</a><a class="sl" href="../../admin/try/index.html">Run the whole flow yourself</a></div></div><div class="ni ni-has"><a class="nl" href="../../admin/index.html">Admin<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../../admin/index.html">The console</a><a class="sl" href="../../admin/work/index.html">The work</a><a class="sl" href="../../admin/memos/index.html">The memo queue</a><a class="sl" href="../../admin/rails/index.html">Taking money</a><a class="sl" href="../../admin/reviews/index.html">Reviews, dated and kept</a><a class="sl" href="../../admin/try/index.html">Run the whole flow yourself</a></div></div></div><a class="cartlink" href="../../cart/index.html">Your order <b data-cart-count hidden></b><span data-cart-total></span></a><a class="gh" href="https://github.com/SGit-AI/SGit-AI__Website__Store" rel="noopener">&#9733; Source</a></div></nav>
+<div class="disclosure-strip"><div class="row"><b>Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.</b>
+Nothing on this site is a compliance assessment, and no page claims conformity to any standard.
+<a href="../../disclosures/index.html">What we do not say, and why</a> &middot;
+<a href="../../ledger/index.html">how every claim here is evidenced</a></div></div>
+<main class="doc">
+<p class="crumb"><a href="../../index.html">store.sgit.ai</a> / <a href="../../versions/index.html">versions</a> / v0.1.18</p>
+<h1>v0.1.18 — the admin section becomes a console, with its own UI, the two payment rails written up as plans, a board of the work, and the queue the work comes out of</h1>
+
+
+<p class="lead">The admin pages ran on the shop's stylesheet, so a page whose job is <em>what is blocking a first sale</em> was set in the same warm paper and generous measure as a page explaining an offer slowly to somebody deciding whether to buy it. Those two want opposite things. /admin/ now has its own shell — a dark rail carrying counts, a four-rank status scale where only rank one is filled, and a page head that names the place rather than describing it. The architecture is adopted from the console at pt.newsroom.sgit.ai and credited in the stylesheet; the palette and the ranks are this store's.</p><p class="lead">Every number on it is computed from the files the pages are built from, so a tile cannot disagree with the page it points at. Admin also joins the top-level nav: it was public and unadvertised by design, and unfindable by the people building it by accident.</p><p class="lead"><strong>Taking money, as two plans rather than two intentions.</strong> /admin/rails/ carries what each provider is handed, what it is never handed, the steps in order, and what is still open. The Stripe plan changed shape this release on a ruling: the rail is no longer an amount-only link but Stripe's own catalogue, with a Customer created from the buyer's email even when a hundred-per-cent code means they pay nothing — which is the entire point of it. That reverses a position this store had published, and the reversal is written above the old reasoning rather than instead of it. Two findings came out of writing it down: a hundred-per-cent order creates no charge, so a webhook keyed on a succeeded payment would see every paid order and none of the free ones; and the host check pins every destination to Stripe's hosts, so a SumUp URL pasted in today is refused by the gate with a message about Stripe.</p><p class="lead">The catalogue Stripe needs is eight prices across six products, not sixty-two, because a price here does not vary by shape. It is generated from data/offers.yml and served beside the page, and a check compares the two.</p><p class="lead"><strong>A board, and the queue behind it.</strong> /admin/work/ is thirteen workstreams and seventy units of work in four columns, modelled on the board at sgraph.ai/en-gb/dev/workstreams/ — a workstream is never dragged; its column is computed from its own tasks, so the summary cannot contradict the detail. /admin/memos/ is where the work comes from: six memos kept word for word, each read into a brief and broken into units that carry the memo they came from. One memo contradicts another from the same day about where a buyer lands after paying, and the board says so rather than quietly resolving it.</p><p class="lead"><strong>Hard rule twelve met a quotation, and the rule won.</strong> A memo uses a barred word in passing. The check that holds the rule says in its own comment that an allowance is a thing that widens, so the term is withheld in place — a visible marker, counted, named, linked to the ruling — and the promise on the page changes from <em>nothing trimmed</em> to <em>nothing trimmed, one term withheld and marked</em>. The memo itself is intact in the data file. Whether a quotation should have been in scope is a ruling and it is on the board.</p><p class="lead"><strong>One check narrowed, and exactly how far.</strong> The stray-checkout check matched any absolute URL with a provider's name in it, which was right until a page here had a provider's name in its own address. It now exempts one origin, this one, and the reason is a fact rather than a convenience: nothing on store.sgit.ai takes a payment. Four checks added — the board is whole, the rendered board agrees with its own arithmetic, the Stripe catalogue is the offers, and a withheld term is declared. Seven deliberate breaks were run against them before shipping.</p><div class="tablewrap"><table><tbody><tr><th>Version</th><td><code>v0.1.18</code> &mdash; <b>current</b></td></tr><tr><th>Released</th><td>2026-09-16</td></tr><tr><th>Built from commit</th><td><code>recorded one commit later</code></td></tr><tr><th>Site</th><td>store.sgit.ai</td></tr></tbody></table></div><p class="small dim">Touched: <code>build.py</code> &middot; <code>content</code> &middot; <code>data</code> &middot; <code>tools</code></p><p class="packnav"><a href="../../versions/v0.1.17/index.html">v0.1.17 &rarr;</a></p><p class="packfoot">Every release of this site is listed on <a href="../../versions/index.html">the release history</a>, and the same records are served as <a href="../../versions/index.json">JSON</a> so a script can read them without parsing a page.</p>
+<p class="pagenav"><a href="../../policies/index.html">Which agent do you run? &rarr;</a>
+<a href="../../how-it-works/index.html">How buying works &rarr;</a>
+<a href="../../ledger/index.html">Every claim, with its state &rarr;</a></p>
+</main>
+<footer class="site"><div class="cols">
+  <div>
+    <div class="brandline">store<span>.sgit.ai</span></div>
+    <p class="nonaff"><b>Every agent needs a licence to operate.</b> This is where you buy one.
+       Six offers, four of them with a price and a code, two of them listed and not yet buyable,
+       grouped by which of three buyers each was built for.
+       <b>The paid thing is not access and it is not customisation. It is independence.</b></p>
+    <p>Nothing here is a compliance assessment, nothing here is a mark of conformity to any standard, and no opinion here is
+       personal: <b>the company issues every opinion</b>, and the person who sells is never the
+       person who signs. Outputs are model generated and marked as such.</p>
+    <p class="licence">This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). The code that builds it is Apache-2.0.</p>
+    <p class="verline">site <a href="../../versions/index.html">v0.1.18</a> &middot;
+       <a href="../../ledger/index.html">the ledger</a> &middot; <a href="../../disclosures/index.html">what we do not say</a> &middot;
+       <a href="index.md" title="The same page as plain markdown">this page as markdown</a></p>
+  </div>
+  <div>
+    <h4>The offers</h4>
+    <a href="../../offers/index.html">All six, side by side</a>
+    <a href="../../offers/index.html#the-two-add-ons">The two add-ons</a>
+    <a href="../../catalogue/index.html">What is not for sale yet</a>
+  </div>
+  <div>
+    <h4>Who it is for</h4>
+    <a href="../../audiences/index.html">The three buyers</a>
+    <a href="../../for/agents/index.html">You run agents today</a>
+    <a href="../../for/investors/index.html">You are backing a company</a>
+    <a href="../../for/startups/index.html">You are a startup</a>
+  </div>
+  <div>
+    <h4>Paying</h4>
+    <a href="../../paying/index.html">The two rails</a>
+    <a href="../../paying/index.html#why-a-link-and-not-a-card-reader">Why a link, not a reader</a>
+    <a href="../../booking/index.html">Booking a person</a>
+  </div>
+  <div>
+    <h4>Evidence</h4>
+    <a href="../../ledger/index.html">Every claim, with its state</a>
+    <a href="../../admin/reviews/index.html">Reviews, dated and kept</a>
+    <a href="../../disclosures/index.html">What we do not say, and why</a>
+    <a href="../../dev-packs/index.html">The dev packs</a>
+    <a href="../../versions/index.html">Release history</a>
+    <a href="../../admin/index.html">Admin</a>
+  </div>
+</div>
+<div class="footnote"><p>No analytics. No cookies. No third-party fonts, scripts or CDN &mdash; every byte of this
+site is served from this domain. <b>Every page that sells anything opens no network connection at all</b>, and a build
+check holds that line. The one exception is named and narrow: a <a href="../../admin/reviews/index.html">review</a> of a vault embeds
+that vault from one host, through one vendored component, and says so on itself. Nothing anywhere here sends anything
+about you &mdash; no fetch, no beacon, no socket, on any page. Paying happens on the payment provider&rsquo;s own pages, which is the only place a card number should ever be
+typed: nothing on this site collects one. Prices are in pounds &mdash; pricing in euros while settling in pounds adds
+about two per cent.</p></div>
+</footer>
+</body>
+</html>
