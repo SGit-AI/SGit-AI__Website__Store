@@ -1083,7 +1083,7 @@ EXPECTED_LAB_VIEWS = {"interview", "ladder", "board", "delta", "scenario"}
 # LAB_WARNING does, absolutely, and that is the reason they are here at all: /lab/
 # is the one place on this site that already says "nothing here can be bought" on
 # its own face and has a check refusing any page that stops saying it.
-EXPECTED_LAB_OTHER = {"product"}
+EXPECTED_LAB_OTHER = {"product", "agent-canvas", "agent-sequence"}
 
 
 def lab_pages_built():
@@ -2412,6 +2412,102 @@ def check_the_network_claim_is_qualified():
                  f"one and each says so; the claim that is true is about pages that SELL. \u2026{ctx}\u2026")
 
 
+def check_the_capability_vocabulary_is_promoted_not_invented():
+    """THE ONE THING THIS PAGE MUST NOT DO IS MAKE UP WORDS.
+
+    "Describe your agent" produces the grant and hands it to a model session that
+    turns it into a vault. If the palette used this store's own vocabulary, a
+    buyer would describe their agent in one set of words and receive a document
+    written in another — which is the worst outcome available to a page whose
+    entire job is producing an input to that document.
+
+    So every primitive rendered on a prototype has to be one that came out of
+    riskmandate.ai's own template vault, the file has to carry the hash of the
+    bytes it was promoted from, and the count has to match. The promotion is done
+    by tools/promote_capabilities.py, by hand, because the build opens no
+    connection."""
+    f = ROOT / "data" / "capabilities.json"
+    if not f.exists():
+        fail("data/capabilities.json is missing and the agent prototypes render from it")
+        return
+    v = json.loads(f.read_text())
+    prov = v.get("_promoted_from", {})
+    if not re.fullmatch(r"sha256:[0-9a-f]{64}", prov.get("content_hash", "")):
+        fail("data/capabilities.json: no sha256 of the bytes it was promoted from. A promoted file "
+             "without a content hash is a file that can drift silently")
+    if not prov.get("vault") or not prov.get("page"):
+        fail("data/capabilities.json: does not name the vault and the page it came from")
+    # WHAT THIS CHECK CANNOT DO, SAID PLAINLY. It cannot tell a promoted file from
+    # a hand-edited one: the content hash is self-reported, so anybody editing the
+    # file could edit the hash beside it. A deliberate break proved exactly that.
+    # Detecting a hand-edit means re-fetching, which means opening a connection,
+    # which the build does not do — `tools/promote_capabilities.py --check` is the
+    # thing that does it, by hand. What IS checked here is every invariant that
+    # survives offline, which is most of them.
+    caps = v.get("capabilities", [])
+    if len(caps) != v.get("count"):
+        fail(f"data/capabilities.json: says {v.get('count')} and carries {len(caps)}")
+    # WHAT THE GRAMMAR ACTUALLY GUARANTEES, CORRECTED AFTER READING THE DATA.
+    #
+    # The first version of this rebuilt the id from verb.object.reach and demanded
+    # it match. Five real primitives failed, and they were right and the check was
+    # wrong: the id uses a SHORT FORM — `endpoint` for the object `network-endpoint`
+    # — and its last segment is sometimes a discriminator rather than the reach
+    # (`send.endpoint.allowed` has reach `tenant`; `read.record.browsing` has reach
+    # `host`). Two primitives can share a verb, an object and a reach and still be
+    # different things, which is what the last segment is for.
+    #
+    # So what is asserted is what holds: three segments, the first is the verb, and
+    # the reach field is one the file defines. Anything tighter would be this
+    # store's opinion about somebody else's vocabulary.
+    grammar = v.get("grammar", "")
+    n_parts = len(grammar.split("."))
+    for c in caps:
+        bits = str(c.get("id", "")).split(".")
+        if len(bits) != n_parts:
+            fail(f"capability {c.get('id')!r} has {len(bits)} segments and the grammar "
+                 f"{grammar!r} has {n_parts}")
+        elif bits[0] != c.get("verb"):
+            fail(f"capability {c.get('id')!r} starts with {bits[0]!r} and its verb is "
+                 f"{c.get('verb')!r}")
+        if c.get("verb") not in v.get("verbs", []):
+            fail(f"capability {c.get('id')!r} uses verb {c.get('verb')!r}, which the file does "
+                 "not define")
+        if c.get("reach") not in v.get("reaches", {}):
+            fail(f"capability {c.get('id')!r} has reach {c.get('reach')!r}, which the file does "
+                 "not define")
+        if c.get("undo") not in ("yes", "no", "with-effort"):
+            fail(f"capability {c.get('id')!r} has undo {c.get('undo')!r}, which is not one of the "
+                 "three the upstream set uses")
+        if c.get("family") not in v.get("families", {}):
+            fail(f"capability {c.get('id')!r} is in family {c.get('family')!r}, which the file "
+                 "does not define")
+    ids = {c.get("id") for c in caps}
+    # Every chip on every prototype is one of them, and there are no others.
+    for page in (OUT / "lab").glob("agent-*/index.html"):
+        rel = f"lab/{page.parent.name}/index.html"
+        shown = set(re.findall(r'data-cap="([^"]+)"', page.read_text()))
+        extra = shown - ids
+        if extra:
+            fail(f"{rel}: renders {sorted(extra)}, which is not in the promoted vocabulary. The "
+                 "words on this page are riskmandate.ai's, not this store's")
+        if shown != ids:
+            fail(f"{rel}: renders {len(shown)} of {len(ids)} primitives. The page says how many "
+                 "there are, so a partial palette makes the page wrong about itself")
+        flat = strip_tags(page.read_text())
+        if "It produces the grant" not in flat:
+            fail(f"{rel}: does not say it produces the grant. A reader who thought this was the "
+                 "whole document would be taking three quarters of the \u00a3500 level for "
+                 "nothing in their own head")
+    js = OUT / "assets" / "agent.js"
+    if js.exists():
+        src = js.read_text()
+        for bad in ("fetch(", "XMLHttpRequest", "navigator.sendBeacon", "new WebSocket"):
+            if bad in src:
+                fail(f"assets/agent.js: uses {bad}. What somebody describes about their own agent "
+                     "does not leave their browser")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2448,6 +2544,7 @@ def main():
         check_every_reviewer_line_is_sourced,
         check_a_leaked_code_cannot_buy_somebody_s_day,
         check_the_network_claim_is_qualified,
+        check_the_capability_vocabulary_is_promoted_not_invented,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

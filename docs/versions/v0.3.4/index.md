@@ -15,7 +15,7 @@ TWO CHECKS SPLIT RATHER THAN RELAXED. Every assertion about the lab assumed ever
 And one thing caught by testing rather than reading: the edition buttons rendered, looked clickable and did nothing, because the page did not load the script they live in. On a page about whether an interface works, that is worse than not having them.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `1e27920b7677214e4812ccc20948df562bd2b55f`
 - Reconstructed: no
 
 ---

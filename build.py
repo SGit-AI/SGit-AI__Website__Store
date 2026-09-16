@@ -1306,6 +1306,95 @@ def delivery_pages(out_dir, ctx_shared):
             twin += f"\n---\n\n{LICENCE_STAMP}\n"
         (target.parent / "index.md").write_text(twin)
         made[url] = page["fm"]["title"]
+
+    # --- describe your agent: two prototypes over one vocabulary
+    AGENT_VIEWS = [
+        ("canvas", "The canvas",
+         "The agent in the middle, everything it could reach around it. Click a capability to "
+         "give it to the agent, click again to take it away.",
+         "For somebody being walked through it by a person \u2014 which is the mode this page "
+         "exists for. The whole set is visible at once, so a conversation can jump anywhere in it "
+         "rather than going in an order somebody else chose.",
+         "Twenty-three things on one screen is a lot to meet at once, and nothing tells you where "
+         "to start. It rewards somebody who already knows roughly what their agent does and "
+         "punishes somebody who does not."),
+        ("sequence", "One at a time",
+         "One family per screen, in order, with what each reach means beside it.",
+         "For somebody working alone, with nobody to explain the words. Each screen is small "
+         "enough to answer without deciding what the whole model is first.",
+         "Nine screens is nine chances to stop, and it hides how much is left. It also makes the "
+         "shape of the grant hard to see until the end \u2014 which is the thing the document is "
+         "actually about."),
+    ]
+    for aid, name, one_line, good, bad in AGENT_VIEWS:
+        url = f"/lab/agent-{aid}/"
+        ctx = dict(ctx_shared)
+        ctx.update({"page": f"lab/agent-{aid}", "page_url": url, "fm": {}, "toc": []})
+        other = [v for v in AGENT_VIEWS if v[0] != aid][0]
+        body = (
+            f'<div class="note"><p><b>{LAB_WARNING}.</b> This is a prototype of an interface, and '
+            'which of the two becomes the real one is not decided. Nothing on it is sent anywhere: '
+            'what you build stays in this browser and leaves as a file you copy out. '
+            '{{claim:lab-is-a-prototype}}</p></div>'
+            f'<p class="lead">{inline(one_line, ctx)}</p>'
+            + agent_model_island(rel_prefix(url))
+            + f'<div class="ag ag-{aid}" data-mode="{aid}">'
+            '<div class="ag-stage"><div class="ag-core"><b>Your agent</b>'
+            '<span class="ag-count" data-ag-count>nothing yet</span></div></div>'
+            f'<div class="ag-palette">{agent_palette()}</div>'
+            '<div class="ag-out"><h3>What you have said it can do</h3>'
+            '<div data-ag-list class="ag-list"><p class="dim">Nothing selected. Click a capability '
+            'above.</p></div>'
+            '<div class="ag-acts">'
+            '<button type="button" class="buy" data-ag-copy>Copy the definition</button>'
+            '<button type="button" class="buy buy-alt" data-ag-download>Download it as JSON</button>'
+            '<button type="button" class="buy buy-alt" data-ag-clear>Start again</button>'
+            "</div>"
+            '<p class="small dim">It goes to your clipboard or your downloads and nowhere else. '
+            'There is no account here and no page that sells anything opens a connection \u2014 '
+            'both are build checks rather than promises.</p>'
+            "</div></div>"
+            '<h2 id="what-is-wrong-with-it">What is wrong with this one</h2>'
+            f'<p><b>What it is good at.</b> {inline(good, ctx)}</p>'
+            f'<p><b>What it is bad at.</b> {inline(bad, ctx)}</p>'
+            f'<p><a href="/lab/agent-{other[0]}/">Try {other[1].lower()} instead \u2192</a> '
+            '\u2014 same twenty-three primitives, same document out. <b>Two options presented with '
+            'only their strengths is a menu, not an experiment.</b></p>'
+            + agent_shared_note(ctx)
+            + '<h2 id="then-what">Then what</h2>'
+            '<p>The document this produces is an input to a model session that has the template '
+            f'vault and turns it into a vault of your own. That is <a href="/d/t3/">the '
+            f'\u00a3500 level</a>, and the honest version of the workflow is: build this together, '
+            'you go and do something else, the vault follows within one to three days of you '
+            'sending the details.</p>'
+            '<p><a href="/lab/">The other prototypes in the lab</a></p>')
+        page = {
+            "fm": {"title": f"Describe your agent \u2014 {name.lower()}",
+                   "description": (f"{one_line} A prototype: twenty-three capability primitives on "
+                                   "a verb.object.reach grammar, promoted from riskmandate.ai's "
+                                   "own template vault. Nothing on it can be bought."),
+                   "lead": f"**{LAB_WARNING}.** A prototype of an interface.",
+                   "wide": True, "head_css": "/assets/lab.css", "head_js": "/assets/agent.js"},
+            "url": url,
+            "crumb": f' / <a href="/lab/">lab</a> / describe your agent / {aid}',
+            "nav_match": "/ledger/",
+            "src_md": (
+                f"# Describe your agent \u2014 {name.lower()}\n\n**{LAB_WARNING}.** A prototype "
+                f"of an interface.\n\n{one_line}\n\n"
+                f"- Good at: {good}\n- Bad at: {bad}\n"
+                f"- {CAPABILITIES['count']} primitives on a `{CAPABILITIES['grammar']}` grammar, "
+                "promoted from riskmandate.ai's template vault\n"
+                "- It produces the GRANT only \u2014 not the mandate, not the delta, not a "
+                "policy\n"
+                "- What you build stays in this browser and leaves as a file you copy out\n"),
+        }
+        target = out_dir / url.strip("/") / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(page_html(page, ctx, shortcodes_inline(body, ctx)))
+        (target.parent / "index.md").write_text(
+            page["src_md"].rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
+        made[url] = page["fm"]["title"]
+
     return made
 
 
@@ -2582,6 +2671,124 @@ def product_prototype(ctx):
         'shape can be judged, and it is disabled in the markup rather than by script.</p>'
         f'<p class="small"><a href="/d/{o["id"]}/">The real page for this level &rarr;</a></p>'
         "</aside></div>")
+
+
+# ----------------------------------------------- describe your agent ----
+# THE PAGE THE PROJECT LEAD EXPECTS TO USE MOST IN CONVERSATION, and it is free.
+#
+# It produces the GRANT — everything an agent can actually do — which is one of
+# the four objects inside the document this store sells. Giving the elicitation
+# away and charging for the correction is a different business from charging for
+# the whole thing, and it is the one that was asked for.
+#
+# IT ALSO CLOSES A PROPOSAL THIS STORE RECORDED AND DID NOT ACT ON. The partner
+# review found MAP-A-GRANT already exists, is already free, ships in every public
+# template zip, and was only ever surfaced AFTER a £500 purchase — and that moving
+# it to the front door is a re-ordering rather than a build. This is that
+# re-ordering, with an interface on it.
+#
+# THE VOCABULARY IS NOT THIS STORE'S. Twenty-three primitives on a
+# verb.object.reach grammar, promoted out of riskmandate.ai's own template vault
+# with a published read key by tools/promote_capabilities.py. If this store
+# invented its own words, a buyer would describe their agent in one vocabulary and
+# receive a document written in another — which is the worst outcome available to
+# a page whose entire job is producing an input to that document.
+#
+# TWO PROTOTYPES, BECAUSE TWO WERE ASKED FOR. A canvas for somebody being walked
+# through it by a person, and a sequence for somebody working alone. Both render
+# the same twenty-three primitives and emit the same document, which is what makes
+# them an experiment rather than two drafts — the same arrangement the five
+# configurator prototypes already run on.
+CAPABILITIES = json.loads((DATA / "capabilities.json").read_text())
+CAPS = CAPABILITIES["capabilities"]
+CAP_FAMILIES = CAPABILITIES["families"]
+CAP_REACHES = CAPABILITIES["reaches"]
+
+UNDO_LABEL = {
+    "yes": ("Undoable", "u-y"),
+    "with-effort": ("Undoable with effort", "u-e"),
+    "no": ("Not undoable", "u-n"),
+}
+
+
+def agent_model_island(prefix):
+    """The vocabulary, shipped as data so both prototypes render the same thing."""
+    return ('<script type="application/json" id="agent-model">'
+            + json.dumps({
+                "grammar": CAPABILITIES["grammar"],
+                "families": CAP_FAMILIES,
+                "reaches": CAP_REACHES,
+                "capabilities": CAPS,
+                "storage": "sgit.store.agent.v1",
+            }, separators=(",", ":"))
+            + "</script>")
+
+
+def _cap_chip(c):
+    label, cls = UNDO_LABEL[c["undo"]]
+    return (f'<button type="button" class="cap {cls}" data-cap="{html.escape(c["id"])}" '
+            f'aria-pressed="false">'
+            f'<b>{html.escape(c["gloss"])}</b>'
+            f'<code>{html.escape(c["id"])}</code>'
+            f'<span class="cap-undo">{html.escape(label)}</span></button>')
+
+
+def agent_palette():
+    out = []
+    for fam, gloss in CAP_FAMILIES.items():
+        rows = [c for c in CAPS if c["family"] == fam]
+        if not rows:
+            continue
+        out.append(f'<section class="fam" data-fam="{html.escape(fam)}">'
+                   f'<h4>{html.escape(fam)}<span>{html.escape(gloss)}</span></h4>'
+                   f'<div class="fam-caps">{"".join(_cap_chip(c) for c in rows)}</div>'
+                   "</section>")
+    return "".join(out)
+
+
+def agent_shared_note(ctx):
+    reaches = "".join(
+        f'<div class="row2"><div><b><code>{html.escape(k)}</code></b>'
+        f'<p>{html.escape(v)}</p></div></div>' for k, v in CAP_REACHES.items())
+    rules = "".join(f"<li>{inline(r, ctx)}</li>" for r in CAPABILITIES["rules"])
+    up = CAPABILITIES["_upstream_provenance"]
+    el = CAPABILITIES["_elided"]
+    return (
+        '<h2 id="what-this-produces">What this produces, and what it does not</h2>'
+        '<p><b>It produces the grant</b> \u2014 everything the agent <em>can</em> do. That is one '
+        'of four objects in an Agent Behaviour Policy. It is <b>not</b> the mandate (what you '
+        'authorised), <b>not</b> the delta between them, and <b>not</b> a policy. '
+        '<a href="/what-is-in-one/">What the other three are</a>.</p>'
+        '<p>The grant is the half you can answer from the deployment, which is why it is the half '
+        'given away. The three that follow need somebody to look at your situation, and that is '
+        f'<a href="/d/t3/">the \u00a3500 level</a>.</p>'
+        '<h2 id="the-vocabulary">The vocabulary is not ours</h2>'
+        f'<p><b>{CAPABILITIES["count"]} primitives on a <code>'
+        f'{html.escape(CAPABILITIES["grammar"])}</code> grammar</b>, promoted out of '
+        "riskmandate.ai\u2019s own template vault with a published read key. If this store invented "
+        'its own words, you would describe your agent in one vocabulary and receive a document '
+        'written in another.</p>'
+        f'<div class="rows">{reaches}</div>'
+        f'<h3>The rules the set follows</h3><ul>{rules}</ul>'
+        # THE REMOVED CLAUSE IS DESCRIBED AND NOT QUOTED, WHICH IS THE RULE
+        # DEMONSTRATING ITSELF. The first version printed it verbatim in order to
+        # explain that it is barred — and the check caught that, correctly, on the
+        # release that introduced it. The disclosures page has had the same
+        # constraint since it was written: it describes each barred term precisely
+        # enough that anybody in the field knows which one is meant, and prints
+        # none of them.
+        + (f'<p class="small dim"><b>One clause was removed on the way in.</b> The rule above '
+           'ended with a second clause tying recoverability to a financial concept this site bars '
+           'absolutely, because it carries prices and the word implies a product it does not sell. '
+           'The rule itself is kept whole; the clause is recorded in '
+           '<code>data/capabilities.json</code> under <code>_elided</code>, which is in the '
+           'repository and not in the site. <a href="/disclosures/">The words this site will not '
+           'use</a>.</p>' if el else "")
+        + f'<p class="small dim">Promoted from <code>{html.escape(up.get("source", ""))}</code> at '
+        f'pack version {html.escape(str(up.get("pack_version", "?")))}, with the content hash of '
+        'the bytes it was read from recorded in <code>data/capabilities.json</code>. '
+        'tools/promote_capabilities.py does it, run by hand \u2014 the build opens no '
+        'connection.</p>')
 
 def lab_pages(out_dir, ctx_shared):
     made = {}

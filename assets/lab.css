@@ -187,3 +187,48 @@ button.buy-alt:hover{background:rgba(15,118,110,.06)}
   .pp{grid-template-columns:minmax(0,1fr)}
   .pp-buy{position:static;order:-1}
 }
+
+/* --------------------------------------------- describe your agent ----
+   Two prototypes over one vocabulary. The chips are the same in both; what
+   changes is how many are on screen at once, which is the whole comparison. */
+.ag{margin:1.5rem 0 2rem}
+.ag-stage{display:flex;justify-content:center;margin:1.5rem 0}
+.ag-core{display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  border:2px solid var(--accent);border-radius:14px;padding:1rem 2rem;background:var(--panel);
+  min-width:220px;text-align:center}
+.ag-core b{font-family:var(--serif);font-size:1.3rem;color:var(--ink)}
+.ag-count{font-size:.82rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.ag-palette{display:grid;gap:1.1rem;margin:1.5rem 0}
+.fam h4{margin:0 0 .5rem;font-size:.72rem;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--dim2,var(--dim))}
+.fam h4 span{display:block;font-size:.8rem;font-weight:400;letter-spacing:normal;
+  text-transform:none;color:var(--dim);margin-top:.15rem}
+.fam-caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.55rem}
+.cap{display:flex;flex-direction:column;gap:.15rem;text-align:left;font:inherit;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--line2);
+  border-radius:8px;padding:.6rem .75rem;color:inherit}
+.cap:hover{border-color:var(--line2);box-shadow:var(--shadow)}
+.cap b{font-size:.88rem;font-weight:600;line-height:1.3;color:var(--ink)}
+.cap code{font-size:.72rem;color:var(--dim);background:none;padding:0}
+.cap-undo{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--dim2,var(--dim))}
+.cap[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);
+  border-left-color:var(--accent)}
+.cap[aria-pressed="true"] b,.cap[aria-pressed="true"] code,.cap[aria-pressed="true"] .cap-undo{
+  color:#fff}
+/* Not undoable is the one that changes what a gap costs, so it is the one that
+   gets a colour of its own rather than a word alone. */
+.cap.u-n{border-left-color:var(--red,#95230f)}
+.cap.u-e{border-left-color:var(--warm,#8a4b06)}
+.cap.u-y{border-left-color:#2f6b4f}
+.ag-out{border-top:1px solid var(--line);padding-top:1.2rem;margin-top:1.5rem}
+.ag-list{margin:.8rem 0 1rem}
+.ag-chosen{list-style:none;padding:0;margin:0;display:grid;gap:.35rem}
+.ag-chosen li{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;font-size:.88rem;
+  padding:.35rem .7rem;border-left:3px solid var(--line2);background:var(--panel)}
+.ag-chosen li.u-n{border-left-color:var(--red,#95230f)}
+.ag-chosen li.u-e{border-left-color:var(--warm,#8a4b06)}
+.ag-chosen li.u-y{border-left-color:#2f6b4f}
+.ag-chosen code{font-size:.75rem;color:var(--dim);background:none;padding:0}
+.ag-acts{display:flex;gap:.5rem;flex-wrap:wrap;margin:.8rem 0}
+.ag-nav{display:flex;align-items:center;gap:.7rem;margin:1rem 0}
+.ag-pos{font-size:.82rem;color:var(--dim);font-variant-numeric:tabular-nums}
