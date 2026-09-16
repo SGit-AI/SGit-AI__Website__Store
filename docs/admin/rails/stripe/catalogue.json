@@ -2,7 +2,7 @@
   "_what_this_is": "What the Stripe catalogue should be, generated from data/offers.yml, reconciled against what the dashboard actually holds. Copy from here rather than by eye.",
   "_never_here": "No key of any kind, and no shape. The fifteen shapes are a selection carried in the order reference and resolved on this side. A product id is not a secret and is published deliberately; a secret key is refused everywhere in this repository.",
   "_reconciled_against": "2026-09-16",
-  "version": "v0.2.7",
+  "version": "v0.2.8",
   "currency": "gbp",
   "prices": [
     {

@@ -10,7 +10,7 @@ From the memo *Five audiences, decoupled views, and the version the board can re
 - **BR-2 · Decide who writes it, per vault** — `next` — Fifteen shapes. Generated, written once per shape, or written per sale — the answer changes what the entry level costs to fulfil and therefore whether £10 is the right number.
 - **BR-3 · Say on the site what is inside a vault** — `next` — The memo's own diagnosis: the store never explains this well. It is the gap the board-readable cut sits in, and it is worth closing on its own even if BR-1 takes a while.
 - **BR-4 · Put it in the free vaults first** — `queued` — “Including the ones you can download for free.” Doing the free ones first is the harder order and the right one: it proves the cut is generated rather than hand-finished for a paying customer. _Blocked on: BR-1, BR-2._
-- **BR-5 · Re-read the entry level once it carries one** — `queued` — A £10 pack that contains a version the board can read is a different argument from a £10 pack that does not. This is where the commodity finding finally gets answered rather than deflected. _Blocked on: BR-4, PL-2._
+- **BR-5 · Re-read the entry level once it carries one** — `queued` — A £10 pack that contains a version the board can read is a different argument from a £10 pack that does not. It also earns a row on the comparison table, which is where the difference between the levels is now legible — and it is kept off that table until it exists. _Blocked on: BR-4, PL-2._
 
 ---
 

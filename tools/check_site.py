@@ -2022,6 +2022,70 @@ def check_the_five_audiences_hide_nothing():
             fail(f"are/{aid}: has no markdown twin")
 
 
+def check_the_comparison_agrees_with_the_offers():
+    """The comparison table cannot say something the offer data does not.
+
+    A TABLE IS WHERE AN UNPROVEN CLAIM IS HARDEST TO NOTICE. Fourteen rows of
+    ticks read as fact at a glance, and nobody cross-checks a tick against the
+    page it came from. So: every column names a real offer, every price in the
+    header is the price that offer carries, every delivery cell is the estimate
+    that offer carries, and every row fills every column — a missing cell renders
+    as nothing and reads as a no.
+
+    What this check cannot do is prove a capability row is true; that is what the
+    rule about not putting a promise in a column is for, and it is enforced by
+    whoever adds a row rather than by a script."""
+    src = (ROOT / "data" / "comparison.yml").read_text()
+    col_ids = re.findall(r"^  - id: (\S+)", src, re.M)
+    if not col_ids:
+        fail("data/comparison.yml: no columns could be read")
+        return
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    offers = {o["id"]: o for o in index["offers"]}
+    for cid in col_ids:
+        if cid != "free" and cid not in offers:
+            fail(f"the comparison table has a column {cid!r} that is not an offer on this site")
+    page = OUT / "compare" / "index.html"
+    if not page.exists():
+        fail("compare/index.html: the comparison page was not built")
+        return
+    html_text = page.read_text()
+    # THE PRICES CANNOT DRIFT AND ARE NOT CHECKED HERE. The header reads each one
+    # straight out of data/offers.yml at build time, so asserting they match would
+    # be asserting a variable equals itself — an earlier version of this check did
+    # exactly that and a deliberate break walked through it.
+    #
+    # THE DELIVERY CELLS ARE TYPED BY HAND IN data/comparison.yml, and those can.
+    # A table that says one to two days next to a level whose own page says one to
+    # three is the failure this file exists to make impossible, and it is the row a
+    # buyer times their decision on.
+    for cid in col_ids:
+        if cid == "free":
+            continue
+        o = offers[cid]
+        cell = re.search(rf"^      - label: Delivery$(.*?)^      - ", src,
+                         re.M | re.S)
+        if cell and not re.search(rf"^        {re.escape(cid)}: \"?{re.escape(o['eta'])}",
+                                  cell.group(1), re.M):
+            fail(f"compare: the delivery cell for {cid} does not start with {o['eta']!r}, which is "
+                 "what data/offers.yml says. A table that disagrees with the level page beside it "
+                 "is the one place a buyer will not think to check")
+        if o["price"] not in html_text:
+            fail(f"compare: {o['price']!r} does not appear on the built table at all")
+    # Every row fills every column. A missing cell renders as nothing, and nothing
+    # in a comparison table reads as a no — which is a claim nobody made.
+    rows = re.findall(r"^      - label: (.+)$", src, re.M)
+    blocks = re.split(r"^      - label: ", src, flags=re.M)[1:]
+    for label, blk in zip(rows, blocks):
+        for cid in col_ids:
+            if not re.search(rf"^        {re.escape(cid)}: ", blk, re.M):
+                fail(f"comparison row {label.strip()!r} has no cell for column {cid!r}. An empty "
+                     "cell renders as nothing and reads as a no, which is a claim nobody made")
+        if not re.search(r"^        why: ", blk, re.M):
+            fail(f"comparison row {label.strip()!r} has no `why`. A table of bare ticks teaches "
+                 "nothing \u2014 the sentence under the label is what the reader is buying")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2054,6 +2118,7 @@ def main():
         check_delivery_estimates,
         check_every_claim_state_is_real,
         check_the_five_audiences_hide_nothing,
+        check_the_comparison_agrees_with_the_offers,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

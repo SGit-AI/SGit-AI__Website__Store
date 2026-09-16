@@ -1,5 +1,5 @@
 {
- "version": "v0.2.7",
+ "version": "v0.2.8",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -98,6 +98,16 @@
     "The eight",
     "And two surfaces, neither of which is this site",
     "Why this page exists at all"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/compare/",
+   "title": "What each level actually gets you",
+   "description": "Every level side by side, including the free one: what you get, whose work it is, what you may do with it, and when it arrives. Fourteen rows, five columns, and every cell read off the offer data rather than written as copy.",
+   "lead": "Start with the free column. The templates are published with read keys and anybody can take one \u2014 so what each paid step adds is only legible next to a column that does not have it. The licence row on its own explains the first step.",
+   "headings": [
+    "How to read it"
    ],
    "kind": "page"
   },

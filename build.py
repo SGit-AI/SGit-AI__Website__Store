@@ -93,6 +93,7 @@ NAV = [
         ("Which agent do you run?", "/policies/"),
         ("The four levels", "/policies/#the-four-levels"),
         ("Something not on the list", "/p/your-own/"),
+        ("What each level gets you", "/compare/"),
         ("The price list", "/offers/"),
         ("Your order", "/cart/"),
     ]),
@@ -4047,6 +4048,66 @@ def audience_pages(out_dir, ctx_shared):
          "lead": "**Five ways in, over the same four things.**"},
         "", idx_body, "\n".join(idx_md))
     return made
+
+
+# --------------------------------------------------------- the comparison ----
+# FEATURES DOWN THE LEFT, FIVE COLUMNS ACROSS, AND THE FREE ONE FIRST.
+#
+# The store explained each level on its own page, which meant nobody ever saw the
+# four side by side — and every sentence worth reading about them is a DIFFERENCE,
+# which is only legible next to the thing it differs from.
+#
+# THE FREE COLUMN LEADS BECAUSE IT IS THE ARGUMENT. The templates being published
+# had been treated here as an objection to handle. Put first, it becomes the first
+# row of the case: here is what you can have for nothing, and here is what each
+# step adds. The licence row alone explains the first paid step, which is the one
+# two reviewers said read as a commodity.
+#
+# EVERY CELL IS READ OFF SOMETHING OR THE ROW IS NOT HERE. A support level nobody
+# has scoped and a board-readable cut still being specified are both absent, and
+# they are absent on purpose: this store fails its own release when a page states
+# an unproven thing as a fact, and a table is the place where that is hardest to
+# notice.
+COMPARISON = yaml_load((DATA / "comparison.yml").read_text())
+
+
+def _cmp_cell(v):
+    if v == "yes":
+        return '<td class="c-yes"><span aria-label="yes">\u2713</span></td>'
+    if v == "no":
+        return '<td class="c-no"><span aria-label="no">\u2014</span></td>'
+    return f'<td class="c-txt">{html.escape(str(v))}</td>'
+
+
+def block_comparison(ctx):
+    cols = COMPARISON["columns"]
+    head = "".join(
+        '<th scope="col">'
+        + (f'<a href="/d/{c["offer"]}/">{html.escape(c["name"])}</a>'
+           if c.get("offer") else html.escape(c["name"]))
+        + '<span class="c-price">'
+        + html.escape(c.get("price") or OFFERS_BY_ID[c["offer"]]["price_label"])
+        + "</span>"
+        + (f'<span class="c-sub">{html.escape(c["sub"])}</span>' if c.get("sub") else "")
+        + "</th>" for c in cols)
+    body = []
+    for g in COMPARISON["groups"]:
+        body.append(f'<tr class="c-group"><th scope="rowgroup" colspan="{len(cols) + 1}">'
+                    f'{html.escape(g["name"])}</th></tr>')
+        for r in g["rows"]:
+            body.append(
+                f'<tr><th scope="row"><b>{html.escape(r["label"])}</b>'
+                f'<span class="c-why">{html.escape(r["why"])}</span></th>'
+                + "".join(_cmp_cell(r[c["id"]]) for c in cols) + "</tr>")
+    return ('<div class="tablewrap"><table class="cmpt"><thead><tr><th></th>'
+            + head + "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>"
+            '<p class="small dim">Every cell here is read off <code>data/offers.yml</code> or off a '
+            'ruling, and a row whose cells would be a promise rather than a description is not on '
+            'this table yet. What is still being specified is on '
+            '<a href="/admin/work/">the board</a> rather than in a column.</p>')
+
+
+BLOCKS["comparison"] = block_comparison
 
 def build(out_dir):
     out_dir = Path(out_dir)

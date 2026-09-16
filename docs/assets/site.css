@@ -830,3 +830,44 @@ a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
 .a-ask q{font-family:var(--serif);font-size:1.22rem;line-height:1.4;color:var(--ink);quotes:'“' '”'}
 /* One card has nothing to align against, so the reservation is just a gap. */
 .skus-one .sku-name,.skus-one .sku-who{min-height:0}
+
+/* ------------------------------------------------------- the comparison ----
+   Features down the left, five columns across. The row header carries the why,
+   because a table where every cell is a tick teaches nothing — the sentence
+   under the label is what the reader is actually buying. */
+.cmpt{width:100%;border-collapse:collapse;font-size:.92rem}
+/* The site's `th` is a column label: small, tracked, uppercase. Every header in
+   this table is a sentence instead, so all three of those have to come back off —
+   a row header in caps at 11px is the fastest way to make a comparison table
+   unreadable, and it was doing exactly that. */
+.cmpt th{background:none;text-transform:none;letter-spacing:normal;color:inherit;
+  font-size:inherit;padding:0}
+.cmpt thead th{vertical-align:bottom;text-align:center;padding:.7rem .5rem;
+  border-bottom:2px solid var(--line2);font-weight:600;line-height:1.25;
+  font-size:.88rem;color:var(--ink)}
+.cmpt thead th:first-child{width:38%}
+.cmpt thead th a{text-decoration:none;color:var(--ink)}
+.cmpt thead th a:hover{text-decoration:underline}
+.cmpt .c-price{display:block;font-family:var(--serif);font-size:1.35rem;color:var(--ink);
+  margin-top:.25rem;letter-spacing:-.02em}
+.cmpt .c-sub{display:block;font-size:.7rem;color:var(--dim);font-weight:400;margin-top:.15rem}
+.cmpt tbody th[scope="row"]{text-align:left;vertical-align:top;padding:.7rem .9rem .7rem 0;
+  font-weight:400;border-bottom:1px solid var(--line)}
+.cmpt tbody th b{display:block;font-weight:600;color:var(--ink);line-height:1.35}
+.cmpt .c-why{display:block;font-size:.8rem;line-height:1.5;color:var(--dim);margin-top:.2rem}
+.cmpt td{text-align:center;vertical-align:middle;padding:.7rem .5rem;
+  border-bottom:1px solid var(--line)}
+.cmpt .c-yes span{color:#1f6f4a;font-size:1.05rem;font-weight:700}
+.cmpt .c-no span{color:var(--line2);font-size:1.05rem}
+.cmpt .c-txt{font-size:.82rem;line-height:1.4;color:var(--ink)}
+.cmpt tr.c-group th{text-align:left;padding:1.3rem 0 .45rem;font-size:.7rem;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--dim2,var(--dim));
+  border-bottom:1px solid var(--line2)}
+.cmpt tbody th[scope="row"] b{font-size:.95rem}
+.cmpt tbody tr:not(.c-group):hover th,.cmpt tbody tr:not(.c-group):hover td{background:var(--panel)}
+@media (max-width:720px){
+  .cmpt{font-size:.85rem}
+  .cmpt thead th:first-child{width:34%}
+  .cmpt .c-why{display:none}
+  .cmpt .c-price{font-size:1.05rem}
+}

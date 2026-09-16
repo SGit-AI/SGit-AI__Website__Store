@@ -1,0 +1,152 @@
+# THE COMPARISON TABLE. Features down the left, five columns across.
+#
+# WHY THE FREE COLUMN IS FIRST. Asked for explicitly, and it is the whole
+# argument: what you can have for nothing is the first row of the sales case
+# rather than an objection to be handled later. The templates are published with
+# read keys; anybody can go and take one. What each paid step adds is only legible
+# next to a column that does not have it.
+#
+# EVERY CELL IS READ OFF SOMETHING, AND WHERE IT IS NOT, THE ROW IS NOT HERE.
+# This store fails its own release when a page states an unproven thing as a fact,
+# so a row goes in only when each of its five cells can be pointed at: a price in
+# data/offers.yml, a `gets` sentence, a `not_promised` line, or a licence that has
+# been ruled. Rows that would be a promise rather than a description — a support
+# level nobody has scoped, a board-readable cut that is still being specified —
+# are NOT in this file. They are on the board at /admin/work/ and they arrive here
+# when they arrive, which is the only order that keeps this table worth reading.
+#
+# THE VALUES. "yes" and "no" render as a mark; anything else renders as its own
+# words, because half the useful cells in a table like this are a phrase rather
+# than a tick.
+#
+# One line per value: the YAML subset in build.py drops wrapped continuation lines.
+
+columns:
+  - id: free
+    name: Free
+    price: "£0"
+    sub: "Published, with read keys"
+    offer: ""
+  - id: t1
+    name: The pack
+    offer: t1
+  - id: t2
+    name: A working vault
+    offer: t2
+  - id: t3
+    name: Corrected for you
+    offer: t3
+  - id: t4
+    name: Two sessions
+    offer: t4
+
+groups:
+  - name: What you get
+    rows:
+      - label: The behaviour policy, the grant, the mandate and the delta
+        why: "The document itself is the same at every level. What changes is the form it arrives in and who does the correcting."
+        free: yes
+        t1: yes
+        t2: yes
+        t3: yes
+        t4: yes
+      - label: Packaged as a download
+        why: "At the free level you take the files off the published vault yourself. From the first paid level a zip arrives on the page you land on, with its size and its sha256 beside it."
+        free: "Take it yourself"
+        t1: yes
+        t2: yes
+        t3: yes
+        t4: yes
+      - label: A vault you hold the keys to
+        why: "A vault is versioned, has its own app, and can be handed to somebody with a read key. None of that survives an email, which is the difference between the first paid level and the second."
+        free: no
+        t1: no
+        t2: yes
+        t3: yes
+        t4: yes
+      - label: Your own history, and a read key you can hand on
+        why: "The property that makes a vault worth more than its contents: a reader you hand the key to sees what you see, and every change is dated."
+        free: no
+        t1: no
+        t2: yes
+        t3: yes
+        t4: yes
+      - label: The public key taken off it
+        why: "A published template carries a read key anybody has. Yours does not."
+        free: no
+        t1: no
+        t2: yes
+        t3: yes
+        t4: yes
+
+  - name: Whose work it is
+    rows:
+      - label: The mandate corrected against your situation
+        why: "Below this line the mandate is the starting one, written to be corrected, and correcting it is yours to do. At and above it, that correction is done for you against the industry, the use case and the details you send."
+        free: no
+        t1: no
+        t2: no
+        t3: yes
+        t4: yes
+      - label: A named security professional does the work
+        why: "The two upper levels are somebody's time rather than a pipeline, which is why their delivery estimate depends on a calendar."
+        free: no
+        t1: no
+        t2: no
+        t3: yes
+        t4: yes
+      - label: Reviewed and signed off by that professional
+        why: "Signed off is not the company issuing a signed opinion as a formal instrument. That wording does not exist on this site and the delivery page keeps the two apart."
+        free: no
+        t1: no
+        t2: no
+        t3: no
+        t4: yes
+      - label: Time with them, on a call
+        why: "Two half-hour sessions: one to find out what is actually running, one to deliver it."
+        free: no
+        t1: no
+        t2: no
+        t3: no
+        t4: "Two half hours"
+
+  - name: What you may do with it
+    rows:
+      - label: Licence
+        why: "The published files are Creative Commons Attribution, which obliges anybody using them to credit the source wherever it ends up. Every paid level replaces that with a commercial licence to the buyer over the same material."
+        free: "CC BY — you must attribute"
+        t1: "Commercial, to you"
+        t2: "Commercial, to you"
+        t3: "Commercial, to you"
+        t4: "Commercial, to you"
+      - label: Use it in client work without crediting us
+        why: "The practical difference the licence makes, said in the words somebody would actually use it in."
+        free: no
+        t1: yes
+        t2: yes
+        t3: yes
+        t4: yes
+      - label: Your name on the licence
+        why: "From the vault level the licence names you, because there is an artefact for it to sit in."
+        free: no
+        t1: no
+        t2: yes
+        t3: yes
+        t4: yes
+
+  - name: When it arrives
+    rows:
+      - label: Delivery
+        why: "At the two upper levels the clock starts when you send the details rather than when you pay, because until then there is nothing to work on. The constraint is one person's calendar."
+        free: "Now"
+        t1: "Immediately"
+        t2: "1 to 2 days"
+        t3: "1 to 3 days from your reply"
+        t4: "1 to 5 days from your reply"
+      - label: Paid in full up front
+        why: "The two produced levels take the whole price. The two that are somebody's time take a fifth on the order and the rest when the work is in your hands."
+        free: "Nothing to pay"
+        t1: yes
+        t2: yes
+        t3: "A fifth now"
+        t4: "A fifth now"

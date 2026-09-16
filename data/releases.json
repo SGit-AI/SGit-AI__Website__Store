@@ -1,10 +1,26 @@
 {
-  "current": "v0.2.7",
+  "current": "v0.2.8",
   "releases": [
+    {
+      "version": "v0.2.8",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the comparison table, free column first",
+      "summary": "The store explained each level on its own page, which meant nobody ever saw the four side by side \u2014 and every sentence worth reading about them is a DIFFERENCE, which is only legible next to the thing it differs from. /compare/ is fourteen rows in four groups: what you get, whose work it is, what you may do with it, and when it arrives.\n\nTHE FREE COLUMN LEADS, AND THAT IS THE ARGUMENT RATHER THAN A CONCESSION. The templates being published had been treated on this site as an objection to handle. Put first, it becomes the first row of the case: here is what you can have for nothing, here is what each step adds. The licence row on its own explains the first paid step \u2014 CC BY obliges you to credit the source wherever it ends up, and every paid level replaces that with a commercial licence to you over the same material.\n\nEVERY CELL IS READ OFF SOMETHING, OR THE ROW IS NOT THERE. A table is where an unproven claim is hardest to notice: fourteen rows of ticks read as fact at a glance and nobody cross-checks a tick against the page it came from. So a row qualifies only when each of its five cells can be pointed at \u2014 a price in data/offers.yml, a gets sentence, a not-promised line, or a ruling. A support level nobody has scoped and a board-readable cut still being specified are both absent on purpose and are on the board instead.\n\nOne thing that looked like a proposal turned out to be already true: the memo offered you only get a vault in the fifty-quid version as an example, and it is what the level pages have said since they were written.\n\ncheck_the_comparison_agrees_with_the_offers holds every column to a real offer, every row to filling every column \u2014 an empty cell renders as nothing and reads as a no, which is a claim nobody made \u2014 and every row to carrying the sentence that says what the reader is buying.\n\nAND ONE ASSERTION IN IT WAS PROVED VACUOUS BEFORE IT SHIPPED. The first version compared the prices in the table header against data/offers.yml, and the header reads them straight out of that file at build time, so it was asserting a variable equals itself; a deliberate break walked straight through. The delivery cells ARE typed by hand and can drift, so that is what is checked now \u2014 a table saying one to two days beside a level page saying one to three is the one place a buyer will not think to look.\n\nAlso fixed: the site's th is a small tracked uppercase column label, and every header in this table is a sentence. Fourteen row headers were rendering in all caps at 11px, which is the fastest way to make a comparison table unreadable, and it was doing exactly that.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.2.7",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "5b2d539185812c5233d0d003f98c67030791c245",
       "site": "store.sgit.ai",
       "title": "five audiences, five doors, and nothing hidden from anybody",
       "summary": "Asked for on 16 September, and the design brief for it is physical rather than visual: a laptop turned round at a stand, somebody says what they are, one tap, and the view opens on the level that fits. So /are/ is five large targets \u2014 founder, investor, C-level executive, security professional, risk and governance \u2014 five across on a laptop, two on a tablet, one on a phone, and they are on the home page above the four things for sale.\n\nEach view leads with one level, says what changes for that reader, then shows the rest of the ladder, then points at the one published vault that speaks to them: an investor gets the eleven-step risk-acceptance walk, an executive gets the standard turned into conformance rows, a security professional gets the risk graph explorer.\n\nSHOWN DIFFERENTLY, NOT HIDDEN, AND THAT WAS THE DECISION. The ask was that not every product is shown to every audience \u2014 an investor is not sold a ten-pound licence. The tempting implementation is to drop the cheap levels out of their view. That would make this site show different catalogues to different readers, which is a thing that has to be said out loud before it is built and nobody has said it. So: lead with what fits, quiet the rest at 72% opacity, hide nothing. check_the_five_audiences_hide_nothing holds every level reachable from every view and refuses display:none anywhere on one, because quiet becoming absent is one CSS rule away and would look like a tidy-up in a diff. Both breaks were run.\n\nTHIS DOES NOT REPLACE THE THREE BUYER GROUPS AND THAT IS OPEN, NOT DECIDED. The existing three are cut by situation; these five are cut by role. Both are indexes over the same six offers, neither invents a seventh thing to sell, and whether the three retire is on the board rather than settled in a commit.",

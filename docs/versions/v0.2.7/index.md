@@ -9,7 +9,7 @@ SHOWN DIFFERENTLY, NOT HIDDEN, AND THAT WAS THE DECISION. The ask was that not e
 THIS DOES NOT REPLACE THE THREE BUYER GROUPS AND THAT IS OPEN, NOT DECIDED. The existing three are cut by situation; these five are cut by role. Both are indexes over the same six offers, neither invents a seventh thing to sell, and whether the three retire is on the board rather than settled in a commit.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `5b2d539185812c5233d0d003f98c67030791c245`
 - Reconstructed: no
 
 ---
