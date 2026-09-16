@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-root="../../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>v0.1.17 — the vault is embedded, and the claim it costs is rewritten to be exactly true &mdash; the store</title>
+<meta name="description" content="The synthetic-users vault is embedded on its own review page, using the estate&#x27;s component vendored byte for byte from sgit.ai/assets/vault-ui-embed.js with its source, date and sha256 in the header. Two surfaces, stacked: the vault&#x27;s own app, then the file browser.
+
+THE MECHANISM IS BETTER THAN AN EMBED AND IS WORTH READING. The frame is built at RUNTIME, which is why no page here has an iframe in its markup and why a check that only read HTML could not have seen this at all. It is opened carrying no credential; it announces itself with a message; only then is the read key posted to it with the target origin pinned, and replies from any other origin are ignored. So the key is not in a URL, not in history, not in a referrer and not in the frame&#x27;s storage. It is a READ key, which opens a vault and cannot write to it.
+
+THE CLAIM IT COSTS IS REWRITTEN RATHER THAN QUIETLY BROKEN. “No page here opens a network connection at all” was in the footer of every page, in llms.txt and on three content pages, and an embed makes it false. It now reads: every page that sells anything opens no connection at all, one kind of page embeds the vault it reviews from one host and says so on itself, and nothing anywhere sends anything about a reader. All three halves are checked.
+
+Two checks, seven deliberate breaks. check_no_network now refuses the embed on any page that is not a review with a vault, and refuses any other script on the site from building a frame at all. check_the_embed_is_what_it_says holds the component to one host, to checking e.origin, to pinning targetOrigin, to keeping the credential out of a frame src, and holds the page carrying it to saying so in the reader&#x27;s words.
+
+The twelve-second fallback is stated rather than glossed: if the handshake does not complete the component opens the vault with the key in the frame&#x27;s URL fragment, which is never sent to a server and never in a referrer but is in that frame&#x27;s address. The page says so.
+
+One thing found on the way. site.css already carried the estate&#x27;s embed rules with a comment saying the surface is deliberately wider than the text column — and `.sgv-uiembed iframe` at (0,1,1) beat the component&#x27;s own `.sgv-breakout` at (0,1,0), so the frame had always been exactly the width of the column and the comment described something that was not happening. The breakout moved to the container, and review.css stopped keeping a second copy of rules site.css owns.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://store.sgit.ai/versions/v0.1.17/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="store.sgit.ai">
+<meta property="og:url" content="https://store.sgit.ai/versions/v0.1.17/">
+<meta property="og:title" content="v0.1.17 — the vault is embedded, and the claim it costs is rewritten to be exactly true">
+<meta property="og:description" content="The synthetic-users vault is embedded on its own review page, using the estate&#x27;s component vendored byte for byte from sgit.ai/assets/vault-ui-embed.js with its source, date and sha256 in the header. Two surfaces, stacked: the vault&#x27;s own app, then the file browser.
+
+THE MECHANISM IS BETTER THAN AN EMBED AND IS WORTH READING. The frame is built at RUNTIME, which is why no page here has an iframe in its markup and why a check that only read HTML could not have seen this at all. It is opened carrying no credential; it announces itself with a message; only then is the read key posted to it with the target origin pinned, and replies from any other origin are ignored. So the key is not in a URL, not in history, not in a referrer and not in the frame&#x27;s storage. It is a READ key, which opens a vault and cannot write to it.
+
+THE CLAIM IT COSTS IS REWRITTEN RATHER THAN QUIETLY BROKEN. “No page here opens a network connection at all” was in the footer of every page, in llms.txt and on three content pages, and an embed makes it false. It now reads: every page that sells anything opens no connection at all, one kind of page embeds the vault it reviews from one host and says so on itself, and nothing anywhere sends anything about a reader. All three halves are checked.
+
+Two checks, seven deliberate breaks. check_no_network now refuses the embed on any page that is not a review with a vault, and refuses any other script on the site from building a frame at all. check_the_embed_is_what_it_says holds the component to one host, to checking e.origin, to pinning targetOrigin, to keeping the credential out of a frame src, and holds the page carrying it to saying so in the reader&#x27;s words.
+
+The twelve-second fallback is stated rather than glossed: if the handshake does not complete the component opens the vault with the key in the frame&#x27;s URL fragment, which is never sent to a server and never in a referrer but is in that frame&#x27;s address. The page says so.
+
+One thing found on the way. site.css already carried the estate&#x27;s embed rules with a comment saying the surface is deliberately wider than the text column — and `.sgv-uiembed iframe` at (0,1,1) beat the component&#x27;s own `.sgv-breakout` at (0,1,0), so the frame had always been exactly the width of the column and the comment described something that was not happening. The breakout moved to the container, and review.css stopped keeping a second copy of rules site.css owns.">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="../../assets/site.css">
+
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../assets/site.js" defer></script>
+<!-- shop.js is on EVERY page because the nav carries an order badge on every page.
+     So a shop page must NOT name it again in head_js: two tags is two copies of the
+     cart engine running against one document, and the second one undoes what the
+     first one did. check_site holds every page to loading each script once. -->
+<script src="../../assets/shop.js" defer></script>
+
+
+</head>
+<body>
+<nav class="site"><div class="row"><a class="brand" href="../../index.html">store<span>.sgit.ai</span></a><a class="parent" href="https://sgit.ai/llms.txt" rel="noopener" title="sgit.ai — the platform this sells instances of. The free public library lives there">&#8599; part of <b>sgit.ai</b></a><span class="stage-pill">every offer here is an instance</span><a class="ver" href="../../versions/v0.1.17/index.html" title="What changed in v0.1.17, and the commit it was built from">v0.1.17</a><button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">Menu</button><div class="nav-items"><div class="ni"><a class="nl" href="../../index.html">What is for sale</a></div><div class="ni ni-has"><a class="nl" href="../../policies/index.html">The policies<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../../policies/index.html">Which agent do you run?</a><a class="sl" href="../../policies/index.html#the-four-levels">The four levels</a><a class="sl" href="../../p/your-own/index.html">Something not on the list</a><a class="sl" href="../../offers/index.html">The price list</a><a class="sl" href="../../cart/index.html">Your order</a></div></div><div class="ni ni-has"><a class="nl" href="../../how-it-works/index.html">How buying works<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../../how-it-works/index.html">The three steps</a><a class="sl" href="../../paying/index.html">The two rails</a><a class="sl" href="../../booking/index.html">What a session is</a><a class="sl" href="../../order/index.html">What happens after you pay</a></div></div><div class="ni ni-has"><a class="nl" href="../../audiences/index.html">Who it is for<span class="caret">&#9662;</span></a><div class="sub"><a class="sl" href="../../audiences/index.html">The three buyers</a><a class="sl" href="../../for/agents/index.html">You run agents today</a><a class="sl" href="../../for/investors/index.html">You are backing a company</a><a class="sl" href="../../for/startups/index.html">You are a startup</a></div></div><div class="ni ni-has"><a class="nl here" href="../../ledger/index.html">Evidence<span class="caret">&#9662;</span></a><div class="sub"><a class="sl here" href="../../ledger/index.html">The claim ledger</a><a class="sl" href="../../admin/reviews/index.html">Reviews, dated and kept</a><a class="sl" href="../../disclosures/index.html">What we do not say, and why</a><a class="sl" href="../../catalogue/index.html">What is not for sale yet</a><a class="sl" href="../../dev-packs/index.html">The dev packs</a><a class="sl" href="../../lab/index.html">The purchase lab</a><a class="sl" href="../../versions/index.html">Release history</a><a class="sl" href="../../admin/try/index.html">Run the whole flow yourself</a></div></div></div><a class="cartlink" href="../../cart/index.html">Your order <b data-cart-count hidden></b><span data-cart-total></span></a><a class="gh" href="https://github.com/SGit-AI/SGit-AI__Website__Store" rel="noopener">&#9733; Source</a></div></nav>
+<div class="disclosure-strip"><div class="row"><b>Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.</b>
+Nothing on this site is a compliance assessment, and no page claims conformity to any standard.
+<a href="../../disclosures/index.html">What we do not say, and why</a> &middot;
+<a href="../../ledger/index.html">how every claim here is evidenced</a></div></div>
+<main class="doc">
+<p class="crumb"><a href="../../index.html">store.sgit.ai</a> / <a href="../../versions/index.html">versions</a> / v0.1.17</p>
+<h1>v0.1.17 — the vault is embedded, and the claim it costs is rewritten to be exactly true</h1>
+
+
+<p class="lead">The synthetic-users vault is embedded on its own review page, using the estate's component vendored byte for byte from sgit.ai/assets/vault-ui-embed.js with its source, date and sha256 in the header. Two surfaces, stacked: the vault's own app, then the file browser.</p><p class="lead">THE MECHANISM IS BETTER THAN AN EMBED AND IS WORTH READING. The frame is built at RUNTIME, which is why no page here has an iframe in its markup and why a check that only read HTML could not have seen this at all. It is opened carrying no credential; it announces itself with a message; only then is the read key posted to it with the target origin pinned, and replies from any other origin are ignored. So the key is not in a URL, not in history, not in a referrer and not in the frame's storage. It is a READ key, which opens a vault and cannot write to it.</p><p class="lead">THE CLAIM IT COSTS IS REWRITTEN RATHER THAN QUIETLY BROKEN. “No page here opens a network connection at all” was in the footer of every page, in llms.txt and on three content pages, and an embed makes it false. It now reads: every page that sells anything opens no connection at all, one kind of page embeds the vault it reviews from one host and says so on itself, and nothing anywhere sends anything about a reader. All three halves are checked.</p><p class="lead">Two checks, seven deliberate breaks. check_no_network now refuses the embed on any page that is not a review with a vault, and refuses any other script on the site from building a frame at all. check_the_embed_is_what_it_says holds the component to one host, to checking e.origin, to pinning targetOrigin, to keeping the credential out of a frame src, and holds the page carrying it to saying so in the reader's words.</p><p class="lead">The twelve-second fallback is stated rather than glossed: if the handshake does not complete the component opens the vault with the key in the frame's URL fragment, which is never sent to a server and never in a referrer but is in that frame's address. The page says so.</p><p class="lead">One thing found on the way. site.css already carried the estate's embed rules with a comment saying the surface is deliberately wider than the text column — and <code>.sgv-uiembed iframe</code> at (0,1,1) beat the component's own <code>.sgv-breakout</code> at (0,1,0), so the frame had always been exactly the width of the column and the comment described something that was not happening. The breakout moved to the container, and review.css stopped keeping a second copy of rules site.css owns.</p><div class="tablewrap"><table><tbody><tr><th>Version</th><td><code>v0.1.17</code> &mdash; <b>current</b></td></tr><tr><th>Released</th><td>2026-09-16</td></tr><tr><th>Built from commit</th><td><code>recorded one commit later</code></td></tr><tr><th>Site</th><td>store.sgit.ai</td></tr></tbody></table></div><p class="small dim">Touched: <code>assets</code> &middot; <code>build.py</code> &middot; <code>content</code> &middot; <code>data</code> &middot; <code>tools</code></p><p class="packnav"><a href="../../versions/v0.1.16/index.html">v0.1.16 &rarr;</a></p><p class="packfoot">Every release of this site is listed on <a href="../../versions/index.html">the release history</a>, and the same records are served as <a href="../../versions/index.json">JSON</a> so a script can read them without parsing a page.</p>
+<p class="pagenav"><a href="../../policies/index.html">Which agent do you run? &rarr;</a>
+<a href="../../how-it-works/index.html">How buying works &rarr;</a>
+<a href="../../ledger/index.html">Every claim, with its state &rarr;</a></p>
+</main>
+<footer class="site"><div class="cols">
+  <div>
+    <div class="brandline">store<span>.sgit.ai</span></div>
+    <p class="nonaff"><b>Every agent needs a licence to operate.</b> This is where you buy one.
+       Six offers, four of them with a price and a code, two of them listed and not yet buyable,
+       grouped by which of three buyers each was built for.
+       <b>The paid thing is not access and it is not customisation. It is independence.</b></p>
+    <p>Nothing here is a compliance assessment, nothing here is a mark of conformity to any standard, and no opinion here is
+       personal: <b>the company issues every opinion</b>, and the person who sells is never the
+       person who signs. Outputs are model generated and marked as such.</p>
+    <p class="licence">This document is released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). The code that builds it is Apache-2.0.</p>
+    <p class="verline">site <a href="../../versions/index.html">v0.1.17</a> &middot;
+       <a href="../../ledger/index.html">the ledger</a> &middot; <a href="../../disclosures/index.html">what we do not say</a> &middot;
+       <a href="index.md" title="The same page as plain markdown">this page as markdown</a></p>
+  </div>
+  <div>
+    <h4>The offers</h4>
+    <a href="../../offers/index.html">All six, side by side</a>
+    <a href="../../offers/index.html#the-two-add-ons">The two add-ons</a>
+    <a href="../../catalogue/index.html">What is not for sale yet</a>
+  </div>
+  <div>
+    <h4>Who it is for</h4>
+    <a href="../../audiences/index.html">The three buyers</a>
+    <a href="../../for/agents/index.html">You run agents today</a>
+    <a href="../../for/investors/index.html">You are backing a company</a>
+    <a href="../../for/startups/index.html">You are a startup</a>
+  </div>
+  <div>
+    <h4>Paying</h4>
+    <a href="../../paying/index.html">The two rails</a>
+    <a href="../../paying/index.html#why-a-link-and-not-a-card-reader">Why a link, not a reader</a>
+    <a href="../../booking/index.html">Booking a person</a>
+  </div>
+  <div>
+    <h4>Evidence</h4>
+    <a href="../../ledger/index.html">Every claim, with its state</a>
+    <a href="../../admin/reviews/index.html">Reviews, dated and kept</a>
+    <a href="../../disclosures/index.html">What we do not say, and why</a>
+    <a href="../../dev-packs/index.html">The dev packs</a>
+    <a href="../../versions/index.html">Release history</a>
+    <a href="../../admin/index.html">Admin</a>
+  </div>
+</div>
+<div class="footnote"><p>No analytics. No cookies. No third-party fonts, scripts or CDN &mdash; every byte of this
+site is served from this domain. <b>Every page that sells anything opens no network connection at all</b>, and a build
+check holds that line. The one exception is named and narrow: a <a href="../../admin/reviews/index.html">review</a> of a vault embeds
+that vault from one host, through one vendored component, and says so on itself. Nothing anywhere here sends anything
+about you &mdash; no fetch, no beacon, no socket, on any page. Paying happens on the payment provider&rsquo;s own pages, which is the only place a card number should ever be
+typed: nothing on this site collects one. Prices are in pounds &mdash; pricing in euros while settling in pounds adds
+about two per cent.</p></div>
+</footer>
+</body>
+</html>

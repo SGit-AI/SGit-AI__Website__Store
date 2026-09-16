@@ -437,10 +437,34 @@ td.edge.a-inferred{color:var(--warm)}
 /* The estate's component builds its own frames; these rules only give them room.
    The area is deliberately wider than the text column, because the vault browser
    is a full working surface rather than a figure. */
-.sgv-uiembed{margin:1.4rem 0;display:grid;gap:1rem}
-.sgv-uiembed iframe{width:100%;min-height:560px;border:1px solid var(--line2);
-  border-radius:10px;background:var(--panel);box-shadow:var(--shadow)}
+/* THE BREAKOUT IS ON THE MOUNT, NOT ON THE FRAME. The component puts a
+   .sgv-breakout class on each iframe it builds, but `.sgv-uiembed iframe` below is
+   (0,1,1) and beats a bare `.sgv-breakout` at (0,1,0), so the frame stayed the
+   width of the column and the comment above was describing something that was not
+   happening. Widening the container instead lets the frame keep width:100% and
+   means one rule decides how wide the surface is. */
+.sgv-uiembed{margin:1.4rem 0;display:grid;gap:1rem;
+  width:min(94vw,1500px);position:relative;left:50%;transform:translateX(-50%)}
+.sgv-uiembed iframe{width:100%;min-height:560px;height:clamp(560px,76vh,1000px);
+  border:1px solid var(--line2);border-radius:10px;background:#0d1117;box-shadow:var(--shadow);
+  display:block}
 .sgv-uiembed > div{min-width:0}
+.sgv-uiembed-label{font:600 .78rem/1 var(--mono);color:var(--accent-dk);letter-spacing:.02em;
+  margin:.4rem 0 0}
+.sgv-uiembed p.small{margin:.3rem 0 0;font-size:.76rem;line-height:1.55;color:var(--dim)}
+.sgv-embed-load{cursor:pointer;border:1px solid var(--line2);background:var(--panel);
+  border-radius:999px;padding:.25rem .75rem;font:600 .74rem/1.3 var(--sans);color:var(--ink)}
+.sgv-embed-load:hover{border-color:var(--accent);color:var(--accent-dk)}
+@media (max-width:900px){
+  .sgv-uiembed{width:100%;left:0;transform:none}
+  .sgv-uiembed iframe{height:clamp(440px,66vh,700px);min-height:0}
+}
+@media print{
+  /* A live surface cannot print: a frame exports as an empty box and the breakout
+     is a viewport-width transform that overflows the page on the way out. The read
+     key and the link above it print fine, which is what a printed copy needs. */
+  .sgv-uiembed{display:none!important}
+}
 
 /* ---------- the deck viewer: real 16:9 slides ---------- */
 /* One slide is 1200x675 — the estate's deck shape, the same geometry the PDFs are

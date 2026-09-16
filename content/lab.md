@@ -84,7 +84,7 @@ emit:
 
 **Nothing, unless you send it.** A brief is written to your browser's own local
 storage and reaches nothing else. There is **no form, input, textarea or select
-anywhere in this site's output**, and **no page here opens a network connection** —
+anywhere in this site's output**, and **no page that sells anything opens a network connection** —
 both are build checks rather than intentions — so exporting a brief hands the file
 to you. {{claim:lab-brief-stays-local}}
 

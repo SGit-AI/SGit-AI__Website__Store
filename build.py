@@ -1627,8 +1627,11 @@ def review_markdown(rv):
               f"- **Read key:** `{v['read_key']}:{v['id']}`",
               f"- **Open it:** {v['web']}",
               "",
-              "It is linked and not embedded. An embed is an iframe, an iframe is a connection to "
-              "another host, and no page on this site opens a network connection at all.", ""]
+              "It is embedded on the page as well as linked. The frame is built at runtime, opened "
+              "carrying nothing, and handed the read key by message with the target origin pinned "
+              "\u2014 so the key is not in a URL, not in history, not in a referrer and not in the "
+              "frame's storage. This is the one place on this site that opens a connection; every "
+              "page that sells anything still opens none at all.", ""]
     if rv.get("verbatim"):
         L += ["## The note, verbatim", "",
               "Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased.", "",
@@ -1758,12 +1761,18 @@ def _rv_taxonomy(tax):
 
 
 def _rv_vault(v, rid):
-    """The vault the review is OF, named with its read key.
-    THE EMBED IS NOT HERE AND THE PAGE SAYS SO. An iframe would be the first network
-    connection this site has ever opened, and "no page here opens a network
-    connection at all" is in the footer of all of them and in llms.txt. That is a
-    bigger claim than the one that moved for the reason boxes, and it is not the
-    builder's to spend. The slot is rendered, the key is here, the link works."""
+    """The vault the review is of, embedded read-only.
+
+    THE EMBED IS THE ESTATE'S OWN COMPONENT and the mechanism is worth stating on
+    the page rather than leaving in a file: the frame is built at runtime, it is
+    opened carrying no credential, it announces itself, and only then is the read
+    key posted to it with the target origin pinned. The key never appears in a URL,
+    in history, in a referrer or in the frame's storage — and it is a read key,
+    which opens a vault and cannot write to it.
+
+    This is the one thing on this site that opens a connection, it happens on review
+    pages and nowhere else, and the pages that sell something still open none."""
+    host = v["embed_host"]
     return (
         '<div class="rv-vault">'
         '<span class="rv-vlab2">The vault this review is of</span>'
@@ -1774,17 +1783,31 @@ def _rv_vault(v, rid):
         '<div><b>Access</b><code>read-only</code></div>'
         "</div>"
         '<span class="rv-vlab2">The read key. It opens the vault and cannot write to it.</span>'
-        f'<code class="rv-key">{html.escape(v["read_key"])}:{html.escape(v["id"])}</code>'
-        f'<p class="rv-vopen"><a href="{html.escape(v["web"])}" rel="noopener">'
-        'Open the vault →</a></p>'
-        '<div class="rv-slot"><b>The vault is linked here and not embedded, on purpose.</b> '
-        'An embed is an iframe, an iframe is a connection to another host, and '
-        '<em>no page on this site opens a network connection at all</em> — which is in the '
-        'footer of every page, in <code>llms.txt</code>, and held by a build check. That claim is '
-        'larger than the one that moved to put reason boxes on this page, and it is not the '
-        'builder’s to spend. One ruling turns it on; until then the link above does the same '
-        'job and this page still loads without contacting anybody.</div>'
-        "</div>")
+        f'<code class="rv-key">{html.escape(v["read_key_hex"])}:{html.escape(v["id"])}</code>'
+        '<p class="rv-vopen">'
+        f'<a href="{html.escape(v["web"])}" rel="noopener" target="_blank">'
+        'Open it in its own tab \u2197</a> '
+        f'<span class="small dim">or from the command line: '
+        f'<code>sgit clone {html.escape(v["read_key_hex"][:12])}\u2026:{html.escape(v["id"])}</code>'
+        "</span></p>"
+        '<div class="rv-slot">'
+        '<b>This is the one place on this site that opens a connection.</b> The two surfaces below '
+        'are the official vault interface, running on '
+        f'<code>{html.escape(host.replace("https://", ""))}</code> in a frame this page builds. '
+        '<b>The key does not travel in the address.</b> The frame is opened carrying nothing, it '
+        'announces itself, and only then is the read key handed over by message with the target '
+        'origin pinned \u2014 so it is not in a URL, not in history, not in a referrer and not in '
+        'the frame\u2019s storage. Replies from any other origin are ignored. '
+        '<b>Every page on this site that sells anything still opens nothing at all</b>, and a build '
+        'check holds it there. '
+        '<b>One exception, stated because it is real:</b> if the handshake does not complete within '
+        'twelve seconds the component falls back to opening the vault with the key in the frame\u2019s '
+        'URL fragment. A fragment is never sent to a server and never appears in a referrer, but it '
+        'is in that frame\u2019s address. The link above avoids it entirely.</div>'
+        "</div>"
+        f'<div class="sgv-uiembed" data-vault="{html.escape(v["id"])}" '
+        f'data-readkey="{html.escape(v["read_key_hex"])}" '
+        f'data-app="{"1" if v.get("has_app") else "0"}"></div>')
 
 
 def _rv_sections(secs):
@@ -1938,6 +1961,11 @@ def review_pages(out_dir, ctx_shared):
         page = {
             "fm": {"title": rv["title"], "description": rv["summary"],
                    "head_css": "/assets/review.css", "head_js": "/assets/review.js",
+                   # Only a review page WITH a vault loads the embed. A page that has
+                   # nothing to embed does not get the one script that can open a
+                   # connection, which is the difference between a narrow exception
+                   # and a wide one.
+                   "head_js2": "/assets/vault-embed.js" if rv.get("vault") else "",
                    "robots": "noindex,follow"},
             "url": url,
             "crumb": f' / <a href="{root}">reviews</a> / {html.escape(rv["date"])}',
@@ -2773,8 +2801,10 @@ def footer_html():
   </div>
 </div>
 <div class="footnote"><p>No analytics. No cookies. No third-party fonts, scripts or CDN &mdash; every byte of this
-site is served from this domain, and <b>no page here opens a network connection at all</b>. A build check holds that
-line. Paying happens on the payment provider&rsquo;s own pages, which is the only place a card number should ever be
+site is served from this domain. <b>Every page that sells anything opens no network connection at all</b>, and a build
+check holds that line. The one exception is named and narrow: a <a href="/admin/reviews/">review</a> of a vault embeds
+that vault from one host, through one vendored component, and says so on itself. Nothing anywhere here sends anything
+about you &mdash; no fetch, no beacon, no socket, on any page. Paying happens on the payment provider&rsquo;s own pages, which is the only place a card number should ever be
 typed: nothing on this site collects one. Prices are in pounds &mdash; pricing in euros while settling in pounds adds
 about two per cent.</p></div>
 </footer>"""
@@ -2817,6 +2847,7 @@ def page_html(page, ctx, body):
      first one did. check_site holds every page to loading each script once. -->
 <script src="/assets/shop.js" defer></script>
 {f'<script src="{fm["head_js"]}" defer></script>' if fm.get('head_js') else ''}
+{f'<script src="{fm["head_js2"]}" defer></script>' if fm.get('head_js2') else ''}
 </head>
 <body>
 {nav_html(page['nav_match'])}
@@ -3046,7 +3077,9 @@ def llms_txt(rendered, extra):
         "Every factual claim on this site carries one of ten states — exists, measured, read-not-run,",
         "projected, specified-not-built, specified-never-run, built-not-located, a-booking, part-exists,",
         "does-not-exist-yet. The full list is at /ledger/. Every page is also served as markdown at",
-        "<page>/index.md. No page on this site opens a network connection.",
+        "<page>/index.md. No page on this site that sells anything opens a network connection at all; "
+        "the review pages under /admin/reviews/ embed the vault they review, from one host, and "
+        "say so. Nothing here sends anything about a reader, on any page.",
         "",
         "Offer identifiers are stable and the host is not: a payment code redirects to /d/<id>/, so this",
         "site can move host without reprinting a card or reissuing a link.",

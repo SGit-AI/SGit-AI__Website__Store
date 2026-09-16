@@ -541,25 +541,116 @@ def check_no_unrendered_markdown():
                 fail(f"{rel}: {what} reached the rendered page — the renderer lost a block")
 
 
+# THE CLAIM MOVED, AND A CHECK THAT ONLY READ HTML COULD NOT HAVE SEEN IT.
+#
+# Every page here used to open no connection at all. Review pages now embed the
+# vault they review, using the estate's own component, and that is a real
+# connection to a real other host. So the claim is narrower and still exact:
+#
+#   * EVERY PAGE THAT SELLS ANYTHING OPENS NOTHING. No exception, no ruling, no
+#     page. That half is the one that matters and it did not move.
+#   * A REVIEW PAGE WITH A VAULT embeds it, from ONE host named below, through
+#     ONE vendored component, and says so on itself in those words.
+#   * Nothing is sent about a reader anywhere on this site: no fetch, no XHR, no
+#     beacon, no socket, no analytics, no cookie of ours. That did not move either.
+#
+# The frame is built by script, so `<iframe` never appears in the markup and the
+# old check would have passed a page that embedded anything at all. That is the
+# hole this pair closes: one reads the HTML, the other reads the script that makes
+# the frame.
+EMBED_HOST = "https://dev.vault.sgraph.ai"
+EMBED_COMPONENT = "assets/vault-embed.js"
+
+
+def _may_embed():
+    """Review pages that carry a vault, and nothing else."""
+    root = ROOT / "data" / "reviews"
+    if not root.is_dir():
+        return set()
+    out = set()
+    for f in root.glob("*.json"):
+        if f.stem == "_register":
+            continue
+        if json.loads(f.read_text()).get("vault"):
+            out.add(f"admin/reviews/{f.stem}/index.html")
+    return out
+
+
 def check_no_network():
-    """No page here opens a connection, and the footer says so. This is what makes
-    that a fact rather than a sentence."""
-    allowed_attr = re.compile(r'\b(?:src|href)="(https?:)?//')
+    """No page here opens a connection except the one kind that says it does, and
+    the footer says which. This is what makes that a fact rather than a sentence."""
+    may = _may_embed()
     for p in pages():
         rel = str(p.relative_to(OUT)).replace(os.sep, "/")
         text = p.read_text()
         for m in re.finditer(r'\b(?:src|srcset|data-src)="(https?:)?//([^"/]+)', text):
             fail(f"{rel}: loads a resource from {m.group(2)} — every byte must come from this domain")
         if "<iframe" in text.lower():
-            fail(f"{rel}: contains an iframe")
+            fail(f"{rel}: contains an iframe in its markup. The vault embed builds its frame at "
+                 "runtime through assets/vault-embed.js, which is the only route there is")
         for bad in ("fetch(", "XMLHttpRequest", "navigator.sendBeacon", "new WebSocket"):
             if bad in text:
-                fail(f"{rel}: inline script uses {bad} — no page on this site contacts anything")
+                fail(f"{rel}: inline script uses {bad} — nothing on this site sends anything")
+        if EMBED_COMPONENT in text and rel not in may:
+            fail(f"{rel}: loads the vault embed. Only a review page that carries a vault may, and "
+                 "a page that sells anything never may")
+        if 'class="sgv-uiembed"' in text and rel not in may:
+            fail(f"{rel}: carries an embed mount and is not a review page with a vault")
     for js in (OUT / "assets").glob("*.js"):
         text = js.read_text()
         for bad in ("fetch(", "XMLHttpRequest", "navigator.sendBeacon", "new WebSocket"):
             if bad in text:
                 fail(f"assets/{js.name}: uses {bad}")
+        if "createElement('iframe')" in text.replace('"', "'") and js.name != "vault-embed.js":
+            fail(f"assets/{js.name}: builds an iframe. assets/vault-embed.js is the only file on "
+                 "this site allowed to, so that there is one place to read and one place to check")
+
+
+def check_the_embed_is_what_it_says():
+    """The one component that opens a connection, held to the four things the page
+    claims about it: one host, the key never in a URL, the target origin pinned, and
+    replies from anywhere else ignored. Each is a line of code, and each is the
+    difference between an embed and a leak."""
+    f = OUT / EMBED_COMPONENT
+    if not f.exists():
+        if _may_embed():
+            fail(f"{EMBED_COMPONENT} is missing and a review page expects to embed a vault")
+        return
+    src = f.read_text()
+    # Comments name the upstream this was vendored from, which is a fact about where
+    # the file came from and not a host it talks to. The scan reads the code.
+    code = re.sub(r"(?s)/\*.*?\*/", " ", src)
+    code = re.sub(r"(?m)^\s*//.*$", " ", code)
+    for h in sorted(set(re.findall(r"https?://[a-zA-Z0-9.-]+", code))):
+        if h != EMBED_HOST:
+            fail(f"{EMBED_COMPONENT}: names {h}. One host, pinned, or the frame is a hole rather "
+                 "than an embed")
+    if f"'{EMBED_HOST}'" not in code and f'"{EMBED_HOST}"' not in code:
+        fail(f"{EMBED_COMPONENT}: does not pin {EMBED_HOST} in a constant")
+    if "e.origin !== ORIGIN" not in code:
+        fail(f"{EMBED_COMPONENT}: does not check the origin of messages it receives. A frame that "
+             "believes anybody is a frame that can be impersonated")
+    if ", ORIGIN)" not in code:
+        fail(f"{EMBED_COMPONENT}: posts the key without pinning targetOrigin. That is the whole "
+             "reason the key does not travel in the address")
+    for m in re.finditer(r"\.src\s*=\s*([^;]+);", code):
+        line = m.group(1)
+        if "cred" in line and "#" not in line:
+            fail(f"{EMBED_COMPONENT}: puts the credential in a frame src — {line.strip()[:70]}")
+    for bad in ("fetch(", "XMLHttpRequest", "navigator.sendBeacon", "new WebSocket"):
+        if bad in code:
+            fail(f"{EMBED_COMPONENT}: uses {bad}. It opens a frame and sends nothing else")
+    for rel in sorted(_may_embed()):
+        page = OUT / rel
+        if not page.exists():
+            continue
+        flat = " ".join(strip_tags(page.read_text()).split())
+        for needed in ("the one place on this site that opens a connection",
+                       "The key does not travel in the address",
+                       "still opens nothing at all"):
+            if needed not in flat:
+                fail(f"{rel}: embeds a vault and does not say {needed!r}. The page that opens the "
+                     "connection is the page that owes the reader the account of it")
 
 
 def check_each_script_loads_once():
@@ -723,8 +814,11 @@ def check_checkout_links():
 # and an address are typed into a single-line field and there is not one on this
 # domain. <textarea> is allowed on ONE named page and nowhere else.
 #
-# Those three sentences are the whole of the change. check_no_network did not move
-# an inch, so even the allowed page cannot send what it holds; check_the_typing_
+# Those three sentences are the whole of that change. check_no_network has since
+# moved too, for the vault embed on a review page — narrowly, and never for a page
+# that sells anything — but not for THIS: a reason box still sends nothing, because
+# there is no fetch, no XHR, no beacon and no socket anywhere on this site.
+# check_the_typing_
 # surface_is_inert below holds the boxes to carrying no name and sitting in no form.
 # A rule that loosens without a check loosens again next time nobody is looking.
 def typing_surfaces():
@@ -1497,7 +1591,8 @@ def main():
         # the estate's usual gate
         check_version_agreement, check_links, check_relative_urls, check_canonical_host,
         check_cname, check_markdown_twins, check_licence_stamp, check_shortcodes,
-        check_no_unrendered_markdown, check_no_network, check_no_credentials_in_output,
+        check_no_unrendered_markdown, check_no_network, check_the_embed_is_what_it_says,
+        check_no_credentials_in_output,
         check_each_script_loads_once,
         # the store pack's hard rules
         check_barred_word, check_no_conformity_language, check_compliance_assessment_only_denied,

@@ -199,3 +199,8 @@ code.rv-key{display:block;background:var(--panel);border:1px solid var(--line2);
 .rv-shot figcaption{margin-top:.6rem;font-size:.84rem;line-height:1.6;color:var(--dim);
   border-left:3px solid var(--accent);padding-left:.8rem;max-width:72ch}
 .rv-shot figcaption b{color:var(--ink)}
+
+/* The embedded vault's own styles live in site.css, beside the rest of the
+   estate's component rules, so there is one place that decides how wide a vault
+   surface is. Duplicating them here is how the frame ended up fighting a rule with
+   higher specificity and silently staying the width of the text column. */

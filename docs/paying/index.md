@@ -190,8 +190,11 @@ stands is the one committed to in public.
 
 ## What this site does with a payment
 
-Nothing. It is a static site: **no page here opens a network connection at all**,
-there is no form, no cookie, no analytics, and no card number ever reaches it.
+Nothing. It is a static site: **no page that sells anything opens a network
+connection at all**, there is no form, no cookie, no analytics, and no card number
+ever reaches it. One page does open one, and it is not this kind of page: a
+[review](/admin/reviews/) of a vault embeds that vault, from one host, and says so
+in those words on itself.
 Paying happens on the payment provider's own pages, which is the only place a card
 number should ever be typed. A build check holds that line on every release.
 

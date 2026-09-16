@@ -37,7 +37,10 @@
     "read_key": "sgit_private_read_b70c317b7aa4b6084e05669795dc89e6bf1e46b4e948b9f6c475948ae502823c",
     "web": "https://dev.vault.sgraph.ai/en-gb/#sgit_private_read_b70c317b7aa4b6084e05669795dc89e6bf1e46b4e948b9f6c475948ae502823c:g2hei4u6",
     "files": 67,
-    "note": "Read-only. The key below opens it and cannot write to it. The vault holds the five personas, the journey each was expected to take, the protocol, and every run as a record: one screenshot per step, what the persona said they saw, what they thought, what they wanted to know, where they got lost, and what they did next."
+    "note": "Read-only, and embedded below. The key opens the vault and cannot write to it. The vault holds the five personas, the journey each was expected to take, the protocol, and every run as a record: one screenshot per step, what the persona said they saw, what they thought, what they wanted to know, where they got lost, and what they did next.",
+    "read_key_hex": "b70c317b7aa4b6084e05669795dc89e6bf1e46b4e948b9f6c475948ae502823c",
+    "has_app": true,
+    "embed_host": "https://dev.vault.sgraph.ai"
   },
   "evidence": [
     [

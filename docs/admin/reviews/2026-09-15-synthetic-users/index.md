@@ -9,13 +9,13 @@ Five invented buyers were driven through the store a screenshot at a time and in
 
 ## The vault this review is of
 
-Read-only. The key below opens it and cannot write to it. The vault holds the five personas, the journey each was expected to take, the protocol, and every run as a record: one screenshot per step, what the persona said they saw, what they thought, what they wanted to know, where they got lost, and what they did next.
+Read-only, and embedded below. The key opens the vault and cannot write to it. The vault holds the five personas, the journey each was expected to take, the protocol, and every run as a record: one screenshot per step, what the persona said they saw, what they thought, what they wanted to know, where they got lost, and what they did next.
 
 - **Vault:** `g2hei4u6` · 67 files · read-only
 - **Read key:** `sgit_private_read_b70c317b7aa4b6084e05669795dc89e6bf1e46b4e948b9f6c475948ae502823c:g2hei4u6`
 - **Open it:** https://dev.vault.sgraph.ai/en-gb/#sgit_private_read_b70c317b7aa4b6084e05669795dc89e6bf1e46b4e948b9f6c475948ae502823c:g2hei4u6
 
-It is linked and not embedded. An embed is an iframe, an iframe is a connection to another host, and no page on this site opens a network connection at all.
+It is embedded on the page as well as linked. The frame is built at runtime, opened carrying nothing, and handed the read key by message with the target origin pinned — so the key is not in a URL, not in history, not in a referrer and not in the frame's storage. This is the one place on this site that opens a connection; every page that sells anything still opens none at all.
 
 ## What the method actually is
 

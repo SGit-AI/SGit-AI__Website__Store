@@ -13,7 +13,7 @@ TWO RULES NARROWED RATHER THAN LOOSENED. A vault WRITE key stays barred from thi
 /review/ stays where it was and says where the register went, because a published address should not start returning nothing. The sitemap and llms-full.txt now exclude what is noindex rather than what sits under one path, which is what made that stub possible.
 
 - Released: 2026-09-15
-- Built from commit: ``
+- Built from commit: `0d873dc16cebab4660a669e08573f30c049bcba4`
 - Reconstructed: no
 
 ---
