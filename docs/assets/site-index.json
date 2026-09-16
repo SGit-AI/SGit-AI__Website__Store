@@ -1,5 +1,5 @@
 {
- "version": "v0.2.5",
+ "version": "v0.2.6",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -136,7 +136,7 @@
     "The three steps",
     "What a product code looks like",
     "Why the catalogue is not inside the payment provider",
-    "Two rails, on purpose",
+    "One rail, and what it is handed",
     "What happens after you pay",
     "What this site never has"
    ],

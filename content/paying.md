@@ -18,10 +18,12 @@ toc: true
 
 ## Who takes the card, and where
 
-**Two rails, and both are payment links on the provider's own pages.** Stripe is
-set up; SumUp is being set up. **Running both is deliberate** — which one gives a
-better workflow is a thing to find out rather than to assume, and the loser costs
-nothing to drop because neither one holds the catalogue.
+**One rail, and it is a payment link on Stripe's own pages.** Six products are
+priced there, three coupons exist, and the store reconciles both against its own
+data on every release. A second rail was planned and **came off on 16 September
+for the first end-to-end store** — a rail that is half set up is a second thing to
+explain here and a second thing to keep true, and neither is worth it while the
+first one is not live. The plan for it is kept rather than deleted.
 
 **Nothing on this site collects anything.** No form, no input, no select, no account,
 no cookie. The provider takes your name, your contact and your card on its own pages,

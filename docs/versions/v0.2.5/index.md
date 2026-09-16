@@ -13,7 +13,7 @@ AND THE RENAME EXPOSED A SILENT FAILURE THAT HAD ALREADY SHIPPED. chip() fell ba
 Also found: st-p was already the class for projected, and the new person chip had taken it — a second meaning on one class is how a chip quietly starts lying about a different claim. It is st-n now.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `c0fbe75497c00eed217d4fdab3b7a1432a39610c`
 - Reconstructed: no
 
 ---

@@ -1,4 +1,12 @@
-# The two payment rails, and what the store hands each of them.
+# The payment rails, and what the store hands each of them.
+#
+# SUMUP CAME OFF ON 16 SEPTEMBER, FOR THE FIRST END-TO-END STORE. Stripe works:
+# six products priced, three coupons, and a reconciliation running on every
+# release. A second rail that is half set up is a second thing to explain on a
+# selling page and a second thing to keep true, and the MVP does not need
+# either. The plan for it is kept at /admin/rails/sumup/ rather than deleted,
+# marked parked, so turning it back on is restoring a record instead of
+# rediscovering an argument.
 #
 # NOTHING IS COLLECTED HERE. The store never sees a name, an email or a card: the
 # provider's own page collects all three, which is the only place a card number
@@ -11,10 +19,13 @@
 # on the URL. Match it against the name and contact the provider captured and you
 # have the whole order: who, how to reach them, and exactly what they bought.
 #
-# WHY NO PRODUCT CATALOGUE INSIDE THE PROVIDERS. Sixty-two SKUs maintained twice
-# is sixty-two SKUs that will disagree. The catalogue lives here, the provider
-# takes an amount and a reference, and neither has to know about the other. It is
-# the smallest integration that answers the question "what did they buy".
+# THE PROVIDER DOES GET A CATALOGUE, AND THAT REVERSED ON 16 SEPTEMBER. This used
+# to say sixty-two SKUs maintained twice is sixty-two SKUs that will disagree.
+# The objection was sized wrong: a price here does not vary by shape, so Stripe
+# needs six products rather than sixty-two, and what the catalogue buys is a
+# buyer who becomes a CUSTOMER with an email rather than an anonymous card
+# charge — including a buyer handed a hundred-per-cent code. The drift is real
+# and is reconciled on every release against the dashboard's own export.
 #
 # THE WALLET IS A SIMULATION AND SAYS SO FIRST. Until a real payment link exists
 # on either rail, the store carries a demonstration wallet: a balance in the
@@ -30,7 +41,7 @@
 # labelled "simulated", and the gate refuses to let it be the only one that looks
 # real.
 #
-# BOTH LIVE URLS ARE EMPTY. No payment link has been created on either rail. The cart
+# THE LIVE URL IS EMPTY. No payment link has been created. The cart
 # renders the button as unissued and says which rail is missing rather than
 # showing something that looks live. Pasting one line here turns a rail on.
 
@@ -73,14 +84,3 @@ rails:
     kind: "A payment link that takes the amount the buyer enters."
     takes: "Name, email and card, on Stripe's own pages."
     note: "Set up already. The link has not been created."
-
-  - id: sumup
-    name: SumUp
-    n: 2
-    url: ""
-    hosts: [https://pay.sumup.com/, https://checkout.sumup.com/]
-    ref_param: reference
-    amount_param: amount
-    kind: "A payment link that takes the amount on the URL."
-    takes: "Name, email and card, on SumUp's own pages."
-    note: "Being set up. Running both rails is deliberate: the one with the better workflow wins, and that is a thing to find out rather than to assume."

@@ -38,7 +38,7 @@ fact that most shapes this store. {{claim:checkout-links-not-issued}}
 | | |
 |---|---|
 | [Stripe](/admin/rails/stripe/) | The rail that turns a buyer into a customer, including a buyer who pays nothing. Six products, eight prices, three coupons — and a webhook that has to listen to the session rather than the payment, because a hundred-per-cent order creates no charge at all. |
-| [SumUp](/admin/rails/sumup/) | Amount-only, no catalogue, and the one with a card reader behind it. Run as a second rail on purpose. |
+| [SumUp — parked](/admin/rails/sumup/) | Taken off the store on 16 September for the first end-to-end MVP. The plan is kept rather than deleted, so turning it back on is restoring a record instead of rediscovering an argument. |
 
 ## Run it yourself
 

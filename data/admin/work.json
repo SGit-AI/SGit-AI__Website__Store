@@ -111,9 +111,9 @@
         },
         {
           "id": "TM-9",
-          "title": "Take SumUp's hosts from the rails, not from a constant",
-          "status": "next",
-          "description": "check_checkout_links pins every destination to Stripe's two hosts. data/checkout.yml has declared SumUp's hosts since the rail was added and the check has never read them, so a SumUp URL pasted in today is refused by the gate with a message about Stripe. Five lines.",
+          "title": "SumUp — parked for the MVP",
+          "status": "done",
+          "description": "<b>Taken off the store on 16 September.</b> The finding that produced this task — that <code>check_checkout_links</code> pinned every destination to Stripe's hosts and would have refused a SumUp URL with a message about Stripe — is now moot rather than fixed, and stays written down because it will be true again the day the rail comes back. The plan is kept at <code>/admin/rails/sumup/</code> rather than deleted.",
           "source": "self"
         },
         {
@@ -158,6 +158,15 @@
           "description": "<b>Ruled on 16 September: no cap, and the reasoning is recorded rather than the concern being dropped.</b> Purchases are managed directly, so a redemption is seen rather than discovered in a total. Abuse at a volume worth doing is abuse at a volume that shows. And what the code skips paying for is already published free — it removes a payment for material anybody could download, and it does not remove the work at the upper levels, which a person does and would notice. The gate now reports the state every release instead of failing on it.",
           "owner": "lead",
           "source": "self",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-15",
+          "title": "Bring SumUp back once Stripe has taken money",
+          "status": "queued",
+          "description": "The argument for running two rails is a good one and it is preserved on the parked plan. It stops being hypothetical the day the first rail has taken a real payment, which is the point at which there is something to compare against.",
+          "blocked": "TM-7 — a first real payment.",
+          "source": "lead",
           "memo": "2026-09-16-stripe-end-to-end"
         }
       ],

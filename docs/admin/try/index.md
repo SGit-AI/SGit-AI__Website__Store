@@ -123,7 +123,7 @@ putting the code back by reopening the address in step 1.
 
 Go to **[paying](/pay/)**.
 
-<figure class="walkshot"><img src="/assets/shots/04-pay.png" alt="The paying page showing £0 due now, the two lines with their before and after prices, and three payment rails of which only the simulated wallet is live."><figcaption><b>What to check.</b> Four rails. The demonstration wallet says <b>simulated — charges nothing</b> before it says anything else. Stripe, SumUp and contactless say <b>Nothing to take</b>, because a code took the whole price off and there is no amount to hand them.</figcaption></figure>
+<figure class="walkshot"><img src="/assets/shots/04-pay.png" alt="The paying page showing £0 due now, the two lines with their before and after prices, and three payment rails of which only the simulated wallet is live."><figcaption><b>What to check.</b> Four rails. The demonstration wallet says <b>simulated — charges nothing</b> before it says anything else. Stripe and contactless say <b>Nothing to take</b>, because a code took the whole price off and there is no amount to hand them. <b>The screenshot is from v0.1.11 and shows a fourth rail, SumUp, which came off the store on 16 September</b> — the shot is left as it was taken rather than restaged, because a walkthrough whose pictures are quietly re-shot is a walkthrough nobody can date.</figcaption></figure>
 
 Press **Place the order**.
 

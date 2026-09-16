@@ -148,10 +148,11 @@
       "id": "sumup",
       "name": "SumUp",
       "url": "/admin/rails/sumup/",
-      "rank": 2,
-      "state": "Being set up. No link created.",
-      "one_line": "The second rail, run on purpose — amount-only, no catalogue, and the one with a card reader behind it.",
+      "rank": 3,
+      "state": "Parked on 16 September. Not in the first end-to-end store.",
+      "one_line": "Planned, half set up, and taken off the store for the MVP — the plan is kept rather than deleted.",
       "why": [
+        "<b>It came off on 16 September, and the reason is not that it was a bad idea.</b> Stripe works: six products priced, three coupons, a reconciliation running on every release. A second rail that is half set up is a second thing to explain on a selling page and a second thing to keep true, and the first end-to-end store needs neither. <b>Everything below is preserved rather than deleted</b> — the argument for running two rails is a good one and it will be worth reading again the day the first one has taken money, which is exactly when it stops being hypothetical.",
         "<b>Running two rails is deliberate and it is a question, not a hedge.</b> Which one gives the better workflow is a thing to find out rather than to assume. <b>The cost of dropping one is no longer symmetric</b>, though, and that is new: Stripe now holds eight catalogue rows and the customer records behind them, and SumUp holds nothing but amounts. Dropping SumUp costs a line in a config file. Dropping Stripe costs the customer list.",
         "<b>SumUp takes the amount on the URL</b>, which is the opposite trade from Stripe. A link can be built for an exact amount without the buyer typing one — better at a stand, worse for a cart whose total the seller does not know in advance. The store already knows how to build either, because <code>amount_param</code> is a field in <code>data/checkout.yml</code> rather than a branch in the code.",
         "<b>And it cannot do the thing Stripe was just chosen for.</b> An amount-only link has no product to discount and no customer to create. That does not make it the wrong rail — it makes it the rail for a tap at a stand, where the interaction is a payment and the contact was collected by a person standing there. Naming that now stops the two rails being compared on a test only one of them was built to pass.",
@@ -211,7 +212,8 @@
           "Does the terminal ever make sense for this product?",
           "Every level is bought by somebody looking at a screen, including at an event. A reader may turn out to be a thing the store carries because it was easy rather than because anybody used it."
         ]
-      ]
+      ],
+      "parked": true
     }
   ]
 }

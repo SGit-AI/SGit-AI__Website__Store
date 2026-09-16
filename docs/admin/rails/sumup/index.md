@@ -1,8 +1,10 @@
 # SumUp
 
-**Being set up. No link created.** — The second rail, run on purpose — amount-only, no catalogue, and the one with a card reader behind it.
+**Parked on 16 September. Not in the first end-to-end store.** — Planned, half set up, and taken off the store for the MVP — the plan is kept rather than deleted.
 
 ## Why
+
+It came off on 16 September, and the reason is not that it was a bad idea. Stripe works: six products priced, three coupons, a reconciliation running on every release. A second rail that is half set up is a second thing to explain on a selling page and a second thing to keep true, and the first end-to-end store needs neither. Everything below is preserved rather than deleted — the argument for running two rails is a good one and it will be worth reading again the day the first one has taken money, which is exactly when it stops being hypothetical.
 
 Running two rails is deliberate and it is a question, not a hedge. Which one gives the better workflow is a thing to find out rather than to assume. The cost of dropping one is no longer symmetric, though, and that is new: Stripe now holds eight catalogue rows and the customer records behind them, and SumUp holds nothing but amounts. Dropping SumUp costs a line in a config file. Dropping Stripe costs the customer list.
 

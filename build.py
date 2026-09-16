@@ -1729,7 +1729,7 @@ CONSOLE_RAIL = [
     ("Next: taking money", [
         ("Both rails", "/admin/rails/", "blockers", False),
         ("Stripe", "/admin/rails/stripe/", None, False),
-        ("SumUp", "/admin/rails/sumup/", None, False),
+        ("SumUp \u2014 parked", "/admin/rails/sumup/", None, False),
     ]),
     ("The record", [
         ("Claim ledger", "/ledger/", None, True),
@@ -3605,7 +3605,12 @@ def rails_pages(out_dir, ctx_shared):
             + (f'<p class="blocked-on"><b>Blocked on.</b> {c}</p>' if c else "")
             + "</li>" for a, b, c in r["steps"])
         body = (
-            "".join(f'<div class="panel"><p>{w}</p></div>' for w in r["why"])
+            (('<div class="panel r2"><p><b>Parked on 16 September.</b> '
+              'This rail is not in the first end-to-end store and nothing on the selling side '
+              'mentions it. The plan below is kept rather than deleted, so turning it back on is '
+              'restoring a record instead of rediscovering an argument.</p></div>')
+             if r.get("parked") else "")
+            + "".join(f'<div class="panel"><p>{w}</p></div>' for w in r["why"])
             + '<h2 id="the-contract">What this rail is handed</h2><div class="rows">'
             + "".join(f'<div class="row2"><div><b>{a}</b><p>{b}</p></div></div>'
                       for a, b in r["contract"]) + "</div>"
