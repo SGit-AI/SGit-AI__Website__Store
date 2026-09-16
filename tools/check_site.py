@@ -1313,6 +1313,10 @@ EXPECTED_SPLIT = {"t1": 100, "t2": 100, "t3": 20, "t4": 20}
 PUBLISHED_VAULTS = {
     # The synthetic-users vault, on the review that is of it.
     "g2hei4u6": ("admin/reviews/2026-09-15-synthetic-users",),
+    # The homepage-panel vault, on the review that is of it. Same arrangement:
+    # a READ key, which opens a vault and cannot write to it, on the one page
+    # that embeds that vault and nowhere else.
+    "xy06m1tb": ("admin/reviews/2026-09-16-four-homepages",),
     # The worked example shown after a sale, on the three levels that are a vault.
     # sgit.ai publishes this read key on that vault's own page; it opens the vault
     # and cannot write to it.

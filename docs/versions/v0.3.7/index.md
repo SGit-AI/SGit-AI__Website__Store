@@ -19,7 +19,7 @@ One latent bug fell out of it. The console has its own stylesheet and does not l
 /admin/status/ was reachable only from the memo queue. It and the new page are both in the console rail now.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `c63bf4392df76e7a50d477f3653b40e7077b61f0`
 - Reconstructed: no
 
 ---
