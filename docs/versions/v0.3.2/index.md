@@ -13,7 +13,7 @@ THE ONE FILE ON THE WRONG SIDE IS MARKED AS DEBT RATHER THAN LEFT TO BE DISCOVER
 AND THE CHECK ADDED YESTERDAY CAUGHT THIS RELEASE'S OWN PREDECESSOR. The v0.3.1 note named the leaked code in its text, and a release note is an indexed page that never declared itself as one of that code's journeys. The rule is right and the note was wrong: it now describes the code without printing it.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `251a8720ca41a8e4b0ca766112299b8ce5263807`
 - Reconstructed: no
 
 ---

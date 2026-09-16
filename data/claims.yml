@@ -46,7 +46,7 @@
   state: exists
   date: 15 Sep 2026
   group: The state of each thing on the offer list
-  claim: "The catalogue on this site is **promoted from riskmandate.ai at build time**, with the source URL, the retrieval time and a **sha256 of the page it was read from**, because **no page here opens a network connection**. A shape added upstream appears at the next build; one that arrives without a product code **stops the build** rather than rendering a tile whose buttons produce a code nobody can fill."
+  claim: "The catalogue on this site is **promoted from riskmandate.ai at build time**, with the source URL, the retrieval time and a **sha256 of the page it was read from**, because **no page here that sells anything opens a network connection**. A shape added upstream appears at the next build; one that arrives without a product code **stops the build** rather than rendering a tile whose buttons produce a code nobody can fill."
   source: "tools/promote_abp.py and data/abp-catalogue.json"
 
 - id: t1-app-not-located
@@ -160,7 +160,7 @@
   state: exists
   date: 11 Sep 2026
   group: The lab, and what it is not
-  claim: "A brief is written to **the browser's own local storage and reaches nothing else.** There is **no form, input, textarea or select anywhere in this site's output** and **no page here opens a network connection** — both held by build checks — so exporting a brief hands the file to the reader rather than to us."
+  claim: "A brief is written to **the browser's own local storage and reaches nothing else.** There is **no form, input, textarea or select anywhere in this site's output** and **no page here that sells anything opens a network connection** — both held by build checks — so exporting a brief hands the file to the reader rather than to us."
   source: "check_no_forms and check_no_network in tools/check_site.py"
 
 
@@ -332,7 +332,7 @@
   state: absent
   date: 15 Sep 2026
   group: The handover, and what the two sites owe each other
-  claim: "**Nothing carries a sale from this store to the people who follow up.** Their pages promise a person within 24 hours at the three vault levels, and that person needs the level, the order reference, the address paid with and — at £500 — the template chosen. **A static site cannot send it**: no page here opens a connection and none ever will. So until a rail exists whose receipt reaches them, the channel is the buyer's own first message from the page they land on. **This is the one thing that gates the first paid order at those levels**, and it is written here rather than assumed."
+  claim: "**Nothing carries a sale from this store to the people who follow up.** Their pages promise a person within 24 hours at the three vault levels, and that person needs the level, the order reference, the address paid with and — at £500 — the template chosen. **A static site cannot send it**: no page here opens a connection except to embed a published vault, and none will ever send anything about a reader. So until a rail exists whose receipt reaches them, the channel is the buyer's own first message from the page they land on. **This is the one thing that gates the first paid order at those levels**, and it is written here rather than assumed."
   source: "riskmandate.ai/after-payment.md, item 2 of five"
 
 - id: receipt-reference-untested

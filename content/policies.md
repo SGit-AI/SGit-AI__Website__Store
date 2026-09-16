@@ -43,8 +43,8 @@ dangerous; a deployment can.
 
 **riskmandate.ai publishes these shapes and this store promotes them.** The
 catalogue on this page carries the source URL, the time it was retrieved and a
-hash of the page it was read from, because **no page on this site opens a network
-connection** — that is a build check rather than an intention, so the list is taken
+hash of the page it was read from, because **no page on this site that sells
+anything opens a network connection** — that is a build check rather than an intention, so the list is taken
 at build time rather than fetched while you read.
 
 A shape added upstream is on this page at the next build. One that arrives without

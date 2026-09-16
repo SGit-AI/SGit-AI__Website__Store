@@ -82,7 +82,7 @@ sources:
     title: "Telemetry from a published vault"
     url: https://sgit.ai/docs/briefs/vault-telemetry-append-lanes.md
     kind: brief
-    took: "Read, and deliberately not applied: no page on this site opens a network connection, so this site reports nothing back about anybody."
+    took: "Read, and deliberately not applied: no page on this site that sells anything opens a network connection, and nothing here reports anything back about anybody."
 
   - id: surfaces
     title: "Three surfaces"

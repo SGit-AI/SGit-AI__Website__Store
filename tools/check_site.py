@@ -563,16 +563,36 @@ EMBED_COMPONENT = "assets/vault-embed.js"
 
 
 def _may_embed():
-    """Review pages that carry a vault, and nothing else."""
-    root = ROOT / "data" / "reviews"
-    if not root.is_dir():
-        return set()
+    """Every page allowed to open a connection, and there are exactly two kinds.
+
+    NARROWED TWICE NOW, LOOSENED NEVER, AND THE SECOND ONE IS 16 SEPTEMBER.
+
+      1. A review OF a vault embeds that vault. Added when the reviews became a
+         register: a critique of a vault that a reader cannot open is a critique
+         asking to be taken on trust.
+
+      2. A page a buyer reaches AFTER PAYING embeds one published example vault.
+         Added because "when you have sold a vault, you should just see the vault"
+         — and because at the moment somebody pays there is nothing of theirs to
+         show yet, so what they see is a published one, said to be an example in
+         its first sentence.
+
+    WHAT STAYED ABSOLUTE ACROSS BOTH: every page that SELLS anything opens no
+    connection at all. That is the half the whole claim rests on, it has not moved,
+    and /paid/ pages are on the other side of a purchase rather than in front of
+    one. The pack level is not in this set either — it has no vault to show, so it
+    does not get the component that can open a connection, which is the difference
+    between a narrow exception and a wide one."""
     out = set()
-    for f in root.glob("*.json"):
-        if f.stem == "_register":
-            continue
-        if json.loads(f.read_text()).get("vault"):
-            out.add(f"admin/reviews/{f.stem}/index.html")
+    root = ROOT / "data" / "reviews"
+    if root.is_dir():
+        for f in root.glob("*.json"):
+            if f.stem == "_register":
+                continue
+            if json.loads(f.read_text()).get("vault"):
+                out.add(f"admin/reviews/{f.stem}/index.html")
+    for oid in ("t2", "t3", "t4"):
+        out.add(f"paid/{oid}/index.html")
     return out
 
 
@@ -592,10 +612,16 @@ def check_no_network():
             if bad in text:
                 fail(f"{rel}: inline script uses {bad} — nothing on this site sends anything")
         if EMBED_COMPONENT in text and rel not in may:
-            fail(f"{rel}: loads the vault embed. Only a review page that carries a vault may, and "
-                 "a page that sells anything never may")
+            fail(f"{rel}: loads the vault embed. Only a review of a vault, or a page reached after "
+                 "paying, may — and a page that sells anything never may")
         if 'class="sgv-uiembed"' in text and rel not in may:
-            fail(f"{rel}: carries an embed mount and is not a review page with a vault")
+            fail(f"{rel}: carries an embed mount and is neither a review with a vault nor a page "
+                 "reached after paying")
+        # The half that does not move. A page that asks for money opens nothing.
+        if rel.startswith(("d/", "offers/", "cart/", "pay/", "p/", "are/", "compare/")) or rel == "index.html":
+            if EMBED_COMPONENT in text or 'class="sgv-uiembed"' in text:
+                fail(f"{rel}: is a page that sells something and it carries an embed. That half of "
+                     "the claim has never moved and is not the builder's to spend")
     for js in (OUT / "assets").glob("*.js"):
         text = js.read_text()
         for bad in ("fetch(", "XMLHttpRequest", "navigator.sendBeacon", "new WebSocket"):
@@ -645,7 +671,17 @@ def check_the_embed_is_what_it_says():
         if not page.exists():
             continue
         flat = " ".join(strip_tags(page.read_text()).split())
-        for needed in ("the one place on this site that opens a connection",
+        # THE SENTENCE CHANGED ON 16 SEPTEMBER BECAUSE THE FACT DID. It used to
+        # require "the one place on this site that opens a connection", which was
+        # exactly true while a review of a vault was the only such page. A page
+        # reached after paying now embeds one too, so "the one place" became false
+        # — and this check is what caught it, on the release that made it false,
+        # before either page shipped saying it.
+        #
+        # What is required now is the same account of the mechanism, said in words
+        # that are true of both: this page opens a connection, the key does not
+        # travel in the address, and selling pages still open none.
+        for needed in ("opens a connection",
                        "The key does not travel in the address",
                        "still opens nothing at all"):
             if needed not in flat:
@@ -942,7 +978,11 @@ def check_the_typing_surface_is_inert():
                 fail(f"{rel}: a box carries no id — {b[:80]}. Without one it cannot be labelled, "
                      "and an unlabelled box is unusable with a screen reader")
         flat = " ".join(strip_tags(text).split())
-        for needed in ("no page here opens a network connection",
+        # The wording moved on 16 September and this moved with it. What a page
+        # taking typing owes the reader is that nothing they type is sent — which
+        # is still absolutely true and is a stronger sentence than the one about
+        # connections, because a review page DOES open one to embed its vault.
+        for needed in ("nothing here sends anything about a reader",
                        "lives in this browser only"):
             if needed not in flat:
                 fail(f"{rel}: does not say {needed!r}. A page that takes typing owes the reader "
@@ -1246,8 +1286,15 @@ EXPECTED_SPLIT = {"t1": 100, "t2": 100, "t3": 20, "t4": 20}
 # Two things worth knowing before adding one: a read key cannot be revoked without
 # rekeying the vault, and everything in that vault is then public to anyone holding
 # the address.
+# Vault id -> the page prefixes its read key may appear on, and no others. A
+# vault reaches this table by ruling, in the commit that says so.
 PUBLISHED_VAULTS = {
-    "g2hei4u6": "admin/reviews/2026-09-15-synthetic-users",   # the synthetic-users vault
+    # The synthetic-users vault, on the review that is of it.
+    "g2hei4u6": ("admin/reviews/2026-09-15-synthetic-users",),
+    # The worked example shown after a sale, on the three levels that are a vault.
+    # sgit.ai publishes this read key on that vault's own page; it opens the vault
+    # and cannot write to it.
+    "posrhzp3": ("paid/t2", "paid/t3", "paid/t4"),
 }
 
 KEY_SHAPES = [
@@ -1259,14 +1306,34 @@ KEY_SHAPES = [
 READ_KEY = re.compile(r"sgit_private_read_[0-9a-f]{16,}:?([a-z0-9]{4,})?")
 
 
+# The bare form, which is what sgit.ai's own catalogue prints beside every vault
+# and therefore the shape most likely to arrive here by a careless copy. It was
+# NOT caught site-wide until 16 September — only inside data/evidence.yml — so a
+# bare read key for an unpublished vault could have gone onto any page here and
+# nothing would have said a word.
+BARE_READ_KEY = re.compile(r"\b([0-9a-f]{64}):([a-z0-9]{4,12})\b")
+
+
 def check_read_keys_are_only_for_published_vaults():
-    """A read key is a share link for a vault somebody decided to publish, and it is
-    still a mistake anywhere else. It may appear on the review page of a vault in the
-    frozen list and on no other page — a key loose on a selling page is a key nobody
-    decided to publish."""
+    """A read key is a share link for a vault somebody decided to publish, and it
+    is still a mistake anywhere else.
+
+    Both forms are checked: the prefixed `sgit_private_read_…` one and the bare
+    `<64 hex>:<vault id>` one that sgit.ai's catalogue prints. Each may appear only
+    on the pages its vault is allowed on — a key loose on a selling page is a key
+    nobody decided to publish, whichever shape it arrived in."""
+    # THE SHAPE THE EMBED ACTUALLY USES, AND IT WAS NOT CAUGHT UNTIL 16 SEPTEMBER.
+    # The component takes its key and its vault id in two separate attributes, so
+    # neither the prefixed pattern nor the colon-joined one matched a key sitting
+    # in live markup. A deliberate break walked straight through. It is the exact
+    # shape a careless copy would produce, because it is the shape this site's own
+    # pages carry.
+    mount = re.compile(r'data-vault="([a-z0-9]{4,12})"\s+data-readkey="([0-9a-f]{64})"')
     for rel, text in texts():
-        for m in READ_KEY.finditer(text):
-            vault = m.group(1)
+        seen = [(m.group(1), m.group(0)) for m in READ_KEY.finditer(text)]
+        seen += [(m.group(2), m.group(0)) for m in BARE_READ_KEY.finditer(text)]
+        seen += [(m.group(1), m.group(0)) for m in mount.finditer(text)]
+        for vault, _raw in seen:
             where = PUBLISHED_VAULTS.get(vault or "")
             if not vault:
                 fail(f"{rel}: a read key with no vault id beside it. A key that cannot be traced "
@@ -1274,9 +1341,9 @@ def check_read_keys_are_only_for_published_vaults():
             elif where is None:
                 fail(f"{rel}: publishes a read key for vault {vault!r}, which is not in the frozen "
                      "list of vaults meant to be public. Publishing a vault is a ruling")
-            elif not rel.startswith(where):
-                fail(f"{rel}: carries the read key for {vault!r}, which belongs on /{where}/ and "
-                     "nowhere else")
+            elif not rel.startswith(tuple(where)):
+                fail(f"{rel}: carries the read key for {vault!r}, which belongs on "
+                     f"{' or '.join('/' + w + '/' for w in where)} and nowhere else")
 
 
 def check_payment_split():
@@ -2287,6 +2354,43 @@ def check_a_leaked_code_cannot_buy_somebody_s_day():
                      "who assumes it covers everything has been misled by omission")
 
 
+# The unqualified sentence, which has been false since a review page first embedded
+# a vault and is now false twice over. It read well and it was never quite true;
+# the qualified one is the claim this site can actually keep.
+UNQUALIFIED_NETWORK = re.compile(
+    r"no page (?:here |on this site )?opens a network connection", re.I)
+
+
+def check_the_network_claim_is_qualified():
+    """The claim has to carry its own exception or it is not a claim.
+
+    "No page here opens a network connection" is the sentence everybody wants to
+    write. It stopped being true the day a review page embedded the vault it was
+    reviewing, and it is now untrue on a second kind of page as well. The accurate
+    version — no page that SELLS anything opens one — is the one this site can
+    keep, and it is the one that is worth something, because it is the half a
+    buyer actually cares about.
+
+    This fails the release if the comfortable version comes back."""
+    for rel, text in texts():
+        if not rel.endswith((".html", ".md", ".txt", ".yml")):
+            continue
+        flat = strip_tags(text)
+        for m in UNQUALIFIED_NETWORK.finditer(flat):
+            before = flat[max(0, m.start() - 60):m.start()].lower()
+            if "sells anything" in m.group(0).lower() or "that sells" in before:
+                continue
+            # A QUOTED SENTENCE IS A REPORT, NOT AN ASSERTION. The v0.1.17 release
+            # note quotes the old claim in order to explain that it was rewritten,
+            # and a rule that forbade that would force this site to describe its
+            # own corrections without saying what it had corrected.
+            if flat[max(0, m.start() - 1):m.start()] in ('"', "\u201c", "'", "\u2018"):
+                continue
+            ctx = flat[max(0, m.start() - 70):m.start() + 70].replace("\n", " ")
+            fail(f"{rel}: says {m.group(0)!r} without its exception. Two kinds of page here open "
+                 f"one and each says so; the claim that is true is about pages that SELL. \u2026{ctx}\u2026")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2322,6 +2426,7 @@ def main():
         check_the_comparison_agrees_with_the_offers,
         check_every_reviewer_line_is_sourced,
         check_a_leaked_code_cannot_buy_somebody_s_day,
+        check_the_network_claim_is_qualified,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

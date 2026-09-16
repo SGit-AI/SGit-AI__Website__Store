@@ -261,7 +261,7 @@ One thing already true that we do not say. The vendor tiles the note asks for ar
 
 ## Send it back
 
-The page at https://store.sgit.ai/admin/reviews/2026-09-15-partner-walkthrough/ carries a verdict control and a reason box on every proposal, and copies the result out as markdown or JSON. Nothing typed there is submitted anywhere: no page on this site opens a network connection.
+The page at https://store.sgit.ai/admin/reviews/2026-09-15-partner-walkthrough/ carries a verdict control and a reason box on every proposal, and copies the result out as markdown or JSON. Nothing typed there is submitted anywhere, and nothing on this site sends anything about a reader on any page.
 
 ---
 

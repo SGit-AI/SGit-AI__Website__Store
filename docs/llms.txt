@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.3.2
+> site v0.3.3
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
@@ -19,7 +19,7 @@ never raw findings.
 Every factual claim on this site carries one of ten states — exists, measured, read-not-run,
 projected, specified-not-built, specified-never-run, built-not-located, a-booking, part-exists,
 does-not-exist-yet. The full list is at /ledger/. Every page is also served as markdown at
-<page>/index.md. No page on this site that sells anything opens a network connection at all; the review pages under /admin/reviews/ embed the vault they review, from one host, and say so. Nothing here sends anything about a reader, on any page.
+<page>/index.md. No page on this site that sells anything opens a network connection at all; two kinds of page do and each says so on itself — a review under /admin/reviews/ embeds the vault it reviews, and a page under /paid/ embeds one published example vault. Both from one host. Nothing here sends anything about a reader, on any page.
 
 Offer identifiers are stable and the host is not: a payment code redirects to /d/<id>/, so this
 site can move host without reprinting a card or reissuing a link.

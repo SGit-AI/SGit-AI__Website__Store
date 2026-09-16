@@ -1,0 +1,29 @@
+# THE WORKED EXAMPLE A BUYER SEES ON THE PAGE THEY LAND ON AFTER PAYING.
+#
+# "When you have sold a vault, you should just see the vault." The difficulty is
+# that at the moment somebody pays there is nothing of THEIRS to show: at the
+# vault level it is built for them within a day or two, and at the two upper
+# levels it is built after they send their details. A page that pretended
+# otherwise would be lying at the one moment a buyer is paying most attention.
+#
+# So what is embedded is a published vault of exactly this kind of work, labelled
+# as an example in the first sentence. It is the difference between "your thing is
+# coming" and "here is what one of these is, open it now" — and for a buyer who
+# has never held a vault, the second is the useful one.
+#
+# NO KEY THAT CAN WRITE, AND NOTHING PRIVATE. This is a read key sgit.ai
+# deliberately publishes on that vault's own page. It opens the vault and cannot
+# write to it, which was verified by cloning with one.
+
+id: posrhzp3
+title: "Licence to Operate"
+files: 121
+size: "13 MB"
+published: "4 September 2026"
+page: "https://sgit.ai/demos/vaults/licence-to-operate/index.html"
+web: "https://dev.vault.sgraph.ai/#d990a52efb9af32c8463e2962f3ca5ccf92b3b6e8ea788e55009073c29b4da29%3Aposrhzp3"
+embed_host: "https://dev.vault.sgraph.ai"
+read_key_hex: "d990a52efb9af32c8463e2962f3ca5ccf92b3b6e8ea788e55009073c29b4da29"
+has_app: true
+note: "One agent, its grant of twelve capabilities, its mandate of four, and the eight-capability delta no policy covers. It is the shape of the document you have just bought, built out end to end and published so anybody can open it."
+why: "Yours will be your own — your shape, your licence, and no public key on it. This one is here because a vault is hard to picture from a description, and reading one takes about a minute."

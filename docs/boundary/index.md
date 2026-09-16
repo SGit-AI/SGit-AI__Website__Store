@@ -77,7 +77,12 @@ re-implementing a cart.**
 Concretely, and in the order that makes each one useful on its own:
 
 1. **Publish a stable manifest for each level's artefact** — the zip, its size and
-   its sha256, as JSON at a fixed address. The store's page after payment can then
+   its sha256, as JSON at a fixed address. **It already exists and it is not
+   reachable as data**: on 16 September `paid-t1.html` carried fifteen entries with
+   `bytes` and `sha256` inside a JavaScript `const DIST = /*__DIST__*/[…]`. Reading
+   that from here means regex-ing your JavaScript out of your HTML at runtime,
+   which is the fragility this ask exists to remove. The same bytes at
+   `/abp-manifest.json` would close it. The store's page after payment can then
    render your download in its own chrome instead of sending a buyer to you at the
    moment they have just paid. Today the store links to you with one sentence
    saying why; that sentence is the debt.

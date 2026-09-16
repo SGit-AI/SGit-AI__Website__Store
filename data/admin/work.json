@@ -574,8 +574,8 @@
         {
           "id": "OS-1",
           "title": "Narrow the no-network rule before the first cross-origin read",
-          "status": "next",
-          "description": "Every selling page opens no connection and check_no_network fails the release if one does. Reading riskmandate.ai's catalogue over CORS breaks that as written. <b>The rule gets narrowed, never loosened</b> — the absolute half stays absolute, the exception is named in the check, and a deliberate break is run against the new check before anything ships. That is how the vault embed was admitted and it is the only way this one gets in.",
+          "status": "done",
+          "description": "<b>Done in v0.3.3, with a consumer rather than on spec.</b> The no-network rule was narrowed a second time to admit the vault embed on the page a buyer lands on. The half that carries the claim did not move: every page that SELLS anything opens nothing at all, and there is now a check that refuses an embed on one by name. Five deliberate breaks run.",
           "source": "self",
           "memo": "2026-09-16-one-site-one-flow"
         },
@@ -590,9 +590,8 @@
         {
           "id": "OS-3",
           "title": "Embed the bought vault on the page they land on",
-          "status": "next",
-          "description": "“You should see the vault.” The mechanism is already in this repository and already passing the gate: a frame built at runtime, opened carrying nothing, handed a published read key by message with the origin pinned. What is new is which page it runs on.",
-          "blocked": "OS-2.",
+          "status": "done",
+          "description": "Shipped in v0.3.3. The three levels that are a vault embed a published one on the page after payment, labelled <b>an example, not yours</b> in its first sentence — because at the moment somebody pays there is nothing of theirs to show yet, and a page that pretended otherwise would be lying at the one moment a buyer is paying most attention.",
           "source": "lead",
           "memo": "2026-09-16-one-site-one-flow"
         },
@@ -600,8 +599,8 @@
           "id": "OS-4",
           "title": "Read riskmandate.ai's manifest over CORS and close the last hop",
           "status": "next",
-          "description": "<b>Verified 16 September: their pages answer <code>access-control-allow-origin: *</code>,</b> so this is possible rather than hoped for. At level one the zip, its size and its sha256 genuinely live over there, and /paid/t1/ says so in one sentence with the reason rather than hiding the hop. Reading their manifest directly removes it — and it means opening a connection on a selling page, which is this site's hardest rule, so OS-1 comes first and is not smuggled in with it.",
-          "blocked": "OS-1 — the rule has to be narrowed before the first fetch.",
+          "description": "<b>Blocked on the brief, and now for a named reason.</b> Their manifest exists — fifteen entries with bytes and a sha256 — and it lives inside a JavaScript <code>const DIST = /*__DIST__*/[…]</code> in <code>paid-t1.html</code>, not at a JSON address. Reading it means regex-ing their JS out of their HTML at runtime, which is exactly the fragility item one of the brief on /boundary/ asks them to remove. CORS is confirmed; the shape is the gap.",
+          "blocked": "The RiskMandate team publishing a manifest as JSON — item 1 of the brief.",
           "source": "lead",
           "memo": "2026-09-16-one-site-one-flow"
         },

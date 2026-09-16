@@ -15,7 +15,7 @@ Read-only, and embedded below. The key opens the vault and cannot write to it. T
 - **Read key:** `sgit_private_read_b70c317b7aa4b6084e05669795dc89e6bf1e46b4e948b9f6c475948ae502823c:g2hei4u6`
 - **Open it:** https://dev.vault.sgraph.ai/en-gb/#sgit_private_read_b70c317b7aa4b6084e05669795dc89e6bf1e46b4e948b9f6c475948ae502823c:g2hei4u6
 
-It is embedded on the page as well as linked. The frame is built at runtime, opened carrying nothing, and handed the read key by message with the target origin pinned — so the key is not in a URL, not in history, not in a referrer and not in the frame's storage. This is the one place on this site that opens a connection; every page that sells anything still opens none at all.
+It is embedded on the page as well as linked. The frame is built at runtime, opened carrying nothing, and handed the read key by message with the target origin pinned — so the key is not in a URL, not in history, not in a referrer and not in the frame's storage. A review of a vault, and the page a buyer lands on after paying, are the only two kinds of page here that open a connection; every page that sells anything still opens none at all.
 
 ## What the method actually is
 
@@ -169,7 +169,7 @@ And the real answer is to stop needing it. One partner’s note produced more us
 
 ## Send it back
 
-The page at https://store.sgit.ai/admin/reviews/2026-09-15-synthetic-users/ carries a verdict control and a reason box on every proposal, and copies the result out as markdown or JSON. Nothing typed there is submitted anywhere: no page on this site opens a network connection.
+The page at https://store.sgit.ai/admin/reviews/2026-09-15-synthetic-users/ carries a verdict control and a reason box on every proposal, and copies the result out as markdown or JSON. Nothing typed there is submitted anywhere, and nothing on this site sends anything about a reader on any page.
 
 ---
 

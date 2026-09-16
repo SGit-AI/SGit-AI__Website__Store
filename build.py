@@ -1855,7 +1855,8 @@ def review_markdown(rv):
               "It is embedded on the page as well as linked. The frame is built at runtime, opened "
               "carrying nothing, and handed the read key by message with the target origin pinned "
               "\u2014 so the key is not in a URL, not in history, not in a referrer and not in the "
-              "frame's storage. This is the one place on this site that opens a connection; every "
+              "frame's storage. A review of a vault, and the page a buyer lands on after paying, "
+              "are the only two kinds of page here that open a connection; every "
               "page that sells anything still opens none at all.", ""]
     if rv.get("verbatim"):
         L += ["## The note, verbatim", "",
@@ -1905,8 +1906,8 @@ def review_markdown(rv):
     L += ["## Send it back", "",
           f"The page at {SITE['base']}{REVIEW_REGISTER['root']}{rv['id']}/ carries a verdict control "
           "and a reason box on every proposal, and copies the result out as markdown or JSON. "
-          "Nothing typed there is submitted anywhere: no page on this site opens a network "
-          "connection.", ""]
+          "Nothing typed there is submitted anywhere, and nothing on this site sends anything "
+          "about a reader on any page.", ""]
     return "\n".join(L)
 
 # ---------------------------------------------------------- the reviews ----
@@ -2016,7 +2017,7 @@ def _rv_vault(v, rid):
         f'<code>sgit clone {html.escape(v["read_key_hex"][:12])}\u2026:{html.escape(v["id"])}</code>'
         "</span></p>"
         '<div class="rv-slot">'
-        '<b>This is the one place on this site that opens a connection.</b> The two surfaces below '
+        '<b>This page opens a connection, and here is exactly which one.</b> The two surfaces below '
         'are the official vault interface, running on '
         f'<code>{html.escape(host.replace("https://", ""))}</code> in a frame this page builds. '
         '<b>The key does not travel in the address.</b> The frame is opened carrying nothing, it '
@@ -2165,7 +2166,7 @@ def review_pages(out_dir, ctx_shared):
             + '<h2 id="send-it-back">Send it back</h2>'
             '<div class="rv-export"><h3>Your verdicts, as text you can paste</h3>'
             '<p>Everything you set above lives <b>in this browser only</b>. There is no account, '
-            'nothing is submitted, and no page here opens a network connection — which is a '
+            'nothing is submitted, and nothing here sends anything about a reader — which is a '
             'build check rather than a promise. The buttons put it on your clipboard: markdown to '
             'read in a message, JSON if it is going into a tracker.</p>'
             '<label class="rv-blab" for="rv-overall" style="margin-top:1.1rem">'
@@ -2531,9 +2532,9 @@ def lab_pages(out_dir, ctx_shared):
             f'{json.dumps(lab_model(prefix), separators=(",", ":"))}</script>'
             f'<div id="lab" data-view="{v["id"]}">'
             '<p class="dim">This prototype needs JavaScript. Everything it does happens in '
-            'this browser: there is no form on this site, nothing is submitted anywhere, and no page '
-            'here opens a network '
-            'connection, so with scripting off there is nothing to fall back to except '
+            'this browser: there is no form on this site, nothing is submitted anywhere, and '
+            'nothing here sends anything about you, '
+            'so with scripting off there is nothing to fall back to except '
             '<a href="/lab/">the description of what it would do</a>.</p></div>'
             f'<p class="pagenav">{others}<a href="/lab/">All five, compared &rarr;</a></p>'
         )
@@ -4260,6 +4261,67 @@ def reviewer_pages(out_dir, ctx_shared):
     return made
 
 
+
+# ------------------------------- the worked example on the page after paying ----
+# "WHEN YOU HAVE SOLD A VAULT, YOU SHOULD JUST SEE THE VAULT."
+#
+# The difficulty is that at the moment somebody pays there is nothing of theirs to
+# show. At the vault level it is built for them within a day or two; at the two
+# upper levels it is built after they send their details. A page that showed "your
+# vault" at that moment would be lying at the one moment a buyer is paying most
+# attention to it.
+#
+# So what is embedded is a PUBLISHED vault of exactly this kind of work, said to
+# be an example in its first sentence. For a buyer who has never held one, that is
+# the more useful of the two things anyway: a vault is hard to picture from a
+# description and takes about a minute to read.
+#
+# THIS IS THE SECOND PLACE ON THIS SITE THAT OPENS A CONNECTION, and the rule was
+# narrowed rather than loosened to admit it — see check_no_network. What stayed
+# absolute: every page that SELLS anything still opens nothing at all. What is new
+# is that a page reached only after a sale may embed one published vault, from the
+# one host, and has to say so on itself.
+EXAMPLE_VAULT = yaml_load((DATA / "example-vault.yml").read_text())
+
+
+def example_vault_embed(ctx):
+    v = EXAMPLE_VAULT
+    ctx["external_links"].add(v["page"])
+    ctx["external_links"].add(v["web"])
+    host = v["embed_host"].replace("https://", "")
+    return (
+        '<div class="rv-vault">'
+        '<span class="rv-vlab2">An example, not yours</span>'
+        f'<p class="rv-vnote">{html.escape(v["note"])} {html.escape(v["why"])}</p>'
+        '<div class="rv-vgrid">'
+        f'<div><b>Vault</b><code>{html.escape(v["id"])}</code></div>'
+        f'<div><b>Files</b><code>{v["files"]}</code></div>'
+        '<div><b>Access</b><code>read-only</code></div>'
+        "</div>"
+        f'<p class="rv-vopen"><a href="{html.escape(v["web"])}" rel="noopener" target="_blank">'
+        'Open it in its own tab \u2197</a> '
+        f'<span class="small dim">or read how it was published at '
+        f'<a href="{html.escape(v["page"])}">sgit.ai</a>.</span></p>'
+        '<div class="rv-slot">'
+        '<b>This page opens a connection, and here is exactly which one.</b> The surface below is '
+        f'the official vault interface running on <code>{html.escape(host)}</code>, in a frame this '
+        'page builds at runtime. <b>The key does not travel in the address:</b> the frame is opened '
+        'carrying nothing, it announces itself, and only then is the read key handed over by '
+        'message with the target origin pinned \u2014 so it is not in a URL, not in history, not in '
+        'a referrer and not in the frame\u2019s storage. Replies from any other origin are ignored. '
+        'It is a <b>read</b> key, which opens a vault and cannot write to it, and sgit.ai publishes '
+        'it deliberately on that vault\u2019s own page. '
+        '<b>Every page on this site that sells anything still opens nothing at all</b> \u2014 this '
+        'is a page you reach after buying, and a build check holds that line. '
+        '<b>One exception, stated because it is real:</b> if the handshake does not complete within '
+        'twelve seconds the component falls back to opening the vault with the key in the '
+        'frame\u2019s URL fragment. A fragment is never sent to a server and never appears in a '
+        'referrer, but it is in that frame\u2019s address. The link above avoids it entirely.</div>'
+        "</div>"
+        f'<div class="sgv-uiembed" data-vault="{html.escape(v["id"])}" '
+        f'data-readkey="{html.escape(v["read_key_hex"])}" '
+        f'data-app="{"1" if v.get("has_app") else "0"}"></div>')
+
 # --------------------------------------------------- where a buyer lands ----
 # THEY LAND HERE NOW, AND THAT REVERSED ON 16 SEPTEMBER.
 #
@@ -4324,6 +4386,8 @@ def paid_pages(out_dir, ctx_shared):
                f'<h2 id="the-deeper-material">Where the deeper material is</h2>'
                f'<p><a href="{upstream}">riskmandate.ai\'s page for this level</a> carries the '
                'longer form of what is below. You do not need it to get what you bought.</p>')
+            + (('<h2 id="see-one">See one of these now</h2>' + example_vault_embed(ctx))
+               if o["id"] != "t1" else "")
             + '<h2 id="what-done-looks-like">What done looks like</h2>'
             f'<p>{inline(o["post_done"], ctx)}</p>'
             f'<p class="small dim"><b>How you check it.</b> {inline(o["post_check"], ctx)}</p>'
@@ -4351,7 +4415,12 @@ def paid_pages(out_dir, ctx_shared):
              "lead": f"**{html.escape(o['price_label'])}, arriving {html.escape(o['eta']).lower()} "
                      f"{html.escape(o['eta_from'])}.** Nothing else is needed from you"
                      + (" — it is already below." if o["id"] == "t1" else "."),
-             "robots": "noindex,follow"},
+             "robots": "noindex,follow",
+             # Only the levels that are a vault load the component that can open a
+             # connection. The pack level has nothing to embed and does not get it,
+             # which is the difference between a narrow exception and a wide one.
+             "head_js2": ("/assets/vault-embed.js" if o["id"] != "t1" else ""),
+             "head_css": "/assets/review.css" if o["id"] != "t1" else ""},
             f' / <a href="/d/{o["id"]}/">{html.escape(l["name"])}</a> / paid',
             body, "\n".join(md))
     return made
@@ -4608,9 +4677,10 @@ def llms_txt(rendered, extra):
         "Every factual claim on this site carries one of ten states — exists, measured, read-not-run,",
         "projected, specified-not-built, specified-never-run, built-not-located, a-booking, part-exists,",
         "does-not-exist-yet. The full list is at /ledger/. Every page is also served as markdown at",
-        "<page>/index.md. No page on this site that sells anything opens a network connection at all; "
-        "the review pages under /admin/reviews/ embed the vault they review, from one host, and "
-        "say so. Nothing here sends anything about a reader, on any page.",
+        "<page>/index.md. No page on this site that sells anything opens a network connection at "
+        "all; two kinds of page do and each says so on itself — a review under /admin/reviews/ "
+        "embeds the vault it reviews, and a page under /paid/ embeds one published example vault. "
+        "Both from one host. Nothing here sends anything about a reader, on any page.",
         "",
         "Offer identifiers are stable and the host is not: a payment code redirects to /d/<id>/, so this",
         "site can move host without reprinting a card or reissuing a link.",

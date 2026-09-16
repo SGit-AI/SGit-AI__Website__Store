@@ -1,6 +1,6 @@
 {
   "type": "store/abp-catalogue/v1",
-  "_what_this_is": "The Agent Behaviour Policy template vaults published at riskmandate.ai, promoted into this repository at build time because no page on this site opens a network connection. Refresh with tools/promote_abp.py.",
+  "_what_this_is": "The Agent Behaviour Policy template vaults published at riskmandate.ai, promoted into this repository at build time because no page on this site that sells anything opens a network connection. Refresh with tools/promote_abp.py.",
   "source": "https://riskmandate.ai/abp-vaults.html",
   "retrieved": "2026-09-15T10:55:22Z",
   "content_hash": "sha256:23afde895fa15268ff8fad23a501c7eb2002709bf4a0a5b960de4f4c0e305d20",
