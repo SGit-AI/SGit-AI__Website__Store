@@ -1,10 +1,24 @@
 {
-  "current": "v0.2.3",
+  "current": "v0.2.4",
   "releases": [
+    {
+      "version": "v0.2.4",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the cap on the hundred-per-cent coupon is ruled out rather than dropped, and level four takes the name the product has",
+      "summary": "The gate flagged the hundred-per-cent coupon for having no redemption cap and no expiry, and said it would fail the release that turned a rail on. The project lead overruled it, and the reasons are kept on the page rather than the concern being quietly deleted: every purchase is managed directly, so a redemption is seen rather than found in a monthly total; abuse at a volume worth doing is abuse at a volume that shows; and what a hundred-per-cent code skips paying for is already published free, so it removes a payment for material anybody could have downloaded. What it does not remove is the work at the upper levels, which a person does and would notice.\n\nSo check_a_hundred_per_cent_coupon_is_capped reports the state on every release instead of failing on it, and its own docstring carries the ruling and the three reasons \u2014 because the day the first of them stops being true is a day somebody should be reminded this was a decision rather than an oversight.\n\nLevel four is now Two sessions and a custom vault, following the rename the project lead made in Stripe. It is the better name: it says what the buyer ends up holding rather than what happens to it. The professional signing it has not been dropped \u2014 it is on the level's own page, where it is a property of the thing rather than the name of it.",
+      "changes": [
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.2.3",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "982fa1c3a98e81153ddc83d789f706919d785dc6",
       "site": "store.sgit.ai",
       "title": "three coupons exist, zero promotion codes do, and that is the whole gap",
       "summary": "The coupons were created on 16 September at 25, 50 and 100 per cent, all once, and they reconcile exactly against the percentages this store honours. The reconciliation now covers them alongside the products: every percentage in data/discounts.yml has a coupon, no coupon exists at a percentage nothing here explains, and two deliberate breaks were run against each direction.\n\nTHE GAP IS PROMOTION CODES, AND THE DISTINCTION IS WORTH STATING. A coupon carries a percentage. A promotion code is the string a person is actually handed, it is a separate object attached to a coupon, and it is what a link can carry pre-applied. Until one exists there is nothing to give anybody, so /admin/rails/stripe/ says that in those words rather than showing three green ticks.\n\nThree coupons onto seven codes is the right shape and not a shortfall. Five of this store's seven codes are at a hundred per cent and exist as five so that an order record says which one produced it \u2014 a beta tester, an agent driving a script, somebody at a stand. That distinction lives in the promotion code; the coupon only ever needs to carry the percentage.\n\nTHE HUNDRED-PER-CENT COUPON HAS NO CAP AND NO EXPIRY. Harmless today, because no promotion code exists over it and no link exists to use one on, so there is nothing to redeem. It stops being harmless the moment either changes, and a code at a hundred per cent cannot be recalled once it is on a card. check_a_hundred_per_cent_coupon_is_capped notes it on every release now and FAILS the release that turns a rail on with the cap still missing \u2014 which is the release where somebody will be thinking about twelve other things. It is the same rule check_printable_codes_need_a_dead_rail already makes, moved to the provider's side.\n\nThe coupon ids are in the repository because the reconciliation has to point at a row, and are on no page. A coupon id is not what a buyer applies \u2014 a promotion code is \u2014 so publishing it would most likely be harmless, and not publishing it costs nothing, and this store does not spend a maybe on a convenience.\n\nTWO DISPLAY BUGS FOUND BY LOOKING AT THE PAGE. The state chips are uppercased by their own CSS, which turned 5000p into 5000P \u2014 a unit nobody uses, on the one number a reader is most likely to be checking against a dashboard; they read as money now. And the coupon chips rendered green while saying UNCAPPED, which is a chip arguing with itself; rank now follows what the state costs, red where an uncapped hundred-per-cent code cannot be recalled and amber where a cap is merely missing.",

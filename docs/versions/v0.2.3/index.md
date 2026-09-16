@@ -13,7 +13,7 @@ The coupon ids are in the repository because the reconciliation has to point at 
 TWO DISPLAY BUGS FOUND BY LOOKING AT THE PAGE. The state chips are uppercased by their own CSS, which turned 5000p into 5000P — a unit nobody uses, on the one number a reader is most likely to be checking against a dashboard; they read as money now. And the coupon chips rendered green while saying UNCAPPED, which is a chip arguing with itself; rank now follows what the state costs, red where an uncapped hundred-per-cent code cannot be recalled and amber where a cap is merely missing.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `982fa1c3a98e81153ddc83d789f706919d785dc6`
 - Reconstructed: no
 
 ---

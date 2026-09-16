@@ -2,7 +2,7 @@
 
 No payment rail is live. Every checkout_url in data/checkout.yml is empty, so the store can be walked end to end and cannot be bought from. This is the workstream that ends that, and the shape of it changed on 16 September: the rail is no longer an amount-only link, it is Stripe's own catalogue and a real customer record behind every order including the free ones.
 
-**2 of 14 done.** Status: `next`.
+**3 of 14 done.** Status: `next`.
 
 From the memo *Stripe end to end, with their SKUs — and a customer even at 100% off* (2026-09-16) — https://store.sgit.ai/admin/memos/2026-09-16-stripe-end-to-end/
 
@@ -19,7 +19,7 @@ From the memo *Stripe end to end, with their SKUs — and a customer even at 100
 - **TM-11 · Get the codes into Price.lookup_key, not just the description** — `next` — The six codes exist as ABP-T1, ABP-T3-DEPOSIT and the rest — in the price description, because the dashboard's product view surfaces no lookup key. That works for a person reading the dashboard. Price.lookup_key is a different field, it exists on the API, and it is the one a webhook uses to map a line item back to a level. Without it the handler has a product id and a free-text string, which is workable and is not the same as queryable.
 - **TM-12 · Re-export the product CSV whenever the dashboard changes** — `next` — The reconciliation reads a committed export, because this site opens no connection and that rule is not moving. It catches a price changed here and not there, which is the direction that happens; it goes stale in the other direction until somebody re-exports. That is the known weakness and it is written on the page rather than left to be discovered.
 - **TM-13 · Decide what a DELIVERY-only purchase means** — `next` — The split makes a new thing possible that no page describes: somebody buying the delivery line without ever having bought the deposit. Either the pages say what that is, or the link only ever offers the pair.
-- **TM-14 · Cap the hundred-per-cent coupon before anything is printed** — `next` — No redemption cap and no expiry. Harmless while nothing can redeem it; an open tab the moment a promotion code and a link exist. A code at a hundred per cent cannot be recalled once it is on a card — the cap is what makes printing it survivable. The gate notes it today and fails the release that turns a rail on with it still missing.
+- **TM-14 · Caps on the hundred-per-cent coupon — ruled not needed** — `done` — Ruled on 16 September: no cap, and the reasoning is recorded rather than the concern being dropped. Purchases are managed directly, so a redemption is seen rather than discovered in a total. Abuse at a volume worth doing is abuse at a volume that shows. And what the code skips paying for is already published free — it removes a payment for material anybody could download, and it does not remove the work at the upper levels, which a person does and would notice. The gate now reports the state every release instead of failing on it.
 
 ---
 

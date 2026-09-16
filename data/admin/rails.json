@@ -123,8 +123,8 @@
       ],
       "open": [
         [
-          "The hundred-per-cent coupon has no cap and no expiry",
-          "Harmless today: no promotion code exists over it and no link exists to use one on, so there is nothing to redeem. It stops being harmless the moment either changes. <code>check_a_hundred_per_cent_coupon_is_capped</code> notes it now and fails the release that turns a rail on with the cap still missing — which is the release where somebody will be thinking about twelve other things."
+          "The hundred-per-cent coupon has no cap — and that is a ruling, not an oversight",
+          "<b>Ruled on 16 September by the project lead, and the reasoning is worth keeping.</b> Every purchase is managed directly, so a redemption is seen rather than found in a monthly total. Abuse at a volume worth doing is abuse at a volume that shows. And <b>what a hundred-per-cent code skips paying for is already free</b> — the templates are published with read keys, so the code removes a payment for material anybody could have downloaded. What it does not skip is the work at the upper levels, and that is done by a person who would notice. The gate reports the state on every release rather than failing on it, because the day the first of those reasons stops being true is a day somebody should be reminded this was a decision."
         ],
         [
           "Does the deposit want one payment or two?",

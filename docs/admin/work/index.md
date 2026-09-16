@@ -2,7 +2,7 @@
 
 The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.
 
-**16 workstreams · 91 units of work · 76 not done.**
+**16 workstreams · 91 units of work · 74 not done.**
 
 
 ## Take money at all — next
@@ -22,7 +22,7 @@ No payment rail is live. Every checkout_url in data/checkout.yml is empty, so th
 - **TM-11 · Get the codes into Price.lookup_key, not just the description** — `next` — The six codes exist as ABP-T1, ABP-T3-DEPOSIT and the rest — in the price description, because the dashboard's product view surfaces no lookup key. That works for a person reading the dashboard. Price.lookup_key is a different field, it exists on the API, and it is the one a webhook uses to map a line item back to a level. Without it the handler has a product id and a free-text string, which is workable and is not the same as queryable.
 - **TM-12 · Re-export the product CSV whenever the dashboard changes** — `next` — The reconciliation reads a committed export, because this site opens no connection and that rule is not moving. It catches a price changed here and not there, which is the direction that happens; it goes stale in the other direction until somebody re-exports. That is the known weakness and it is written on the page rather than left to be discovered.
 - **TM-13 · Decide what a DELIVERY-only purchase means** — `next` — The split makes a new thing possible that no page describes: somebody buying the delivery line without ever having bought the deposit. Either the pages say what that is, or the link only ever offers the pair.
-- **TM-14 · Cap the hundred-per-cent coupon before anything is printed** — `next` — No redemption cap and no expiry. Harmless while nothing can redeem it; an open tab the moment a promotion code and a link exist. A code at a hundred per cent cannot be recalled once it is on a card — the cap is what makes printing it survivable. The gate notes it today and fails the release that turns a rail on with it still missing.
+- **TM-14 · Caps on the hundred-per-cent coupon — ruled not needed** — `done` — Ruled on 16 September: no cap, and the reasoning is recorded rather than the concern being dropped. Purchases are managed directly, so a redemption is seen rather than discovered in a total. Abuse at a volume worth doing is abuse at a volume that shows. And what the code skips paying for is already published free — it removes a payment for material anybody could download, and it does not remove the work at the upper levels, which a person does and would notice. The gate now reports the state every release instead of failing on it.
 
 
 ## The entry price, and what it buys — next
@@ -189,7 +189,7 @@ A counter at an event, not an essay with a buy button. Laptop or tablet turned r
 - **SF-4 · Make a discount code a link, never a thing to type** — `next` — “Click a link, apply the discount code.” The store already reads a code off the address and strips it from history; what is missing is the links.
 - **SF-5 · Add the sections a shop front has** — `queued` — Feature sets, articles, end-to-end flows, testimonials. Asked for by name. Testimonials are blocked on there being any. _Blocked on: SF-1, WH-5._
 - **SF-6 · Test it the way it will be used** — `queued` — On a tablet, held, by somebody standing next to a stranger. Not in a desktop browser at 1440px. _Blocked on: SF-3._
-- **SF-7 · Rename level four to match the product** — `next` — Called “Two sessions, and a professional signs it” here and “Two sessions and a custom vault” in Stripe, where the project lead renamed it on 16 September. The Stripe name is the later decision and the better one — it says what the buyer ends up holding rather than what happens to it. The store has not followed yet.
+- **SF-7 · Rename level four to match the product** — `done` — Done in v0.2.4. The store now says “Two sessions and a custom vault”, following the project lead's rename in Stripe — it says what the buyer ends up holding rather than what happens to it. The professional signing it is on the level's own page, where it is a property of the thing rather than the name of it.
 
 ---
 

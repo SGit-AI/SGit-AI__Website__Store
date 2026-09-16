@@ -1752,36 +1752,33 @@ def check_the_stripe_catalogue_is_the_offers():
 
 
 def check_a_hundred_per_cent_coupon_is_capped():
-    """A code that takes the whole price off cannot be recalled once it is printed.
+    """RULED ON 16 SEPTEMBER: NO CAP IS REQUIRED, AND THE REASONING IS RECORDED.
 
-    THE RULE IS THE SAME ONE check_printable_codes_need_a_dead_rail ALREADY MAKES,
-    moved to the provider's side. That check refuses a printable hundred-per-cent
-    code while any rail is live; this one refuses an UNCAPPED hundred-per-cent
-    COUPON in the same circumstance, because once a promotion code exists over it
-    and a link exists to use it on, an uncapped coupon is an open tab.
+    This check used to fail the release that turned a rail on with an uncapped
+    hundred-per-cent coupon still in the account. The project lead overruled it,
+    and the reasons are good ones rather than a shrug:
 
-    It does not fail today and says so in its own message. No rail is live, no
-    promotion code exists, so there is nothing to redeem. It fires on the release
-    that changes that, which is the release where somebody will be thinking about
-    twelve other things."""
+      · every purchase is managed directly, so a redemption is seen rather than
+        discovered in a monthly total;
+      · abuse would be obvious, because the volume that makes it worth doing is
+        the volume that makes it visible;
+      · and the thing a hundred-per-cent code gets you is ALREADY FREE. The
+        templates are published with read keys. A code at a hundred per cent
+        skips a payment for material somebody could have downloaded anyway —
+        what it does not skip is the work at the upper levels, and that is done
+        by a person who would notice.
+
+    So the check reports rather than fails. It still runs, because the state is
+    worth seeing on every release, and because the day the first reason stops
+    being true is a day somebody should be reminded this was a decision."""
     live = json.loads((ROOT / "data" / "admin" / "stripe-products.json").read_text())
-    coupons = live.get("coupons", [])
-    if not coupons:
-        return
-    index = json.loads((OUT / "assets" / "site-index.json").read_text())
-    rail_is_live = any((o.get("checkout_url") or "") for o in index["offers"])
-    for c in coupons:
+    for c in live.get("coupons", []):
         if c["pct"] != 100:
             continue
         if not c.get("max_redemptions"):
-            if rail_is_live:
-                fail(f"coupon {c['name']!r} takes the whole price off, has no redemption cap, and "
-                     "a payment rail is now live. A code at a hundred per cent cannot be recalled "
-                     "once it is printed — the cap is what makes printing it survivable")
-            else:
-                note(f"coupon {c['name']!r} is 100% off with no cap and no expiry. Harmless while "
-                     "no rail is live and no promotion code exists over it; this check fails the "
-                     "release that changes either")
+            note(f"coupon {c['name']!r} is 100% off with no cap and no expiry. Ruled acceptable on "
+                 "16 September: purchases are managed directly, abuse at a useful volume would be "
+                 "visible, and what the code skips paying for is already published free")
         if c.get("times_redeemed"):
             note(f"coupon {c['name']!r} has been redeemed {c['times_redeemed']} time(s). The "
                  "dashboard export is dated — re-export before reading anything into that")
