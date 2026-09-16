@@ -2,7 +2,7 @@
 
 The reviews, the ledger, the console and this board. The part of the store that exists so a decision taken today can be argued with in a month.
 
-**5 of 8 done.** Status: `in-progress`.
+**5 of 9 done.** Status: `in-progress`.
 
 - **TR-1 · Give the admin surface its own console UI** — `done` — Shipped in v0.1.18. Rail, counts read from the same files the pages are built from, and a shell that is not the shop's.
 - **TR-2 · Build this board** — `done` — Shipped in v0.1.18 at /admin/work/, modelled on the workstreams board at sgraph.ai. Three boards: this one authored, and two generated from the reviews and the ledger so they cannot drift.
@@ -12,6 +12,7 @@ The reviews, the ledger, the console and this board. The part of the store that 
 - **TR-5 · Capture the next review** — `queued` — The register takes a file and a line. The interesting one to run next is a second synthetic pass after the rail is live, because every finding in the first one stopped at a checkout that did not exist. _Blocked on: TM-7._
 - **TR-7 · Execute the memos in sequence, pushing often** — `in-progress` — Set as the working method: catalogue each memo exactly, plan, then execute bit by bit and keep pushing to production. Minor versions for most of it; a major version where a change is big enough to deserve one.
 - **TR-8 · Join the memos to what they became** — `done` — Shipped in v0.3.6 at /admin/status/. The queue said what arrived, the board said what it became and the release history said what shipped — and no page put the three together, so the only way to answer “what happened to that memo” was to read three pages and hold the join in your head. Every done unit now carries the pages it produced and the release it went out in, and a check refuses one that claims to be done and points at nothing.
+- **TR-9 · Write the walkthrough for the flow the store sells through** — `next` — tools/walkthrough.mjs drives the previous design's cart engine, which still matters — the fifteen shape pages use it and so does every printed discount code — but it is not the flow a buyer walks now. Its fifty-eight assertions were repointed at /v1/ when the designs swapped, and it caught a real defect doing it: the archive's checkout was sending buyers to /order/, which the swap had removed.The new flow needs the same instrument: picker to panel to order to checkout to the page after paying, with the order reference and the SKUs checked at each step, and the walkthrough page rewritten to match so a person and an agent are told to assert the same things.
 
 ---
 

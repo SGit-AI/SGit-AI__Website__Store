@@ -34,7 +34,7 @@ New rule: the sitemap advertises nothing it hides. Nineteen noindex pages were
 listed in it for the length of one build.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `86b68b9ca835b540c060bd6d2331fbce92d0d0c8`
 - Reconstructed: no
 
 ---

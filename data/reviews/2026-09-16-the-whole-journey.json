@@ -1,0 +1,268 @@
+{
+ "id": "2026-09-16-the-whole-journey",
+ "date": "2026-09-16",
+ "reviewed_on": "16 September 2026",
+ "reviewed_version": "v0.3.16",
+ "kind": "synthetic",
+ "kind_label": "Five invented readers, walked end to end",
+ "title": "Five readers walked the new store from the front page to the till. Four of them stopped at the same place.",
+ "subject": "store.sgit.ai at v0.3.16, the release that made the new design the store: the front page, the picker, the product page, the comparison, the order, the checkout and the page a payment returns to.",
+ "lede": "The last panel ended by saying what it could not do: a panel is a weaker instrument than a journey, and nobody arrives at a store having read four versions of its front page. This is the journey. The same five readers, written on 15 September and carried across unchanged, each walked the store the way a buyer would, at 1280 and at 390. Four of the five reached the checkout and stopped at the same place, for the same reason, and it is not a design problem.",
+ "summary": "Five walks, ten screens each, six findings. The strongest thing the store has is 7.9 screens down a phone. The picker puts 521 pixels of filters in front of fifteen things. And four readers built an order, read a total, and found nothing on the page to do next — which is the true state of the till and not a flaw in the drawing of it, but the page could say so in a way a person can act on.",
+ "reviewer": "The five readers were written on 15 September, before the design that is now the store existed, and are carried across byte-identical for the third run. Nobody in this review exists and every sentence attributed to them was written by the same model that built the store being judged.",
+ "counts": [
+  [
+   "5",
+   "readers"
+  ],
+  [
+   "10",
+   "screens each"
+  ],
+  [
+   "2",
+   "widths"
+  ],
+  [
+   "6",
+   "findings"
+  ],
+  [
+   "5",
+   "of them with a number you can check"
+  ]
+ ],
+ "stance_labels": {
+  "do": "Do now",
+  "later": "Do next",
+  "wont": "Won't do",
+  "ruling": "Needs a ruling"
+ },
+ "verdicts": [
+  [
+   "agree",
+   "Agree"
+  ],
+  [
+   "disagree",
+   "Disagree"
+  ],
+  [
+   "talk",
+   "Let's talk"
+  ]
+ ],
+ "storage": "sgit.store.review.v1",
+ "has_figures": false,
+ "evidence": [
+  [
+   "home-full.jpg",
+   "The front page at 1280, whole. The evidence band — six published vaults, the strongest thing on the domain — begins 3,098 pixels down a 900-pixel viewport."
+  ],
+  [
+   "phone-picker.jpg",
+   "The picker at 390. The filter bar is 521 pixels tall and carries eighteen chips; the first of the fifteen policy shapes starts at 1,220 pixels, which is 1.4 screens of filtering before one thing to filter."
+  ],
+  [
+   "cart-loaded.jpg",
+   "An order of two lines: a vault at £50 and a correction at £500 with its deposit split. Every number is right, the reference is shared with the previous design's engine, and the page says what leaves it."
+  ],
+  [
+   "checkout-dead-end.jpg",
+   "The checkout with £100 due now and £400 on delivery. The only control is disabled and carries its reason. There is no address on the page, and nothing to press that means “tell me when this opens”."
+  ]
+ ],
+ "sections": [
+  {
+   "h": "What was run, and how it differs from the last two",
+   "body": "<p><b>A journey, not a panel.</b> The two previous runs showed the readers pages. This one gave each of them a task — <em>buy the thing you would actually buy, or say where you stopped</em> — and walked them through ten screens in the order a buyer meets them: the front page, the picker, a policy panel, the product page, the comparison, the order, the checkout, the page after paying, the ledger and who does the work. Each walk was done twice, at 1280 and at 390.</p><p><b>Five of the six findings carry a measurement.</b> That is deliberate and it is the only defence this instrument has. A reader saying <em>the evidence is buried</em> is an opinion written by the same model that buried it; <em>the evidence band begins at 3,098 pixels on a 900-pixel viewport, and at 6,677 of 9,406 on a phone</em> is a fact about the page, and the reader's complaint is only the thing that made somebody go and measure it.</p><p><b>What has not changed since the last run:</b> the same five readers, the same single author, the same absence of anybody real. The case against all of this is at the bottom of the page and it is the same case.</p>"
+  },
+  {
+   "h": "The four who stopped at the same place",
+   "body": "<p>Priya Raghavan (staff engineer, £100 of her own money), Marguerite Okonjo (C-level, signs off £1,500), Dan Whitlock (security professional) and Ines Halvorsen (risk and governance) all reached the checkout with an order in it. All four stopped there, and none of them stopped because the page was unclear.</p><p><b>The till is not open, the page says so plainly, and there is nothing to do about it.</b> The control is disabled and carries its own reason — <em>the payment link has not been issued yet</em> — which three of the four called the most honest thing on the site. Then all four asked the same question in different words: <em>so how do I buy it?</em> There is no address on that page, no button that means <em>tell me when this opens</em>, and the two links it does carry go to an explanation of the payment rails and to a claim in the ledger.</p><p class=\"dim\"><b>This is not a design finding.</b> No payment link has been issued on any level and the store has never pretended otherwise; the drawing of it is correct. What the walk shows is that a page can be completely honest and still be a dead end, and that the cheapest fix is not a checkout — it is one line telling a reader who has just built a £550 order how to reach a person.</p><p>Tomás Beckett (investor) is the one who did not reach the checkout, because he never intended to buy. He went to the evidence and read two of the six published vaults.</p>"
+  },
+  {
+   "h": "What each of them did before that",
+   "body": "<p><b>Priya</b> went straight to the picker, filtered to <em>coding agents</em>, opened Claude Code on the web and read the panel top to bottom. She is the reader the capability strip was drawn for and she is the one who noticed it is not coloured in: <em>it says the cells are counted and not classified, which is the right answer and also means the strip is showing me one number I already read in the tile above it.</em> She added the pack at £10 and got to the checkout in four screens.</p><p><b>Tomás</b> read the front page and scrolled. He found the evidence band, followed <em>Licence to Operate</em> off-site, came back and did not look at a price once. His note is the one that matters for the front page: <em>this is the section that would make me take a call, and I found it because I scroll to the bottom of everything. Most people do not.</em></p><p><b>Marguerite</b> used the audience doors, which she liked, and then said the thing the doors are built to survive: <em>five doors onto the same four products is a recommendation engine with the recommendations written down, which is more honest than most and also means the door did not save me any time.</em> She reached the checkout through the comparison table rather than the picker.</p><p><b>Dan</b> went to the ledger first and came back. He is the reader who checks things and he checked: every chip he clicked landed on a row in the ledger in the same design, which he called the single biggest improvement over the version he was shown a day earlier. <em>Last time a badge threw me into a different website. This time it did not.</em></p><p><b>Ines</b> went to <em>who does the work</em> before anything else, because the two levels she would buy are somebody's time. She read the sources note and followed one of the two published pages it names. Her finding is below.</p>"
+  },
+  {
+   "h": "The case against all of it",
+   "body": "<p><b>The same model wrote the readers, the store and this page.</b> Third run, same weakness, and no protocol removes it. What is different this time is that five of the six findings are measurements of the built page rather than reports of a feeling, and a measurement can be checked by somebody who thinks the reader is fiction — which they are.</p><p><b>Nobody in this review exists.</b> Five invented readers cannot tell you what a stranger does. The finding that four of five stopped at the same place is the tidiest possible result and should be discounted for exactly that reason; what makes it worth keeping is that the place they stopped is a page with a disabled button and no address on it, which is checkable without believing in any of them.</p><p><b>A journey by an author who knows the routes is not a journey.</b> None of these readers got lost, and real ones do. The walk found nothing broken because the build gate had already found everything that was broken; what it found instead is four things that work exactly as designed and still cost the reader something.</p><p><b>The one thing that would outweigh all of it</b> is still one real person walking the same ten screens. That is <a href=\"/admin/status/#TK-10\">TK-10</a> and it has been on the board since the first of these runs.</p>"
+  }
+ ],
+ "proposals": [
+  {
+   "id": "P-1",
+   "refs": "the checkout",
+   "stance": "do",
+   "title": "Give the checkout somewhere to go when the till is shut",
+   "quote": "I have a £550 order, a reference, and a button that tells me why it does not work. Now what?",
+   "cost": [
+    [
+     "Effort",
+     "an hour, once CL-1 is answered"
+    ],
+    [
+     "Touches",
+     "build.py, the checkout body"
+    ],
+    [
+     "Risk",
+     "low"
+    ],
+    [
+     "Blocked on",
+     "who answers the mailbox"
+    ]
+   ],
+   "what": [
+    "<b>A named way to reach a person, on the checkout page</b>, for a reader who has built an order and cannot pay for it. Not a form — there is none on this domain and there will not be — an address, and the order reference beside it so the first message already says what they wanted.",
+    "<b>It is blocked on a decision, not on code.</b> <a href=\"/admin/status/#CL-1\">CL-1</a> is <em>name the owner of the follow-up mailbox</em> and it has been open since the post-sale pages were built. The checkout is the second page that needs the answer.",
+    "<b>Four of five readers asked for this in their own words</b>, and it is the only finding in this review that costs a buyer something today rather than costing them attention."
+   ]
+  },
+  {
+   "id": "P-2",
+   "refs": "the front page",
+   "stance": "do",
+   "title": "Move the evidence band above the four levels",
+   "quote": "This is the section that would make me take a call, and I found it because I scroll to the bottom of everything. Most people do not.",
+   "cost": [
+    [
+     "Effort",
+     "half an hour"
+    ],
+    [
+     "Touches",
+     "build.py, _next_home"
+    ],
+    [
+     "Risk",
+     "low"
+    ]
+   ],
+   "what": [
+    "<b>Six published vaults, open to read without paying anything</b>, currently begin at 3,098 pixels of a 4,395-pixel page — 3.4 screens down at 1280, and 7.9 screens down at 390, where the page is 9,406 pixels tall.",
+    "<b>Two panels have now named this band as the thing that decides them</b>, and both times it was the readers with the largest budgets. On 16 September it was the reason the live page beat three concepts that had deleted it; a build check put it back on the new front page the day that page became the store.",
+    "<b>Put it directly under the four facts and above the four levels.</b> A reader who has seen six real documents before seeing a price reads the price differently."
+   ]
+  },
+  {
+   "id": "P-3",
+   "refs": "the picker at 390",
+   "stance": "do",
+   "title": "Collapse the filter bar on a phone",
+   "quote": "I scrolled past a screen and a half of ways to narrow fifteen things before I saw one of them.",
+   "cost": [
+    [
+     "Effort",
+     "an hour"
+    ],
+    [
+     "Touches",
+     "build.py, assets/next.css"
+    ],
+    [
+     "Risk",
+     "low"
+    ]
+   ],
+   "what": [
+    "<b>521 pixels of filter bar, eighteen chips, and the first policy card at 1,220 pixels</b> on an 844-pixel viewport. Eight of the eleven category chips have a count of one.",
+    "<b>On a phone, collapse the whole bar behind one control</b> that says how many shapes are showing, the way the behaviour menu already collapses. The cards come up to the top of the page and the filters are one tap away.",
+    "<b>The category chips could also be fewer.</b> Eleven families is what the promoted catalogue publishes and the labels are ours; a chip that filters fifteen things down to one is a link to that thing wearing a filter's clothes."
+   ]
+  },
+  {
+   "id": "P-4",
+   "refs": "the picker's search",
+   "stance": "ruling",
+   "title": "Decide what search does on a phone",
+   "quote": "It told me to type. I am holding a phone.",
+   "cost": [
+    [
+     "Effort",
+     "a ruling, then nothing or half a day"
+    ],
+    [
+     "Touches",
+     "assets/next.js, assets/next.css"
+    ],
+    [
+     "Risk",
+     "low either way"
+    ],
+    [
+     "Blocked on",
+     "whether the catalogue grows"
+    ]
+   ],
+   "what": [
+    "<b>The search on the picker has no field</b>, because this site has none anywhere and the rule is not moving for a filter box. What it has instead is the keyboard: press <code>/</code>, type, and the list narrows. On a phone with no hardware keyboard that is nothing at all, and the dialog says so and points at the chips.",
+    "<b>The design handback solved this with an on-screen keyboard drawn out of buttons.</b> That was refused when the picker was built — twenty-six buttons to filter fifteen things is worse than the fifteen things — and the refusal is still defensible at fifteen. It stops being defensible at fifty.",
+    "<b>The ruling is not about search, it is about the catalogue's size.</b> If the fifteen shapes become fifty, the phone needs a way to type; if they do not, the chips are the filter and the search chip should not appear on a touch device at all."
+   ]
+  },
+  {
+   "id": "P-5",
+   "refs": "the policy panel",
+   "stance": "later",
+   "title": "Give the capability strip something to say, or take it out",
+   "quote": "It says the cells are counted and not classified, which is the right answer and also means the strip is showing me one number I already read in the tile above it.",
+   "cost": [
+    [
+     "Effort",
+     "ten minutes to remove it"
+    ],
+    [
+     "Touches",
+     "assets/next.js, build.py"
+    ],
+    [
+     "Risk",
+     "low"
+    ],
+    [
+     "Blocked on",
+     "TK-14, upstream"
+    ]
+   ],
+   "what": [
+    "<b>The strip draws one uncoloured cell per capability in a grant.</b> It was coloured until the day the supporting pages were built, when five of the fifteen shapes turned out not to have totals that partition their own grant; colouring it was drawing a split the published data does not contain.",
+    "<b>Uncoloured, it repeats the first stat tile.</b> Priya is right. It is a bar chart of one number, next to the number.",
+    "<b>It turns back on the moment the per-shape capability join is published</b> — <a href=\"/admin/status/#TK-14\">TK-14</a>, upstream. Until then the honest choices are to keep it as a sense of scale or to remove it, and keeping it costs a reader a second of confusion rather than misleading them."
+   ]
+  },
+  {
+   "id": "P-6",
+   "refs": "who does the work",
+   "stance": "do",
+   "title": "Say what happens when the named person cannot take the work",
+   "quote": "One name, and I am buying their calendar. What if they are busy for six weeks?",
+   "cost": [
+    [
+     "Effort",
+     "a paragraph"
+    ],
+    [
+     "Touches",
+     "data/reviewers.yml, build.py"
+    ],
+    [
+     "Risk",
+     "low"
+    ],
+    [
+     "Blocked on",
+     "an honest answer for one name"
+    ]
+   ],
+   "what": [
+    "<b>Two of the four levels are one person's time</b> and the page says so, names them, and reads every line of the record off a published page. Ines went there first and read it closely, which is what it is for.",
+    "<b>What it does not say is what happens if that person is unavailable.</b> The delivery estimates are <em>from your reply</em> and depend on a calendar; the page explains why, and stops there.",
+    "<b>This is already on the board twice</b> — <a href=\"/admin/status/#WD-4\">WD-4</a> recruits the rest and <a href=\"/admin/status/#WD-5\">WD-5</a> says what happens when the chosen reviewer cannot take the work — and WD-5 is blocked on WD-3, which is blocked on a second name. It does not need to be. The answer for one name is a sentence, and not having it is what makes a reader at £1,500 hesitate."
+   ]
+  }
+ ],
+ "no_vault": "**The two earlier runs are published as encrypted vaults** with their read keys on their own pages: the personas, the protocol and every step as a record. This one is not, yet. Pushing to a vault needs its write key on a command line, and that was refused in the session that produced this page. **The screenshots below and the measurements in the findings are in this repository and are the whole of the evidence for this run** — every number in them can be re-measured against the built page. The vault holding the five personas as they were written is linked from [the 15 September review](/admin/reviews/2026-09-15-synthetic-users/)."
+}

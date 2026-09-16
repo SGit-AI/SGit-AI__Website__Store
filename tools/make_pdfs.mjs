@@ -71,8 +71,13 @@ for (const j of JOBS) {
   // A table that overflows the printed page loses its right-hand columns with no
   // warning at all, so measure before committing the file.
   const fits = await p.evaluate(() => {
-    const t = document.querySelector('table.cmpt');
-    if (!t) return { ok: false, why: 'no table.cmpt on the page' };
+    // THE TABLE HAS TWO CLASSES BECAUSE THE SITE HAS TWO DESIGNS ON IT: .n-cmp is
+    // the store's, .cmpt is the one kept at /v1/. Naming both means this keeps
+    // working whichever page it is pointed at, and stops silently when it is
+    // pointed at a page with no table at all — which is what happened the day the
+    // designs swapped.
+    const t = document.querySelector('table.n-cmp, table.cmpt');
+    if (!t) return { ok: false, why: 'no comparison table on the page' };
     const over = t.scrollWidth > t.clientWidth + 1;
     return { ok: !over, why: over ? `table overflows: ${t.scrollWidth} > ${t.clientWidth}` : '',
              cols: t.querySelectorAll('thead th').length,

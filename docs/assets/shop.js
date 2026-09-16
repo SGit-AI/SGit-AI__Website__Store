@@ -401,7 +401,7 @@
     S.items = {}; S.ref = null; save();
     try { window.localStorage.setItem('sgit.store.lastorder.v1', JSON.stringify(order)); }
     catch (e) { /* the order page falls back to the newest in the wallet */ }
-    window.location.href = M.root + 'order/index.html';
+    window.location.href = M.post_sale;
   }
 
   function lastOrder() {

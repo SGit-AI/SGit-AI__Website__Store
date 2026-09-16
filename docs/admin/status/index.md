@@ -1,9 +1,9 @@
 # What happened to each memo
 
-**51 units done · 64 open · 21 waiting on the project lead · 8 memos.**
+**51 units done · 68 open · 22 waiting on the project lead · 8 memos.**
 
 
-## 2026-09-16 — Stripe end to end, with their SKUs — and a customer even at 100% off (14/27 done)
+## 2026-09-16 — Stripe end to end, with their SKUs — and a customer even at 100% off (14/28 done)
 
 Run the real Stripe purchase flow rather than an amount-only link, so a buyer handed a hundred-per-cent code still becomes a customer with an email. Then leak codes on specific journeys. And start capturing the work as units on a board.  
 https://store.sgit.ai/admin/memos/2026-09-16-stripe-end-to-end/
@@ -35,6 +35,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-stripe-end-to-end/
 - `TR-5` **Capture the next review** — queued
 - `TR-7` **Execute the memos in sequence, pushing often** — in-progress
 - `TR-8` **Join the memos to what they became** — done — https://store.sgit.ai/admin/status/ (v0.3.6)
+- `TR-9` **Write the walkthrough for the flow the store sells through** — next
 
 ## 2026-09-16 — £10, a commercial licence, and a name on the review (4/10 done)
 
@@ -50,9 +51,9 @@ https://store.sgit.ai/admin/memos/2026-09-16-ten-pounds-and-a-licence/
 - `WD-2` **Write the first reviewer's page** — done — https://store.sgit.ai/who/dinis-cruz/ (v0.2.9)
 - `WD-3` **Let the buyer choose their reviewer at £500 and £1,500** — queued
 - `WD-4` **Recruit the rest** — next
-- `WD-5` **Say what happens when the chosen reviewer cannot take the work** — queued
+- `WD-5` **Say what happens when the chosen reviewer cannot take the work** — next
 
-## 2026-09-16 — Five audiences, decoupled views, and the version the board can read (8/23 done)
+## 2026-09-16 — Five audiences, decoupled views, and the version the board can read (8/24 done)
 
 The store does not qualify who is reading it. Five audiences, each with its own view and path and its own subset of the offers; the views driven by JSON and built as components rather than written out; and every vault — free ones included — carrying a version its reader’s board can read.  
 https://store.sgit.ai/admin/memos/2026-09-16-five-audiences/
@@ -80,6 +81,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-five-audiences/
 - `TR-5` **Capture the next review** — queued
 - `TR-7` **Execute the memos in sequence, pushing often** — in-progress
 - `TR-8` **Join the memos to what they became** — done — https://store.sgit.ai/admin/status/ (v0.3.6)
+- `TR-9` **Write the walkthrough for the flow the store sells through** — next
 
 ## 2026-09-16 — Never leave the site — and write down who owns what (6/10 done)
 
@@ -121,7 +123,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-product-pages/
 - `PP-5` **Add the review section, and say it is empty** — done — https://store.sgit.ai/lab/product/#reviews (v0.3.4)
 - `PP-6` **Make the page switchable by audience** — done — https://store.sgit.ai/lab/product/ (v0.3.4)
 
-## 2026-09-16 — The homepage sells — and the work has been done before (13/24 done)
+## 2026-09-16 — The homepage sells — and the work has been done before (13/25 done)
 
 A shop front built for a laptop turned round at an event: who are you, here is your thing, buy it. Delivery times on every level. And the correction that matters most — this work has been done many times; what has not happened is a sale through this store, and the site has been conflating the two.  
 https://store.sgit.ai/admin/memos/2026-09-16-the-homepage-sells/
@@ -150,6 +152,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-the-homepage-sells/
 - `TR-5` **Capture the next review** — queued
 - `TR-7` **Execute the memos in sequence, pushing often** — in-progress
 - `TR-8` **Join the memos to what they became** — done — https://store.sgit.ai/admin/status/ (v0.3.6)
+- `TR-9` **Write the walkthrough for the flow the store sells through** — next
 
 ## 2026-09-16 — Describe your agent — the page that gets used in the room (5/8 done)
 

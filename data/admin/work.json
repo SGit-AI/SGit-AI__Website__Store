@@ -329,9 +329,8 @@
     {
      "id": "WD-5",
      "title": "Say what happens when the chosen reviewer cannot take the work",
-     "status": "queued",
-     "description": "Both upper levels already disclose they have never been sold. A named reviewer adds a second thing that can fail and the pages do not cover it.",
-     "blocked": "WD-3.",
+     "status": "next",
+     "description": "<b>Two of the four levels are one person's time, and the page does not say what happens if that person is unavailable.</b> The delivery estimates are <em>from your reply</em> and depend on a calendar; the page explains why and stops there.<br><br>This was blocked on WD-3, which is blocked on a second name. It does not need to be: <b>the answer for one name is a sentence</b>, and not having it is what makes a reader at £1,500 hesitate. The reader who went to that page first, before anything else, is the reader who would buy the most. Raised by the five-reader journey of 16 September at <a href=\"/admin/reviews/2026-09-16-the-whole-journey/\">/admin/reviews/</a>.",
      "source": "self"
     }
    ],
@@ -530,6 +529,12 @@
        "/admin/status/"
       ]
      }
+    },
+    {
+     "id": "TR-9",
+     "status": "next",
+     "title": "Write the walkthrough for the flow the store sells through",
+     "description": "<b>tools/walkthrough.mjs drives the previous design's cart engine</b>, which still matters — the fifteen shape pages use it and so does every printed discount code — but it is not the flow a buyer walks now. Its fifty-eight assertions were repointed at <code>/v1/</code> when the designs swapped, and it caught a real defect doing it: the archive's checkout was sending buyers to <code>/order/</code>, which the swap had removed.<br><br>The new flow needs the same instrument: picker to panel to order to checkout to the page after paying, with the order reference and the SKUs checked at each step, and <a href=\"/admin/try/\">the walkthrough page</a> rewritten to match so a person and an agent are told to assert the same things."
     }
    ]
   },
@@ -1472,6 +1477,25 @@
      "status": "next",
      "owner": "lead",
      "description": "<b>The picker offers a filter it cannot run.</b> The capability vocabulary is promoted into this repository — 23 named behaviours, <code>verb.object.reach</code> — and every shape publishes how many of them its grant contains. The join between the two is not published: nothing says which behaviours are in a particular grant.<br><br>So <em>By behaviour</em> on <a href=\"/policies/\">the picker</a> lists all 23, and choosing one narrows nothing and says why. That is the same answer the design team reached independently on the same gap. It is the honest answer and it is not a good one: the reader who filters by <code>read.credential.host</code> is exactly the reader worth having.<br><br>One field per shape upstream — the list of capability ids in its grant — turns the filter on, colours the capability strip in the panel, and makes the fifteen shapes comparable on something other than a total."
+    },
+    {
+     "id": "TK-15",
+     "status": "next",
+     "title": "Move the evidence band above the four levels",
+     "description": "<b>Six published vaults, and they begin 3.4 screens down.</b> The band starts at 3,098 pixels of a 4,395-pixel front page at 1280, and at 6,677 of 9,406 on a phone — 7.9 screens.<br><br>Two panels have now named it as the thing that decides them, both times the readers with the largest budgets: on 16 September it was why the live page beat three concepts that had deleted it. A build check put it back on the new front page the day that page became the store, and it went back at the bottom.<br><br>Under the four facts, above the four levels. A reader who has seen six real documents before seeing a price reads the price differently. Raised by the five-reader journey of 16 September at <a href=\"/admin/reviews/2026-09-16-the-whole-journey/\">/admin/reviews/</a>."
+    },
+    {
+     "id": "TK-16",
+     "status": "next",
+     "title": "Collapse the picker's filter bar on a phone",
+     "description": "<b>521 pixels of filter bar, eighteen chips, and the first of the fifteen policy shapes at 1,220 pixels</b> on an 844-pixel viewport — a screen and a half of ways to narrow fifteen things before one of them is visible. Eight of the eleven category chips have a count of one.<br><br>Collapse the whole bar behind one control that says how many shapes are showing, the way the behaviour menu already collapses. A chip that filters fifteen things down to one is a link to that thing wearing a filter's clothes. Raised by the five-reader journey of 16 September at <a href=\"/admin/reviews/2026-09-16-the-whole-journey/\">/admin/reviews/</a>."
+    },
+    {
+     "id": "TK-17",
+     "status": "next",
+     "owner": "lead",
+     "title": "Decide what search does on a phone",
+     "description": "<b>The picker's search has no field, because this site has none anywhere.</b> It reads the keyboard: press <code>/</code>, type, and the list narrows. On a phone with no hardware keyboard that is nothing at all, and the dialog says so and points at the chips.<br><br>The design handback solved it with an on-screen keyboard drawn out of buttons. That was refused when the picker was built — twenty-six buttons to filter fifteen things is worse than the fifteen things — and the refusal is still defensible at fifteen. It stops being defensible at fifty.<br><br><b>The ruling is not about search, it is about how large the catalogue is going to get.</b> If it stays at fifteen, the chips are the filter and the search control should not appear on a touch device at all. Raised by the five-reader journey of 16 September at <a href=\"/admin/reviews/2026-09-16-the-whole-journey/\">/admin/reviews/</a>."
     }
    ]
   }

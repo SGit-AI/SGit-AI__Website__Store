@@ -1,10 +1,27 @@
 {
-  "current": "v0.3.16",
+  "current": "v0.3.17",
   "releases": [
+    {
+      "version": "v0.3.17",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "five readers walked the whole store, and four stopped in the same place",
+      "summary": "The previous panel ended by naming what it could not do: a panel is a weaker\ninstrument than a journey. This is the journey. The same five readers, written on\n15 September and carried across unchanged, each walked ten screens in the order a\nbuyer meets them, at 1280 and at 390.\n\n**Four of the five reached the checkout and stopped.** Not because the page is\nunclear \u2014 three of them called the disabled button the most honest thing on the\nsite \u2014 but because there is nothing on that page to do next. No address, no way\nto be told when the till opens. That is the true state of the till and not a flaw\nin the drawing of it, and it is the only finding here that costs a buyer\nsomething today.\n\nFive of the six findings carry a measurement, which is the only defence this\ninstrument has. The evidence band begins 3,098 pixels down a 4,395-pixel front\npage, and 6,677 of 9,406 on a phone. The picker's filter bar is 521 pixels tall\nwith eighteen chips, and the first of the fifteen policy shapes starts at 1,220\npixels on an 844-pixel viewport.\n\nThree new units on the board and one unblocked. The walkthrough was repointed at\nthe archive it now drives and caught a real defect on the way: the previous\ndesign's checkout was sending buyers to /order/, which the swap had removed.\n\nThis run has no vault. The two before it are published as encrypted vaults;\npushing to one needs its write key on a command line and that was refused here.\nThe page says so where the vault would have been.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.16",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "86b68b9ca835b540c060bd6d2331fbce92d0d0c8",
       "site": "store.sgit.ai",
       "title": "the new design is the store, and the one it replaced is kept at /v1/",
       "summary": "The design built across four rounds at /next/ is now what store.sgit.ai serves.\nNine pages existed in both designs, so the new one takes the address and the old\none is archived one directory down: the front page, the picker, the comparison,\nthe audiences, the ledger, the order, the checkout, the page after paying and the\nreviewer register. Every /v1/ page carries a strip saying it is not the live one,\nis noindex, and has its links to the other moved pages rewritten so the archive\ndoes not tip a reader into the store halfway through.\n\nEvery other public page kept its address and is re-drawn in the new chrome. They\nload site.css and then next.css: the chrome and the base type come from the new\nfile, the block components keep the rules that already draw them. Fourteen rules\nin the old stylesheet were scoped to the old chrome's own element and are\nreplaced by the reading column in the new one; the other four hundred and\nsixty-seven were untouched. That layering is transitional and is on the board.\n\n**Every address the design round used still resolves.** Ten pages at /next/, each\nsaying where its page went, carrying the canonical link and refreshing there.\n\n**The printed cards still work.** A code arrives in the address off a card or a\nQR, and the cards in circulation point at the front page \u2014 which is the new\ndesign, where the old engine is not. The capture, the expiry and the per-level\narithmetic are ported into next.js, sharing shop.js's storage key, record shape\nand sha256, with a check holding the two copies of the hash identical. A code\nlanding on a page drawn by the old engine is handed to the order page rather than\ndropped, and every page has somewhere to say a code was applied or refused.\n\nThe homepage regained the evidence band it had lost: six published vaults, linked,\nwith the claim that the work has been done. Two build checks caught that on the\nday the round became the store, which is what they were written for.\n\nNew rule: the sitemap advertises nothing it hides. Nineteen noindex pages were\nlisted in it for the length of one build.",

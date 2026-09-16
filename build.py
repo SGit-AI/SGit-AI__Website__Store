@@ -1584,6 +1584,13 @@ def shop_model(prefix):
         "schema": 1,
         "storage": "sgit.store.order.v1",
         "root": prefix,
+        # WHERE THIS ENGINE SENDS A BUYER AFTER PAYING. It used to be a path
+        # built out of `root`, which was right while there was one design and
+        # /order/ was its post-sale page. This engine draws the archive now, and
+        # a hardcoded 'order/index.html' from /v1/pay/ resolved to /order/ — a
+        # page that does not exist. The walkthrough caught it, which is the whole
+        # reason the walkthrough exists.
+        "post_sale": V1_MOVED["/order/"],
         "sku_prefix": PRODUCTS["meta"]["sku_prefix"],
         "order_prefix": PRODUCTS["meta"]["order_prefix"],
         "levels": [{"id": l["id"], "code": l["code"], "n": l["n"], "name": l["name"],
@@ -2291,6 +2298,12 @@ def review_pages(out_dir, ctx_shared):
             f'<div><b>Kind</b><span>{html.escape(kind_name)} — {html.escape(kind_why)}</span></div>'
             "</div>"
             + (_rv_vault(rv["vault"], rid) if rv.get("vault") else "")
+            # A RUN WITH NO VAULT SAYS SO WHERE THE VAULT WOULD HAVE BEEN. The
+            # two earlier runs publish theirs; this one could not be pushed, and
+            # an absence in the same place as a presence is how a reader notices.
+            + (f'<div class="cx-verdict"><b>No vault for this run.</b>'
+               f'<p>{inline(rv["no_vault"], ctx)}</p></div>'
+               if rv.get("no_vault") else "")
             + ('<h2 id="the-note-verbatim">The note, verbatim</h2>'
                '<p>Reproduced exactly as sent. Nothing trimmed, reordered or paraphrased — the '
                'reading of it below is ours and is kept separate from it on purpose.</p>'

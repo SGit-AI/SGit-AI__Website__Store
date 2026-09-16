@@ -1,5 +1,5 @@
 {
- "version": "v0.3.16",
+ "version": "v0.3.17",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -21,7 +21,7 @@
    "url": "/admin/try/",
    "title": "Run the whole flow yourself",
    "description": "A walkthrough of store.sgit.ai from the catalogue to the page after payment, for a person and for an agent. It takes about four minutes, it costs nothing, and the discount codes that make it free are printed on this page.",
-   "lead": "Go from the catalogue to the page that says what happens after payment, for nothing, in about four minutes. A discount code on this page takes the whole price off \u2014 the order still places, the reference is still generated, and the handover to riskmandate.ai still carries it. Two sets of instructions below: one for a person, one for an agent driving a browser or reading files.",
+   "lead": "Go from the catalogue to the page that says what happens after payment, for nothing, in about four minutes. A discount code on this page takes the whole price off \u2014 the order still places, the reference is still generated, and the handover to riskmandate.ai still carries it. Two sets of instructions below: one for a person, one for an agent driving a browser or reading files. The addresses here are the previous design's, at /v1/, because this walkthrough drives the cart engine that draws it \u2014 the same engine behind the fifteen shape pages and every printed discount code. The flow the store sells through today has its own engine and its own walkthrough is still to be written.",
    "headings": [
     "What you are looking at, in one minute",
     "What is real and what is a stand-in",

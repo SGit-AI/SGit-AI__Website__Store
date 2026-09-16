@@ -1,7 +1,7 @@
 ---
 title: Run the whole flow yourself
 description: "A walkthrough of store.sgit.ai from the catalogue to the page after payment, for a person and for an agent. It takes about four minutes, it costs nothing, and the discount codes that make it free are printed on this page."
-lead: "**Go from the catalogue to the page that says what happens after payment, for nothing, in about four minutes.** A discount code on this page takes the whole price off — the order still places, the reference is still generated, and the handover to riskmandate.ai still carries it. Two sets of instructions below: one for a person, one for an agent driving a browser or reading files."
+lead: "**Go from the catalogue to the page that says what happens after payment, for nothing, in about four minutes.** A discount code on this page takes the whole price off — the order still places, the reference is still generated, and the handover to riskmandate.ai still carries it. Two sets of instructions below: one for a person, one for an agent driving a browser or reading files. **The addresses here are the previous design's, at `/v1/`**, because this walkthrough drives the cart engine that draws it — the same engine behind the fifteen shape pages and every printed discount code. The flow the store sells through today has its own engine and its own walkthrough is still to be written."
 order: 91
 robots: "noindex,follow"
 toc: true
@@ -49,7 +49,7 @@ a walkthrough somebody has to be *sent* a code for is not a walkthrough. Put one
 in the address of any page on the store:
 
 ```
-https://store.sgit.ai/policies/?code=BETA7LOOP
+https://store.sgit.ai/v1/policies/?code=BETA7LOOP
 ```
 
 | Code | Use it for | Takes off |
@@ -92,7 +92,7 @@ away when you close it, which is a fine thing to test *second*.
 
 ### 1. Open the catalogue with a code on it
 
-Go to **[store.sgit.ai/policies/?code=BETA7LOOP](/policies/?code=BETA7LOOP)**.
+Go to **[store.sgit.ai/v1/policies/?code=BETA7LOOP](/v1/policies/?code=BETA7LOOP)**.
 
 <figure class="walkshot"><img src="/assets/shots/01-catalogue.png" alt="The catalogue with a discount chip at the top reading 100% off, Beta walkthrough, and a Remove button beside it."><figcaption><b>What to check.</b> A green chip appears under the title saying <b>100% off · Beta walkthrough</b>. The address bar no longer contains the code. Sixteen shapes are listed, filterable by chips rather than a search box.</figcaption></figure>
 
@@ -111,7 +111,7 @@ the other takes a fifth.
 
 ### 4. Look at your order
 
-Go to **[your order](/cart/)**.
+Go to **[your order](/v1/cart/)**.
 
 <figure class="walkshot"><img src="/assets/shots/03-cart.png" alt="The order page showing two lines with their list prices struck through, a total of £0, and a deposit box."><figcaption><b>What to check.</b> Each line shows its list price struck through beside what it is now. The total is <b>£0</b>. Your order reference — six characters with no <code>0</code>, <code>O</code>, <code>1</code> or <code>I</code> in it — is at the bottom, with the order line that would go to a payment provider.</figcaption></figure>
 
@@ -121,7 +121,7 @@ putting the code back by reopening the address in step 1.
 
 ### 5. Pay
 
-Go to **[paying](/pay/)**.
+Go to **[paying](/v1/pay/)**.
 
 <figure class="walkshot"><img src="/assets/shots/04-pay.png" alt="The paying page showing £0 due now, the two lines with their before and after prices, and three payment rails of which only the simulated wallet is live."><figcaption><b>What to check.</b> Four rails. The demonstration wallet says <b>simulated — charges nothing</b> before it says anything else. Stripe and contactless say <b>Nothing to take</b>, because a code took the whole price off and there is no amount to hand them. <b>The screenshot is from v0.1.11 and shows a fourth rail, SumUp, which came off the store on 16 September</b> — the shot is left as it was taken rather than restaged, because a walkthrough whose pictures are quietly re-shot is a walkthrough nobody can date.</figcaption></figure>
 
@@ -172,7 +172,7 @@ Use `SYNTH4DELTA` rather than the human code, so an order record says which of
 the two produced it.
 
 ```
-1.  GOTO   https://store.sgit.ai/policies/?code=SYNTH4DELTA
+1.  GOTO   https://store.sgit.ai/v1/policies/?code=SYNTH4DELTA
     ASSERT document.querySelector('.codebar .cb-chip').textContent contains '100% off'
     ASSERT location.search does not contain 'code='
     ASSERT localStorage['sgit.store.code.v1'] === 'synth-agent'
@@ -186,12 +186,12 @@ the two produced it.
     CLICK  .lvl:nth-of-type(3) button   (adds the £500 level)
     ASSERT localStorage['sgit.store.order.v1'] parses, and .items has two keys
 
-4.  GOTO   https://store.sgit.ai/cart/
+4.  GOTO   https://store.sgit.ai/v1/cart/
     ASSERT .ct-sum reads '£0'
     ASSERT .ct-off names the discount and its percentage
     ASSERT .ob-ref matches /^SG-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/
 
-5.  GOTO   https://store.sgit.ai/pay/
+5.  GOTO   https://store.sgit.ai/v1/pay/
     ASSERT .ps-now reads '£0'
     ASSERT exactly one rail carries .rail-sim
     ASSERT its .rail-flag textContent is 'Simulated — charges nothing'

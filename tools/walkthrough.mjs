@@ -38,7 +38,7 @@ const offsite=[];
 p.on('request',r=>{ const u=new URL(r.url()); if(u.origin!==B) offsite.push(r.url()); });
 
 console.log('1 catalogue with SYNTH4DELTA');
-await p.goto(B+'/policies/?code=SYNTH4DELTA'); await p.waitForTimeout(250);
+await p.goto(B+'/v1/policies/?code=SYNTH4DELTA'); await p.waitForTimeout(250);
 A('.codebar .cb-chip contains 100% off', (await p.locator('.codebar .cb-chip').innerText()).includes('100% off'));
 A("location.search has no 'code='", !(await p.evaluate(()=>location.search)).includes('code='), await p.evaluate(()=>location.search));
 A("localStorage['sgit.store.code.v1'] === 'synth-agent'", await p.evaluate(()=>localStorage['sgit.store.code.v1'])==='synth-agent');
@@ -58,7 +58,7 @@ const order = await p.evaluate(()=>JSON.parse(localStorage['sgit.store.order.v1'
 A('order has two item keys', Object.keys(order.items).length===2, Object.keys(order.items));
 
 console.log('4 the cart');
-await p.goto(B+'/cart/'); await p.waitForTimeout(200);
+await p.goto(B+'/v1/cart/'); await p.waitForTimeout(200);
 A(".ct-sum reads '£0'", (await p.locator('.ct-sum').innerText()).trim()==='£0', await p.locator('.ct-sum').innerText());
 const off = await p.locator('.ct-off').innerText();
 A('.ct-off names the discount and its percentage', /Synthetic run/.test(off) && /100%/.test(off), off);
@@ -66,14 +66,14 @@ const ref = (await p.locator('.ob-ref').innerText()).trim();
 A('.ob-ref matches the reference alphabet', /^SG-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/.test(ref), ref);
 
 console.log('5 paying');
-await p.goto(B+'/pay/'); await p.waitForTimeout(200);
+await p.goto(B+'/v1/pay/'); await p.waitForTimeout(200);
 A(".ps-now reads '£0'", (await p.locator('.ps-now').innerText()).trim()==='£0');
 A('exactly one .rail-sim', await p.locator('.rail-sim').count()===1);
 A("the .rail-flag textContent is 'Simulated — charges nothing'", (await p.locator('.rail-sim .rail-flag').evaluate(e=>e.textContent))==='Simulated \u2014 charges nothing', await p.locator('.rail-sim .rail-flag').evaluate(e=>e.textContent));
 await p.locator('.rail-sim button.buy').click();
 
 console.log('6 what happens now');
-await p.waitForURL('**/order/**',{timeout:6000}); await p.waitForTimeout(250);
+await p.waitForURL('**/v1/order/**',{timeout:6000}); await p.waitForTimeout(250);
 A('.oh-ref equals the cart reference', (await p.locator('.oh-ref').innerText()).trim()===ref);
 A('.aftercard length === 2', await p.locator('.aftercard').count()===2);
 const hrefs = await p.locator('.ac-go a').evaluateAll(a=>a.map(x=>x.getAttribute('href')));
@@ -88,7 +88,9 @@ const body = await p.evaluate(()=>document.documentElement.outerHTML);
 A('no sgit_private_ string on the page', !/sgit_private_(vault|write|read)_/.test(body));
 
 console.log('the three invariants, on every page touched');
-for (const u of ['/','/policies/','/p/gmail-readonly/','/cart/','/pay/','/order/','/admin/try/','/paying/','/ledger/']) {
+for (const u of ['/','/policies/','/product/','/p/gmail-readonly/','/cart/','/pay/','/paid/',
+                 '/v1/','/v1/policies/','/v1/cart/','/v1/pay/','/v1/order/',
+                 '/admin/try/','/paying/','/ledger/']) {
   await p.goto(B+u); await p.waitForTimeout(120);
   const n = await p.evaluate(()=>document.querySelectorAll('form,input,textarea,select').length);
   A('NO FORM on '+u, n===0, n);
@@ -102,7 +104,7 @@ const idx = await (await fetch(B+'/assets/site-index.json')).json();
 const byId = Object.fromEntries(idx.offers.map(o=>[o.id,o]));
 A('site-index prices', ['£10','£50','£500','£1,500'].every((v,i)=>byId['t'+(i+1)].price===v), [1,2,3,4].map(i=>byId['t'+i].price));
 A('site-index split 100/100/20/20', [100,100,20,20].every((v,i)=>byId['t'+(i+1)].pay_now_pct===v), [1,2,3,4].map(i=>byId['t'+i].pay_now_pct));
-const cartHtml = await (await fetch(B+'/cart/')).text();
+const cartHtml = await (await fetch(B+'/v1/cart/')).text();
 const model = JSON.parse(cartHtml.match(/<script type="application\/json" id="shop-model">(.*?)<\/script>/s)[1]);
 A('every rail url is empty', model.rails.every(r=>!r.url), model.rails.map(r=>r.url));
 A('exactly one rail is simulated', model.rails.filter(r=>r.simulated).length===1);
