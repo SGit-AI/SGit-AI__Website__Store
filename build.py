@@ -1192,6 +1192,7 @@ def delivery_pages(out_dir, ctx_shared):
             "</tbody></table></div>"
             + (('<h2 id="who-does-it">Who does it</h2>'
                 + block_who_runs_it(ctx)) if o["id"] in REVIEWER_BY_OFFER else "")
+            + block_code_offer(ctx)
             + '<h2 id="what-arrives">What arrives</h2>'
             f"<ul>{arrives}</ul>"
             '<h2 id="what-this-is-not">What this is not, and will not become</h2>'
@@ -4353,6 +4354,53 @@ def paid_pages(out_dir, ctx_shared):
             f' / <a href="/d/{o["id"]}/">{html.escape(l["name"])}</a> / paid',
             body, "\n".join(md))
     return made
+
+
+def block_code_offer(ctx):
+    """A code published on the journey it applies to, as a link rather than a
+    thing to type.
+
+    IT IS SAFE BY CONSTRUCTION AND NOT BY TRUST. The code rendered here cannot
+    reach the two levels that are somebody's time — `levels` holds it to the two
+    that are produced the moment you pay, out of material already published free
+    under CC BY. What it gives away is the packaging and the licence, not a
+    person's day, which is the only kind of thing that can be published where
+    anybody can read it.
+
+    AND IT ONLY APPEARS WHERE IT SAYS IT DOES. Each code names its journeys and
+    check_a_leaked_code_stays_on_its_journey holds it to them, because a code that
+    leaked onto every page would be a price change nobody decided."""
+    url = ctx["page_url"]
+    here = [d for d in DISCOUNTS
+            if d.get("printable") and url in (d.get("journeys") or [])]
+    if not here:
+        return ""
+    out = []
+    for d in here:
+        link = f"{SITE['base']}/?code={d['code']}"
+        # `levels` is a list, or the string "all". Iterating the string walks it
+        # character by character and raises on the first one, which is how this
+        # was found — and a crash is the right failure here rather than a page
+        # that quietly advertises a code covering everything. The check that
+        # refuses it is check_a_leaked_code_cannot_buy_somebody_s_day; this only
+        # has to be honest about what it is rendering.
+        lv = d["levels"]
+        levels = ("every level"
+                  if not isinstance(lv, list)
+                  else ", ".join(LEVELS_BY_ID[x]["name"].lower() for x in lv))
+        out.append(
+            f'<div class="leak"><div class="leak-h"><b>{d["pct"]}% off, and it is not a '
+            f'mistake</b><code>{html.escape(str(d["code"]))}</code></div>'
+            f'<p>{inline(d["why"], ctx)}</p>'
+            f'<p class="leak-go"><a class="buy" href="/?code={html.escape(str(d["code"]))}">'
+            f'Apply it and go to the shop</a>'
+            f'<span class="small dim">Or open <code>{html.escape(link)}</code> anywhere. '
+            f'It applies to {html.escape(levels)} and to nothing else, and it is taken out of the '
+            f'address before the page settles.</span></p></div>')
+    return "".join(out)
+
+
+BLOCKS["code-offer"] = block_code_offer
 
 def build(out_dir):
     out_dir = Path(out_dir)

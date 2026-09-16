@@ -11,7 +11,7 @@ THE ONE REMAINING HOP IS NAMED RATHER THAN HIDDEN. At level one the artefact gen
 WHAT STAYS ABSOLUTE IN THE CONTRACT. The two parameters are unchanged — order everywhere, shape at level one — because they are still the right two and a printed link cannot be recalled. What is new in the check is that the destination must be on this site AND must be a page this build actually emits: a success address pointing at a 404 is the one dead link nobody clicks until a stranger has paid. And the old destination is not deleted — every level keeps post_upstream, so the page holding the artefact stays one named link away rather than disappearing into git history.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `620fbb37b04560d6668a4f57b590c218571da580`
 - Reconstructed: no
 
 ---

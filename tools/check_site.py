@@ -1377,6 +1377,11 @@ EXPECTED_DISCOUNTS = {
     "beta-human":  (100, True),
     "synth-agent": (100, True),
     "demo-stand":  (100, True),
+    # Leaked on purpose, on two named journeys, and held to the two levels that
+    # are produced the moment you pay — see
+    # check_a_leaked_code_cannot_buy_somebody_s_day, which is the half that
+    # carries the risk.
+    "doors-open":  (100, True),
 }
 
 
@@ -1448,10 +1453,23 @@ def check_printable_codes_need_a_dead_rail():
     src = (ROOT / "data" / "checkout.yml").read_text()
     live = [m for m in re.findall(r'^\s*url: "(.+)"$', src, re.M) if m.strip()]
     if live:
-        names = ", ".join(c["id"] for c in printed)
-        fail(f"a payment rail has a URL ({live[0]}) and these discount codes are printed on a "
-             f"page: {names}. A published code and a live rail is free product. Remove the codes "
-             "or set printable: false on them, in the commit that turns the rail on")
+        # NARROWED 16 SEPTEMBER. This refused any printed code once a rail could
+        # take money, on the reasoning that a published hundred-per-cent code and a
+        # live rail is free product. That stays true of a code that can reach a
+        # level somebody has to WORK on — a person's day cannot be given away by a
+        # typo. It is not true of the two levels produced the moment you pay out of
+        # material already published free under CC BY: there the code gives away
+        # the packaging and the licence, which is the reasoning the project lead
+        # gave on 16 September for not needing redemption caps at all.
+        worked = {"custom", "session"}
+        loose = [c for c in printed
+                 if set(discount_levels(c["id"])) & worked or discount_levels(c["id"]) == ["all"]]
+        if loose:
+            names = ", ".join(c["id"] for c in loose)
+            fail(f"a payment rail has a URL ({live[0]}) and these printed codes can reach a level "
+                 f"that is somebody's work: {names}. A person's day cannot be given away by a typo "
+                 "\u2014 hold them to the produced levels, or set printable: false, in the commit "
+                 "that turns the rail on")
     for c in printed:
         if int(c.get("pct", 0)) != 100:
             fail(f"discount {c['id']}: printed on a page at {c['pct']}%. A printed code is a "
@@ -1463,7 +1481,17 @@ def check_printable_codes_need_a_dead_rail():
         return
     text = page.read_text()
     for c in printed:
-        if c["code"] not in text:
+        journeys = discount_journeys(c["id"])
+        if journeys:
+            # A leaked code lives on the journeys it names, not on /admin/try/.
+            for j in journeys:
+                f = OUT / j.strip("/") / "index.html"
+                if not f.exists():
+                    fail(f"discount {c['id']}: names journey {j!r} and no page is built there")
+                elif c["code"] not in f.read_text():
+                    fail(f"discount {c['id']}: names journey {j!r} and is not on it. A code "
+                         "allowed onto a page and on none is a code nobody can use")
+        elif c["code"] not in text:
             fail(f"discount {c['id']} is marked printable and is not on /admin/try/. A code that "
                  "is allowed onto a page and is on none is a code nobody can use")
     for f in OUT.rglob("*"):
@@ -1480,10 +1508,25 @@ def check_printable_codes_need_a_dead_rail():
         except (UnicodeDecodeError, OSError):
             continue
         for c in printed:
-            if re.search(re.escape(c["code"]), body, re.I):
-                fail(f"{rel}: carries walkthrough code {c['id']!r}. These are printed on "
-                     "/admin/try/ and nowhere else — a code loose on a selling page is a code "
-                     "somebody finds without reading why it exists")
+            if not re.search(re.escape(c["code"]), body, re.I):
+                continue
+            # NARROWED 16 SEPTEMBER, AND EXACTLY THIS FAR. A printed code used to
+            # be allowed under /admin/ and nowhere else. The ask was to publish one
+            # on the main site on specific journeys, so a code may now also appear
+            # on the journeys IT ITSELF DECLARES — and on no others, because a code
+            # that leaked onto every page would be a price change nobody decided.
+            #
+            # What makes that survivable is not this rule. It is the levels half:
+            # a leaked code cannot reach a level that is somebody's time, which
+            # check_a_leaked_code_cannot_buy_somebody_s_day holds absolutely.
+            journeys = discount_journeys(c["id"])
+            allowed = {j.strip("/") + "/index.html" for j in journeys}
+            allowed |= {j.strip("/") + "/index.md" for j in journeys}
+            if rel in allowed:
+                continue
+            fail(f"{rel}: carries code {c['id']!r}, which is not one of its journeys "
+                 f"({', '.join(journeys) or 'none — it is a walkthrough code'}). A code loose on a "
+                 "page that did not ask for it is a price change nobody decided")
 
 
 def check_the_build_reads_nothing_git_ignores():
@@ -2190,6 +2233,60 @@ def check_every_reviewer_line_is_sourced():
             fail(f"d/{o['id']}: has a who-does-it section that links no reviewer")
 
 
+def _discount_block(cid):
+    src = (ROOT / "data" / "discounts.yml").read_text()
+    m = re.search(rf"(?ms)^- id: {re.escape(cid)}$(.*?)(?=^- id: |\Z)", src)
+    return m.group(1) if m else ""
+
+
+def discount_journeys(cid):
+    """The pages a printed code is allowed to appear on. Empty means /admin/ only."""
+    m = re.search(r"(?m)^  journeys: \[(.*?)\]$", _discount_block(cid))
+    return [x.strip() for x in m.group(1).split(",") if x.strip()] if m else []
+
+
+def discount_levels(cid):
+    """The levels a code applies to. ["all"] means every one of them."""
+    b = _discount_block(cid)
+    m = re.search(r"(?m)^  levels: \[(.*?)\]$", b)
+    if m:
+        return [x.strip() for x in m.group(1).split(",") if x.strip()]
+    return ["all"] if re.search(r"(?m)^  levels: all$", b) else []
+
+
+def check_a_leaked_code_cannot_buy_somebody_s_day():
+    """THE RULE THAT MAKES PUBLISHING A CODE SURVIVABLE, AND IT IS ABSOLUTE.
+
+    A code published where anybody can read it may only reach levels that are
+    PRODUCED the moment you pay, out of material that is already published free.
+    It may never reach a level that is somebody's time. The difference is not a
+    matter of degree: the packaging and the licence can be given away by a
+    stranger with a browser, and a person's day cannot.
+
+    This is the half that carries the risk. Everything else about a leaked code —
+    where it appears, what it says, when it expires — is presentation."""
+    worked = {"custom", "session"}
+    src = (ROOT / "data" / "discounts.yml").read_text()
+    for cid in re.findall(r"(?m)^- id: (\S+)$", src):
+        if not discount_journeys(cid):
+            continue
+        levels = discount_levels(cid)
+        if levels == ["all"]:
+            fail(f"discount {cid!r} is published on a journey and applies to every level. A code "
+                 "anybody can read must be held to the levels that are produced the moment you "
+                 "pay — a person's day cannot be given away by a typo")
+            continue
+        bad = sorted(set(levels) & worked)
+        if bad:
+            fail(f"discount {cid!r} is published on a journey and reaches {', '.join(bad)}, which "
+                 "is somebody's time. That is the one thing a leaked code may never do")
+        for j in discount_journeys(cid):
+            f = OUT / j.strip("/") / "index.html"
+            if f.exists() and "and to nothing else" not in strip_tags(f.read_text()):
+                fail(f"{j}: publishes a code and does not say what it does not apply to. A reader "
+                     "who assumes it covers everything has been misled by omission")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2224,6 +2321,7 @@ def main():
         check_the_five_audiences_hide_nothing,
         check_the_comparison_agrees_with_the_offers,
         check_every_reviewer_line_is_sourced,
+        check_a_leaked_code_cannot_buy_somebody_s_day,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

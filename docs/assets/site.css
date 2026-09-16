@@ -900,3 +900,16 @@ a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
   text-transform:uppercase;color:var(--dim2,var(--dim));margin-bottom:.25rem}
 .paid-what span{font-size:1rem;line-height:1.4;color:var(--ink)}
 .paid-back{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.9rem}
+
+/* A code published on the journey it applies to. It looks like an offer because
+   it is one; what keeps it safe is that it cannot reach the levels that are
+   somebody's time, not that it is quiet. */
+.leak{background:var(--panel2);border:1px solid var(--accent);border-radius:10px;
+  padding:1.1rem 1.25rem;margin:1.6rem 0}
+.leak-h{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap;margin-bottom:.5rem}
+.leak-h b{font-family:var(--serif);font-size:1.18rem;color:var(--ink)}
+.leak-h code{font-family:var(--mono);font-size:1.05rem;letter-spacing:.08em;
+  background:var(--panel);border:1px dashed var(--line2);border-radius:6px;padding:.15rem .55rem}
+.leak p{margin:.5rem 0 0;font-size:.92rem;line-height:1.55}
+.leak-go{display:flex;flex-direction:column;gap:.5rem;align-items:flex-start;margin-top:.9rem}
+.leak-go code{font-size:.78rem}

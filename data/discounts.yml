@@ -129,3 +129,29 @@
   why: "For showing the flow to somebody on a laptop or a phone, at a stand or across a table, without the demonstration wallet being the first thing they see."
   levels: all
   until: "2027-12-31"
+
+# LEAKED ON PURPOSE, AND SAFE BY CONSTRUCTION RATHER THAN BY TRUST.
+#
+# The ask was to publish a code on the main site on specific journeys. The obvious
+# objection is that a code at a hundred per cent, published where anybody can read
+# it, is free product — and for the two upper levels it would be, because those
+# are somebody's time and a person's day cannot be given away by a typo.
+#
+# So this one CANNOT REACH THEM. `levels` holds it to the pack and the vault, and those are the
+# two that are produced the moment you pay out of material that is already
+# published free under CC BY. What it actually gives away is the packaging and the
+# licence, not the work — which is exactly the reasoning the project lead gave on
+# 16 September for not needing redemption caps at all.
+#
+# `journeys` is the other half: a printed code may appear on the pages named here
+# and nowhere else, and a check holds it to that. A code that leaked onto every
+# page would be a price change nobody decided.
+- id: doors-open
+  code: DOORSOPEN
+  printable: true
+  pct: 100
+  label: Take one and tell us
+  why: "Published on the two level pages it applies to. It takes the whole price off the pack and the vault — and it cannot touch the two levels that are somebody's time, because what it gives away has to be a thing that costs nobody a day."
+  levels: [pack, vault]
+  journeys: [/d/t1/, /d/t2/]
+  until: "2026-12-31"

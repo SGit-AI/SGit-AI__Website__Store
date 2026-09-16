@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.0",
+  "current": "v0.3.1",
   "releases": [
+    {
+      "version": "v0.3.1",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "a code published on the two journeys it applies to, and it cannot buy anybody's day",
+      "summary": "The ask was to publish a discount code on the main site on specific journeys. The obvious objection is that a code at a hundred per cent, sitting where anybody can read it, is free product.\n\nSO IT IS SAFE BY CONSTRUCTION RATHER THAN BY TRUST. DOORSOPEN is held to the two levels that are PRODUCED the moment you pay, out of material already published free under CC BY. It takes ten pounds and fifty pounds to zero and leaves five hundred and fifteen hundred exactly where they were. What it gives away is the packaging and the licence, not a person's day \u2014 which is the same reasoning the project lead gave for not needing redemption caps at all, applied to the thing that actually carries the risk.\n\ncheck_a_leaked_code_cannot_buy_somebody_s_day is absolute and it is the half that matters: a code published on a journey may never reach a level that is somebody's time, may never apply to every level, and the page carrying it has to say what it does not cover \u2014 a reader who assumes it covers everything has been misled by omission.\n\nTHE JOURNEYS ARE THE TWO LEVEL PAGES THE CODE APPLIES TO, not the home page. A code on a first screen discounts a decision nobody has made yet; a code at the end of a level page discounts one somebody is in the middle of making.\n\nTHREE RULES NARROWED, AND EXACTLY THIS FAR. A printed code used to be allowed under /admin/ and nowhere else; it may now also appear on the journeys IT ITSELF DECLARES, and on no others, because a code that leaked onto every page would be a price change nobody decided. A printed code used to have to be on /admin/try/; one that names journeys lives on those instead. And the dead-rail rule used to refuse any printed code once a rail could take money \u2014 it now asks what the code can REACH, because a person's day cannot be given away by a typo and a zip of published files can.\n\nFour deliberate breaks were run. One of them found a real bug rather than proving a check: levels is a list or the string all, and the block rendering the code iterated the string character by character and raised on the first one. A crash was the right failure there, and it now renders honestly instead.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.0",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "620fbb37b04560d6668a4f57b590c218571da580",
       "site": "store.sgit.ai",
       "title": "the buyer lands on this site",
       "summary": "Until today the success address was riskmandate.ai's page for the level, and the reasoning for that was good: their level-one page IS the download, with the zip, its size, its sha256 and a hash check that runs in the buyer's own browser \u2014 and copying a size and a hash over here would mean two of each, one of which goes stale the first time a template changes.\n\nWhat that reasoning missed is what it cost. A synthetic buyer said it plainly: they did a whole shopping experience on one site and were dropped onto another, with a different interface and a different voice, at the exact moment they had just paid. It was logged as a confusion and treated as a copy problem. It was an architecture problem.\n\nSo /paid/t1/ to /paid/t4/ are on this site, in this site's chrome. Each one carries the order reference \u2014 filled from the browser that placed it, never invented, and saying plainly when it does not have yours \u2014 what was bought, when it arrives, who does it at the two upper levels, what done looks like and how you check it. They are noindex, because a page that says you bought has no business in a search result, and every one of them is correct with no script at all: a browser that blocked it still reads the part that matters.\n\nTHE ONE REMAINING HOP IS NAMED RATHER THAN HIDDEN. At level one the artefact genuinely lives on the other domain, and the page says so in one sentence with the reason. Closing it means the store reading their manifest over CORS \u2014 which is possible rather than hoped for: their pages answer access-control-allow-origin star, verified today \u2014 and that means opening a connection on a selling page, which is this site's hardest rule. So it is its own piece of work with the rule narrowing in front of it, rather than something smuggled in here.\n\nWHAT STAYS ABSOLUTE IN THE CONTRACT. The two parameters are unchanged \u2014 order everywhere, shape at level one \u2014 because they are still the right two and a printed link cannot be recalled. What is new in the check is that the destination must be on this site AND must be a page this build actually emits: a success address pointing at a 404 is the one dead link nobody clicks until a stranger has paid. And the old destination is not deleted \u2014 every level keeps post_upstream, so the page holding the artefact stays one named link away rather than disappearing into git history.",

@@ -283,8 +283,8 @@
         {
           "id": "LC-1",
           "title": "Decide which journeys carry a code",
-          "status": "next",
-          "description": "Not the home page. A code on a first screen discounts a decision nobody has made yet; a code at the end of a level page discounts one somebody is in the middle of making.",
+          "status": "done",
+          "description": "<b>Answered by what the code can reach rather than by where it sits.</b> The journeys are the two level pages the code applies to — /d/t1/ and /d/t2/ — because a code at the end of a level page discounts a decision somebody is in the middle of making, and a code on a first screen discounts one nobody has made yet. Not the home page.",
           "owner": "lead",
           "source": "lead",
           "memo": "2026-09-16-stripe-end-to-end"
@@ -292,18 +292,16 @@
         {
           "id": "LC-2",
           "title": "Print the code on the journey, with the link carrying it applied",
-          "status": "queued",
-          "description": "Re-typing a code you just read is a step that loses people. The published code and the prefilled link are the same fact rendered twice.",
-          "blocked": "LC-1, TM-4.",
+          "status": "done",
+          "description": "Shipped in v0.3.1. The code is printed and the same code is a one-click link that applies it and lands on the shop with the two prices repainted.",
           "source": "lead",
           "memo": "2026-09-16-stripe-end-to-end"
         },
         {
           "id": "LC-3",
           "title": "Give every leaked code a cap and an expiry before it is printed",
-          "status": "queued",
-          "description": "A printed code cannot be recalled. The cap is what makes printing it survivable.",
-          "blocked": "TM-3.",
+          "status": "done",
+          "description": "<b>Superseded by the ruling of 16 September</b>: no caps, because purchases are managed directly and what this code gives away is already published free. What replaces a cap is stronger than one — the code cannot reach a level that is somebody's time, held by check_a_leaked_code_cannot_buy_somebody_s_day, which is absolute.",
           "source": "self"
         },
         {
