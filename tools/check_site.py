@@ -2673,6 +2673,92 @@ def check_the_concept_critique_shows_what_it_says():
                  "record what was checked")
 
 
+
+# ------------------------- the design brief points at pages that exist --------
+# /admin/design-brief/ is written to be handed to somebody with no access to this
+# repository, who will open every URL in it and take what they find as the
+# starting point. Three things can go quietly wrong with that.
+#
+# A screen can name a page this site does not have. The brief says "open it
+# before drawing it" — so a URL that 404s does not merely waste a click, it sends
+# a designer off to invent a page from nothing and hand back a mock of something
+# that was never the ask. The read-first list is the same.
+#
+# A token can be printed that the stylesheet does not have. build.py reads them
+# out of :root precisely so the brief cannot drift, and this checks the other
+# end: what the page prints is what site.css says.
+#
+# And the brief can quietly stop being handable. Its whole claim is that the
+# markdown twin is the deliverable, so the twin has to carry the parts that make
+# it one — the constraints, the tokens, the components and the screens.
+def check_the_design_brief_points_at_pages_that_exist():
+    page = OUT / "admin" / "design-brief" / "index.html"
+    twin = OUT / "admin" / "design-brief" / "index.md"
+    if not page.exists():
+        fail("admin/design-brief/: the brief is not in the build")
+        return
+    brief = json.loads((ROOT / "data" / "design-brief.json").read_text())
+
+    # 1. every URL the brief hands over resolves to a page this build emits
+    named = ([(s["id"], s["url"]) for s in brief["screens"]]
+             + [(r["what"], r["url"]) for r in brief["read_first"]])
+    for what, url in named:
+        target = OUT / url.strip("/") / "index.html"
+        if url == "/":
+            target = OUT / "index.html"
+        if not target.exists():
+            fail(f"admin/design-brief/: sends a designer to {url!r} for {what!r}, "
+                 "which this site does not have")
+
+    # 2. the tokens on the page are the tokens in the stylesheet
+    css = (ROOT / "assets" / "site.css").read_text()
+    m = re.search(r":root\{(.*?)\}", css, re.S)
+    tok = dict(re.findall(r"--([a-z0-9-]+)\s*:\s*([^;]+);", m.group(1))) if m else {}
+    text = page.read_text()
+    for n in ("bg", "panel", "line", "fg", "dim", "accent", "warm", "green", "red"):
+        if n not in tok:
+            fail(f"assets/site.css: has no --{n}, which the brief prints as a token")
+            continue
+        v = tok[n].strip()
+        if v not in text:
+            fail(f"admin/design-brief/: prints a value for --{n} that is not "
+                 f"{v!r}, which is what assets/site.css says")
+
+    # 3. the twin is still the deliverable it claims to be
+    if not twin.exists():
+        fail("admin/design-brief/: has no markdown twin, which is the thing the page "
+             "says is the deliverable")
+        return
+    md = twin.read_text()
+    for c in brief["components"]:
+        if c["id"] not in md:
+            fail(f"admin/design-brief/index.md: does not carry component {c['id']!r}, "
+                 "so the pasteable brief is not the whole brief")
+    for sc in brief["screens"]:
+        if sc["name"] not in md:
+            fail(f"admin/design-brief/index.md: does not carry screen {sc['name']!r}")
+    for c in brief["constraints"]:
+        if c["rule"][:40] not in md:
+            fail(f"admin/design-brief/index.md: does not carry constraint {c['id']!r}")
+
+    # 4. no hand-typed count of a thing this codebase owns. The brief said "twelve
+    #    claim states" and there are ten — in a document whose entire value is being
+    #    accurate about a codebase the reader cannot open. The page now counts them;
+    #    this stops a stale number reappearing in the prose around it.
+    n_states = len(re.findall(r'<span class="chip st-', text))
+    for bad in re.findall(r"\b(?:ten|eleven|twelve|thirteen)\b claim states",
+                          json.dumps(brief), re.I):
+        fail(f"admin/design-brief/: hand-types a claim-state count ({bad!r}). "
+             f"This build renders {n_states}. Let the page count them.")
+
+    # 5. a hard rule has to say it is one. Five of the eight constraints have build
+    #    checks behind them, and a designer who cannot tell which is which will
+    #    spend their care in the wrong places.
+    if not any(c.get("hard") for c in brief["constraints"]):
+        fail("admin/design-brief/: no constraint is marked hard, so the page cannot "
+             "tell a designer which ones have checks behind them")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2712,6 +2798,7 @@ def main():
         check_the_capability_vocabulary_is_promoted_not_invented,
         check_every_done_unit_points_at_something,
         check_the_concept_critique_shows_what_it_says,
+        check_the_design_brief_points_at_pages_that_exist,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

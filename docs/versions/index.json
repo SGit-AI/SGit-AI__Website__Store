@@ -1,10 +1,27 @@
 {
-  "current": "v0.3.9",
+  "current": "v0.3.10",
   "releases": [
+    {
+      "version": "v0.3.10",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "a brief somebody can work from",
+      "summary": "The last round came back as three finished homepages and this store could use the structure of two of them and none of the execution, because they were pages rather than a system. Three palettes arrived, none of them ours, and nothing could be dropped into a build without being redrawn.\n\nSo this is the brief for the next round, at /admin/design-brief/, and it asks for the components first and the screens second. Eighteen components with every state named, nine screens in priority order, eight constraints with the five that have build checks behind them marked as hard rules.\n\nThe tokens are read out of assets/site.css at build time rather than typed, because a brief that prints a hex value somebody has to trust is wrong the first time the stylesheet moves. A check asserts the page prints what the stylesheet says.\n\nThe markdown twin is the deliverable. Every page here emits one; for this page that twin is the thing handed over \u2014 23KB carrying every constraint, token, component and screen, pasteable whole into a session that has never seen the site.\n\ncheck_the_design_brief_points_at_pages_that_exist holds four things: every URL the brief hands over is a page this build emits, the tokens on the page are the tokens in the stylesheet, the twin still carries every component, screen and constraint, and at least one constraint is marked hard. Five deliberate breaks, all fired.\n\nTwo bugs it found on the way. The brief said twelve claim states and there are ten, in a document whose entire value is being accurate about a codebase the reader cannot open \u2014 the page counts them now and a check refuses a hand-typed count in the prose. And the chip classes live in site.css, which console pages do not load, so the chip table rendered as ten lines of plain text; the rules are restated where the console can see them, same shape as the .tablewrap bug two releases ago.\n\nOne thing recorded rather than fixed: two claim states share a CSS class, so 'specified, not built' and 'part exists' are indistinguishable on a card. They mean different things and one is worse news. It is in the brief as something for the chip component to solve.\n\nStating the barred-word rule broke it. The first draft named the two roots to tell a designer not to use them, and the gate refused the page \u2014 which is exactly the absoluteness the rule claims, and the same reason /disclosures/ does not print them either.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.9",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "1be8078f45f8211e2cd95619fc1a58e16834182b",
       "site": "store.sgit.ai",
       "title": "the moves, on the board",
       "summary": "Ten units under a new workstream, take-the-moves. The critique produced six moves and the panel produced six proposals, and until now every one of them existed only in prose on two pages \u2014 which is how a borrowed idea gets adopted and then quietly reverted.\n\nThree are next: the four-fact trust strip with every fact linked to its claim, the price at 42px, and the two rulings. Five are queued behind them. Two are the project lead's alone.\n\nTK-9 is the live defect an outside reader found in a single pass: this store prices the pack at \u00a310 and riskmandate.ai still says \u00a35. It is the other team's file, so it goes to them as a correction.\n\nTK-10 is the one the review recorded as won't-do and the board records as queued: show one real reader the same four folds. A bigger synthetic panel scales the problem rather than the evidence, because the sample and the thing being sampled have the same author. One stranger would outweigh the whole vault.\n\nThe workstream is an orphan \u2014 no memo names it, because it came from three concepts that arrived from outside rather than from a voice memo. The status page has a section for exactly that and it appears there.",

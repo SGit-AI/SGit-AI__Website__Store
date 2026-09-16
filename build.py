@@ -134,6 +134,7 @@ NAV = [
         ("The memo queue", "/admin/memos/"),
         ("What happened to each memo", "/admin/status/"),
         ("The homepage concepts, reviewed", "/admin/concepts/"),
+        ("The design brief", "/admin/design-brief/"),
         ("Taking money", "/admin/rails/"),
         ("Reviews, dated and kept", "/admin/reviews/"),
         ("Run the whole flow yourself", "/admin/try/"),
@@ -1824,6 +1825,7 @@ CONSOLE_RAIL = [
         ("Console", "/admin/", None, False),
         ("Reviews", "/admin/reviews/", "reviews", False),
         ("Homepage concepts", "/admin/concepts/", None, False),
+        ("The design brief", "/admin/design-brief/", None, False),
         ("Run the flow yourself", "/admin/try/", None, False),
     ]),
     ("The work", [
@@ -5280,6 +5282,240 @@ def concepts_page(out_dir, ctx_shared):
         ' / <a href="/admin/">admin</a> / concepts', body, "\n".join(md))}
 
 
+# ------------------------------------------------------ the design brief ----
+# A BRIEF FOR SOMEBODY WHO CANNOT SEE THIS REPOSITORY. The first round of
+# homepage concepts came back as three finished pages, and this store could use
+# the structure of two of them and none of the execution — because they were
+# pages rather than a system. Three palettes arrived, none of them ours.
+#
+# SO THE TOKENS ARE READ OUT OF assets/site.css AT BUILD TIME rather than typed
+# here. A brief that prints a hex value somebody has to trust is a brief that
+# will be wrong the first time the stylesheet moves, and the whole complaint
+# about the last round was that what came back could not be dropped into a build.
+#
+# THE MARKDOWN TWIN IS THE DELIVERABLE. Every page on this site emits one, and
+# for this page that twin is the thing you actually hand over: a single file
+# carrying every constraint, token, screen and component, pasteable whole into a
+# session that has never seen the site.
+
+BRIEF_URL = "/admin/design-brief/"
+DESIGN_BRIEF = json.loads((DATA / "design-brief.json").read_text())
+
+
+def _brief_tokens():
+    """The real token values, read from the stylesheet this build ships.
+
+    Returns (colours, fonts, chips). Anything the brief needs that is not in
+    :root is a token this site does not actually have, and this raises rather
+    than printing an invention."""
+    css = (ASSETS / "site.css").read_text()
+    m = re.search(r":root\{(.*?)\}", css, re.S)
+    if not m:
+        raise SystemExit("design brief: assets/site.css has no :root block to read tokens from")
+    tok = dict(re.findall(r"--([a-z0-9-]+)\s*:\s*([^;]+);", m.group(1)))
+    need = ["bg", "panel", "panel2", "line", "line2", "fg", "dim", "dim2", "ink",
+            "accent", "accent-dk", "warm", "green", "blue", "red"]
+    missing = [n for n in need if n not in tok]
+    if missing:
+        raise SystemExit(f"design brief: assets/site.css is missing tokens {missing} — "
+                         "the brief would print values this site does not have")
+    colours = [(n, tok[n].strip()) for n in need]
+    fonts = [(n, tok[n].strip()) for n in ("sans", "serif", "mono") if n in tok]
+    # every claim state, with the class the stylesheet actually paints. COUNTED, not
+    # typed: the brief said "twelve" and there are ten, in a document whose entire
+    # value is being accurate about a codebase the reader cannot see.
+    chips = [(k, v[0], v[2]) for k, v in STATES.items()]
+    return colours, fonts, chips
+
+
+def design_brief_page(out_dir, ctx_shared):
+    b = DESIGN_BRIEF
+    colours, fonts, chips = _brief_tokens()
+
+    # every screen the brief names has to be a page this build emits, or the
+    # brief is sending somebody to look at a 404
+    known = {u for u in ctx_shared["page_urls"].values()}
+
+    def cons(c):
+        tag = ('<span class="st st--1">hard rule</span>' if c.get("hard")
+               else '<span class="st st--3">expected</span>')
+        return (f'<section class="db-c"><div class="cx-hd">{tag}'
+                f'<h3>{inline(c["rule"], ctx_shared)}</h3></div>'
+                f'<p>{inline(c["why"], ctx_shared)}</p></section>')
+
+    def screen(sc):
+        pri = {"first": 1, "second": 2, "third": 3}[sc["priority"]]
+        must = "".join(f"<li>{inline(x, ctx_shared)}</li>" for x in sc["must_carry"])
+        return (f'<section class="db-s" id="s-{sc["id"]}">'
+                f'<div class="cx-hd"><span class="st st--{pri}">{sc["priority"]}</span>'
+                f'<h3>{html.escape(sc["name"])}</h3>'
+                f'<a class="db-u" href="{sc["url"]}"><code>{html.escape(sc["url"])}</code></a></div>'
+                f'<p class="db-now"><b>What is there today.</b> {inline(sc["exists"], ctx_shared)}</p>'
+                f'<p>{inline(sc["brief"], ctx_shared)}</p>'
+                f'<p class="db-l">It has to carry</p><ul>{must}</ul>'
+                f'<p class="db-hard"><b>The hard part.</b> {inline(sc["hardest_part"], ctx_shared)}</p>'
+                "</section>")
+
+    def comp(c):
+        st = "".join(f'<span class="db-st">{html.escape(x)}</span>' for x in c["states"])
+        return (f'<tr><td><b>{html.escape(c["name"])}</b>'
+                f'<br><code class="small">{html.escape(c["id"])}</code></td>'
+                f'<td class="db-sts">{st}</td>'
+                f'<td class="small">{inline(c["notes"], ctx_shared)}</td></tr>')
+
+    swatches = "".join(
+        f'<div class="db-sw"><i style="background:{v}"></i>'
+        f'<code>--{n}</code><span>{html.escape(v)}</span></div>'
+        for n, v in colours)
+    fontrows = "".join(
+        f'<tr><td><code>--{n}</code></td><td style="font-family:{v}">{html.escape(v)}</td></tr>'
+        for n, v in fonts)
+    chiprows = "".join(
+        f'<tr><td>{chip(k)}</td><td><code>{html.escape(k)}</code></td>'
+        f'<td class="small">{html.escape(why)}</td></tr>'
+        for k, lab, why in chips)
+
+    body = (
+        f'<p class="lead">{inline(b["_why_it_exists"], ctx_shared)}</p>'
+        f'<div class="cx-verdict"><b>Hand this over whole.</b>'
+        f'<p>The markdown twin of this page &mdash; '
+        f'<a href="{BRIEF_URL}index.md"><code>{BRIEF_URL}index.md</code></a> &mdash; is '
+        f'the pasteable form. It carries every constraint, token, screen and component '
+        f'below in one file, and it needs no access to this repository.</p></div>'
+
+        '<h2 id="context">What is being sold, and to whom</h2>'
+        + "".join(f'<p><b>{html.escape(k.replace("_", " ").capitalize())}.</b> '
+                  f'{inline(v, ctx_shared)}</p>' for k, v in b["context"].items())
+
+        + '<h2 id="rules">The constraints</h2>'
+        '<p>Eight. Five are hard rules with build checks behind them &mdash; a mock that '
+        'breaks one produces a page that cannot ship, so they are stated before anything '
+        'else.</p>'
+        + "".join(cons(c) for c in b["constraints"])
+
+        + '<h2 id="settled">Already settled, and not up for redesign</h2>'
+        '<p>These came out of the last round and the panel that tested it. They are '
+        'here so nobody spends a day rediscovering them.</p><ul class="db-set">'
+        + "".join(f"<li>{inline(x, ctx_shared)}</li>" for x in b["already_settled"])
+        + "</ul>"
+
+        + '<h2 id="open">Open, and genuinely wanted</h2><ul class="db-set db-open">'
+        + "".join(f"<li>{inline(x, ctx_shared)}</li>" for x in b["open_questions"])
+        + "</ul>"
+
+        + '<h2 id="tokens">The tokens</h2>'
+        '<p><b>Read out of <code>assets/site.css</code> by this build</b>, not typed here '
+        '&mdash; so they are the values the site actually ships and cannot drift from '
+        'them. Use these and add none.</p>'
+        f'<div class="db-sws">{swatches}</div>'
+        '<div class="tablewrap"><table><thead><tr><th>Family</th><th>Stack</th></tr>'
+        f'</thead><tbody>{fontrows}</tbody></table></div>'
+        f'<h3>The {len(chips)} claim states</h3>'
+        '<p>Every chip links to the ledger. Only one of them is the fully-earned '
+        'state, which is deliberate &mdash; if most chips look confident the component '
+        'has failed.</p>'
+        '<div class="tablewrap"><table><thead><tr><th>Chip</th><th>Id</th>'
+        f'<th>What it means</th></tr></thead><tbody>{chiprows}</tbody></table></div>'
+
+        + '<h2 id="components">The component set</h2>'
+        '<p><b>This is the deliverable that matters most.</b> Eighteen components, every '
+        'state of each, before any screen is drawn. A beautiful screen built out of '
+        'unnamed parts costs more to implement than it saves.</p>'
+        '<div class="tablewrap"><table class="db-ct"><thead><tr><th>Component</th>'
+        f'<th>States</th><th>Notes</th></tr></thead><tbody>'
+        + "".join(comp(c) for c in b["components"]) + "</tbody></table></div>"
+
+        + '<h2 id="screens">The screens</h2>'
+        '<p>Nine, in priority order. Every one of them is a page that exists on this site '
+        'today &mdash; open it before drawing it.</p>'
+        + "".join(screen(sc) for sc in b["screens"])
+
+        + '<h2 id="deliverable">How to hand it back</h2>'
+        f'<p>{inline(b["deliverable"]["why_this_matters"], ctx_shared)}</p><ol class="db-set">'
+        + "".join(f"<li>{inline(x, ctx_shared)}</li>" for x in b["deliverable"]["hand_back"])
+        + '</ol><p class="db-l">And not</p><ul class="db-set">'
+        + "".join(f"<li>{inline(x, ctx_shared)}</li>" for x in b["deliverable"]["do_not"])
+        + "</ul>"
+
+        + '<h2 id="read">Read these first</h2>'
+        '<div class="tablewrap"><table><thead><tr><th>Page</th><th>Why</th></tr></thead><tbody>'
+        + "".join(f'<tr><td><a href="{r["url"]}"><b>{html.escape(r["what"])}</b></a>'
+                  f'<br><code class="small">{html.escape(r["url"])}</code></td>'
+                  f'<td class="small">{inline(r["why"], ctx_shared)}</td></tr>'
+                  for r in b["read_first"])
+        + "</tbody></table></div>")
+
+    # ---- the markdown twin, which is the thing actually handed over ----
+    base = SITE["base"]
+    md = [f"# Design brief \u2014 store.sgit.ai\n",
+          f"*Version {b['version']}, {b['dated']}. Written for {b['for'][0].lower()}{b['for'][1:]}.*\n",
+          f"{b['_why_it_exists']}\n",
+          "\n## What is being sold, and to whom\n"]
+    for k, v in b["context"].items():
+        md.append(f"**{k.replace('_', ' ').capitalize()}.** {v}\n")
+    md.append("\n## The constraints\n")
+    for c in b["constraints"]:
+        md.append(f"\n### {'HARD RULE' if c.get('hard') else 'Expected'}: {c['rule']}\n\n{c['why']}\n")
+    md.append("\n## Already settled, and not up for redesign\n")
+    for x in b["already_settled"]:
+        md.append(f"- {x}")
+    md.append("\n## Open, and genuinely wanted\n")
+    for x in b["open_questions"]:
+        md.append(f"- {x}")
+    md.append("\n## The tokens\n\nRead from the live stylesheet by the build that "
+              "produced this file. Use these and add none.\n")
+    md.append("\n| Token | Value |")
+    md.append("|---|---|")
+    for n, v in colours:
+        md.append(f"| `--{n}` | `{v}` |")
+    for n, v in fonts:
+        md.append(f"| `--{n}` | `{v}` |")
+    md.append(f"\n### The {len(chips)} claim states\n")
+    md.append("\n| Id | Label | What it means |")
+    md.append("|---|---|---|")
+    for k, lab, why in chips:
+        md.append(f"| `{k}` | {lab} | {why} |")
+    md.append("\n## The component set\n\nThis is the deliverable that matters most. "
+              "Every component, every state, before any screen is drawn.\n")
+    for c in b["components"]:
+        md.append(f"\n### {c['name']} (`{c['id']}`)\n")
+        md.append("States: " + ", ".join(c["states"]) + "\n")
+        md.append(f"{c['notes']}\n")
+    md.append("\n## The screens\n")
+    for sc in b["screens"]:
+        md.append(f"\n### {sc['name']} \u2014 {sc['priority']}\n")
+        md.append(f"Live today: {base}{sc['url']}\n")
+        md.append(f"**What is there today.** {sc['exists']}\n")
+        md.append(f"{sc['brief']}\n")
+        md.append("It has to carry:\n")
+        for x in sc["must_carry"]:
+            md.append(f"- {x}")
+        md.append(f"\n**The hard part.** {sc['hardest_part']}\n")
+    md.append("\n## How to hand it back\n")
+    md.append(f"{b['deliverable']['why_this_matters']}\n")
+    for i, x in enumerate(b["deliverable"]["hand_back"], 1):
+        md.append(f"{i}. {x}")
+    md.append("\nAnd not:\n")
+    for x in b["deliverable"]["do_not"]:
+        md.append(f"- {x}")
+    md.append("\n## Read these first\n")
+    for r in b["read_first"]:
+        md.append(f"- [{r['what']}]({base}{r['url']}) \u2014 {r['why']}")
+
+    return {BRIEF_URL: _console_page(
+        out_dir, ctx_shared, BRIEF_URL,
+        {"title": "The design brief",
+         "description": ("Everything a design session needs to mock up the rest of this "
+                         "store without access to the repository: eight constraints with "
+                         "the hard rules named, the real tokens read from the stylesheet, "
+                         "eighteen components with their states, and nine screens in "
+                         "priority order."),
+         "blurb": ("<b>Eighteen components, nine screens, eight constraints.</b> "
+                   "Written to be handed over whole \u2014 the markdown twin of this "
+                   "page is the pasteable form.")},
+        ' / <a href="/admin/">admin</a> / design brief', body, "\n".join(md))}
+
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -5365,6 +5601,7 @@ def build(out_dir):
     extra.update(memo_pages(out_dir, ctx_shared))
     extra.update(status_page(out_dir, ctx_shared))
     extra.update(concepts_page(out_dir, ctx_shared))
+    extra.update(design_brief_page(out_dir, ctx_shared))
     extra.update(audience_pages(out_dir, ctx_shared))
     extra.update(reviewer_pages(out_dir, ctx_shared))
     extra.update(paid_pages(out_dir, ctx_shared))

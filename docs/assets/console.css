@@ -405,3 +405,62 @@ tr.cx-against td.cx-cur::after{content:"";display:inline-block;width:0}
   td.cx-m{width:auto;min-width:200px}
   table.cx-t{font-size:12.5px}
 }
+
+/* ----------------------------------------------------- the design brief ----
+   /admin/design-brief/ is written to be handed to somebody who cannot see this
+   repository, so the page has one job the rest of the console does not: make
+   the difference between a hard rule and a preference visible at a glance,
+   because a mock that breaks a hard rule cannot be built at all. */
+
+.db-c,.db-s{border-top:1px solid var(--line);padding-top:18px;margin-top:22px}
+.db-c h3,.db-s h3{margin:0;font-size:15.5px}
+.db-u{font-size:12px;margin-left:auto}
+.db-now{font-size:13px;color:var(--dim);border-left:2px solid var(--line2);padding-left:12px}
+.db-hard{border-left:2px solid var(--warm);padding-left:12px;margin-top:14px}
+.db-l{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim2);
+  font-weight:700;margin:16px 0 4px}
+.db-set li{margin-bottom:9px}
+.db-open li{border-left:2px solid var(--accent);padding-left:12px;list-style:none}
+.db-open{padding-left:0}
+
+/* the token swatches. printed from the values this build read out of site.css */
+.db-sws{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:10px;margin:16px 0}
+.db-sw{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;
+  padding:8px 10px;background:var(--panel);min-width:0}
+.db-sw i{width:26px;height:26px;border-radius:5px;border:1px solid var(--line2);flex-shrink:0}
+.db-sw code{font-size:11.5px}
+.db-sw span{font-size:11px;color:var(--dim2);margin-left:auto;font-family:var(--mono)}
+
+/* the component table: states read as a set, not as a sentence */
+table.db-ct td{vertical-align:top}
+table.db-ct td:first-child{width:17%}
+table.db-ct td:nth-child(2){width:31%}
+.db-sts{display:flex;flex-wrap:wrap;gap:5px}
+.db-st{font-size:11px;border:1px solid var(--line2);border-radius:99px;padding:2px 8px;
+  background:var(--panel2);color:var(--ink);white-space:nowrap}
+@media (max-width:760px){
+  table.db-ct td:first-child,table.db-ct td:nth-child(2){width:auto}
+  .db-u{margin-left:0;width:100%}
+}
+
+/* THE CLAIM CHIPS, RESTATED WHERE THE CONSOLE CAN SEE THEM. site.css has
+   painted these since the ledger existed and console pages do not load it, so
+   the design brief's chip table rendered as twelve lines of plain text. Same
+   shape of bug as .tablewrap: a rule that has always existed, on a stylesheet
+   this half of the site never loads. Copied verbatim rather than redrawn, so
+   the brief shows a designer the chips the site actually ships. */
+.chip{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.04em;border-radius:99px;
+  padding:.1rem .5rem;border:1px solid;white-space:nowrap;vertical-align:.08em;text-transform:uppercase}
+a.chip:hover{text-decoration:none;filter:brightness(.94)}
+.st-v{color:#0b5e57;background:rgba(15,118,110,.10);border-color:rgba(15,118,110,.35)}
+.st-m{color:#14622f;background:rgba(21,128,61,.10);border-color:rgba(21,128,61,.32)}
+.st-d{color:#3f4854;background:rgba(71,85,105,.10);border-color:rgba(71,85,105,.3)}
+.st-s{color:#8f4308;background:rgba(180,83,9,.10);border-color:rgba(180,83,9,.35)}
+.st-u{color:#7d4c06;background:rgba(161,98,7,.12);border-color:rgba(161,98,7,.35)}
+.st-p{color:#075985;background:rgba(3,105,161,.10);border-color:rgba(3,105,161,.3)}
+.st-ok{color:var(--green);font-weight:700}
+.st-warn{color:var(--warm);font-weight:700}
+.st-bad{color:var(--red);font-weight:700}
+.st-b{color:#075985;background:rgba(3,105,161,.10);border-color:rgba(3,105,161,.3)}
+.st-x{color:#8f1d1d;background:rgba(185,28,28,.09);border-color:rgba(185,28,28,.32)}
+.st-n{color:#1d4ed8;background:rgba(29,78,216,.10);border-color:rgba(29,78,216,.32)}

@@ -11,7 +11,7 @@ TK-10 is the one the review recorded as won't-do and the board records as queued
 The workstream is an orphan — no memo names it, because it came from three concepts that arrived from outside rather than from a voice memo. The status page has a section for exactly that and it appears there.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `1be8078f45f8211e2cd95619fc1a58e16834182b`
 - Reconstructed: no
 
 ---

@@ -1,0 +1,443 @@
+{
+  "_what_this_is": "A brief for a design session — a ChatGPT session, or any designer — to mock up the rest of this store. It is written to be pasted whole: the markdown twin of this page at /admin/design-brief/index.md is the paste-able form, and it carries every constraint, token and screen below.",
+  "_why_it_exists": "The first round produced three handsome homepages and this store could only use parts of them, for one reason: they were pages, not a system. Three palettes arrived, none of them ours, and nothing that came back could be dropped into a build without being redrawn. This brief asks for the components first and the screens second, and says exactly what shape the answer has to come back in.",
+  "version": "1",
+  "dated": "16 September 2026",
+  "for": "A design session with no access to this repository",
+  "context": {
+    "what_is_sold": "Agent Behaviour Policy documents: for one AI agent, in one deployment, what it can do, what you authorised it to do, and the gap between them. Fifteen application templates, four service levels.",
+    "who_buys": "Five audiences, and they do not want the same page. A founder shipping with agents; an investor backing companies that run them; a C-level exec who has to answer to a board; a security professional who does this for a living; a risk-and-governance lead who owns the register.",
+    "levels": "£10 the pack downloaded, immediately. £50 a working vault, 1 to 2 days. £500 corrected for your situation, 1 to 3 days from your reply. £1,500 two sessions and a custom vault, 1 to 5 days from your reply. The top two are a named security professional's actual work and are signed off.",
+    "the_state_of_it": "Six products are priced in Stripe and reconcile to the penny on every release. No checkout link has been issued, so every card on the live site shows a disabled box where a buy button belongs. That is the next release and this brief assumes it has happened: DRAW THE BUY BUTTON.",
+    "what_happened_last_time": "Three homepage concepts were drawn on 16 September and reviewed at /admin/concepts/. Two carry structure this store adopted. The same four folds were then shown to five synthetic readers at /admin/reviews/2026-09-16-four-homepages/. Read both before starting — they are short, and between them they say which moves are already settled."
+  },
+  "constraints": [
+    {
+      "id": "palette",
+      "rule": "Use the tokens below and add none.",
+      "why": "The last round produced navy-and-amber, forest green and cobalt. All three are handsome and none of them is this brand or riskmandate.ai's, and a buyer is meant to move between the two properties without noticing. If a colour is genuinely missing, say which and why, rather than picking one.",
+      "hard": true
+    },
+    {
+      "id": "disclosure",
+      "rule": "The model-assistance strip stays above the main element on every screen. It never moves to the footer.",
+      "why": "A build check refuses any page without it, so a mock that relocates it cannot be implemented. It is also the single element that won the two readers who would spend the most. It may get quieter — one line on a phone with the rest behind a link — but it stays where it is.",
+      "hard": true
+    },
+    {
+      "id": "no-invented-proof",
+      "rule": "No star ratings, no testimonials, no customer counts, no standards-body marks, no logos of companies that have not bought anything.",
+      "why": "Nothing has been sold here yet. A review section is wanted and is in scope — as an EMPTY STATE that says so. The review attached to the last round reached this conclusion independently, which is why it is stated as a rule rather than a preference.",
+      "hard": true
+    },
+    {
+      "id": "no-invented-facts",
+      "rule": "Never invent a price, a delivery time, a capacity, a number of customers, or a claim about what has been delivered. Use the numbers in this brief exactly. Where a real value is missing, write [PLACEHOLDER] and say what belongs there.",
+      "why": "Every price on this site is frozen by a build check against one file, and a mock carrying a different number produces a page that cannot ship. Two concepts last round carried a price the store had already changed.",
+      "hard": true
+    },
+    {
+      "id": "barred-words",
+      "rule": "Two word-roots never appear anywhere on this site, in any form, including inside a denial. Do not write copy that implies this store sells a regulated financial product, or that anything here carries a conformity mark or a third-party stamp of approval.",
+      "why": "This site carries prices, and a priced page making either kind of claim is making an offer it is not allowed to make. The two roots are not printed here for the same reason they are not printed on the page that explains them: an exception for the page explaining a rule is how a rule stops applying. /disclosures/ sets out the full reasoning, without printing them either. In practice this costs a designer nothing — write about what the product IS rather than what it is not, and if a phrase does trip the check we will say so and it takes one word to fix. This brief's own first draft tripped it, by stating the rule.",
+      "hard": true
+    },
+    {
+      "id": "empty-states-are-honest",
+      "rule": "Where a slot has no content yet — a screenshot, a review, a logo — draw the empty frame with a line saying what belongs there. Do not fill it with decoration.",
+      "why": "The product page prototype already does this: three of seven media slots are real files and four are labelled frames. A carousel padded with stock art on a page whose whole job is showing what you actually get would be the one dishonest thing on the site."
+    },
+    {
+      "id": "mobile-first-check",
+      "rule": "Every screen must be drawn at 390px as well as at 1200px, and the phone version is the one to get right first.",
+      "why": "The live homepage is 10,710px tall on a phone — thirteen and a half screens — against roughly 5,000 for each concept. Phone is where this is lost."
+    },
+    {
+      "id": "one-action",
+      "rule": "One primary action per screen, repeated down it. Not three competing buttons.",
+      "why": "Standard, and the last round got it right; it is here so it stays right."
+    }
+  ],
+  "already_settled": [
+    "The price sits at 42px on a card, not 28px inline with the delivery estimate. Every reader used the prices when they were set large and two reported seeing none when they were set at 12px in a caption colour.",
+    "A four-fact trust strip sits under the hero, and every fact is a link to the claim that evidences it. The concept version had four ticks and no links, which the one reader who checks things rejected on sight.",
+    "Applications are chips, not a list, with a sixth chip reading 'something else — from £500' so a visitor whose agent is missing lands on the level that exists for them rather than at the end of a directory.",
+    "The header carries three destinations and the order. Everything else goes to the footer or the console. It currently carries forty-eight.",
+    "The persona doors stay, and stay above the product. All three concepts routed by application and dropped them; the brief for this store was explicit about wanting 'who are you' first."
+  ],
+  "open_questions": [
+    "Product naming. 'Professional review' reads out loud in a board meeting; 'two sessions and a custom vault' is more honest about what arrives. The proposal is a short name at heading size with the precise description as the line beneath. Draw the anatomy that supports both and leave the words to us.",
+    "The headline. 'Every agent needs a licence to operate' was not misread by any reader, and an outside review flagged that 'licence to operate' can be taken as regulatory permission. 'Powerful agents. Clear boundaries.' was the only line every reader understood on sight. Not settled. Show the hero working with a long headline and a short one."
+  ],
+  "screens": [
+    {
+      "id": "product",
+      "priority": "first",
+      "name": "The product page",
+      "url": "/lab/product/",
+      "exists": "A prototype, in the lab, marked unbuyable on its own face.",
+      "brief": "The one the store most needs and has never had. A level page argues about what a policy is; a product page shows the thing. Amazon-shaped: description left, price and buy on the right, a screenshot carousel, specifications, and a reviews section that is honest about being empty.",
+      "must_carry": [
+        "A media carousel with many slots, of which only some have a real image — the rest are labelled frames naming what belongs there.",
+        "A right-hand rail that stays with the reader: price at 42px, delivery estimate and the clock it runs from, the buy button, and for the top two levels the deposit split (a fifth now, the rest on delivery).",
+        "A specifications table — product code, what it is, how many shapes, delivered in, licence, formats, whether an account is needed.",
+        "A reviews section as an empty state.",
+        "An edition switcher: the same product described five ways, one per audience, switching in place without a page load."
+      ],
+      "hardest_part": "The edition switcher has to change the argument without changing the product. Five audiences, one SKU, one price, five reasons."
+    },
+    {
+      "id": "compare",
+      "priority": "first",
+      "name": "The comparison table",
+      "url": "/compare/",
+      "exists": "Fourteen rows in four groups across five columns, including a free one.",
+      "brief": "Features down the left, five columns across — free, then the four levels. It has to work as a page, as something printable, and as a thing a reader screenshots and sends to somebody else.",
+      "must_carry": [
+        "Five columns including the free one, which comes first.",
+        "Row groups with headings, so a reader can find the row they care about.",
+        "A phone version that does not become a horizontal scroll nobody uses.",
+        "A print-shaped version: this is explicitly wanted as a brochure and a PDF."
+      ],
+      "hardest_part": "Five columns at 390px. Most comparison tables give up here and become five stacked cards, which loses the comparison — which is the entire point of the page."
+    },
+    {
+      "id": "level",
+      "priority": "first",
+      "name": "The level page",
+      "url": "/d/t2/",
+      "exists": "One per level, plus two add-ons.",
+      "brief": "The page a buyer lands on from a card. What this level is, what arrives, what does not, who does the work, and the way to buy it. Shorter than the product page and pointed at one decision.",
+      "must_carry": [
+        "What arrives and what does not, as two lists rather than a paragraph.",
+        "For the top two: who does the work, with the professional's name and face.",
+        "The delivery estimate and the clock it runs from — from your payment for the first two, from your reply for the top two.",
+        "The buy button, and the deposit split where there is one."
+      ],
+      "hardest_part": "'What does not arrive' has to be as prominent as what does, and has to not read as an apology."
+    },
+    {
+      "id": "cart",
+      "priority": "second",
+      "name": "The order and the payment hand-off",
+      "url": "/cart/",
+      "exists": "An order built in the reader's own browser, no account, nothing stored anywhere else.",
+      "brief": "Everything up to the moment the reader leaves for the payment provider. No form fields — the provider's page collects the name, the email and the card, and this store never sees any of them. There is no input, textarea or select anywhere in this site's output and a check holds that line, so draw a cart made of buttons.",
+      "must_carry": [
+        "The order reference, generated in the browser and shown on the page.",
+        "A discount code applied and its effect visible.",
+        "The hand-off explained before it happens: what the provider will ask for, and what this store will never see."
+      ],
+      "hardest_part": "A checkout with no form. It is a real constraint, not a stylistic one, and it is the thing this store can say that most stores cannot."
+    },
+    {
+      "id": "paid",
+      "priority": "second",
+      "name": "After the sale",
+      "url": "/paid/t2/",
+      "exists": "One per level.",
+      "brief": "The instruction was 'when you have sold a vault, you should just see the vault'. So the screen after payment is not a receipt with a link on it — the thing bought is on the screen, open, with the receipt beside it.",
+      "must_carry": [
+        "The vault itself, embedded and open, above anything congratulatory.",
+        "For a buyer whose own vault does not exist yet, a published example labelled as an example in its first sentence.",
+        "What happens next and when, with the date.",
+        "For the top two levels: who is doing the work, and how they will make contact."
+      ],
+      "hardest_part": "The reader has paid and is now looking at somebody else's example vault. That has to be obviously an example without feeling like a bait and switch."
+    },
+    {
+      "id": "audience",
+      "priority": "second",
+      "name": "The audience landing",
+      "url": "/are/founder/",
+      "exists": "Five of them, one per audience.",
+      "brief": "Where a persona door leads. The same four levels, led with the one that fits this reader and the rest quieted rather than hidden.",
+      "must_carry": [
+        "Nothing hidden. A check refuses display:none on an offer in an audience view — every level stays reachable from every audience, and what changes is which one leads and what is said about it.",
+        "The reader's own question in their own words, at the top.",
+        "One level foregrounded, the others at reduced emphasis and still clickable."
+      ],
+      "hardest_part": "'Quieted, not hidden' is a visual problem. Opacity alone reads as broken; a different treatment entirely reads as a different product."
+    },
+    {
+      "id": "agent-canvas",
+      "priority": "second",
+      "name": "Describe your agent",
+      "url": "/lab/agent-canvas/",
+      "exists": "Two prototypes in the lab — a canvas and a sequence.",
+      "brief": "A free page, and the one the project lead expects to use most in conversation. The agent sits in the centre; the things it can reach sit around it — a database, the internet, part of the internet, a file system, the ability to send email. The reader clicks or drags them onto the agent and builds up a description of what it can actually do.",
+      "must_carry": [
+        "The agent at the centre and its capabilities around it, clickable and draggable.",
+        "Twenty-three capability primitives on a verb.object.reach grammar, which exist already and are not to be invented.",
+        "A running description of what has been assembled, in plain words.",
+        "An export at the end: the description, in a form that can be handed to a model session with a template vault, which then produces the buyer's own vault.",
+        "It has to work on a phone and in a room, over somebody's shoulder."
+      ],
+      "hardest_part": "This is a toy that has to produce a document. Show at least two different interactions for it — the canvas and something else entirely — because which one works in a live conversation is not known yet."
+    },
+    {
+      "id": "reviewer",
+      "priority": "third",
+      "name": "The professional's page",
+      "url": "/who/dinis-cruz/",
+      "exists": "One, for the person doing the work today.",
+      "brief": "Who does the £500 and £1,500 work. Built for a list: more professionals are being recruited, so it is a template with one entry today, not a personal page.",
+      "must_carry": [
+        "Enough for a buyer to decide whether this person's signature is worth £1,500.",
+        "Every biographical line sourced, because a check refuses one that is not.",
+        "An index that works with one entry and with twelve."
+      ],
+      "hardest_part": "A page of one person's credentials that does not read as a CV."
+    },
+    {
+      "id": "ledger",
+      "priority": "third",
+      "name": "The claim ledger",
+      "url": "/ledger/",
+      "exists": "Fifty-two claims, each with a state and a date, cited from the pages that make them.",
+      "brief": "Every factual claim this site makes, the state it has earned, and the date. Pages cite a claim and the chip links back here. It is the store's whole argument for being believed, and it currently looks like a table.",
+      "must_carry": [
+        "Every claim state visually distinct and legible at chip size. The page lists them; two currently share a class and render identically.",
+        "The join in both directions: from a claim to the pages citing it, and from a page's chip to the claim.",
+        "It should be possible to skim for the claims that are weakest, not just the ones that are strongest."
+      ],
+      "hardest_part": "Making a page of caveats feel like confidence rather than hedging."
+    }
+  ],
+  "components": [
+    {
+      "id": "button",
+      "name": "Button",
+      "states": [
+        "primary",
+        "secondary",
+        "disabled with a reason",
+        "destructive — none exist yet"
+      ],
+      "notes": "The disabled state is real and shipping today: 'the payment link has not been issued yet'. It needs to look deliberate rather than broken, because it is on every card until the next release."
+    },
+    {
+      "id": "price",
+      "name": "Price block",
+      "states": [
+        "single price",
+        "deposit split — a fifth now, the rest on delivery",
+        "free",
+        "from £N"
+      ],
+      "notes": "42px, with the delivery estimate and the clock it runs from. The split is two Stripe products that sum to the price, so it is a real thing to draw and not a presentational trick."
+    },
+    {
+      "id": "offer-card",
+      "name": "Offer card",
+      "states": [
+        "level 01 to 04",
+        "free",
+        "leading in an audience view",
+        "quieted in an audience view",
+        "add-on"
+      ],
+      "notes": "The one component that appears on the most screens. Anatomy: level and delivery on one line, name, one line of who it is for, price, one sentence, claim chip, action."
+    },
+    {
+      "id": "claim-chip",
+      "name": "Claim chip",
+      "states": [
+        "one per claim state — the page lists them, with what each means"
+      ],
+      "notes": "Links to the ledger. Only one state is the fully-earned one, which is deliberate: if most chips look confident the component has failed. ONE THING TO FIX WHILE YOU ARE IN HERE — two states currently share a CSS class and therefore render identically, so 'specified, not built' and 'part exists' are indistinguishable on a card. They mean different things and one of them is worse news than the other. Give the set enough visual range that ten of them stay legible at chip size."
+    },
+    {
+      "id": "persona-door",
+      "name": "Persona door",
+      "states": [
+        "five audiences",
+        "current",
+        "on a phone"
+      ],
+      "notes": "Five across at 1200px. At 390px five stacked cards is 500px of screen before anything is for sale, so this needs a real phone answer."
+    },
+    {
+      "id": "app-chip",
+      "name": "Application chip",
+      "states": [
+        "one of fifteen",
+        "the catch-all, from £500",
+        "selected"
+      ],
+      "notes": "The catch-all chip is the point of the component."
+    },
+    {
+      "id": "trust-item",
+      "name": "Trust strip item",
+      "states": [
+        "linked to a claim",
+        "four across",
+        "two-by-two on a phone"
+      ],
+      "notes": "Never unlinked."
+    },
+    {
+      "id": "media-frame",
+      "name": "Media frame",
+      "states": [
+        "a real screenshot with a caption",
+        "a labelled empty frame naming what belongs there",
+        "in a carousel",
+        "expanded"
+      ],
+      "notes": "Both states ship together. The empty one is not a placeholder to be removed later — it is how the page stays honest while the screenshots are taken."
+    },
+    {
+      "id": "spec-row",
+      "name": "Specification row",
+      "states": [
+        "plain",
+        "with a chip",
+        "on a phone"
+      ],
+      "notes": "Label and value. Reads as a datasheet, not as prose."
+    },
+    {
+      "id": "disclosure",
+      "name": "Disclosure strip",
+      "states": [
+        "desktop, two lines",
+        "phone, one line with the rest behind a link"
+      ],
+      "notes": "Above main, always. See the constraint."
+    },
+    {
+      "id": "version-badge",
+      "name": "Version badge",
+      "states": [
+        "current",
+        "in the console"
+      ],
+      "notes": "How a reader knows which build they are quoting. Quiet, not absent."
+    },
+    {
+      "id": "section-head",
+      "name": "Section header",
+      "states": [
+        "with an action on the right",
+        "centred",
+        "on a phone"
+      ],
+      "notes": "Eyebrow, heading, one line of subheading, optional action. Used on every screen and currently inconsistent."
+    },
+    {
+      "id": "vault-embed",
+      "name": "Vault frame",
+      "states": [
+        "loading",
+        "open",
+        "an example, labelled",
+        "failed"
+      ],
+      "notes": "An iframe opened with a read key. The labelled-example state is the one that matters — see the after-the-sale screen."
+    },
+    {
+      "id": "review-empty",
+      "name": "Reviews, empty",
+      "states": [
+        "no reviews yet",
+        "one review",
+        "several"
+      ],
+      "notes": "The empty state is the one shipping. Draw the other two so the page does not have to be redesigned the day somebody writes one."
+    },
+    {
+      "id": "edition-switch",
+      "name": "Edition switcher",
+      "states": [
+        "five audiences",
+        "one selected",
+        "on a phone"
+      ],
+      "notes": "Changes the argument in place, without a page load and without changing the product."
+    },
+    {
+      "id": "callout",
+      "name": "Callout",
+      "states": [
+        "a ruling",
+        "a caveat",
+        "a hold",
+        "an example"
+      ],
+      "notes": "Four kinds and they must not all look the same, because one of them means 'this is not what you think it is'."
+    },
+    {
+      "id": "nav",
+      "name": "Header and footer",
+      "states": [
+        "header at four links",
+        "footer carrying eleven",
+        "phone menu",
+        "console rail"
+      ],
+      "notes": "The header goes from forty-eight to four. The footer takes the evidence apparatus. Both need drawing, because the footer is now load-bearing."
+    },
+    {
+      "id": "table",
+      "name": "Comparison table",
+      "states": [
+        "five columns",
+        "row group",
+        "a yes",
+        "a no",
+        "a qualified yes",
+        "on a phone"
+      ],
+      "notes": "The qualified yes is the hard one — most of the interesting rows are not a tick or a cross."
+    }
+  ],
+  "deliverable": {
+    "why_this_matters": "Last round came back as three finished pages and this store could use the structure of two of them and none of the execution. What makes a mock implementable is not more polish, it is the system underneath it named and specified.",
+    "hand_back": [
+      "ONE COMPONENT SHEET FIRST, before any screen. Every component in the list above, every state, at both widths, on one page. This is the deliverable that matters most; a beautiful screen built from unnamed parts costs more to implement than it saves.",
+      "THEN THE SCREENS, in the priority order given. Each at 1200px and 390px.",
+      "A TOKEN TABLE of everything actually used, so any value that is not in the set below is visible at a glance rather than discovered later.",
+      "A SHORT NOTE PER SCREEN: what you changed from the brief and why. Disagreement is wanted — the last round's disagreements are on the board. Silent substitutions are not.",
+      "PLAIN HTML AND CSS, one file per screen, no build step, no framework, no external requests except a font. It does not need to be production code — it needs to be readable, because it is going to be read and re-implemented rather than pasted."
+    ],
+    "do_not": [
+      "Do not produce a design system document with principles and no pixels.",
+      "Do not use a component library's defaults. The whole exercise is this store's own vocabulary.",
+      "Do not fill an empty state with sample data unless it is labelled as sample in the mock itself."
+    ]
+  },
+  "read_first": [
+    {
+      "what": "The review of the last round",
+      "url": "/admin/concepts/",
+      "why": "What was taken from the three concepts, what was refused, and the seven measurements that decided it."
+    },
+    {
+      "what": "Five readers on the same four folds",
+      "url": "/admin/reviews/2026-09-16-four-homepages/",
+      "why": "Eight findings, including the three nobody was looking for."
+    },
+    {
+      "what": "The product page prototype",
+      "url": "/lab/product/",
+      "why": "The starting point for the first screen, and the source of the media-frame component."
+    },
+    {
+      "what": "What each level gets you",
+      "url": "/compare/",
+      "why": "The five columns, and the rows as they stand."
+    },
+    {
+      "what": "What we do not say, and why",
+      "url": "/disclosures/",
+      "why": "The barred words, in full, with the reasoning."
+    },
+    {
+      "what": "The claim ledger",
+      "url": "/ledger/",
+      "why": "Every claim state, and what each one means. The chip set is one of the eighteen components."
+    }
+  ]
+}
