@@ -1347,6 +1347,79 @@
           "memo": "2026-09-16-describe-your-agent"
         }
       ]
+    },
+    {
+      "id": "take-the-moves",
+      "title": "Take the moves from the concepts",
+      "color": "#0369a1",
+      "description": "Three homepage directions arrived from outside on 16 September, drawn by a ChatGPT session from the live page. Two of them carry structure worth taking. This is that structure, broken into units, with what each one costs us written on it — because a borrowed idea whose price is not written down gets adopted and then quietly reverted. The critique is at /admin/concepts/ and the panel that tested the same four folds on five readers is at /admin/reviews/2026-09-16-four-homepages/.\n\nNOTHING HERE OUTRANKS THE BUY BUTTON. Both the critique and the panel reached the same conclusion by different routes: neither the live store nor any concept has one, and a better shop window on a shop that cannot take money is worth less than the till. take-money stays first.",
+      "tasks": [
+        {
+          "id": "TK-1",
+          "title": "Ship the four-fact strip, every fact linked to its claim",
+          "status": "next",
+          "description": "<b>From 01 Marketplace, corrected by the one reader who checks things.</b> Four short statements between the hero and the first product section: fifteen application templates, four levels, six vaults open to read now, the top two signed by a person. Every one of the four is already true here and already in the ledger.<br><br><b>Each item links to its claim.</b> The concept's version has four ticks and not one of them is a link, which is the difference between a trust strip and a claim — and the reason this store can ship the idea and the concept could not."
+        },
+        {
+          "id": "TK-2",
+          "title": "Set the price at 42px on every card",
+          "status": "next",
+          "description": "<b>The live card sets the price at 28px inline with the delivery estimate, at body weight.</b> Every concept sets it at 42px as the second-largest thing in the card, and every reader shown that version used the prices to compare.<br><br>A type-scale change, not a redesign. It is the measurable difference between a card somebody compares and a card somebody reads."
+        },
+        {
+          "id": "TK-3",
+          "title": "Rebuild the card anatomy: level and delivery on one line, one action",
+          "status": "queued",
+          "description": "<b>Identical order in every card</b> so the eye can run down a column: level and delivery on one 12px line, the name, one line of what it is, the price, one sentence, one action.<br><br><b>The claim chips have to go somewhere.</b> They are load-bearing — they are how a reader checks that “delivered by a person” is a thing somebody stood behind, and they are one of the two elements that won the two readers who would spend the most. This is a move, not a deletion."
+        },
+        {
+          "id": "TK-4",
+          "title": "Applications as chips, with a sixth that converts the miss",
+          "status": "queued",
+          "description": "<b>From 02 Guided, which lost the panel four-one and won this outright.</b> One pill per application, each a link, with a sixth reading “something else — from £500”.<br><br>A visitor whose agent is not in the list currently reaches the end of a directory. The sixth chip sends them to the level that exists precisely because their deployment is not the template."
+        },
+        {
+          "id": "TK-5",
+          "title": "Forty-eight header links down to four",
+          "status": "queued",
+          "description": "<b>The review's first recommendation and the right one.</b> Three destinations and the order stay in the header; eleven evidence and buying-mechanics destinations move to the footer; eight already have a home in the console.<br><br><b>Two things do not move.</b> The version badge is how a reader knows which build they are quoting, and the model-assistance strip is required above the main element by this repository's own rules with a check that refuses a page without it. They can get quieter. They cannot go to the footer.",
+          "blocked": "TK-6, which changes the same fold"
+        },
+        {
+          "id": "TK-6",
+          "title": "Cut the disclosure strip to one line without moving it",
+          "status": "queued",
+          "description": "<b>It is two lines on a phone before the headline starts, and the headline starts 358px down.</b> One line with the rest behind the link is the same disclosure at a third of the height.<br><br><b>It stays above main.</b> It is one of the two elements that won the two readers who would sign off £1,500, and a build check holds the floor, so the failure mode is loud rather than silent."
+        },
+        {
+          "id": "TK-7",
+          "title": "A short name and a precise subtitle, in the same card",
+          "status": "next",
+          "owner": "lead",
+          "description": "<b>Needs a ruling.</b> The concepts' names are boardroom-legible and this store's are not: “professional review” against “two sessions and a custom vault”. And the live names are the more honest ones — the first says exactly what arrives and the second could describe a phone call.<br><br><b>The proposal is both, in one card</b>: a short name at heading size, the precise description as the line under it. The ruling is whether the short names are the project lead's to write, because they are the words a buyer repeats to their board."
+        },
+        {
+          "id": "TK-8",
+          "title": "Decide what replaces “a licence to operate”, or that nothing does",
+          "status": "next",
+          "owner": "lead",
+          "description": "<b>Raised twice, independently.</b> The outside review flagged that “licence to operate” can be read as regulatory permission unless something beside it says otherwise; the panel found “powerful agents, clear boundaries” was the only headline every reader understood on sight.<br><br><b>Neither settles it</b>, and nobody misread the live headline. It is also the name of a document inside the vault, so changing it on the homepage alone splits the vocabulary. A ruling, not a change."
+        },
+        {
+          "id": "TK-9",
+          "title": "Correct the £5 on riskmandate.ai",
+          "status": "next",
+          "owner": "lead",
+          "description": "<b>A live defect, found from outside.</b> This store prices the pack at £10 and riskmandate.ai's homepage still carries “1 · £5 The pack, downloaded”. The price moved on a memo from the project lead and the product site was not moved with it.<br><br>A buyer who reads both properties — which is the whole point of them being one flow — sees two prices for one thing. It is the other team's file to change, so it goes to them as a correction rather than a suggestion."
+        },
+        {
+          "id": "TK-10",
+          "title": "Show one real reader the same four folds",
+          "status": "queued",
+          "owner": "lead",
+          "description": "<b>The one thing that would outweigh the whole panel.</b> Five invented readers cannot tell you what a stranger does, and the weakness is not the sample size — it is that the sample and the thing being sampled have the same author. A bigger panel scales the problem rather than the evidence, and is recorded as won't-do on the review so nobody reads the silence as a plan.<br><br><b>One person who has never seen the store</b>, shown the same four folds at the same two sizes and asked the same six questions."
+        }
+      ]
     }
   ]
 }

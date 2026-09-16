@@ -1,5 +1,5 @@
 # store.sgit.ai — the whole site as markdown
-site v0.3.8 · every claim's verification state is at /ledger/
+site v0.3.9 · every claim's verification state is at /ledger/
 
 Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.
 

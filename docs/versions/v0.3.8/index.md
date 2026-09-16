@@ -13,7 +13,7 @@ The vault is xy06m1tb: eighteen files, the four folds every reader was shown, th
 Six proposals. Three to do now, one held, one needing a ruling on naming, and one refused: a bigger panel would scale the problem rather than the evidence, because the sample and the thing being sampled have the same author. One real reader would outweigh the whole vault.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `eecda03c29e57b7237b09516b4164c40edbe8530`
 - Reconstructed: no
 
 ---

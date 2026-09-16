@@ -1,10 +1,23 @@
 {
-  "current": "v0.3.8",
+  "current": "v0.3.9",
   "releases": [
+    {
+      "version": "v0.3.9",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the moves, on the board",
+      "summary": "Ten units under a new workstream, take-the-moves. The critique produced six moves and the panel produced six proposals, and until now every one of them existed only in prose on two pages \u2014 which is how a borrowed idea gets adopted and then quietly reverted.\n\nThree are next: the four-fact trust strip with every fact linked to its claim, the price at 42px, and the two rulings. Five are queued behind them. Two are the project lead's alone.\n\nTK-9 is the live defect an outside reader found in a single pass: this store prices the pack at \u00a310 and riskmandate.ai still says \u00a35. It is the other team's file, so it goes to them as a correction.\n\nTK-10 is the one the review recorded as won't-do and the board records as queued: show one real reader the same four folds. A bigger synthetic panel scales the problem rather than the evidence, because the sample and the thing being sampled have the same author. One stranger would outweigh the whole vault.\n\nThe workstream is an orphan \u2014 no memo names it, because it came from three concepts that arrived from outside rather than from a voice memo. The status page has a section for exactly that and it appears there.",
+      "changes": [
+        "data"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.8",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "eecda03c29e57b7237b09516b4164c40edbe8530",
       "site": "store.sgit.ai",
       "title": "four homepages, five readers",
       "summary": "The same five readers who walked this store on 15 September were shown four versions of its front page \u2014 the live one and the three ChatGPT concepts \u2014 in five different orders, and made to rank them with no ties allowed.\n\n01 Marketplace 17, 03 Studio 14, the live page 13, 02 Guided 6, on a Borda count over five forced rankings. The concepts' own review page recommended Marketplace too, reasoning from the shape of a four-level offer rather than from any reader.\n\nThe result underneath that one is what the panel is for. The two readers with small budgets put a concept first. The two who would sign off \u00a31,500 put the live page first, and both named the same two elements unprompted: the disclosure strip above the fold and the claim badges on the cards, which all three concepts had deleted. The density that loses the skimmer is what wins the reader of the expensive thing.\n\nThree findings nobody was looking for. Marketplace's trust strip has four ticked claims and not one of them is a link, which is the difference between a trust strip and a claim \u2014 and every one of those four facts is already in this store's ledger. Two concepts print their price at 12px in a caption colour and readers reported no price on folds that had one; that is the only finding here that can be settled without asking anybody anything. And the reader the live homepage identifies by name \u2014 a C-level exec, have to answer for it, to a board \u2014 clicked his own door and still ranked the page last, which is worth writing down because the obvious reading of this panel is 'lead with the personas' and the panel does not support it.\n\nThe vault is xy06m1tb: eighteen files, the four folds every reader was shown, the five personas carried across byte-identical, the protocol, twenty reads, the rankings, eight findings and four reasons to discount all of them. Read-only key, embedded on the review page, allowlisted for that page alone.\n\nSix proposals. Three to do now, one held, one needing a ruling on naming, and one refused: a bigger panel would scale the problem rather than the evidence, because the sample and the thing being sampled have the same author. One real reader would outweigh the whole vault.",
