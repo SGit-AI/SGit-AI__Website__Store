@@ -2,7 +2,7 @@
 
 The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.
 
-**16 workstreams · 92 units of work · 66 not done.**
+**16 workstreams · 92 units of work · 64 not done.**
 
 
 ## Take money at all — next
@@ -41,10 +41,10 @@ Two reviewers independently said the entry level reads as a commodity at £5 —
 
 The two upper levels are somebody's work and the store has never said whose. A buyer spending £1,500 on a security review is buying a person, and the site asks them to buy it from nobody in particular. First reviewer named 16 September; the surface is built for several, because there will be.
 
-- **WD-1 · Build the reviewer register and a page per reviewer** — `next` — data/reviewers/ as the register, one page each, generated — same idiom as the reviews. Built for a list from the first day so adding the second is adding a file rather than a refactor.
-- **WD-2 · Write the first reviewer's page** — `next` — Dinis Cruz, who runs the £500 and £1,500 reviews today. Material exists on the open-source site, on sgit.ai and on LinkedIn. Nothing on the page gets written that is not traceable to one of those — a biography this site invented would be the worst possible thing to put next to a price. _Blocked on: Source material from the project lead._
-- **WD-3 · Let the buyer choose their reviewer at £500 and £1,500** — `queued` — A selection, carried in the order reference the way the shape already is. With one reviewer it is a statement rather than a choice, and it should still be on the page, because what it says is that there is a name behind the work. _Blocked on: WD-1, WD-2._
-- **WD-4 · Recruit the rest** — `queued` — The project lead is contacting people they know. The page has to be worth being listed on before anybody is asked, which is the real reason WD-2 comes first.
+- **WD-1 · Build the reviewer register and a page per reviewer** — `done` — Shipped in v0.2.9 as data/reviewers.yml and /who/. Built for a list on the day it had one name on it — adding the second is adding a record; the page, the twin, the register entry and the links from the level pages are generated.
+- **WD-2 · Write the first reviewer's page** — `done` — Shipped in v0.2.9 at /who/dinis-cruz/. Every line read off open-source.sgit.ai's published author page and the vault catalogue, both named on the page with the date they were read. No count of years: the published record starts in 2008 and a reader can do that arithmetic and check every step of it.
+- **WD-3 · Let the buyer choose their reviewer at £500 and £1,500** — `queued` — A selection, carried in the order reference the way the shape already is. With one reviewer it is a statement rather than a choice, and it is already on both level pages, because what it says is that there is a name behind the work. _Blocked on: WD-4 — a second name._
+- **WD-4 · Recruit the rest** — `next` — The project lead is contacting security professionals they know and negotiating rates, so they can take some of the work at £500 and £1,500 and eventually above. The page is worth being listed on now, which was the whole reason WD-2 came first. Adding one is adding a record to data/reviewers.yml; the frozen list in the gate moves with it, on purpose, so a reviewer cannot appear by accident.
 - **WD-5 · Say what happens when the chosen reviewer cannot take the work** — `queued` — Both upper levels already disclose they have never been sold. A named reviewer adds a second thing that can fail and the pages do not cover it. _Blocked on: WD-3._
 
 

@@ -2086,6 +2086,85 @@ def check_the_comparison_agrees_with_the_offers():
                  "nothing \u2014 the sentence under the label is what the reader is buying")
 
 
+EXPECTED_REVIEWERS = {"dinis-cruz": {"t3", "t4"}}
+
+
+def check_every_reviewer_line_is_sourced():
+    """A biography this store composed would be the worst thing on it.
+
+    THIS IS THE CHECK THAT MATTERS MOST ON THIS SITE. Everything else here is
+    checked because it is a price or a capability; this is checked because it is a
+    PERSON standing next to a £1,500 price, and the temptation to round a date up
+    or add a line nobody published is exactly the temptation this whole site
+    exists to refuse. If the argument stops applying the moment a sentence is
+    flattering, it was never an argument.
+
+    So: every reviewer page names the published pages it was read from, with the
+    date, above the record rather than under it; every reviewer runs the levels
+    the register says; and the pages carry no count of years, because what is
+    published is a record starting in 2008 and a round number nobody can verify is
+    weaker than a date anybody can."""
+    src = (ROOT / "data" / "reviewers.yml").read_text()
+    ids = re.findall(r"^  - id: (\S+)", src, re.M)
+    if set(ids) != set(EXPECTED_REVIEWERS):
+        fail(f"the reviewer set changed: expected {sorted(EXPECTED_REVIEWERS)}, built {sorted(ids)}."
+             " Adding one is deliberate and the frozen list moves with it")
+        return
+    sources = re.findall(r'^  - url: "([^"]+)"', src, re.M)
+    if not sources:
+        fail("data/reviewers.yml: carries no _sources. Every line of a record is read off a "
+             "published page or it does not go on the page")
+    reads = re.findall(r'^    read: "([^"]+)"', src, re.M)
+    if len(reads) != len(sources):
+        fail("data/reviewers.yml: a source has no date it was read on. A citation without a date "
+             "is a citation nobody can re-check")
+
+    for rid, offers in EXPECTED_REVIEWERS.items():
+        f = OUT / "who" / rid / "index.html"
+        if not f.exists():
+            fail(f"who/{rid}: the reviewer page was not built")
+            continue
+        page = f.read_text()
+        flat = strip_tags(page)
+        for u in sources:
+            if u not in page:
+                fail(f"who/{rid}: does not name the published page {u!r} it was read from")
+        if "Nothing here is written from what anybody told us" not in flat:
+            fail(f"who/{rid}: does not say that nothing on it was written from what somebody told "
+                 "us. On the one page of this site that describes a person, that sentence is the "
+                 "whole guarantee")
+        for oid in offers:
+            if f"/d/{oid}/" not in page:
+                fail(f"who/{rid}: does not link the level {oid} they run")
+        # No count of years anywhere. The record starts in 2008 and a reader can do
+        # the arithmetic; a round number nobody can verify is weaker than a date.
+        m = re.search(r"(\d+|twenty|thirty|fifteen|ten)\+?\s+years", flat, re.I)
+        if m:
+            fail(f"who/{rid}: claims {m.group(0)!r}. The published record starts in 2008 and a "
+                 "reader can do that arithmetic and check every step of it; a round number nobody "
+                 "can verify is weaker than a date anybody can")
+        if not (OUT / "who" / rid / "index.md").exists():
+            fail(f"who/{rid}: has no markdown twin")
+
+    # The levels that are somebody's work say whose, on their own page.
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    for o in index["offers"]:
+        if o["state"] != "person":
+            continue
+        f = OUT / "d" / o["id"] / "index.html"
+        if not f.exists():
+            continue
+        # NOT a search for "/who/" — the nav links it from every page on the site,
+        # so that assertion was true of a page with nothing on it and a deliberate
+        # break walked straight through. The section id is what only this page has.
+        page = f.read_text()
+        if 'id="who-does-it"' not in page:
+            fail(f"d/{o['id']}: is delivered by a person and has no section naming one. A buyer at "
+                 "this price is buying somebody's time and the page has to say whose")
+        elif not any(f"/who/{rid}/" in page for rid in EXPECTED_REVIEWERS):
+            fail(f"d/{o['id']}: has a who-does-it section that links no reviewer")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2119,6 +2198,7 @@ def main():
         check_every_claim_state_is_real,
         check_the_five_audiences_hide_nothing,
         check_the_comparison_agrees_with_the_offers,
+        check_every_reviewer_line_is_sourced,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

@@ -871,3 +871,14 @@ a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
   .cmpt .c-why{display:none}
   .cmpt .c-price{font-size:1.05rem}
 }
+
+/* Who runs the review. The two upper levels are somebody's work and this is the
+   block that says whose — on the level page, not three clicks away. */
+.rv-people{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;
+  margin:1.2rem 0}
+.rv-person{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:1.1rem 1.2rem}
+.rv-person b{font-family:var(--serif);font-size:1.15rem}
+.rv-person b a{text-decoration:none;color:var(--ink)}
+.rv-person b a:hover{text-decoration:underline}
+.rv-person p{margin:.5rem 0 0;font-size:.9rem;line-height:1.55}

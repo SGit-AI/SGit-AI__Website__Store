@@ -232,17 +232,16 @@
         {
           "id": "WD-1",
           "title": "Build the reviewer register and a page per reviewer",
-          "status": "next",
-          "description": "data/reviewers/ as the register, one page each, generated — same idiom as the reviews. Built for a list from the first day so adding the second is adding a file rather than a refactor.",
+          "status": "done",
+          "description": "Shipped in v0.2.9 as data/reviewers.yml and /who/. Built for a list on the day it had one name on it — adding the second is adding a record; the page, the twin, the register entry and the links from the level pages are generated.",
           "source": "lead",
           "memo": "2026-09-16-ten-pounds-and-a-licence"
         },
         {
           "id": "WD-2",
           "title": "Write the first reviewer's page",
-          "status": "next",
-          "description": "Dinis Cruz, who runs the £500 and £1,500 reviews today. Material exists on the open-source site, on sgit.ai and on LinkedIn. Nothing on the page gets written that is not traceable to one of those — a biography this site invented would be the worst possible thing to put next to a price.",
-          "blocked": "Source material from the project lead.",
+          "status": "done",
+          "description": "Shipped in v0.2.9 at /who/dinis-cruz/. <b>Every line read off open-source.sgit.ai's published author page and the vault catalogue</b>, both named on the page with the date they were read. No count of years: the published record starts in 2008 and a reader can do that arithmetic and check every step of it.",
           "source": "lead",
           "memo": "2026-09-16-ten-pounds-and-a-licence"
         },
@@ -250,16 +249,16 @@
           "id": "WD-3",
           "title": "Let the buyer choose their reviewer at £500 and £1,500",
           "status": "queued",
-          "description": "A selection, carried in the order reference the way the shape already is. With one reviewer it is a statement rather than a choice, and it should still be on the page, because what it says is that there is a name behind the work.",
-          "blocked": "WD-1, WD-2.",
+          "description": "A selection, carried in the order reference the way the shape already is. With one reviewer it is a statement rather than a choice, and it is already on both level pages, because what it says is that there is a name behind the work.",
+          "blocked": "WD-4 — a second name.",
           "source": "lead",
           "memo": "2026-09-16-ten-pounds-and-a-licence"
         },
         {
           "id": "WD-4",
           "title": "Recruit the rest",
-          "status": "queued",
-          "description": "The project lead is contacting people they know. The page has to be worth being listed on before anybody is asked, which is the real reason WD-2 comes first.",
+          "status": "next",
+          "description": "The project lead is contacting security professionals they know and negotiating rates, so they can take some of the work at £500 and £1,500 and eventually above. <b>The page is worth being listed on now</b>, which was the whole reason WD-2 came first. Adding one is adding a record to <code>data/reviewers.yml</code>; the frozen list in the gate moves with it, on purpose, so a reviewer cannot appear by accident.",
           "owner": "lead",
           "source": "lead",
           "memo": "2026-09-16-ten-pounds-and-a-licence"

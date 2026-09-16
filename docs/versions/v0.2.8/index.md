@@ -15,7 +15,7 @@ AND ONE ASSERTION IN IT WAS PROVED VACUOUS BEFORE IT SHIPPED. The first version 
 Also fixed: the site's th is a small tracked uppercase column label, and every header in this table is a sentence. Fourteen row headers were rendering in all caps at 11px, which is the fastest way to make a comparison table unreadable, and it was doing exactly that.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `062b2d001bab88f644c6b5c6ad78e43c42f74f1a`
 - Reconstructed: no
 
 ---

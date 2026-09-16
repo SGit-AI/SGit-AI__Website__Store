@@ -1,0 +1,65 @@
+# WHO RUNS THE REVIEW.
+#
+# The two upper levels are somebody's work and until 16 September this store had
+# never said whose. Asking for £1,500 for a security review from nobody in
+# particular is a worse problem than any price on this site, and it was the one
+# thing a buyer at that level most needed and could not find.
+#
+# BUILT FOR A LIST FROM THE FIRST DAY, WITH ONE NAME ON IT. The project lead is
+# contacting other security professionals and negotiating rates so they can take
+# some of this work. Adding the second is adding a record to this file; the page,
+# its markdown twin, the register and the links from the level pages are all
+# generated.
+#
+# NOTHING HERE IS WRITTEN FROM WHAT ANYBODY TOLD US.
+#
+# Every line of a record carries the published page it was read from and the date
+# it was read. A biography this site composed would be the single worst thing to
+# stand next to a £1,500 price — and this store's whole argument is that its
+# sentences can be checked, which is worth exactly nothing if it stops applying
+# the moment the sentence is flattering.
+#
+# The one number that is NOT here is a count of years. The project lead offered
+# "twenty years of cybersecurity" and it is almost certainly right; what is
+# published is a record starting in 2008, and a reader can do that arithmetic
+# themselves and check every step of it. A round number nobody can verify is
+# weaker than a date that anybody can.
+#
+# One line per value: the YAML subset in build.py drops wrapped continuation lines.
+
+_sources:
+  - url: "https://open-source.sgit.ai/about/index.html"
+    read: "16 September 2026"
+    what: "The author page on open-source.sgit.ai, published CC BY 4.0. Every row of the record below is read off it."
+  - url: "https://sgit.ai/demos/vaults/index.html"
+    read: "16 September 2026"
+    what: "The published vault catalogue, which is where the delivered work is."
+
+reviewers:
+  - id: dinis-cruz
+    name: Dinis Cruz
+    order: 1
+    since: "16 September 2026"
+    does: [t3, t4]
+    one_line: "Runs the correction at £500 and the two sessions at £1,500."
+    lede: "Founder of the sgit.ai network, RiskMandate.ai, The Cyber Boardroom, MyFeeds.ai and VoiceDebrief.ai; former OWASP Board member and organiser of the OWASP Summits; creator of the O2 Platform."
+    why_them: "The method this store sells is theirs. The fifteen published templates, the grant-and-mandate model, the delta and the barrier taxonomy, and the six published vaults of exactly this work were all built by the person who would be doing yours."
+    contact: "https://www.linkedin.com/in/diniscruz"
+    contact_label: LinkedIn
+    record:
+      - what: Former OWASP Board member
+        detail: "And organiser of the OWASP Summits — Lisbon 2011 and Woburn 2017 — the working-session format that the Open Security Summit series went on to build on. Open-source work still ships under the `owasp-sbot` organisation."
+      - what: Creator of the O2 Platform
+        detail: "The OWASP static-analysis engine of 2010 to 2012, and the first of a line of open-source tooling that continues in the `osbot-*` and `mgraph-*` families, `memory_fs`, `Issues-FS` and `sgit-ai` — all Apache-2.0, all on PyPI."
+      - what: "Founder, RiskMandate.ai"
+        detail: "The business risk layer for autonomous systems — the site the fifteen Agent Behaviour Policy templates this store sells are published on."
+      - what: "Founder, sgit.ai and sgraph.ai"
+        detail: "Encrypted vaults with git semantics, under Apache-2.0, and the network of nineteen sites of which this store is one. Each site publishes its argument before its implementation, so the commitments stay checkable."
+      - what: "Founder, The Cyber Boardroom and MyFeeds.ai"
+        detail: "A platform for the conversation between technical security teams and the board, and role-aware security briefings built on semantic knowledge graphs — CISO, engineer and board views of the same material. Both Apache-2.0."
+      - what: Works in the open, including the parts most companies do not
+        detail: "The code is Apache-2.0, roughly 1,100 working documents are CC BY 4.0, and the investor materials for two of the companies are on GitHub rather than behind a data room."
+    delivered:
+      - licence-to-operate
+      - riskmandate-file-security
+      - threatmodcon-2025

@@ -94,6 +94,7 @@ NAV = [
         ("The four levels", "/policies/#the-four-levels"),
         ("Something not on the list", "/p/your-own/"),
         ("What each level gets you", "/compare/"),
+        ("Who runs the review", "/who/"),
         ("The price list", "/offers/"),
         ("Your order", "/cart/"),
     ]),
@@ -1189,7 +1190,9 @@ def delivery_pages(out_dir, ctx_shared):
             f'<tr><th>What is true of it today</th><td>{chip(o["state_badge"], claim_id=o["claim"])} '
             f'{inline(o["state"], ctx)}</td></tr>'
             "</tbody></table></div>"
-            '<h2 id="what-arrives">What arrives</h2>'
+            + (('<h2 id="who-does-it">Who does it</h2>'
+                + block_who_runs_it(ctx)) if o["id"] in REVIEWER_BY_OFFER else "")
+            + '<h2 id="what-arrives">What arrives</h2>'
             f"<ul>{arrives}</ul>"
             '<h2 id="what-this-is-not">What this is not, and will not become</h2>'
             + f"<ul>{withheld}</ul>"
@@ -4109,6 +4112,151 @@ def block_comparison(ctx):
 
 BLOCKS["comparison"] = block_comparison
 
+
+# ---------------------------------------------------------- who runs the work ----
+# THE TWO UPPER LEVELS ARE SOMEBODY'S WORK AND THIS STORE HAD NEVER SAID WHOSE.
+# Asking £1,500 for a security review from nobody in particular is a worse problem
+# than any price on this site. One name today, and the surface is built for a list
+# because the project lead is negotiating rates with others to take some of it.
+#
+# NOTHING ON A REVIEWER PAGE IS WRITTEN FROM WHAT SOMEBODY TOLD US. Every record
+# row is read off a published page, named with the date it was read, and the page
+# says so at the top rather than in a footnote. A biography this site composed
+# would be the worst thing on the domain to stand next to a price.
+REVIEWERS_FILE = yaml_load((DATA / "reviewers.yml").read_text())
+REVIEWERS = sorted(REVIEWERS_FILE["reviewers"], key=lambda r: r["order"])
+REVIEWER_ROOT = "/who/"
+REVIEWER_BY_OFFER = {}
+for _r in REVIEWERS:
+    for _o in _r["does"]:
+        if _o not in OFFERS_BY_ID:
+            raise KeyError(f"reviewer {_r['id']}: does {_o!r}, which is not an offer")
+        REVIEWER_BY_OFFER.setdefault(_o, []).append(_r)
+    for _d in _r["delivered"]:
+        if not any(w["id"] == _d for w in EVIDENCE["works"]):
+            raise KeyError(f"reviewer {_r['id']}: cites {_d!r}, which is not published evidence")
+
+
+def _reviewer_sources_note():
+    rows = "".join(
+        f'<li><a href="{s["url"]}">{html.escape(s["url"])}</a> &mdash; '
+        f'{html.escape(s["what"])} Read {html.escape(s["read"])}.</li>'
+        for s in REVIEWERS_FILE["_sources"])
+    return ('<div class="note"><p><b>Where this comes from.</b> Every line below is read off a '
+            'published page, and the pages are named. <b>Nothing here is written from what anybody '
+            'told us</b> — a biography this store composed would be the worst thing on it to '
+            f'stand next to a price.</p><ul class="small">{rows}</ul></div>')
+
+
+def block_who_runs_it(ctx):
+    """Named on the level pages, so a buyer at £500 knows whose work they are buying."""
+    rows = "".join(
+        f'<div class="rv-person"><div><b><a href="{REVIEWER_ROOT}{r["id"]}/">'
+        f'{html.escape(r["name"])}</a></b>'
+        f'<p>{inline(r["lede"], ctx)}</p>'
+        f'<p class="small dim">{html.escape(r["one_line"])}</p></div></div>'
+        for r in REVIEWERS)
+    return (f'<div class="rv-people">{rows}</div>'
+            '<p class="small dim">One name today, and the list is built for more — other '
+            'security professionals are being approached to take some of this work. '
+            f'<a href="{REVIEWER_ROOT}">Everybody who runs a review here</a>.</p>')
+
+
+BLOCKS["who-runs-it"] = block_who_runs_it
+
+
+def reviewer_pages(out_dir, ctx_shared):
+    made = {}
+    for r in REVIEWERS:
+        url = f"{REVIEWER_ROOT}{r['id']}/"
+        ctx = dict(ctx_shared)
+        ctx.update({"page": f"who/{r['id']}", "page_url": url, "fm": {}, "toc": []})
+        ctx["external_links"].add(r["contact"])
+        for s in REVIEWERS_FILE["_sources"]:
+            ctx["external_links"].add(s["url"])
+        levels = [OFFERS_BY_ID[o] for o in r["does"]]
+        works = [w for w in EVIDENCE["works"] if w["id"] in r["delivered"]]
+        for w in works:
+            ctx["external_links"].add(w["url"])
+        body = (
+            _reviewer_sources_note()
+            + '<h2 id="the-record">The record</h2><div class="rows">'
+            + "".join(f'<div class="row2"><div><b>{inline(x["what"], ctx)}</b>'
+                      f'<p>{inline(x["detail"], ctx)}</p></div></div>' for x in r["record"])
+            + "</div>"
+            + '<h2 id="what-they-run-here">What they run on this store</h2>'
+            + '<div class="rows">' + "".join(
+                f'<div class="row2"><div><b><a href="/d/{o["id"]}/">'
+                f'{html.escape(o["question"])}</a></b><p>{inline(o["gets"], ctx)}</p></div>'
+                f'<span class="st st--3">{html.escape(o["price_label"])} · '
+                f'{html.escape(o["eta"])}</span></div>' for o in levels) + "</div>"
+            + f'<p>{inline(r["why_them"], ctx)}</p>'
+            + '<h2 id="work-you-can-open">Work you can open right now</h2>'
+            '<p>Not a portfolio and not a case study — the vaults themselves, each opened by a '
+            'read key published on its own page.</p>'
+            + '<div class="ev-grid">' + "".join(
+                f'<div class="ev"><div class="ev-h"><a href="{w["url"]}">'
+                f'<b>{html.escape(w["title"])}</b></a>'
+                f'<span class="ev-m"><code>{html.escape(w["vault"])}</code> · '
+                f'{html.escape(w["size"])} · {html.escape(w["published"])}</span></div>'
+                f'<p class="ev-q">&ldquo;{html.escape(w["quoted"])}&rdquo;</p>'
+                f'<p class="ev-w">{inline(w["why"], ctx)}</p></div>' for w in works) + "</div>"
+            + f'<h2 id="reach-them">Reach them</h2><p><a href="{r["contact"]}">'
+            f'{html.escape(r["contact_label"])}</a>.</p>'
+            f'<p><a href="{REVIEWER_ROOT}">Everybody who runs a review here</a></p>')
+        md = [f"# {r['name']}\n", r["lede"], "",
+              "*Every line below is read off a published page. Sources: "
+              + "; ".join(f"{s['url']} (read {s['read']})" for s in REVIEWERS_FILE["_sources"])
+              + ".*\n", "## The record\n"]
+        md += [f"- **{_strip(x['what'])}** — {_strip(x['detail'])}" for x in r["record"]]
+        md += ["", "## What they run on this store\n"]
+        md += [f"- **{o['question']}** — {o['price_label']}, {o['eta']} "
+               f"— {SITE['base']}/d/{o['id']}/" for o in levels]
+        md += ["", "## Work you can open right now\n"]
+        md += [f"- **{w['title']}** — {w['url']}" for w in works]
+        md += ["", f"Reach them: {r['contact']}"]
+        made[url] = _selling_page(out_dir, ctx_shared, url,
+            {"title": r["name"], "description": r["lede"][:300],
+             "lead": inline(r["one_line"] + " " + r["lede"], ctx)},
+            f' / <a href="{REVIEWER_ROOT}">who runs it</a> / {html.escape(r["name"])}',
+            body, "\n".join(md))
+
+    idx_ctx = dict(ctx_shared)
+    idx_ctx.update({"page": "who", "page_url": REVIEWER_ROOT, "fm": {}, "toc": []})
+    idx_body = (
+        '<p class="lead">The two upper levels are somebody\'s work, and until 16 September this '
+        'store had never said whose. <b>Asking for £1,500 for a security review from nobody in '
+        'particular is a worse problem than any price on this site.</b></p>'
+        + block_who_runs_it(idx_ctx)
+        + '<h2 id="how-this-list-grows">How this list grows</h2>'
+        '<p>One name today. Other security professionals are being approached, and rates '
+        'negotiated, so they can take some of the work at £500 and £1,500 — and '
+        'eventually above. <b>Adding the second is adding a record to a file</b>: the page, its '
+        'markdown twin, the entry here and the links from the level pages are all generated, which '
+        'is why the surface was built for a list on the day it had one name on it.</p>'
+        '<h2 id="what-is-not-claimed">What is not claimed here</h2>'
+        '<p><b>Nothing on these pages was written from what somebody told us.</b> Every line of a '
+        'record is read off a published page, named with the date it was read. A biography this '
+        'store composed would be the worst thing on the domain to stand next to a price, and the '
+        'argument this whole site rests on is worth nothing if it stops applying the moment a '
+        'sentence is flattering.</p>'
+        '<p>It also carries no count of years. What is published is a record starting in 2008 and a '
+        'reader can do that arithmetic themselves and check every step of it — <b>a round '
+        'number nobody can verify is weaker than a date anybody can</b>.</p>')
+    idx_md = ["# Who runs the review\n",
+              "The two upper levels are somebody's work. This is who.\n"]
+    idx_md += [f"- **{r['name']}** — {r['one_line']} — "
+               f"{SITE['base']}{REVIEWER_ROOT}{r['id']}/" for r in REVIEWERS]
+    made[REVIEWER_ROOT] = _selling_page(out_dir, ctx_shared, REVIEWER_ROOT,
+        {"title": "Who runs the review",
+         "description": ("The named security professionals who run the £500 correction and the "
+                         "£1,500 sessions. One today, built for a list, and every line of every "
+                         "record read off a published page."),
+         "lead": "**The two upper levels are somebody's work.** This is who, and where every line "
+                 "of it was read from."},
+        "", idx_body, "\n".join(idx_md))
+    return made
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -4193,6 +4341,7 @@ def build(out_dir):
     extra.update(work_pages(out_dir, ctx_shared))
     extra.update(memo_pages(out_dir, ctx_shared))
     extra.update(audience_pages(out_dir, ctx_shared))
+    extra.update(reviewer_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The
     # documents are held; the hashes are not, so a reader holding the pack can
