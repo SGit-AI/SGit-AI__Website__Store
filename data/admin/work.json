@@ -636,35 +636,33 @@
         {
           "id": "WO-1",
           "title": "Publish the ownership boundary as a page both agents can read",
-          "status": "next",
-          "description": "Not a note in a commit. A page with a markdown twin, in llms.txt, stating which side owns each surface and which file lives where — the estate's own convention for anything another team's agent has to act on.",
+          "status": "done",
+          "description": "Shipped in v0.3.2 at /boundary/ — indexed, with a markdown twin, in llms.txt, so another team's agent can find it. The store owns e-commerce; riskmandate.ai owns the products and the material; the reader never crosses the seam.",
           "source": "lead",
           "memo": "2026-09-16-one-site-one-flow"
         },
         {
           "id": "WO-2",
           "title": "Brief the RiskMandate team to do the reverse",
-          "status": "next",
-          "description": "Asked for explicitly. Their side reads the store's e-commerce surfaces rather than re-implementing a cart, exactly as the store reads their products. The estate has a form for this already: a cross-team brief, addressed, status-tracked, and corrected in public when it turns out to be wrong.",
-          "blocked": "WO-1.",
+          "status": "done",
+          "description": "Shipped in v0.3.2 as the second half of /boundary/: four asks in the order that makes each one useful on its own, and an explicit list of what is NOT being asked for — no callback, no session, no shared state, no account. <b>Status open, and it will be recorded there when it is answered including if the answer is no</b>, because a brief that only appears when it succeeds is a brief nobody should trust.",
           "source": "lead",
           "memo": "2026-09-16-one-site-one-flow"
         },
         {
           "id": "WO-3",
           "title": "Mark the files that are on the wrong side",
-          "status": "queued",
-          "description": "The memo permits a few files living here that will move. Permitted debt is fine; invisible debt is not. Each one carries which side owns it, and a check counts them so the number can only go down.",
-          "blocked": "WO-1.",
+          "status": "done",
+          "description": "Done in v0.3.2. The one file on the wrong side is named on /boundary/ with what makes it survivable: data/abp-catalogue.json is promoted at build time with the source URL, the retrieval time and a sha256, so it cannot drift silently. It is still the wrong arrangement and the page says so.",
           "source": "self",
           "memo": "2026-09-16-one-site-one-flow"
         },
         {
           "id": "WO-4",
           "title": "Agree the contract for the shared files",
-          "status": "queued",
-          "description": "Both directions need a stable address, a stable shape and a version. CORS makes the read possible; it does not make it safe to depend on.",
-          "blocked": "WO-2.",
+          "status": "next",
+          "description": "Both directions need a stable address, a stable shape and a version field — three different promises, all three needed. CORS makes the read possible; it does not make it safe to depend on. Asked for as item four of the brief on /boundary/.",
+          "blocked": "The RiskMandate team's answer.",
           "source": "self",
           "memo": "2026-09-16-one-site-one-flow"
         }

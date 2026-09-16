@@ -121,6 +121,7 @@ NAV = [
         ("The claim ledger", "/ledger/"),
         ("Reviews, dated and kept", "/admin/reviews/"),
         ("What we do not say, and why", "/disclosures/"),
+        ("Who owns what", "/boundary/"),
         ("What is not for sale yet", "/catalogue/"),
         ("The dev packs", "/dev-packs/"),
         ("The purchase lab", "/lab/"),

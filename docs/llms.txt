@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.3.1
+> site v0.3.2
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
@@ -31,6 +31,7 @@ Licence: This document is released under the Creative Commons Attribution 4.0 In
 - [Run the whole flow yourself](https://store.sgit.ai/admin/try/): A walkthrough of store.sgit.ai from the catalogue to the page after payment, for a person and for an agent. It takes about four minutes, it costs nothing, and the discount codes that make it free are printed on this page.
 - [The three buyers, and what each one buys](https://store.sgit.ai/audiences/): Three buyers, ordered by opportunity rather than presented as three equal doors: a team running agents they already granted credentials to, an investor backing a company, and a startup about to meet diligence. Which of the six offers each one is shown, which were actually built for them, and — for one of the three — that none were.
 - [Booking a person](https://store.sgit.ai/booking/): Two of the four tiers are a booking rather than a download: a person reviewing your situation, and an assessment by a team. What a booking commits, what it does not, and why a signature is a separate thing you cannot buy yet.
+- [Who owns what, between this store and riskmandate.ai](https://store.sgit.ai/boundary/): The boundary between store.sgit.ai and riskmandate.ai, written down where both sides' agents can read it: the store owns e-commerce, riskmandate.ai owns the products and the policies, and neither sends the other's visitors away. Includes the brief asking their team to do the reverse.
 - [What is not for sale yet](https://store.sgit.ai/catalogue/): Eight further offers are specified and none of them is for this week. They are listed so that nobody proposes them as new, and so that the four that are for sale are not quietly widened to include them.
 - [What each level actually gets you](https://store.sgit.ai/compare/): Every level side by side, including the free one: what you get, whose work it is, what you may do with it, and when it arrives. Fourteen rows, five columns, and every cell read off the offer data rather than written as copy.
 - [The dev packs](https://store.sgit.ai/dev-packs/): The area is built and the documents are held. Nineteen documents, every one of them hashed and listed, none of them published — because five checks run before anything opens, none has been run by a person, and two of them a script can already show would fail.

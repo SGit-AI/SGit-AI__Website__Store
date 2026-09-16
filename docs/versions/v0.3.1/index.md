@@ -2,7 +2,7 @@
 
 The ask was to publish a discount code on the main site on specific journeys. The obvious objection is that a code at a hundred per cent, sitting where anybody can read it, is free product.
 
-SO IT IS SAFE BY CONSTRUCTION RATHER THAN BY TRUST. DOORSOPEN is held to the two levels that are PRODUCED the moment you pay, out of material already published free under CC BY. It takes ten pounds and fifty pounds to zero and leaves five hundred and fifteen hundred exactly where they were. What it gives away is the packaging and the licence, not a person's day — which is the same reasoning the project lead gave for not needing redemption caps at all, applied to the thing that actually carries the risk.
+SO IT IS SAFE BY CONSTRUCTION RATHER THAN BY TRUST. The code — printed on those two pages and not repeated here, because a release note is an indexed page and the check that holds a code to its journeys is right to refuse one — is held to the two levels that are PRODUCED the moment you pay, out of material already published free under CC BY. It takes ten pounds and fifty pounds to zero and leaves five hundred and fifteen hundred exactly where they were. What it gives away is the packaging and the licence, not a person's day — which is the same reasoning the project lead gave for not needing redemption caps at all, applied to the thing that actually carries the risk.
 
 check_a_leaked_code_cannot_buy_somebody_s_day is absolute and it is the half that matters: a code published on a journey may never reach a level that is somebody's time, may never apply to every level, and the page carrying it has to say what it does not cover — a reader who assumes it covers everything has been misled by omission.
 
@@ -13,7 +13,7 @@ THREE RULES NARROWED, AND EXACTLY THIS FAR. A printed code used to be allowed un
 Four deliberate breaks were run. One of them found a real bug rather than proving a check: levels is a list or the string all, and the block rendering the code iterated the string character by character and raised on the first one. A crash was the right failure there, and it now renders honestly instead.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `bbfbfb35b730eeb15ceb943b7e2e19e8849cc4b2`
 - Reconstructed: no
 
 ---
