@@ -23,7 +23,7 @@ point rather than an embarrassment.
 | **read, not run** | Read from a published source on this date. Never executed by us |
 | **projected** | Arithmetic, not an invoice. The workings are shown |
 | **specified, not built** | A specification. The thing it specifies does not exist |
-| **specified, never run** | **Never sold through this store.** Whether the underlying work has been done is a separate question and a different answer &mdash; it has, repeatedly, and the offer's own row says where to go and read it |
+| **never bought here** | **Never sold through this store.** Whether the underlying work has been done is a separate question and a different answer &mdash; it has, repeatedly, and the offer's own row says where to go and read it |
 | **built, not located** | It was built. It has not been found since, and nothing here promises it until it is |
 | **a booking, not a download** | What is bought is a person's time, not a file |
 | **part exists** | One half runs. The half carrying the guarantee does not |

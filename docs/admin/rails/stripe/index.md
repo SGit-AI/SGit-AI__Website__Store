@@ -1,6 +1,6 @@
 # Stripe
 
-**Account set up. No product, no price, no link, no coupon.** — The rail for everything bought from a screen, and the one that turns a buyer into a customer — including a buyer who pays nothing.
+**Six products created, priced, and reconciling. No link, no coupon, no webhook.** — The rail for everything bought from a screen, and the one that turns a buyer into a customer — including a buyer who pays nothing.
 
 ## Why
 
@@ -12,7 +12,7 @@ And a catalogue-backed checkout is the only version that can discount. A link th
 
 ## What this rail is handed
 
-- **The catalogue, in full** — Six products, eight prices, all in GBP, all one-off. SG-T1 £5 · SG-T2 £50 · SG-T3 £500 with a second price of £100 for the deposit · SG-T4 £1,500 with a second price of £300 · SG-ADD-FORMATS · SG-ADD-OPINION. Every number is read from data/offers.yml, which stays the only place a price exists on this side.
+- **The catalogue, in full** — Six products, six prices, all in GBP, all one-off, all created. ABP-T1 £10 · ABP-T2 £50 · ABP-T3-DEPOSIT £100 and ABP-T3-DELIVERY £400 · ABP-T4-DEPOSIT £300 and ABP-T4-DELIVERY £1,200. Every number is read from data/offers.yml, which stays the only place a price exists on this side, and the build reconciles all six against the dashboard's own export every release.
 - **Who the buyer becomes** — A Customer. Stripe Checkout always collects an email; what is not the default is keeping it — in payment mode Stripe creates a Customer only if required, and a £0 order requires nothing. Customer creation has to be set to always, or the hundred-per-cent code produces a completed checkout and no customer, which is the exact opposite of why this rail was chosen. This is the single setting most likely to be missed.
 - **What the discount is** — A Coupon carrying the percentage, and a Promotion Code carrying the string a person is handed. Three coupons — 25, 50 and 100 — and one promotion code per audience, each with its own redemption cap and expiry, so a code printed on a card at a stand can be killed without touching the code given to a beta tester.
 - **What the link carries** — client_reference_id, set to the order reference. Stripe stores it against the session and shows it in the dashboard. Optionally prefilled_promo_code, which is what a leaked-on-the-page code actually is: a link the buyer follows with the discount already applied and visible before they type anything.
@@ -21,7 +21,7 @@ And a catalogue-backed checkout is the only version that can discount. A link th
 
 ## The steps, in order
 
-1. **Create the six products and the eight prices** — By hand in the dashboard is fine for eight rows and is the honest first version. What must not happen is a price typed out by hand: the build emits /admin/rails/stripe/catalogue.json from data/offers.yml, and that file is what gets copied from. Give every product the SG- code as its lookup key so a dashboard row can be matched to an offer without reading the description.
+1. **Create the products and their prices** — Done on 16 September. Six products, GBP, one price each, and the split into DEPOSIT and DELIVERY at the two upper levels was the project lead's and is better than the shape this plan first proposed: the pair sums to the price, so paying in full is adding both lines. Every price carries its code — ABP-T1, ABP-T3-DEPOSIT and the rest — in the Stripe price description field, because the dashboard's product view surfaces no lookup key. That is not the same object as Price.lookup_key, which exists on the API and is the field a webhook would use to map a line item back to a level. It works for a person reading the dashboard and it is not yet queryable, and that difference is written down here rather than found later by a handler that cannot tell what was bought.
 2. **Turn on customer creation, and prove it on a £0 order** — Set customer creation to always. Then run one hundred-per-cent order end to end and look for the Customer in the dashboard. If it is not there the rail is doing the wrong job silently, and it will look like it worked — the buyer still sees a confirmation, the session still completes, and nothing anywhere says the record was dropped.
 3. **Create three coupons and the promotion codes over them** — 25, 50 and 100 per cent. Then one promotion code per audience over the right coupon, with a redemption cap and an expiry on every one of them. The seven codes this store already honours in the browser are the list to create — same strings, so a code printed on a PDF at v0.1.11 still works once the rail is real. data/discounts.yml is the register; it ships the SHA-256 of each code and never the code itself.
 4. **Enable promotion codes on every link, and prefill where a code was leaked deliberately** — A link with the promotion-code field switched off refuses a valid code with no explanation, which is the worst failure available here — the buyer blames themselves. Where the store publishes a code on a page as part of a journey, the link on that page should carry it already applied rather than ask the buyer to re-type what they just read.

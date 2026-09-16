@@ -13,7 +13,7 @@ TWO QUOTATIONS WERE SWAPPED FOR DIFFERENT PUBLISHED ONES, AND THE FILE SAYS WHY.
 check_the_evidence_is_real holds every entry to the domain that publishes it, the home page to linking all of them and to citing the claim, and the file to carrying no key of any shape — including the bare hex-and-vault-id form the catalogue prints, which none of the existing key patterns matched and which is the exact thing a careless copy would bring across. Four deliberate breaks were run against it.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `76c0136d84a7eb7f28dc776bb3792d563217aaf3`
 - Reconstructed: no
 
 ---

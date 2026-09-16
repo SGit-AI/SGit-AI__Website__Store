@@ -22,6 +22,14 @@ them is allowed to be wrong.
 workstreams. A workstream never moves by hand; it moves because a task inside it
 moved, so the summary cannot contradict the detail.
 
+## Hand somebody a code
+
+A code is a link, not something to type. Open one on the laptop you are holding,
+or send it, and the shop comes up with the discount already on it and the four
+prices repainted.
+
+{{code-links}}
+
 ## Next: taking money
 
 **[Both rails →](/admin/rails/)** — no payment rail is live, which is the single

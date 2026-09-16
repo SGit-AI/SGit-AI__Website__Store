@@ -1,0 +1,7 @@
+id,Name,Type,Date (UTC),Description,Statement Descriptor,Unit Label,Url,Tax Code
+prod_VGeZ3hF7RyfZVl,ABP - Two sessions and a custom vault (DELIVERY),service,2026-09-16 01:03,"Half an hour with your team to find out what is actually running, and half an hour to deliver it, reviewed and signed off by a security professional.",,,,txcd_20030000
+prod_VGeYrfTOzFhf7z,ABP - Two sessions and a custom vault (DEPOSIT),service,2026-09-16 01:02,"Half an hour with your team to find out what is actually running, and half an hour to deliver it,  reviewed and signed off by a security professional.",,,,txcd_20030000
+prod_VGeWBbtxXyIzi7,ABP - Corrected for your situation (DELIVERY),service,2026-09-16 01:00,"You tell us the industry, the use case and the details. The mandate is corrected against them and the vault comes back yours.",,,,txcd_20030000
+prod_VGeTgWs8HPSiPB,ABP - Corrected for your situation (DEPOSIT),service,2026-09-16 00:57,"You tell us the industry, the use case and the details. The mandate is corrected against them and the vault comes back yours.",,,,txcd_20030000
+prod_VGeSCLNy40qFU1,ABP - A working vault,service,2026-09-16 00:56,"Agent Behaviour Policy - The same material as a vault you hold the keys to: clone it, change it, version it, and hand anyone a read key.",,,,txcd_20030000
+prod_VGeQVaPGj6zhj0,"ABP - The pack, downloaded",service,2026-09-16 00:55,"Agent Behaviour Policy: Every file in the vault, downloaded by you. Yours to use, keep and hand to your agent.",,,,txcd_20030000

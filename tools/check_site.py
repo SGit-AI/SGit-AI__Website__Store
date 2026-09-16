@@ -1670,9 +1670,17 @@ def check_the_board_pages_agree_with_the_board():
 
 
 def check_the_stripe_catalogue_is_the_offers():
-    """A catalogue on the provider's side is a second copy of the prices, which is
-    the drift this store spent a release closing. It is admitted for one reason —
-    it is eight rows, not sixty-two — and this is what keeps it honest."""
+    """The reconciliation. Six products exist in the dashboard now, so this is no
+    longer a check on a plan — it is the thing standing between two copies of the
+    same price list and the day they disagree.
+
+    THE SITE CANNOT ASK STRIPE ANYTHING. It opens no connection and that rule is
+    not moving for this. So the other side is the dashboard's own CSV export,
+    committed to the repository, plus the amounts read off the product list on the
+    same day. That is weaker than an API call and it is the honest strongest thing
+    available to a static site: it catches a price changed HERE and not there,
+    which is the direction that actually happens, and it goes stale in the other
+    direction until somebody re-exports."""
     f = OUT / "admin" / "rails" / "stripe" / "catalogue.json"
     if not f.exists():
         fail("admin/rails/stripe/catalogue.json: the generated Stripe catalogue is missing")
@@ -1680,16 +1688,64 @@ def check_the_stripe_catalogue_is_the_offers():
     cat = json.loads(f.read_text())
     index = json.loads((OUT / "assets" / "site-index.json").read_text())
     offers = {o["id"]: o for o in index["offers"]}
+    by_offer = {}
     for row in cat["prices"]:
         o = offers.get(row["offer"])
         if not o:
             fail(f"the Stripe catalogue prices offer {row['offer']!r}, which this site does not sell")
             continue
-        if row["kind"] == "full" and row["label"] != o["price"]:
-            fail(f"Stripe catalogue {row['lookup_key']}: says {row['label']!r} and the offer says "
-                 f"{o['price']!r} — data/offers.yml is the only place a price exists")
         if row["currency"] != "gbp":
-            fail(f"Stripe catalogue {row['lookup_key']}: currency {row['currency']!r}, not gbp")
+            fail(f"Stripe catalogue {row['code']}: currency {row['currency']!r}, not gbp")
+        if row["part"] == "full" and row["label"] != o["price"]:
+            fail(f"Stripe catalogue {row['code']}: says {row['label']!r} and the offer says "
+                 f"{o['price']!r} — data/offers.yml is the only place a price exists")
+        by_offer.setdefault(row["offer"], []).append(row)
+
+        # The reconciliation itself.
+        if not row.get("stripe_id"):
+            fail(f"Stripe catalogue {row['code']}: nothing in the dashboard export answers "
+                 "to it. Either the product has not been created or the export is stale, and a "
+                 "price list that cannot say which is worse than no price list")
+        elif not row.get("agrees"):
+            # Both halves have to match. A product at the right price under the
+            # wrong code is a line item no handler can map back to a level, and
+            # that failure only surfaces after somebody has already paid.
+            fail(f"Stripe catalogue {row['code']}: this site says {row['unit_amount']}p under "
+                 f"{row['code']!r} and the dashboard export says "
+                 f"{row.get('stripe_code')!r} at an amount that does not match. One of the two is "
+                 "wrong and neither of them knows which")
+
+    for oid, rows in by_offer.items():
+        parts = {r["part"] for r in rows}
+        if parts not in ({"full"}, {"deposit", "delivery"}):
+            fail(f"offer {oid}: has Stripe parts {sorted(parts)}. A level is one product, or it is "
+                 "a deposit and a delivery that add up. There is no third arrangement")
+
+    # AND THE DASHBOARD'S OWN AMOUNTS HAVE TO ADD UP TO THE PRICE ON THE PAGE.
+    #
+    # Read from data/admin/stripe-products.json rather than from the generated
+    # catalogue, and that is the whole point of the assertion. The generated rows
+    # are derived from data/offers.yml, so they sum correctly by construction and
+    # checking them against each other proves nothing — an earlier version of this
+    # did exactly that and a deliberate break walked straight through it.
+    #
+    # What a buyer pays is the sum of what is in the dashboard. If that stops
+    # matching the price this site prints, somebody is charged the wrong total and
+    # finds out afterwards.
+    live = json.loads((ROOT / "data" / "admin" / "stripe-products.json").read_text())
+    totals = {}
+    for pr in live["products"]:
+        totals[pr["offer"]] = totals.get(pr["offer"], 0) + pr["amount"]
+    for oid, total in sorted(totals.items()):
+        o = offers.get(oid)
+        if not o:
+            fail(f"the dashboard export carries products for {oid!r}, which this site does not sell")
+            continue
+        want = EXPECTED_PRICES[oid][1]
+        if total != want:
+            fail(f"offer {oid}: the products in the dashboard come to {total}p and this site "
+                 f"prints {want}p. A buyer adding every line for this level pays the wrong total")
+
     for bad in ("sk_live", "sk_test", "whsec_", "pk_live", "pk_test"):
         if bad in json.dumps(cat):
             fail(f"the Stripe catalogue carries {bad!r}. It is a price list; a key is never in one")

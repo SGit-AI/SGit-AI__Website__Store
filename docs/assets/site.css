@@ -746,3 +746,46 @@ figure.walkshot figcaption code{font-size:.9em}
 .ev-m code{font-size:.78rem}
 .ev-q{margin:.6rem 0 .4rem;font-size:.9rem;color:var(--dim);font-style:italic}
 .ev-w{margin:0;font-size:.9rem;line-height:1.55}
+
+/* ------------------------------------------------------- the four things ----
+   The shop front. Written for a laptop or a tablet turned round at an event
+   rather than for a desk: four large targets, three facts on each — what it is,
+   what it costs, when it arrives — and a button that is a button. */
+/* Four across when there is room, two when there is not, never three — the four
+   levels are a ladder and a 3+1 wrap reads as three things and an afterthought. */
+.skus{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.5rem 0 2rem}
+@media (min-width:1000px){.skus{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:560px){.skus{grid-template-columns:minmax(0,1fr)}}
+.sku{position:relative;font-weight:400;display:flex;flex-direction:column;background:var(--panel);
+  border:1px solid var(--line);border-radius:10px;padding:1.4rem 1.3rem 1.2rem}
+.sku:hover{border-color:var(--line2);box-shadow:var(--shadow)}
+.sku-n{position:absolute;top:1rem;right:1.15rem;font-family:var(--mono,monospace);
+  font-size:.72rem;color:var(--dim2,var(--dim));letter-spacing:.08em}
+.sku-name{margin:0;font-family:var(--serif);font-weight:600;font-size:1.12rem;line-height:1.25;
+  letter-spacing:-.01em;color:#101114;padding-right:1.4rem}
+.sku-who{margin:.35rem 0 0;font-size:.84rem;font-weight:400;color:var(--dim);line-height:1.5}
+/* The price line has to sit at the same height on all four cards or the eye
+   cannot compare them, and comparing them is the entire job of this row. The
+   who-line is the only variable-length thing above it, so it is what gets
+   reserved. Three lines at this measure holds every string in data/shop.yml
+   and check_the_shop_front_compares fails the release if one outgrows it. */
+@media (min-width:560px){.sku-name{min-height:2.5em}.sku-who{min-height:4.5em}}
+.sku-price{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;
+  margin:.9rem 0 .2rem;padding-top:.9rem;border-top:1px solid var(--line)}
+.sku-price b{font-family:var(--serif);font-size:1.75rem;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+.sku-price span{font-size:.85rem;color:var(--dim)}
+.sku-lede{margin:.7rem 0 0;font-size:.88rem;font-weight:400;line-height:1.55;color:var(--ink)}
+.sku-state{margin:.8rem 0 0}
+.sku-go{margin:auto 0 0;padding-top:1rem;display:flex;flex-direction:column;gap:.5rem;
+  align-items:flex-start}
+.sku-more{font-size:.85rem}
+/* A finger, not a cursor. 48px is the smallest target that is reliably hit by
+   somebody holding a tablet while talking to the person next to them. */
+@media (hover:none){
+  .sku-go .buy,.sku-go button{min-height:48px;font-size:1rem}
+  .sku-more{min-height:44px;display:inline-flex;align-items:center}
+}
+/* The list price stays visible when a code comes off it. A discount that hides
+   what it came off is a discount nobody can check. */
+.sku-was{font-size:.8rem;color:var(--dim)}
+.sku-was s{opacity:.75}

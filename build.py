@@ -97,6 +97,7 @@ NAV = [
         ("Your order", "/cart/"),
     ]),
     ("How buying works", "/how-it-works/", [
+        ("What is actually in one", "/what-is-in-one/"),
         ("The three steps", "/how-it-works/"),
         ("The two rails", "/paying/"),
         ("What a session is", "/booking/"),
@@ -584,7 +585,14 @@ STATES = {
     "docs": ("read, not run", "st-d", "Read from a published source on this date. Never executed by us."),
     "projected": ("projected", "st-p", "Arithmetic, not an invoice. The workings are shown."),
     "spec": ("specified, not built", "st-s", "A specification. The thing it specifies does not exist yet."),
-    "unrun": ("specified, never run", "st-u", "Specified in full, and it has never been executed once."),
+    # RELABELLED 16 SEPTEMBER. It read "specified, never run" with the tooltip
+    # "never been executed once", which was true of the SALE and false of the work,
+    # and a reader had no way to tell which one a chip on an offer meant. It now
+    # says the thing that is actually unrun, and the offer's own row says where to
+    # go and read the work that is not.
+    "unrun": ("never bought here", "st-u",
+              "Never sold through this store. The work behind it has been done many times and is "
+              "published \u2014 what has not happened is a purchase through this checkout."),
     "unlocated": ("built, not located", "st-u", "It was built. It has not been found since, and until it is, nothing here promises it."),
     "booking": ("a booking, not a download", "st-b", "What is bought is a person's time, not a file."),
     "partial": ("part exists", "st-s", "One half of it runs. The half that carries the guarantee does not."),
@@ -3078,6 +3086,7 @@ def read_page(path):
 RAIL_PLANS = json.loads((DATA / "admin" / "rails.json").read_text())
 WORK = json.loads((DATA / "admin" / "work.json").read_text())
 MEMOS = json.loads((DATA / "admin" / "memos.json").read_text())
+STRIPE_PRODUCTS = json.loads((DATA / "admin" / "stripe-products.json").read_text())
 WORK_COLS = WORK["columns"]
 WORK_BY_ID = {w["id"]: w for w in WORK["workstreams"]}
 MEMO_BY_ID = {m["id"]: m for m in MEMOS["memos"]}
@@ -3427,36 +3436,63 @@ def memo_pages(out_dir, ctx_shared):
 
 
 def stripe_catalogue():
-    """What Stripe's product list would be, emitted from data/offers.yml.
+    """The Stripe catalogue, as data/offers.yml implies it — beside what the
+    dashboard actually holds.
 
-    THE POINT IS THAT NOBODY TYPES A PRICE TWICE. The Stripe rail needs a
-    catalogue on its side, which re-opens exactly the drift this store spent the
-    last release closing. It is survivable for one reason: a price here does not
-    vary by shape, so this is eight rows rather than sixty-two. This file is what
-    gets copied from, and it cannot disagree with the offers because it is made
-    out of them."""
+    THIS STOPPED BEING A WISH-LIST ON 16 SEPTEMBER. The products exist now, so
+    the file is a reconciliation: what the offers imply, what Stripe has, and
+    whether the two agree. The site cannot ask Stripe anything — it opens no
+    connection — so the other side comes from the dashboard's own CSV export,
+    committed at data/admin/stripe-products.csv, plus the amounts read off the
+    product list on the same day.
+
+    AND THE SHAPE IS THEIRS, NOT THE ONE THIS FILE FIRST GUESSED. The two upper
+    levels are two products each, DEPOSIT and DELIVERY, summing to the full
+    price — rather than a full price with a deposit hung off it. A buyer paying
+    in full adds both lines. The store has said "a fifth now and the rest on
+    delivery" since it had prices; this is that sentence as two rows instead of
+    a rule somebody has to remember to apply."""
     rows = []
     for o in OFFERS:
-        # An offer priced as a band has no single number, so it has no Stripe price
-        # and it is not quietly given one. Two of the six are bands today.
+        # An offer priced as a band has no single number, so it has no Stripe
+        # product and it is not quietly given one. Two of the six are bands.
         if not o["price_min"] or o["price_min"] != o["price_max"]:
             continue
-        rows.append({"lookup_key": f"SG-{o['id'].upper()}", "product": o["question"],
-                     "currency": "gbp", "unit_amount": o["price_min"],
-                     "label": o["price_label"], "offer": o["id"], "kind": "full"})
         pct = o.get("pay_now_pct", 100)
-        if pct != 100:
-            rows.append({"lookup_key": f"SG-{o['id'].upper()}-DEPOSIT",
-                         "product": o["question"], "currency": "gbp",
-                         "unit_amount": o["price_min"] * pct // 100,
-                         "label": f"{pct}% deposit on {o['price_label']}",
-                         "offer": o["id"], "kind": "deposit"})
-    return {"_what_this_is": ("The Stripe catalogue, generated from data/offers.yml at build time. "
-                             "Create these in the dashboard and copy from here rather than by "
-                             "eye. A price on this store does not vary by shape, which is why "
-                             "this is a short file."),
-            "_never_here": ("No key of any kind, and no shape. The fifteen shapes are a selection "
-                            "carried in the order reference and resolved on this side."),
+        key = f"ABP-{o['id'].upper()}"
+        if pct == 100:
+            rows.append({"code": key, "offer": o["id"], "part": "full",
+                         "currency": "gbp", "unit_amount": o["price_min"],
+                         "label": o["price_label"], "product": o["question"]})
+        else:
+            dep = o["price_min"] * pct // 100
+            rows.append({"code": key + "-DEPOSIT", "offer": o["id"], "part": "deposit",
+                         "currency": "gbp", "unit_amount": dep,
+                         "label": f"{pct}% of {o['price_label']}", "product": o["question"]})
+            rows.append({"code": key + "-DELIVERY", "offer": o["id"], "part": "delivery",
+                         "currency": "gbp", "unit_amount": o["price_min"] - dep,
+                         "label": f"the remaining {100 - pct}%", "product": o["question"]})
+
+    live = {(p["offer"], p["part"]): p for p in STRIPE_PRODUCTS["products"]}
+    for r in rows:
+        got = live.get((r["offer"], r["part"]))
+        r["stripe_id"] = got["id"] if got else None
+        r["stripe_name"] = got["name"] if got else None
+        r["stripe_code"] = got.get("price_description") if got else None
+        # Agreement is BOTH halves. A product at the right price under the wrong
+        # code is a line item a handler cannot map back to a level, which is the
+        # failure that only shows up after somebody has already paid.
+        r["agrees"] = (bool(got) and got["amount"] == r["unit_amount"]
+                       and got.get("price_description") == r["code"])
+
+    return {"_what_this_is": ("What the Stripe catalogue should be, generated from "
+                             "data/offers.yml, reconciled against what the dashboard actually "
+                             "holds. Copy from here rather than by eye."),
+            "_never_here": ("No key of any kind, and no shape. The fifteen shapes are a "
+                            "selection carried in the order reference and resolved on this side. "
+                            "A product id is not a secret and is published deliberately; a "
+                            "secret key is refused everywhere in this repository."),
+            "_reconciled_against": STRIPE_PRODUCTS["captured"],
             "version": SITE["version"], "currency": "gbp", "prices": rows}
 
 
@@ -3509,17 +3545,38 @@ def rails_pages(out_dir, ctx_shared):
             + '<h2 id="still-open">Still open</h2>'
             + "".join(f'<div class="panel r2"><h3>{html.escape(a)}</h3><p>{b}</p></div>'
                       for a, b in r["open"])
-            + (('<h2 id="the-catalogue">The catalogue, generated</h2>'
-                '<p>Eight prices across six products, emitted from <code>data/offers.yml</code> at '
-                'build time and served beside this page as '
-                f'<a href="{r["url"]}catalogue.json"><code>catalogue.json</code></a>. <b>Copy from '
-                'it rather than by eye.</b> It carries no key and no shape.</p>'
+            + (('<h2 id="the-catalogue">The catalogue, reconciled</h2>'
+                '<p><b>The products exist.</b> Six of them, created on 16 September, and the two '
+                'upper levels are split into a <code>DEPOSIT</code> and a <code>DELIVERY</code> '
+                'that sum to the price — which is the store\'s own "a fifth now and the rest on '
+                'delivery" as two rows rather than a rule somebody has to remember. A buyer paying '
+                'in full adds both lines.</p>'
+                '<p>So this table is a reconciliation rather than a shopping list: the left is what '
+                '<code>data/offers.yml</code> implies, the right is what the dashboard actually '
+                'holds. <b>This site cannot ask Stripe anything</b> — it opens no connection — so '
+                'the other side is the dashboard\'s own CSV export, committed at '
+                '<code>data/admin/stripe-products.csv</code>, with the amounts read off the product '
+                'list the same day. Weaker than an API call, and the strongest thing a static site '
+                'can honestly do: it catches a price changed here and not there, which is the '
+                'direction that actually happens.</p>'
+                f'<p>Served beside this page as '
+                f'<a href="{r["url"]}catalogue.json"><code>catalogue.json</code></a>. It carries no '
+                'key and no shape. A product id is not a secret and is printed on purpose.</p>'
                 '<div class="rows">'
                 + "".join(
-                    f'<div class="row2"><div><b><code>{p["lookup_key"]}</code></b>'
-                    f'<p>{html.escape(p["product"])} — {html.escape(p["label"])}</p></div>'
-                    f'<span class="st st--3">{p["unit_amount"]}p</span></div>'
-                    for p in stripe_catalogue()["prices"]) + "</div>")
+                    f'<div class="row2"><div><b><code>{q["code"]}</code></b>'
+                    f'<p>{html.escape(q["product"])} — {html.escape(q["label"])}'
+                    + (f' · <code>{html.escape(q["stripe_id"])}</code>'
+                       if q.get("stripe_id") else " · <b>not in the dashboard</b>")
+                    + (f'<br><span class="dim">{html.escape(q["stripe_name"])}</span>'
+                       if q.get("stripe_name") else "")
+                    + "</p></div>"
+                    f'<span class="st st--{4 if q.get("agrees") else 1}">'
+                    f'{q["unit_amount"]}p{"" if q.get("agrees") else " ✗"}</span></div>'
+                    for q in stripe_catalogue()["prices"]) + "</div>"
+                '<p class="small">The account carries one more product that is not listed and is '
+                'not reconciled: it belongs to a different part of the estate and this store '
+                'neither sells it nor tracks it.</p>')
                if r["id"] == "stripe" else "")
             + f'<p><a href="{RAIL_ROOT}">← both rails</a></p>')
         md = [f"# {r['name']}\n", f"**{r['state']}** — {r['one_line']}\n", "## Why\n"]
@@ -3626,6 +3683,91 @@ def block_evidence(ctx):
 
 
 BLOCKS["evidence"] = block_evidence
+
+
+def block_buy_cards(ctx):
+    """The four things for sale, as a shop shows them.
+
+    THE BRIEF FOR THIS IS PHYSICAL, NOT VISUAL. A laptop or a tablet turned round
+    at an event, a person standing next to the buyer: who are you, here is your
+    thing, buy it. So the targets are large, there are four of them, every card
+    carries the three facts somebody decides on — what it is, what it costs, when
+    it arrives — and none of them is a paragraph you have to read to the end of.
+
+    The state chip stays. It is not decoration and it is not a hedge: two of these
+    have never been bought here and a shop that hides that is the thing this site
+    exists not to be. What changed on 16 September is that it no longer stands in
+    for whether the work has ever been done, which it was doing silently."""
+    cards = []
+    for l in LEVELS:
+        o = OFFERS_BY_ID[l["offer"]]
+        cards.append(
+            f'<div class="sku" id="sku-{l["id"]}">'
+            f'<div class="sku-n">{l["n"]}</div>'
+            f'<h3 class="sku-name">{html.escape(l["name"])}</h3>'
+            f'<p class="sku-who">{html.escape(l["who"])}</p>'
+            f'<div class="sku-price"><b>{html.escape(l["price_label"])}</b>'
+            f'<span>{html.escape(o["eta"])}</span></div>'
+            f'<p class="sku-lede">{inline(l["lede"], ctx)}</p>'
+            f'<p class="sku-state">{chip(o["state_badge"], claim_id=o["claim"])}</p>'
+            f'<p class="sku-go">{checkout_html(o, ctx)}'
+            f'<a class="sku-more" href="/d/{o["id"]}/">What arrives, and what does not &rarr;</a>'
+            "</p></div>")
+    # The island goes with the cards, because a code applied by following a link has
+    # to change the price on the card the buyer is looking at. Without it shop.js
+    # takes its no-model path on this page and paints only the order badge, so a
+    # 100% code would leave four full prices on screen and the person holding the
+    # laptop would have to explain that it had worked.
+    return (shop_island(rel_prefix(ctx["page_url"]))
+            + f'<div class="skus">{"".join(cards)}</div>')
+
+
+BLOCKS["buy-cards"] = block_buy_cards
+
+
+def block_code_links(ctx):
+    """A code as a LINK, which is the only form it should ever be handed over in.
+
+    THE POINT IS THE COUNTER. A laptop turned round at a stand: somebody says
+    what they are, they pick a thing, and the price on the card should already be
+    what they are going to pay. Reading a code off a card and typing it into a
+    field is two steps and a typo, and the field does not exist anyway — this site
+    has no input on it and a build check keeps it that way.
+
+    So the code travels in the address. shop.js takes it, applies it, repaints the
+    four prices, and strips it out of the address bar before anybody sees it —
+    so the link can be sent, opened, and the page it lands on is a shop with the
+    discount already on it and nothing to fill in.
+
+    ONLY PRINTABLE CODES APPEAR HERE, and check_discount_codes_are_not_printed
+    fails the release if any other one reaches the built site in plain text. The
+    four that are not printable ship as a SHA-256 and nothing else."""
+    rows = []
+    for d in DISCOUNTS:
+        if not d["printable"]:
+            continue
+        code = str(d["code"])
+        link = f"{SITE['base']}/?code={code}"
+        rows.append(
+            f'<div class="row2"><div><b>{html.escape(d["label"])}</b>'
+            f'<p>{html.escape(d["why"])}</p>'
+            f'<p><code>{html.escape(link)}</code></p></div>'
+            f'<span class="st st--4">{d["pct"]}% off</span></div>')
+    hidden = sum(1 for d in DISCOUNTS if not d["printable"])
+    return (
+        '<div class="rows">' + "".join(rows) + "</div>"
+        f'<p class="small">{hidden} more codes exist and are not on this page. They ship as a '
+        'SHA-256 and never as a string, so they are not in the built site, not in the markdown '
+        'twins and not in this console — a check reads every byte of the output against every '
+        'code on every release. Read them out of <code>data/discounts.yml</code>, which is in the '
+        'repository and not in the site.</p>'
+        '<p class="small">Opening one of these lands on the shop with the discount already '
+        'applied and the four prices repainted, and the code is taken out of the address before '
+        'the page settles — so it is not in history, not in a bookmark and not in a referrer. '
+        'Any page here takes <code>?code=</code>, not just the front one.</p>')
+
+
+BLOCKS["code-links"] = block_code_links
 
 def build(out_dir):
     out_dir = Path(out_dir)

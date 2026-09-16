@@ -420,6 +420,39 @@
   /* The code, said once at the top of whatever page the reader is on. It is a
      chip and a button rather than a field, and it names what came off rather
      than repeating the code — which is not in this browser's storage to repeat. */
+  // THE SHOP FRONT'S OWN PRICES, WHEN A CODE IS HELD.
+  //
+  // The four cards on the home page are built at build time and carry the list
+  // price, which is right until somebody follows a link with a code on it. Then
+  // the card is the thing they are looking at and the thing that has to change:
+  // a person holding a laptop at a stand should not have to say "it did work,
+  // look at the bar at the top".
+  //
+  // The list price stays on screen, struck through. A discount that hides what it
+  // came off is a discount nobody can check.
+  function renderSkuPrices() {
+    var cards = document.querySelectorAll('.sku[id^="sku-"]');
+    if (!cards.length) return;
+    for (var i = 0; i < cards.length; i++) {
+      var id = cards[i].id.slice(4);
+      var lvl = LEVELS[id];
+      var box = cards[i].querySelector('.sku-price');
+      if (!lvl || !box) continue;
+      var b = box.querySelector('b');
+      if (!b) continue;
+      if (!b.getAttribute('data-list')) b.setAttribute('data-list', b.textContent);
+      var was = box.querySelector('.sku-was');
+      if (was && was.parentNode) was.parentNode.removeChild(was);
+      var pct = pctFor(id);
+      if (!pct) { b.textContent = b.getAttribute('data-list'); continue; }
+      b.textContent = money(unitOf(id));
+      var s = el('span', 'sku-was');
+      s.appendChild(el('s', null, b.getAttribute('data-list')));
+      s.appendChild(document.createTextNode(' \u00b7 ' + pct + '% off'));
+      box.insertBefore(s, box.firstChild.nextSibling);
+    }
+  }
+
   function renderCodeBar() {
     var old = document.querySelector('.codebar');
     if (old && old.parentNode) old.parentNode.removeChild(old);
@@ -974,6 +1007,7 @@
     var ord = document.getElementById('order');
     if (ord) renderOrder(ord);
     renderCodeBar();
+    renderSkuPrices();
     renderBadge();
   }
 

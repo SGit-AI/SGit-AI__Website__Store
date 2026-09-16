@@ -44,9 +44,9 @@
       "tasks": [
         {
           "id": "TM-1",
-          "title": "Create six Stripe products and eight prices",
-          "status": "next",
-          "description": "GBP, one-off, lookup keys SG-T1 to SG-ADD-OPINION. Copied from the generated catalogue file rather than typed out by hand. A price does not vary by shape, which is why this is eight rows and not sixty-two.",
+          "title": "Create the products in Stripe",
+          "status": "done",
+          "description": "<b>Done by the project lead on 16 September.</b> Six products, GBP, and the shape is theirs rather than the one this plan first guessed: <b>the two upper levels are a DEPOSIT and a DELIVERY that sum to the price</b>, so a buyer paying in full adds both lines and a buyer starting adds one. That is the store's own “a fifth now and the rest on delivery” as two rows instead of a rule somebody has to apply. The dashboard's CSV export is committed and the build reconciles against it every release.",
           "owner": "lead",
           "source": "lead",
           "memo": "2026-09-16-stripe-end-to-end"
@@ -121,6 +121,33 @@
           "title": "Write the two rails up as plans rather than intentions",
           "status": "done",
           "description": "Shipped in v0.1.18 at /admin/rails/stripe/ and /admin/rails/sumup/, generated from data/admin/rails.json.",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-11",
+          "title": "Get the codes into Price.lookup_key, not just the description",
+          "status": "next",
+          "description": "The six codes exist as <code>ABP-T1</code>, <code>ABP-T3-DEPOSIT</code> and the rest — <b>in the price description</b>, because the dashboard's product view surfaces no lookup key. That works for a person reading the dashboard. <code>Price.lookup_key</code> is a different field, it exists on the API, and it is the one a webhook uses to map a line item back to a level. <b>Without it the handler has a product id and a free-text string</b>, which is workable and is not the same as queryable.",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-12",
+          "title": "Re-export the product CSV whenever the dashboard changes",
+          "status": "next",
+          "description": "The reconciliation reads a committed export, because this site opens no connection and that rule is not moving. It catches a price changed here and not there, which is the direction that happens; it goes stale in the other direction until somebody re-exports. <b>That is the known weakness and it is written on the page rather than left to be discovered.</b>",
+          "owner": "lead",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-13",
+          "title": "Decide what a DELIVERY-only purchase means",
+          "status": "next",
+          "description": "The split makes a new thing possible that no page describes: somebody buying the delivery line without ever having bought the deposit. Either the pages say what that is, or the link only ever offers the pair.",
+          "owner": "lead",
           "source": "lead",
           "memo": "2026-09-16-stripe-end-to-end"
         }
@@ -906,6 +933,14 @@
           "blocked": "SF-3.",
           "source": "self",
           "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "SF-7",
+          "title": "Rename level four to match the product",
+          "status": "next",
+          "description": "Called “Two sessions, and a professional signs it” here and <b>“Two sessions and a custom vault”</b> in Stripe, where the project lead renamed it on 16 September. The Stripe name is the later decision and the better one — it says what the buyer ends up holding rather than what happens to it. The store has not followed yet.",
+          "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
         }
       ]
     }

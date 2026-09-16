@@ -1,62 +1,87 @@
 {
-  "_what_this_is": "The Stripe catalogue, generated from data/offers.yml at build time. Create these in the dashboard and copy from here rather than by eye. A price on this store does not vary by shape, which is why this is a short file.",
-  "_never_here": "No key of any kind, and no shape. The fifteen shapes are a selection carried in the order reference and resolved on this side.",
-  "version": "v0.2.1",
+  "_what_this_is": "What the Stripe catalogue should be, generated from data/offers.yml, reconciled against what the dashboard actually holds. Copy from here rather than by eye.",
+  "_never_here": "No key of any kind, and no shape. The fifteen shapes are a selection carried in the order reference and resolved on this side. A product id is not a secret and is published deliberately; a secret key is refused everywhere in this repository.",
+  "_reconciled_against": "2026-09-16",
+  "version": "v0.2.2",
   "currency": "gbp",
   "prices": [
     {
-      "lookup_key": "SG-T1",
-      "product": "Can I just have the pack?",
+      "code": "ABP-T1",
+      "offer": "t1",
+      "part": "full",
       "currency": "gbp",
       "unit_amount": 1000,
       "label": "\u00a310",
-      "offer": "t1",
-      "kind": "full"
+      "product": "Can I just have the pack?",
+      "stripe_id": "prod_VGeQVaPGj6zhj0",
+      "stripe_name": "ABP - The pack, downloaded",
+      "stripe_code": "ABP-T1",
+      "agrees": true
     },
     {
-      "lookup_key": "SG-T2",
-      "product": "Can I have a vault I hold the keys to?",
+      "code": "ABP-T2",
+      "offer": "t2",
+      "part": "full",
       "currency": "gbp",
       "unit_amount": 5000,
       "label": "\u00a350",
-      "offer": "t2",
-      "kind": "full"
+      "product": "Can I have a vault I hold the keys to?",
+      "stripe_id": "prod_VGeSCLNy40qFU1",
+      "stripe_name": "ABP - A working vault",
+      "stripe_code": "ABP-T2",
+      "agrees": true
     },
     {
-      "lookup_key": "SG-T3",
-      "product": "Can you correct it for my situation?",
-      "currency": "gbp",
-      "unit_amount": 50000,
-      "label": "\u00a3500",
+      "code": "ABP-T3-DEPOSIT",
       "offer": "t3",
-      "kind": "full"
-    },
-    {
-      "lookup_key": "SG-T3-DEPOSIT",
-      "product": "Can you correct it for my situation?",
+      "part": "deposit",
       "currency": "gbp",
       "unit_amount": 10000,
-      "label": "20% deposit on \u00a3500",
+      "label": "20% of \u00a3500",
+      "product": "Can you correct it for my situation?",
+      "stripe_id": "prod_VGeTgWs8HPSiPB",
+      "stripe_name": "ABP - Corrected for your situation (DEPOSIT)",
+      "stripe_code": "ABP-T3-DEPOSIT",
+      "agrees": true
+    },
+    {
+      "code": "ABP-T3-DELIVERY",
       "offer": "t3",
-      "kind": "deposit"
-    },
-    {
-      "lookup_key": "SG-T4",
-      "product": "Can somebody go through it with my team?",
+      "part": "delivery",
       "currency": "gbp",
-      "unit_amount": 150000,
-      "label": "\u00a31,500",
-      "offer": "t4",
-      "kind": "full"
+      "unit_amount": 40000,
+      "label": "the remaining 80%",
+      "product": "Can you correct it for my situation?",
+      "stripe_id": "prod_VGeWBbtxXyIzi7",
+      "stripe_name": "ABP - Corrected for your situation (DELIVERY)",
+      "stripe_code": "ABP-T3-DELIVERY",
+      "agrees": true
     },
     {
-      "lookup_key": "SG-T4-DEPOSIT",
-      "product": "Can somebody go through it with my team?",
+      "code": "ABP-T4-DEPOSIT",
+      "offer": "t4",
+      "part": "deposit",
       "currency": "gbp",
       "unit_amount": 30000,
-      "label": "20% deposit on \u00a31,500",
+      "label": "20% of \u00a31,500",
+      "product": "Can somebody go through it with my team?",
+      "stripe_id": "prod_VGeYrfTOzFhf7z",
+      "stripe_name": "ABP - Two sessions and a custom vault (DEPOSIT)",
+      "stripe_code": "ABP-T4-DEPOSIT",
+      "agrees": true
+    },
+    {
+      "code": "ABP-T4-DELIVERY",
       "offer": "t4",
-      "kind": "deposit"
+      "part": "delivery",
+      "currency": "gbp",
+      "unit_amount": 120000,
+      "label": "the remaining 80%",
+      "product": "Can somebody go through it with my team?",
+      "stripe_id": "prod_VGeZ3hF7RyfZVl",
+      "stripe_name": "ABP - Two sessions and a custom vault (DELIVERY)",
+      "stripe_code": "ABP-T4-DELIVERY",
+      "agrees": true
     }
   ]
 }

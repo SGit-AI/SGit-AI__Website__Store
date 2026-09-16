@@ -2,14 +2,14 @@
 
 The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.
 
-**16 workstreams · 86 units of work · 72 not done.**
+**16 workstreams · 90 units of work · 75 not done.**
 
 
 ## Take money at all — next
 
 No payment rail is live. Every checkout_url in data/checkout.yml is empty, so the store can be walked end to end and cannot be bought from. This is the workstream that ends that, and the shape of it changed on 16 September: the rail is no longer an amount-only link, it is Stripe's own catalogue and a real customer record behind every order including the free ones.
 
-- **TM-1 · Create six Stripe products and eight prices** — `next` — GBP, one-off, lookup keys SG-T1 to SG-ADD-OPINION. Copied from the generated catalogue file rather than typed out by hand. A price does not vary by shape, which is why this is eight rows and not sixty-two.
+- **TM-1 · Create the products in Stripe** — `done` — Done by the project lead on 16 September. Six products, GBP, and the shape is theirs rather than the one this plan first guessed: the two upper levels are a DEPOSIT and a DELIVERY that sum to the price, so a buyer paying in full adds both lines and a buyer starting adds one. That is the store's own “a fifth now and the rest on delivery” as two rows instead of a rule somebody has to apply. The dashboard's CSV export is committed and the build reconciles against it every release.
 - **TM-2 · Set customer creation to always, and prove it on a £0 order** — `next` — The single setting most likely to be missed. Without it a hundred-per-cent order completes, the buyer sees a confirmation, and no customer record exists — which is the exact opposite of why this rail was chosen. Proof is a Customer visible in the dashboard after one free order, not a screenshot of the toggle.
 - **TM-3 · Create three coupons and seven promotion codes over them** — `queued` — 25, 50 and 100 per cent. The seven strings are the ones data/discounts.yml already holds, so a code printed on a PDF at v0.1.11 still works. Every promotion code gets a redemption cap and an expiry.
 - **TM-4 · Enable promotion codes on every link, prefill where a code was leaked** — `queued` — A link with the field switched off refuses a valid code with no explanation and the buyer blames themselves. Where a page publishes a code as part of a journey, the link on that page carries it already applied.
@@ -19,6 +19,9 @@ No payment rail is live. Every checkout_url in data/checkout.yml is empty, so th
 - **TM-8 · Retire the browser-side discount arithmetic** — `queued` — A code is honoured in the browser today and the page says it is a demonstration. Once a promotion code exists on the rail there are two implementations of one rule, and the browser one can be edited by the person it is discounting. _Blocked on: TM-3._
 - **TM-9 · Take SumUp's hosts from the rails, not from a constant** — `next` — check_checkout_links pins every destination to Stripe's two hosts. data/checkout.yml has declared SumUp's hosts since the rail was added and the check has never read them, so a SumUp URL pasted in today is refused by the gate with a message about Stripe. Five lines.
 - **TM-10 · Write the two rails up as plans rather than intentions** — `done` — Shipped in v0.1.18 at /admin/rails/stripe/ and /admin/rails/sumup/, generated from data/admin/rails.json.
+- **TM-11 · Get the codes into Price.lookup_key, not just the description** — `next` — The six codes exist as ABP-T1, ABP-T3-DEPOSIT and the rest — in the price description, because the dashboard's product view surfaces no lookup key. That works for a person reading the dashboard. Price.lookup_key is a different field, it exists on the API, and it is the one a webhook uses to map a line item back to a level. Without it the handler has a product id and a free-text string, which is workable and is not the same as queryable.
+- **TM-12 · Re-export the product CSV whenever the dashboard changes** — `next` — The reconciliation reads a committed export, because this site opens no connection and that rule is not moving. It catches a price changed here and not there, which is the direction that happens; it goes stale in the other direction until somebody re-exports. That is the known weakness and it is written on the page rather than left to be discovered.
+- **TM-13 · Decide what a DELIVERY-only purchase means** — `next` — The split makes a new thing possible that no page describes: somebody buying the delivery line without ever having bought the deposit. Either the pages say what that is, or the link only ever offers the pair.
 
 
 ## The entry price, and what it buys — next
@@ -185,6 +188,7 @@ A counter at an event, not an essay with a buy button. Laptop or tablet turned r
 - **SF-4 · Make a discount code a link, never a thing to type** — `next` — “Click a link, apply the discount code.” The store already reads a code off the address and strips it from history; what is missing is the links.
 - **SF-5 · Add the sections a shop front has** — `queued` — Feature sets, articles, end-to-end flows, testimonials. Asked for by name. Testimonials are blocked on there being any. _Blocked on: SF-1, WH-5._
 - **SF-6 · Test it the way it will be used** — `queued` — On a tablet, held, by somebody standing next to a stranger. Not in a desktop browser at 1440px. _Blocked on: SF-3._
+- **SF-7 · Rename level four to match the product** — `next` — Called “Two sessions, and a professional signs it” here and “Two sessions and a custom vault” in Stripe, where the project lead renamed it on 16 September. The Stripe name is the later decision and the better one — it says what the buyer ends up holding rather than what happens to it. The store has not followed yet.
 
 ---
 

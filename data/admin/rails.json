@@ -46,7 +46,7 @@
       "name": "Stripe",
       "url": "/admin/rails/stripe/",
       "rank": 3,
-      "state": "Account set up. No product, no price, no link, no coupon.",
+      "state": "Six products created, priced, and reconciling. No link, no coupon, no webhook.",
       "one_line": "The rail for everything bought from a screen, and the one that turns a buyer into a customer — including a buyer who pays nothing.",
       "why": [
         "<b>The point of this rail is not the money. It is the customer record.</b> A hundred-per-cent discount code taken on this rail produces a Stripe Customer with an email, a name, a country and a completed checkout against a named product at a stated price — for £0. That is the whole shape of what the event needs: hand somebody a code, they go through the real purchase, and at the end of it there is a person in a system rather than a business card in a pocket.",
@@ -56,7 +56,7 @@
       "contract": [
         [
           "The catalogue, in full",
-          "<b>Six products, eight prices, all in GBP, all one-off.</b> <code>SG-T1</code> £5 · <code>SG-T2</code> £50 · <code>SG-T3</code> £500 with a second price of £100 for the deposit · <code>SG-T4</code> £1,500 with a second price of £300 · <code>SG-ADD-FORMATS</code> · <code>SG-ADD-OPINION</code>. Every number is read from <code>data/offers.yml</code>, which stays the only place a price exists on this side."
+          "<b>Six products, six prices, all in GBP, all one-off, all created.</b> <code>ABP-T1</code> £10 · <code>ABP-T2</code> £50 · <code>ABP-T3-DEPOSIT</code> £100 and <code>ABP-T3-DELIVERY</code> £400 · <code>ABP-T4-DEPOSIT</code> £300 and <code>ABP-T4-DELIVERY</code> £1,200. Every number is read from <code>data/offers.yml</code>, which stays the only place a price exists on this side, and the build reconciles all six against the dashboard's own export every release."
         ],
         [
           "Who the buyer becomes",
@@ -81,8 +81,8 @@
       ],
       "steps": [
         [
-          "Create the six products and the eight prices",
-          "By hand in the dashboard is fine for eight rows and is the honest first version. What must not happen is a price typed out by hand: the build emits <code>/admin/rails/stripe/catalogue.json</code> from <code>data/offers.yml</code>, and that file is what gets copied from. Give every product the <code>SG-</code> code as its lookup key so a dashboard row can be matched to an offer without reading the description.",
+          "Create the products and their prices",
+          "<b>Done on 16 September.</b> Six products, GBP, one price each, and the split into <code>DEPOSIT</code> and <code>DELIVERY</code> at the two upper levels was the project lead's and is better than the shape this plan first proposed: the pair sums to the price, so paying in full is adding both lines. Every price carries its code — <code>ABP-T1</code>, <code>ABP-T3-DEPOSIT</code> and the rest — in the Stripe <b>price description</b> field, because the dashboard's product view surfaces no lookup key. <b>That is not the same object as <code>Price.lookup_key</code></b>, which exists on the API and is the field a webhook would use to map a line item back to a level. It works for a person reading the dashboard and it is not yet queryable, and that difference is written down here rather than found later by a handler that cannot tell what was bought.",
           null
         ],
         [

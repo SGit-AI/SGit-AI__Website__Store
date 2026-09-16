@@ -1,20 +1,19 @@
 {
- "version": "v0.2.1",
+ "version": "v0.2.2",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
   {
    "url": "/",
    "title": "Every agent needs a licence to operate",
-   "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack downloaded at \u00a35, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
-   "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy is the document that puts both on one page, for one agent in one deployment: what it can do, what you authorised, the gap between them, and what actually stands in the way. Fifteen applications, four levels, from \u00a310 to \u00a31,500. The templates are free and public \u2014 what is priced here is yours, with the mandate corrected and your name on the licence.",
+   "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack at \u00a310, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
+   "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy puts both on one page for one agent in one deployment: what it can do, what you authorised, and the gap between them. Fifteen applications, four levels, \u00a310 to \u00a31,500.",
    "headings": [
+    "The four things for sale",
     "Which agent do you run?",
     "Six of these, open right now",
-    "What is actually in one",
-    "There is no score here, and there will not be one",
-    "The free thing, and the paid thing",
-    "How paying works, in one paragraph",
+    "What the templates cost, and what they do not",
+    "Paying, in three lines",
     "What this site will not tell you"
    ],
    "kind": "page"
@@ -26,6 +25,7 @@
    "lead": "",
    "headings": [
     "The queue, and how work gets here",
+    "Hand somebody a code",
     "Next: taking money",
     "Run it yourself",
     "The record"
@@ -238,6 +238,18 @@
     "Releases",
     "The pipeline that gates each one",
     "What this site's gate checks that a sibling's does not"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/what-is-in-one/",
+   "title": "What is actually in one",
+   "description": "The four objects inside an Agent Behaviour Policy and the order they come in: the mandate, the grant, the delta and the barrier. Why there is no score on anything here and never will be. And the difference between the free template and the thing that is priced.",
+   "lead": "A grant on its own is an inventory, and nobody acts on an inventory. This is what is inside the document every level of this store sells \u2014 four objects, in an order that matters \u2014 and two things the document deliberately does not have.",
+   "headings": [
+    "What is actually in one",
+    "There is no score here, and there will not be one",
+    "The free thing, and the paid thing"
    ],
    "kind": "page"
   }

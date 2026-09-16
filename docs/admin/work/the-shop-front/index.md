@@ -2,7 +2,7 @@
 
 A counter at an event, not an essay with a buy button. Laptop or tablet turned round: who are you, here is your thing, buy it. Products up front, big targets, few of them, and everything about the mechanism moved to the admin side.
 
-**0 of 6 done.** Status: `next`.
+**0 of 7 done.** Status: `next`.
 
 From the memo *The homepage sells — and the work has been done before* (2026-09-16) — https://store.sgit.ai/admin/memos/2026-09-16-the-homepage-sells/
 
@@ -12,6 +12,7 @@ From the memo *The homepage sells — and the work has been done before* (2026-0
 - **SF-4 · Make a discount code a link, never a thing to type** — `next` — “Click a link, apply the discount code.” The store already reads a code off the address and strips it from history; what is missing is the links.
 - **SF-5 · Add the sections a shop front has** — `queued` — Feature sets, articles, end-to-end flows, testimonials. Asked for by name. Testimonials are blocked on there being any. _Blocked on: SF-1, WH-5._
 - **SF-6 · Test it the way it will be used** — `queued` — On a tablet, held, by somebody standing next to a stranger. Not in a desktop browser at 1440px. _Blocked on: SF-3._
+- **SF-7 · Rename level four to match the product** — `next` — Called “Two sessions, and a professional signs it” here and “Two sessions and a custom vault” in Stripe, where the project lead renamed it on 16 September. The Stripe name is the later decision and the better one — it says what the buyer ends up holding rather than what happens to it. The store has not followed yet.
 
 ---
 

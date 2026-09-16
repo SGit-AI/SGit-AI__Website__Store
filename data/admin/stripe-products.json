@@ -1,0 +1,61 @@
+{
+  "_what_this_is": "What is ACTUALLY in the Stripe dashboard, as of the date below. It is not a plan and it is not generated from data/offers.yml — it is the other side of the reconciliation, so the two can be compared and a drift can be caught. The build emits what the offers imply; this file says what exists; a check puts them next to each other.",
+  "_provenance": "Product ids, names and descriptions from the dashboard's own CSV export, committed verbatim at data/admin/stripe-products.csv. The amounts are not in that export and were read off the product list in the dashboard on the same day. That is a weaker source than the CSV and it is said here rather than blurred — the amounts are the half a person typed.",
+  "_the_split_is_theirs_and_it_is_better": "The two upper levels are two products each, DEPOSIT and DELIVERY, summing to the full price — rather than one product plus a separate deposit price. A buyer who wants to pay in full adds both lines; a buyer who wants to start adds the deposit. The store had always said a fifth now and the rest on delivery, and this is that sentence as two rows rather than as a rule somebody has to apply.",
+  "captured": "2026-09-16",
+  "account_currency": "gbp",
+  "products": [
+    {
+      "id": "prod_VGeQVaPGj6zhj0",
+      "name": "ABP - The pack, downloaded",
+      "amount": 1000,
+      "offer": "t1",
+      "part": "full",
+      "price_description": "ABP-T1"
+    },
+    {
+      "id": "prod_VGeSCLNy40qFU1",
+      "name": "ABP - A working vault",
+      "amount": 5000,
+      "offer": "t2",
+      "part": "full",
+      "price_description": "ABP-T2"
+    },
+    {
+      "id": "prod_VGeTgWs8HPSiPB",
+      "name": "ABP - Corrected for your situation (DEPOSIT)",
+      "amount": 10000,
+      "offer": "t3",
+      "part": "deposit",
+      "price_description": "ABP-T3-DEPOSIT"
+    },
+    {
+      "id": "prod_VGeWBbtxXyIzi7",
+      "name": "ABP - Corrected for your situation (DELIVERY)",
+      "amount": 40000,
+      "offer": "t3",
+      "part": "delivery",
+      "price_description": "ABP-T3-DELIVERY"
+    },
+    {
+      "id": "prod_VGeYrfTOzFhf7z",
+      "name": "ABP - Two sessions and a custom vault (DEPOSIT)",
+      "amount": 30000,
+      "offer": "t4",
+      "part": "deposit",
+      "price_description": "ABP-T4-DEPOSIT"
+    },
+    {
+      "id": "prod_VGeZ3hF7RyfZVl",
+      "name": "ABP - Two sessions and a custom vault (DELIVERY)",
+      "amount": 120000,
+      "offer": "t4",
+      "part": "delivery",
+      "price_description": "ABP-T4-DELIVERY"
+    }
+  ],
+  "_not_ours": "One more product exists on the account and is deliberately not listed here: SG/Send Credits — Starter Pack, £5. It is a different product from a different part of the estate and this store neither sells it nor reconciles it.",
+  "_renamed": "Level four is called 'Two sessions, and a professional signs it' in data/offers.yml and 'ABP - Two sessions and a custom vault' in Stripe. The Stripe name is the later decision and it is the better one — it says what the buyer ends up holding rather than what happens to it. The store has not been renamed to match yet and that is a unit of work, not an oversight.",
+  "_the_key_is_a_description_not_a_lookup_key": "Every price carries its code in the Stripe PRICE DESCRIPTION field — ABP-T1, ABP-T3-DEPOSIT and so on — because the dashboard's product view does not surface a lookup key and the description is what was available. It works for a person reading the dashboard. It is NOT the same thing as Price.lookup_key, which exists on the API and is the field a webhook would query a line item back to an offer by. That difference is a real one and it is written down here rather than found later by a handler that cannot tell which level was bought.",
+  "_prefix": "ABP-, not the SG- this plan first proposed. The project lead's choice and the better one: the prefix names the product rather than the company."
+}
