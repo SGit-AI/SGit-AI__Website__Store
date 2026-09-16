@@ -28,7 +28,7 @@ Six deliberate breaks on the retargeted checks, six failures by name. Five
 the swap; they point at the archive now.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `afc694477f23499461c09e1306ab56c2c6731069`
 - Reconstructed: no
 
 ---

@@ -5900,6 +5900,7 @@ def next_html(url, fm, body, model):
     # a page that needs a second engine names it; every script still loads once
     extra_scripts = "".join(f'<script src="{s}" defer></script>\n'
                             for s in (fm.get("scripts") or []))
+    main_class = f' class="{fm["main_class"]}"' if fm.get("main_class") else ""
 
 
     return relativise(f"""<!doctype html>
@@ -5920,7 +5921,7 @@ def next_html(url, fm, body, model):
 <a class="n-skip" href="#main">Skip to content</a>
 
 {n_chrome_top(url)}
-<main id="main">
+<main id="main"{main_class}>
 {body}
 </main>
 
@@ -6008,10 +6009,32 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
             ("The top two signed by a person", "/who/"),
         ])
 
-    doors = "".join(
-        f'<a href="/are/{a["id"]}/"><b>{html.escape(a["name"])}</b>'
-        f'<span>{html.escape(a["door"])}</span></a>'
-        for a in AUDIENCES)
+    # ---- the five doors, drawn as the v4 handback draws them: a 64px thumbnail
+    # cut out of ONE five-up strip, the label, one short line, and an arrow. The
+    # first build here was five paragraphs of text and no picture at all, which
+    # on a phone was three rows and half a screen of reading before the product.
+    #
+    # THE SHORT LINE IS THE DOOR SENTENCE, CUT AT ITS FIRST COMMA, rather than a
+    # sixth field in data/audiences.yml. "Shipping with agents, and somebody is
+    # going to ask." is one fact; its first clause is the same fact said shorter,
+    # and a second copy of it in the data is a second thing to keep true.
+    def _door_line(a):
+        d = a["door"].strip()
+        head = d.split(",", 1)[0].strip()
+        return (head + ".") if head and "," in d else d
+
+    art = next((x for x in NEXT_ART["art"] if x["file"] == "audiences.jpg"), None)
+    doors = ""
+    for i, a in enumerate(AUDIENCES):
+        aud = next(x for x in _next_audiences() if x["id"] == a["id"])
+        pic = ""
+        if art:
+            pic = (f'<span class="n-door__art"><img src="/assets/next/art/audiences.jpg" '
+                   f'alt="" aria-hidden="true" style="left:{-i * 100}%"></span>')
+        doors += (f'<a href="/are/{a["id"]}/">{pic}'
+                  f'<span class="n-door__copy"><b>{html.escape(aud["label"])}</b>'
+                  f'<span>{html.escape(_door_line(a))}</span></span>'
+                  f'<span class="n-door__arrow" aria-hidden="true">&#8599;</span></a>')
 
     cards = "".join(_next_offer_card(l, ctx_shared) for l in levels)
 
@@ -6066,8 +6089,8 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
         f'<div class="n-trust">{trust}</div>'
 
         '<section class="n-sect n-sect--tight" id="who">'
-        '<p class="n-eyebrow">Who are you?</p>'
-        f'<div class="n-grid n-grid--5 n-doors">{doors}</div></section>'
+        '<h2 class="n-doors__head">What brings you here?</h2>'
+        f'<div class="n-doors">{doors}</div></section>'
 
         '<section class="n-sect n-sect--tint" id="levels">'
         '<div class="n-head"><div class="n-head__text">'
@@ -6151,6 +6174,11 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
               f"a disabled control that says so. See {SITE['base']}/admin/next/.\n")
 
     return _next_emit(out_dir, NEXT_ROOT, {
+        # ON A PHONE THE DOORS COME FIRST. The hero alone is 1.8 screens at 390px
+        # and the band was landing 1,185px down, which is a section nobody meets.
+        # At 1280 the hero and the four facts are one screen and the band is
+        # already right under them, so the order is left alone there.
+        "main_class": "n-main--doors",
         "title": "Give your AI agent a clear mandate",
         "description": ("The next store, built from the v3 design direction 01 / ABP first: "
                         "Agent Behaviour Policies at four levels — ABP Pack, Vault, "

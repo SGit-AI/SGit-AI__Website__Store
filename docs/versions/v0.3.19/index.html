@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en" data-root="../../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>v0.3.19 — the five doors, drawn the way v4 draws them &mdash; the store</title>
+<meta name="description" content="&quot;What brings you here?&quot; on the front page was five paragraphs of text in a grid
+with no picture in it. On a phone that was three rows, 549 pixels, and it landed
+1,185 pixels down — a section nobody meets. It is now the v4 handback&#x27;s band: a
+64px thumbnail, a label, one short line and an arrow.
+
+**One strip, five cards.** The same five-up image already banner-cropped on
+/audiences/ is cropped square here: laid out five squares wide inside a 64px box
+and pulled left by a whole square per position, so each card shows its own fifth.
+
+**On a phone the band comes first and scrolls.** A flex row with scroll-snap,
+255px cards, 112px tall, the second card half-visible as the affordance — 247px
+instead of 549, above the hero instead of below it. At 1280 the hero and the four
+facts are one screen and the band is already under them, so the order is left
+alone there; 1050 and below drops to three columns.
+
+**The labels are shorter.** &quot;Founder&quot; rather than &quot;You are a founder&quot;, and
+&quot;Shipping with agents.&quot; — the door sentence cut at its first comma rather than a
+sixth field in the data, because the first clause is the same fact said shorter.
+
+New rule: five doors, five thumbnails, five different fifths, and the short line
+has to be the real sentence&#x27;s own opening. It holds the load-bearing
+`max-width: none` too — the reset&#x27;s `img { max-width: 100% }` silently beat
+`width: 500%` when this crop was first built on /audiences/ and left four of five
+cards showing an empty box, with every other check passing.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://store.sgit.ai/versions/v0.3.19/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="store.sgit.ai">
+<meta property="og:url" content="https://store.sgit.ai/versions/v0.3.19/">
+<meta property="og:title" content="v0.3.19 — the five doors, drawn the way v4 draws them">
+<meta property="og:description" content="&quot;What brings you here?&quot; on the front page was five paragraphs of text in a grid
+with no picture in it. On a phone that was three rows, 549 pixels, and it landed
+1,185 pixels down — a section nobody meets. It is now the v4 handback&#x27;s band: a
+64px thumbnail, a label, one short line and an arrow.
+
+**One strip, five cards.** The same five-up image already banner-cropped on
+/audiences/ is cropped square here: laid out five squares wide inside a 64px box
+and pulled left by a whole square per position, so each card shows its own fifth.
+
+**On a phone the band comes first and scrolls.** A flex row with scroll-snap,
+255px cards, 112px tall, the second card half-visible as the affordance — 247px
+instead of 549, above the hero instead of below it. At 1280 the hero and the four
+facts are one screen and the band is already under them, so the order is left
+alone there; 1050 and below drops to three columns.
+
+**The labels are shorter.** &quot;Founder&quot; rather than &quot;You are a founder&quot;, and
+&quot;Shipping with agents.&quot; — the door sentence cut at its first comma rather than a
+sixth field in the data, because the first clause is the same fact said shorter.
+
+New rule: five doors, five thumbnails, five different fifths, and the short line
+has to be the real sentence&#x27;s own opening. It holds the load-bearing
+`max-width: none` too — the reset&#x27;s `img { max-width: 100% }` silently beat
+`width: 500%` when this crop was first built on /audiences/ and left four of five
+cards showing an empty box, with every other check passing.">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="../../assets/site.css">
+
+<link rel="stylesheet" href="../../assets/next.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../assets/site.js" defer></script>
+<!-- shop.js is on EVERY page because the nav carries an order badge on every page.
+     So a shop page must NOT name it again in head_js: two tags is two copies of the
+     cart engine running against one document, and the second one undoes what the
+     first one did. check_site holds every page to loading each script once. -->
+<script src="../../assets/shop.js" defer></script>
+
+
+</head>
+<body>
+<a class="n-skip" href="#main">Skip to content</a>
+<header class="n-header">
+  <a class="n-mark" href="../../index.html"><b>sgit</b><span>/ store</span></a>
+  <nav class="n-nav" aria-label="Primary"><a href="../../product/index.html">The four levels</a><a href="../../policies/index.html">Which agent you run</a><a href="../../what-is-in-one/index.html">What is inside one</a>
+    <a href="../../cart/index.html">Your order<span data-order-count></span></a>
+  </nav>
+</header>
+
+<div class="n-disclosure">
+  <span><b>Produced with model assistance.</b> Every page on this site was drafted with a
+  large language model and reviewed by a person before publication. Nothing here is a
+  compliance assessment.</span>
+  <a href="../../disclosures/index.html">What we do not say, and why</a>
+  <a href="../../ledger/index.html">How every claim here is evidenced</a>
+  <span>v0.3.19</span>
+</div>
+<div class="n-codeslot" data-code-bar></div>
+<main id="main" class="n-sect">
+<div class="n-doc">
+<p class="crumb"><a href="../../index.html">store.sgit.ai</a> / <a href="../../versions/index.html">versions</a> / v0.3.19</p>
+<h1>v0.3.19 — the five doors, drawn the way v4 draws them</h1>
+
+
+<p class="lead">"What brings you here?" on the front page was five paragraphs of text in a grid
+with no picture in it. On a phone that was three rows, 549 pixels, and it landed
+1,185 pixels down — a section nobody meets. It is now the v4 handback's band: a
+64px thumbnail, a label, one short line and an arrow.</p><p class="lead"><strong>One strip, five cards.</strong> The same five-up image already banner-cropped on
+/audiences/ is cropped square here: laid out five squares wide inside a 64px box
+and pulled left by a whole square per position, so each card shows its own fifth.</p><p class="lead"><strong>On a phone the band comes first and scrolls.</strong> A flex row with scroll-snap,
+255px cards, 112px tall, the second card half-visible as the affordance — 247px
+instead of 549, above the hero instead of below it. At 1280 the hero and the four
+facts are one screen and the band is already under them, so the order is left
+alone there; 1050 and below drops to three columns.</p><p class="lead"><strong>The labels are shorter.</strong> "Founder" rather than "You are a founder", and
+"Shipping with agents." — the door sentence cut at its first comma rather than a
+sixth field in the data, because the first clause is the same fact said shorter.</p><p class="lead">New rule: five doors, five thumbnails, five different fifths, and the short line
+has to be the real sentence's own opening. It holds the load-bearing
+<code>max-width: none</code> too — the reset's <code>img { max-width: 100% }</code> silently beat
+<code>width: 500%</code> when this crop was first built on /audiences/ and left four of five
+cards showing an empty box, with every other check passing.</p><div class="tablewrap"><table><tbody><tr><th>Version</th><td><code>v0.3.19</code> &mdash; <b>current</b></td></tr><tr><th>Released</th><td>2026-09-16</td></tr><tr><th>Built from commit</th><td><code>recorded one commit later</code></td></tr><tr><th>Site</th><td>store.sgit.ai</td></tr></tbody></table></div><p class="small dim">Touched: <code>assets</code> &middot; <code>build.py</code> &middot; <code>data</code> &middot; <code>tools</code></p><p class="packnav"><a href="../../versions/v0.3.18/index.html">v0.3.18 &rarr;</a></p><p class="packfoot">Every release of this site is listed on <a href="../../versions/index.html">the release history</a>, and the same records are served as <a href="../../versions/index.json">JSON</a> so a script can read them without parsing a page.</p>
+<p class="pagenav"><a href="../../policies/index.html">Which agent do you run? &rarr;</a>
+<a href="../../how-it-works/index.html">How buying works &rarr;</a>
+<a href="../../ledger/index.html">Every claim, with its state &rarr;</a></p>
+</div>
+</main>
+<footer class="n-footer">
+  <div class="n-footer__cols">
+    <div>
+      <a class="n-mark" href="../../index.html"><b>sgit</b><span>/ store</span></a>
+      <p class="n-dim n-fine n-mt">Agent Behaviour Policies for the agents you already
+      run. One agent, one deployment, and the gap between what it can do and what you
+      authorised.</p>
+    </div>
+    <div><b>Buy</b>
+      <a href="../../policies/index.html">Which agent you run</a>
+      <a href="../../product/index.html">The four levels, side by side</a>
+      <a href="../../compare/index.html">Compare what arrives</a>
+      <a href="../../cart/index.html">Your order</a>
+      <a href="../../paid/index.html">What lands, and when</a>
+      <a href="../../describe/index.html">Describe your agent</a>
+    </div>
+    <div><b>Evidence</b>
+      <a href="../../ledger/index.html">The claim ledger</a>
+      <a href="../../who/index.html">Who does the work</a>
+      <a href="../../audiences/index.html">Who this is for</a>
+      <a href="../../disclosures/index.html">What we do not say</a>
+      <a href="../../admin/reviews/index.html">Reviews, dated and kept</a>
+      <a href="../../boundary/index.html">Who owns what</a>
+    </div>
+    <div><b>This site</b>
+      <a href="../../how-it-works/index.html">How buying works</a>
+      <a href="../../what-is-in-one/index.html">What is actually in one</a>
+      <a href="../../v1/index.html">The previous design</a>
+      <a href="../../versions/index.html">Release history</a>
+      <a href="../../admin/index.html">The console</a>
+    </div>
+    <p class="n-footer__note">
+      Artwork on these pages represents digital deliverables and is illustrative.
+      Prices are in GBP and every one of them is read from a single file. Nothing
+      sold here is a compliance assessment or a mark of conformity, and outputs are
+      model generated and marked as such. The design this store used until
+      v0.3.15 is kept at <a href="../../v1/index.html">the previous design</a>.
+    </p>
+  </div>
+</footer>
+</body>
+</html>

@@ -333,14 +333,35 @@ code { font-family: var(--n-mono); font-size: .88em; }
 .n-trust a:hover { text-decoration-color: currentColor; }
 .n-trust svg { flex: none; }
 
-/* Persona doors. Five across; still first, above the product, because the memo
- * was explicit and all three concepts had dropped them. */
-.n-doors a { display: flex; flex-direction: column; gap: 5px;
+/* Persona doors. Still first, above the product, because the memo was explicit
+ * and all three concepts had dropped them — and now drawn the way the v4
+ * handback draws them: a thumbnail, a label and one short line.
+ *
+ * ONE IMAGE, FIVE CARDS. assets/next/art/audiences.jpg is a single five-up strip
+ * (1400x467). Each thumbnail is a 64px square with the strip laid out five
+ * squares wide inside it and pulled left by a whole square per position, so the
+ * card shows its own fifth. The same trick draws the banner on /audiences/;
+ * there it crops wide, here it crops square. */
+.n-doors__head { font-size: 22px; letter-spacing: -.025em; margin-bottom: 18px; }
+.n-doors { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+           gap: 12px; }
+.n-doors a { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr);
+             gap: 12px; align-items: center; min-height: 128px; padding: 16px 14px;
              background: var(--n-panel); border: 1px solid var(--n-line);
-             border-radius: var(--n-r-card); padding: 15px 17px 16px; }
-.n-doors a:hover { border-color: var(--n-fg); text-decoration: none; }
-.n-doors b { font-size: 15.5px; }
-.n-doors span { font-size: var(--n-fine); color: var(--n-dim); line-height: 1.45; }
+             border-radius: var(--n-r-card); }
+.n-doors a:hover { border-color: var(--n-fg); background: var(--n-tint);
+                   text-decoration: none; }
+.n-door__art { position: relative; display: block; width: 64px; height: 64px;
+               overflow: hidden; border-radius: var(--n-r-sm);
+               background: var(--n-tint); }
+.n-door__art img { position: absolute; width: 500%; max-width: none; height: auto;
+                   top: 50%; transform: translateY(-50%); }
+.n-door__copy { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.n-doors b { font-size: 16px; font-weight: 600; line-height: 1.2; }
+.n-doors .n-door__copy span { font-size: var(--n-fine); color: var(--n-dim);
+                              line-height: 1.4; }
+.n-door__arrow { position: absolute; right: 8px; bottom: 8px;
+                 color: var(--n-dim); font-size: 13px; line-height: 1; }
 
 /* The offer card. Anatomy is fixed so a reader can run down a column instead of
  * reading four paragraphs: artwork with its level number, LEVEL NN + what form
@@ -1040,6 +1061,7 @@ code { font-family: var(--n-mono); font-size: .88em; }
  * ========================================================================== */
 @media (max-width: 1080px) {
   .n-picker, .n-describe__grid { grid-template-columns: 1fr; }
+  .n-doors { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .n-describe__side { position: static; }
   .n-panel { position: static; max-height: none; }
   .n-aud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -1050,6 +1072,19 @@ code { font-family: var(--n-mono); font-size: .88em; }
   .n-picker__grid { grid-template-columns: 1fr; }
   .n-aud { grid-template-columns: 1fr 1fr; }
   .n-works { grid-template-columns: 1fr; }
+
+  /* THE DOORS BECOME A SCROLL STRIP, AND THEY COME FIRST. Five cards stacked in
+     a grid was three rows and half a screen; one row that scrolls is 170px, and
+     the half-visible second card is the affordance that says so. The band moves
+     above the hero here and only here: at 390px the hero alone is 1.8 screens
+     and the doors were landing 1,185px down. */
+  .n-doors { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 8px;
+             scroll-snap-type: x mandatory; scroll-padding: 0;
+             scrollbar-width: thin;
+             scrollbar-color: var(--n-line-2) var(--n-tint); }
+  .n-doors a { flex: 0 0 255px; min-height: 112px; scroll-snap-align: start; }
+  .n-main--doors { display: flex; flex-direction: column; }
+  .n-main--doors #who { order: -1; }
   .n-states__row { grid-template-columns: 1fr; gap: 6px; }
   .n-handoff, .n-receipt, .n-reviewer { grid-template-columns: 1fr; gap: 20px; }
   .n-panel__stats { grid-template-columns: repeat(2, 1fr); }

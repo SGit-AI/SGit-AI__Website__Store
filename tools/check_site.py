@@ -3412,6 +3412,87 @@ def check_the_sitemap_advertises_nothing_it_hides():
             fail(f"sitemap.xml lists {loc} and that page is noindex. The sitemap is an "
                  "invitation and noindex is a refusal; a page cannot be both")
 
+def check_the_five_doors_show_five_different_pictures():
+    """The band at the top of the front page: five doors, five thumbnails, five
+    different fifths of one strip.
+
+    THIS CHECK EXISTS BECAUSE THIS EXACT THING FAILED SILENTLY ONCE. The same
+    crop draws the banner on /audiences/, and when it was first built the
+    reset's `img { max-width: 100% }` quietly won the cascade against
+    `width: 500%` — so four of the five cards rendered an empty box with the
+    strip pushed off it, and every other check passed. The page looked fine in a
+    diff and wrong in a browser.
+
+    It also holds the short line to being the real sentence's own opening. The
+    card says "Shipping with agents." and data/audiences.yml says "Shipping with
+    agents, and somebody is going to ask."; the first is the second said shorter,
+    and the day it stops being a prefix of it, it is a different claim."""
+    src = (ROOT / "data" / "audiences.yml").read_text()
+    ids = re.findall(r"^- id: (\S+)", src, re.M)
+    labels = re.findall(r"^  next_label: (.+)$", src, re.M)
+    doors = re.findall(r"^  door: (.+)$", src, re.M)
+    if not (len(ids) == len(labels) == len(doors) == len(EXPECTED_AUDIENCES)):
+        fail(f"data/audiences.yml: {len(ids)} ids, {len(labels)} next_labels and "
+             f"{len(doors)} doors. The front page's band renders one card per audience "
+             "out of all three")
+        return
+
+    home = (OUT / "index.html").read_text()
+    band = re.search(r'<div class="n-doors">(.*?)</div></section>', home, re.S)
+    if not band:
+        fail("index.html: the five doors are not on the front page. Two memos and two "
+             "panels put them there and all three concepts had dropped them")
+        return
+    band = band.group(1)
+
+    cards = re.findall(r'<a href="[^"]*?are/([a-z]+)/[^"]*">(.*?)</a>', band, re.S)
+    if [c[0] for c in cards] != ids:
+        fail(f"index.html: the band links {[c[0] for c in cards]} and data/audiences.yml "
+             f"has {ids}")
+        return
+
+    offsets = []
+    for (aid, card), label, door in zip(cards, labels, doors):
+        m = re.search(r'<img [^>]*src="([^"]+)"[^>]*style="left:(-?\d+)%"', card)
+        if not m:
+            fail(f"index.html: the {aid} door has no thumbnail. Five paragraphs of text "
+                 "is what this band was before the pictures and it was half a phone "
+                 "screen of reading before the product")
+            continue
+        offsets.append(int(m.group(2)))
+        if "audiences.jpg" not in m.group(1):
+            fail(f"index.html: the {aid} door's thumbnail is {m.group(1)!r}, not the "
+                 "five-up strip every one of them is cut from")
+        want = label.strip().strip('"')
+        if f"<b>{html.escape(want)}</b>" not in card:
+            fail(f"index.html: the {aid} door is labelled something other than its "
+                 f"next_label {want!r}")
+        said = re.search(r'<span>([^<]+)</span>', card)
+        full = door.strip().strip('"')
+        if said:
+            short = html.unescape(said.group(1)).rstrip(".")
+            if not full.startswith(short):
+                fail(f"index.html: the {aid} door says {short + '.'!r} and "
+                     f"data/audiences.yml says {full!r}. The short line is the first "
+                     "clause of the real sentence; anything else is a second claim in a "
+                     "place nobody would think to check")
+
+    if len(set(offsets)) != len(offsets):
+        fail(f"index.html: the five thumbnails are cut at {offsets}, which is not five "
+             "different fifths. One strip, five cards, one offset each")
+    if offsets and offsets != [0, -100, -200, -300, -400][:len(offsets)]:
+        fail(f"index.html: the thumbnails are offset {offsets} and the strip has its five "
+             "objects at 0, -100, -200, -300 and -400 per cent")
+
+    css = (OUT / "assets" / "next.css").read_text()
+    rule = re.search(r"\.n-door__art img \{([^}]*)\}", css)
+    if not rule:
+        fail("assets/next.css: no rule sizes the door thumbnails")
+    elif "max-width: none" not in rule.group(1):
+        fail("assets/next.css: .n-door__art img does not set max-width: none. The reset "
+             "gives every image max-width: 100%, which silently beats width: 500% and "
+             "leaves four of the five doors showing an empty box")
+
 
 def main():
     if not OUT.exists():
@@ -3446,6 +3527,7 @@ def main():
         check_delivery_estimates,
         check_every_claim_state_is_real,
         check_the_five_audiences_hide_nothing,
+        check_the_five_doors_show_five_different_pictures,
         check_the_comparison_agrees_with_the_offers,
         check_every_reviewer_line_is_sourced,
         check_a_leaked_code_cannot_buy_somebody_s_day,

@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.18",
+  "current": "v0.3.19",
   "releases": [
+    {
+      "version": "v0.3.19",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the five doors, drawn the way v4 draws them",
+      "summary": "\"What brings you here?\" on the front page was five paragraphs of text in a grid\nwith no picture in it. On a phone that was three rows, 549 pixels, and it landed\n1,185 pixels down \u2014 a section nobody meets. It is now the v4 handback's band: a\n64px thumbnail, a label, one short line and an arrow.\n\n**One strip, five cards.** The same five-up image already banner-cropped on\n/audiences/ is cropped square here: laid out five squares wide inside a 64px box\nand pulled left by a whole square per position, so each card shows its own fifth.\n\n**On a phone the band comes first and scrolls.** A flex row with scroll-snap,\n255px cards, 112px tall, the second card half-visible as the affordance \u2014 247px\ninstead of 549, above the hero instead of below it. At 1280 the hero and the four\nfacts are one screen and the band is already under them, so the order is left\nalone there; 1050 and below drops to three columns.\n\n**The labels are shorter.** \"Founder\" rather than \"You are a founder\", and\n\"Shipping with agents.\" \u2014 the door sentence cut at its first comma rather than a\nsixth field in the data, because the first clause is the same fact said shorter.\n\nNew rule: five doors, five thumbnails, five different fifths, and the short line\nhas to be the real sentence's own opening. It holds the load-bearing\n`max-width: none` too \u2014 the reset's `img { max-width: 100% }` silently beat\n`width: 500%` when this crop was first built on /audiences/ and left four of five\ncards showing an empty box, with every other check passing.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.18",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "afc694477f23499461c09e1306ab56c2c6731069",
       "site": "store.sgit.ai",
       "title": "the buy references, and the rest of v4 that the store was missing",
       "summary": "The live store was put beside the v4 site and found wanting, the buy references\nfirst. The v4 site is byte-for-byte the pack already mirrored here, so the gap\nwas not a newer version: it was what the first implementation left out. Every v4\nscreen was diffed against its page.\n\n**Buy this level, on every offer card, everywhere.** As v4 has it: a link to the\nproduct page carrying a level and a policy, where *Add to your order* adds the\nline. The product page now sells a policy at a level, names the default shape as\na default beside a link to change it, and the disabled control that says no\npayment link exists lives on the checkout \u2014 the page that would take money \u2014\nrather than on a button that now does something real.\n\nThe comparison leads with the four cards and a print action. The five audience\ndoors are drawn in this design, the reader's question as the headline and the\ncards under it, lead and quiet drawn by hierarchy and never by hiding. Describe\nyour agent is in the store, on the lab's own engine. The ledger explains its ten\nstates, the page after paying prints, and the picker panel names the two files\nyou hand the agent and opens the example vault on the shape's own page.\n\nDeliberately not taken: v4's preview controls, its live-looking checkout button,\nthe placeholder scenario selector and side-effect ladder, the drawn vault frame,\nthe handoff explorer, and its product names.\n\nSix deliberate breaks on the retargeted checks, six failures by name. Five\n\"the same X on the store that sells today\" links had pointed at themselves since\nthe swap; they point at the archive now.",
