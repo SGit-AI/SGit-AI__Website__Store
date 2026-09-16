@@ -48,6 +48,23 @@
 
   var LEVELS = MODEL.levels || [];
   var AUDIENCES = MODEL.audiences || [];
+  var SHAPES = MODEL.shapes || [];
+
+  /* WHICH POLICY THE PRODUCT PAGE IS SELLING. It comes off the address, and it
+     is the site's default until somebody changes it — the page says which,
+     because a default that looks like a choice is a wrong order. A slug the
+     build does not know falls back to the default rather than to a blank. */
+  var currentPolicy = (function () {
+    var want = new URLSearchParams(location.search).get('policy');
+    var hit = null;
+    for (var i = 0; i < SHAPES.length; i++) {
+      if (SHAPES[i].slug === want && SHAPES[i].pickable !== false) hit = SHAPES[i];
+    }
+    if (!hit) for (var j = 0; j < SHAPES.length; j++) {
+      if (SHAPES[j].slug === MODEL.default_policy) hit = SHAPES[j];
+    }
+    return hit;
+  }());
 
   /* ------------------------------------------------------------- helpers -- */
 
@@ -129,13 +146,17 @@
       if (level.split) split.textContent = level.split;
     }
 
+    // The button adds a line — this policy at this level — to the order the
+    // browser is holding. The second block on this page owns the order and
+    // handles the click; this one only keeps the button pointed at the right
+    // line and saying the right name.
     var buy = byId('p-buy');
-    if (buy) {
-      buy.textContent = level.buyable
-        ? 'Buy ' + level.short_name + ' →'
-        : 'The payment link has not been issued yet';
-      buy.setAttribute('aria-disabled', String(!level.buyable));
+    if (buy && currentPolicy) {
+      buy.textContent = 'Add ABP ' + level.short_name + ' to your order →';
+      buy.setAttribute('data-add-line', currentPolicy.slug + '|' + level.cart_id);
     }
+    var added = byId('p-added');
+    if (added) added.hidden = true;
 
     var claim = byId('p-claim');
     if (claim && level.claim) {
@@ -212,6 +233,22 @@
   var wantAudience = params.get('audience');
 
   if (byId('p-name')) {
+    if (currentPolicy) {
+      setText('p-policy', currentPolicy.title);
+      setText('p-policy-code', currentPolicy.slug + '/');
+      var pu = byId('p-policy-url');
+      if (pu) {
+        if (currentPolicy.url) { pu.href = currentPolicy.url; }
+        else { pu.hidden = true; }
+      }
+      var dflt = byId('p-policy-default');
+      if (dflt) dflt.hidden = currentPolicy.slug !== MODEL.default_policy;
+      // whatever was asked for, the address ends up saying what the page is
+      // actually selling — a slug the build does not know is not left sitting
+      // there looking as though it was honoured
+      var asked = new URLSearchParams(location.search).get('policy');
+      if (asked && asked !== currentPolicy.slug) setUrlParam('policy', currentPolicy.slug);
+    }
     selectLevel(wantLevel && LEVELS.some(function (l) { return l.id === wantLevel; })
       ? wantLevel
       : (MODEL.default_level || (LEVELS[0] && LEVELS[0].id)), false);
@@ -904,6 +941,15 @@
       chip.className = 'n-claim n-claim--' + s.evidence_state;
     }
 
+    // the example vault and the policy itself are on the shape's own published
+    // page upstream; a shape with no page (the catch-all) shows no link rather
+    // than a dead one
+    var open = document.getElementById('panel-open');
+    if (open) {
+      if (s.url) { open.href = s.url; open.hidden = false; }
+      else { open.hidden = true; }
+    }
+
     /* ONE CELL PER CAPABILITY, AND NOT ONE OF THEM IS COLOURED.
        The first version of this painted the first `wanted` cells green and the
        last `unbounded` cells amber, which looks like a decomposition of the
@@ -953,6 +999,15 @@
     if (t.hasAttribute('data-search-open')) {
       return openSearch();
     }
+    if (t.hasAttribute('data-add-line')) {
+      // the product page: one policy at one level, straight onto the order
+      var line = t.getAttribute('data-add-line').split('|');
+      if (!SHAPES[line[0]] || !LEVELS[line[1]]) return;
+      change(line[0], line[1], 1);
+      var told = document.getElementById('p-added');
+      if (told) told.hidden = false;
+      return;
+    }
     if (t.hasAttribute('data-add')) {
       var host = document.getElementById('panel');
       var slug = host && host.getAttribute('data-slug');
@@ -960,6 +1015,12 @@
       change(slug, t.getAttribute('data-add'), 1);
       var go = document.getElementById('panel-added');
       if (go) { go.hidden = false; }
+      return;
+    }
+    if (t.hasAttribute('data-print')) {
+      // the receipt prints as a receipt: the print stylesheet drops the chrome,
+      // the filters and the button that did the printing
+      window.print();
       return;
     }
     if (t.hasAttribute('data-copy-ref')) {

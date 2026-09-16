@@ -2,19 +2,16 @@
 
 **You arrive asking:** I need somebody to look at what this company's agents can actually do, and I need it to be somebody's work.
 
-## The one that fits
-
-**Two sessions and a custom vault — £1,500**, 1 to 5 days from your reply, not from your payment. The two upper levels are the ones where a person does the work and signs it. The levels below are the same document produced without anybody looking at your situation, which is fine for a founder and is not what a review is.
-
-## What changes for you
-
 Independence, and repeatability across a portfolio. The point is not that a document exists — it is that somebody who is not the founder wrote it and will stand behind it.
 
-## The rest of the ladder
+## The four levels
 
-- **The pack, downloaded** — £10 — Every file in the vault, downloaded by you. Yours to use, keep and hand to your agent.
-- **A working vault** — £50 — The same material as a vault you hold the keys to: clone it, change it, version it, and hand anyone a read key.
-- **Corrected for your situation** — £500 — You tell us the industry, the use case and the details. The mandate is corrected against them and the vault comes back yours.
+- **ABP Pack** — £10 — The ABP files and instructions, packaged for you to keep. — drawn quieter, same price
+- **ABP Vault** — £50 — The pack as a vault, with its reading app, your keys and version history.
+- **ABP Tailored** — £500 — A named security professional corrects the mandate against your details.
+- **ABP Reviewed** — £1,500 — Two half-hour sessions and a custom vault, reviewed and signed off. — first for you
+
+**Why first:** The two upper levels are the ones where a person does the work and signs it. The levels below are the same document produced without anybody looking at your situation, which is fine for a founder and is not what a review is.
 
 ## Go and look at one first
 

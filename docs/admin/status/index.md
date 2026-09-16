@@ -1,6 +1,6 @@
 # What happened to each memo
 
-**51 units done · 68 open · 22 waiting on the project lead · 8 memos.**
+**58 units done · 61 open · 22 waiting on the project lead · 8 memos.**
 
 
 ## 2026-09-16 — Stripe end to end, with their SKUs — and a customer even at 100% off (14/28 done)
@@ -154,7 +154,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-the-homepage-sells/
 - `TR-8` **Join the memos to what they became** — done — https://store.sgit.ai/admin/status/ (v0.3.6)
 - `TR-9` **Write the walkthrough for the flow the store sells through** — next
 
-## 2026-09-16 — Describe your agent — the page that gets used in the room (5/8 done)
+## 2026-09-16 — Describe your agent — the page that gets used in the room (6/8 done)
 
 A free page where somebody builds their agent by clicking or dragging capabilities onto it, and what comes out is the definition of what that agent could do. It is the front half of the £500 level, given away, and it is the page the project lead expects to use most in conversation.  
 https://store.sgit.ai/admin/memos/2026-09-16-describe-your-agent/
@@ -166,7 +166,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-describe-your-agent/
 - `DA-5` **Emit the definition as a document a model can act on** — done — https://store.sgit.ai/lab/agent-canvas/ (v0.3.5)
 - `DA-6` **Write the prompt that turns the definition into a vault** — queued
 - `DA-7` **Say on the page what it is and is not** — done — https://store.sgit.ai/lab/agent-canvas/#what-this-produces (v0.3.5)
-- `DA-8` **Put it in front of the £500 level and in the walk-through flow** — queued
+- `DA-8` **Put it in front of the £500 level and in the walk-through flow** — done — https://store.sgit.ai/describe/, https://store.sgit.ai/product/ (v0.3.18)
 
 ---
 

@@ -350,6 +350,11 @@ code { font-family: var(--n-mono); font-size: .88em; }
            background: var(--n-panel); border: 1px solid var(--n-line);
            border-radius: var(--n-r-card); overflow: hidden; }
 .n-offer--lead { border-top: 4px solid var(--n-cta-edge); }
+/* Quieted for one reader: lower in the hierarchy, never hidden. A build check
+   refuses display:none on an offer inside any audience view. */
+.n-offer--quiet { border-color: var(--n-line); }
+.n-offer--quiet .n-offer__art img { filter: saturate(.7); opacity: .85; }
+.n-offer--quiet h3 { color: var(--n-dim); }
 .n-offer__art { position: relative; background: var(--n-tint); }
 .n-offer__art img { width: 100%; max-height: 220px; object-fit: cover; }
 .n-offer__n { position: absolute; top: 12px; left: 12px;
@@ -451,6 +456,15 @@ code { font-family: var(--n-mono); font-size: .88em; }
 .n-buy__what { font-size: var(--n-small); color: var(--n-dim); line-height: 1.55;
                margin: 16px 0 20px; }
 .n-buy__note { font-size: var(--n-micro); color: var(--n-dim); margin-top: 10px; }
+.n-buy__policy { font: 11px/1.5 var(--n-mono); color: var(--n-dim); margin-top: 6px; }
+.n-buy__policy a { text-decoration: underline; text-underline-offset: 3px; }
+.n-buy__level { margin-top: 14px; font-size: var(--n-small); font-weight: 600; }
+.n-buy__added { margin-top: 10px; font-size: var(--n-small); font-weight: 600;
+                color: var(--n-st-measured); }
+.n-buy__change { margin-top: 14px; font-size: var(--n-small); }
+.n-buy__change > summary { cursor: pointer; color: var(--n-dim);
+                           text-decoration: underline; text-underline-offset: 3px; }
+.n-buy__change .n-switch button { font-size: 12px; padding: 7px 10px; }
 .n-buy__rows { margin-top: 18px; display: grid; gap: 10px; }
 
 /* What arrives, and what does not — two lists, because a paragraph hides the
@@ -813,6 +827,78 @@ code { font-family: var(--n-mono); font-size: .88em; }
 .n-code button:hover { border-color: var(--n-fg); }
 .n-line__was { text-decoration: line-through; opacity: .6; }
 
+/* -------------------------------------------------------------- describe -- */
+/* Describe your agent. The markup is the lab prototype's — .ag, .fam, .cap, the
+   ag-* regions — because assets/agent.js binds to those and is reused unchanged.
+   Only the drawing is the store's. */
+.n-describe__grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px;
+                    gap: 28px; align-items: start; }
+.n-describe .ag-palette { display: grid; gap: 22px; }
+.n-describe .fam h4 { font: 700 var(--n-eyebrow)/1.3 var(--n-sans); letter-spacing: .1em;
+                      text-transform: uppercase; color: var(--n-dim); margin-bottom: 10px; }
+.n-describe .fam h4 span { display: block; font: 400 var(--n-fine)/1.5 var(--n-sans);
+                           letter-spacing: 0; text-transform: none; margin-top: 2px; }
+.n-describe .fam-caps { display: grid; gap: 8px;
+                        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.n-describe .cap { display: flex; flex-direction: column; gap: 3px; text-align: left;
+                   font: inherit; color: inherit; cursor: pointer; padding: 12px 14px;
+                   background: var(--n-panel); border: 1px solid var(--n-line);
+                   border-left-width: 4px; border-radius: var(--n-r-sm); }
+.n-describe .cap:hover { border-color: var(--n-fg); }
+.n-describe .cap b { font-size: var(--n-small); line-height: 1.35; }
+.n-describe .cap code { font-size: 11px; color: var(--n-dim); }
+.n-describe .cap-undo { font: 700 10px/1 var(--n-mono); letter-spacing: .06em;
+                        text-transform: uppercase; color: var(--n-dim-2); margin-top: 4px; }
+.n-describe .cap.u-y { border-left-color: #1f7a4d; }
+.n-describe .cap.u-e { border-left-color: var(--n-cta-edge); }
+.n-describe .cap.u-n { border-left-color: var(--n-st-absent); }
+.n-describe .cap[aria-pressed="true"] { background: var(--n-deep); border-color: var(--n-deep);
+                                        color: #fff; }
+.n-describe .cap[aria-pressed="true"] code,
+.n-describe .cap[aria-pressed="true"] .cap-undo { color: #c8d7e2; }
+.n-describe__side { position: sticky; top: 20px; display: grid; gap: 16px; }
+.n-describe .ag-core { display: flex; flex-direction: column; align-items: center; gap: 6px;
+                       padding: 26px 20px; background: var(--n-deep); color: #fff;
+                       border-radius: var(--n-r-card); text-align: center; }
+.n-describe__mark { font: 700 11px/1 var(--n-mono); letter-spacing: .12em;
+                    color: var(--n-cta); border: 1px solid var(--n-cta);
+                    padding: 5px 8px; border-radius: var(--n-r-sm); }
+.n-describe .ag-core b { font-size: 22px; letter-spacing: -.02em; }
+.n-describe .ag-count { font: 12px/1.4 var(--n-mono); color: #c8d7e2; }
+.n-describe .ag-out { background: var(--n-panel); border: 1px solid var(--n-line);
+                      border-radius: var(--n-r-card); padding: 20px; }
+.n-describe .ag-out h3 { font-size: 17px; margin-bottom: 10px; }
+.n-describe .ag-chosen { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.n-describe .ag-chosen li { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline;
+                            font-size: var(--n-fine); padding: 8px 10px;
+                            border: 1px solid var(--n-line); border-left-width: 4px;
+                            border-radius: var(--n-r-sm); }
+.n-describe .ag-chosen li.u-y { border-left-color: #1f7a4d; }
+.n-describe .ag-chosen li.u-e { border-left-color: var(--n-cta-edge); }
+.n-describe .ag-chosen li.u-n { border-left-color: var(--n-st-absent); }
+.n-describe .ag-chosen code { font-size: 11px; color: var(--n-dim); }
+.n-describe .ag-acts { display: grid; gap: 8px; margin: 16px 0 10px; }
+.n-describe .ag-acts .n-btn { width: 100%; }
+
+/* ------------------------------------------------------- files and states -- */
+/* The two files a buyer hands their agent, on the picker panel. */
+.n-files { display: grid; gap: 6px; }
+.n-files__row { display: flex; align-items: baseline; gap: 12px;
+                padding: 9px 12px; border: 1px solid var(--n-line);
+                border-radius: var(--n-r-sm); background: var(--n-tint-2); }
+.n-files__row code { font-weight: 600; }
+.n-files__row span { font-size: var(--n-fine); color: var(--n-dim); }
+
+/* The ten states, explained, on the ledger. */
+.n-states { display: grid; gap: 8px; }
+.n-states__row { display: grid; grid-template-columns: 190px minmax(0, 1fr) auto;
+                 gap: 16px; align-items: baseline; padding: 12px 14px;
+                 border: 1px solid var(--n-line); border-radius: var(--n-r-sm);
+                 background: var(--n-panel); }
+.n-states__row p { font-size: var(--n-small); color: var(--n-dim); line-height: 1.5; }
+.n-states__n { font: 600 12px/1 var(--n-mono); color: var(--n-dim-2);
+               font-variant-numeric: tabular-nums; }
+
 /* ----------------------------------------------------------------- order -- */
 .n-line { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto;
           gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--n-line);
@@ -953,7 +1039,8 @@ code { font-family: var(--n-mono); font-size: .88em; }
  * for section 8. Same rule as the rest of the file: one place, not scattered.
  * ========================================================================== */
 @media (max-width: 1080px) {
-  .n-picker { grid-template-columns: 1fr; }
+  .n-picker, .n-describe__grid { grid-template-columns: 1fr; }
+  .n-describe__side { position: static; }
   .n-panel { position: static; max-height: none; }
   .n-aud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .n-works { grid-template-columns: 1fr 1fr; }
@@ -963,6 +1050,7 @@ code { font-family: var(--n-mono); font-size: .88em; }
   .n-picker__grid { grid-template-columns: 1fr; }
   .n-aud { grid-template-columns: 1fr 1fr; }
   .n-works { grid-template-columns: 1fr; }
+  .n-states__row { grid-template-columns: 1fr; gap: 6px; }
   .n-handoff, .n-receipt, .n-reviewer { grid-template-columns: 1fr; gap: 20px; }
   .n-panel__stats { grid-template-columns: repeat(2, 1fr); }
 
@@ -988,7 +1076,8 @@ code { font-family: var(--n-mono); font-size: .88em; }
 }
 
 @media print {
-  .n-filters, .n-panel__foot, .n-line__acts, .n-ref button { display: none; }
+  .n-filters, .n-panel__foot, .n-line__acts, .n-ref button, .n-print,
+  .n-header, .n-footer, .n-codeslot, .n-switch { display: none; }
   .n-receipt, .n-claimrow, .n-line { break-inside: avoid; }
   .n-cmp { font-size: 9pt; }
   .n-cmp thead { display: table-header-group; }

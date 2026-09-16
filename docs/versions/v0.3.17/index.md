@@ -27,7 +27,7 @@ pushing to one needs its write key on a command line and that was refused here.
 The page says so where the vault would have been.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `b8ca1ff3b5293f693f7bc3834e0ae79a75b2cd49`
 - Reconstructed: no
 
 ---

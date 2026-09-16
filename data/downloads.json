@@ -6,9 +6,9 @@
       "file": "abp-comparison.pdf",
       "url": "/compare/",
       "title": "What each level actually gets you",
-      "bytes": 81366,
-      "sha256": "7a50d625156655ebc9e68d1a594fa94f8e1c4a514c979cc22afbc24ab049e3df",
-      "version": "v0.3.17",
+      "bytes": 121426,
+      "sha256": "fba324b3b733ec6ac0c6f4a61a61c92f48724f0c5b836e7a98ba151d0c06880b",
+      "version": "v0.3.18",
       "generated": "2026-09-16",
       "columns": 6,
       "rows": 18

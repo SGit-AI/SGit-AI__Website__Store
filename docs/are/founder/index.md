@@ -2,19 +2,16 @@
 
 **You arrive asking:** We are shipping with agents and somebody is going to ask what they can reach.
 
-## The one that fits
-
-**A working vault — £50**, 1 to 2 days from your payment. A vault you hold the keys to is the level that turns a question into an artefact you own. The pack below it is the same material if you would rather not run anything; the correction above it is for when the template's assumptions are not yours.
-
-## What changes for you
-
 Speed and evidence, in that order. A founder needs the document to exist before the conversation that needs it, and needs it to survive being read by somebody more senior than them.
 
-## The rest of the ladder
+## The four levels
 
-- **The pack, downloaded** — £10 — Every file in the vault, downloaded by you. Yours to use, keep and hand to your agent.
-- **Corrected for your situation** — £500 — You tell us the industry, the use case and the details. The mandate is corrected against them and the vault comes back yours.
-- **Two sessions and a custom vault** — £1,500 — Half an hour with your team to find out what is actually running, and half an hour to deliver it — reviewed and signed off by a security professional.
+- **ABP Pack** — £10 — The ABP files and instructions, packaged for you to keep.
+- **ABP Vault** — £50 — The pack as a vault, with its reading app, your keys and version history. — first for you
+- **ABP Tailored** — £500 — A named security professional corrects the mandate against your details.
+- **ABP Reviewed** — £1,500 — Two half-hour sessions and a custom vault, reviewed and signed off. — drawn quieter, same price
+
+**Why first:** A vault you hold the keys to is the level that turns a question into an artefact you own. The pack below it is the same material if you would rather not run anything; the correction above it is for when the template's assumptions are not yours.
 
 ## Go and look at one first
 

@@ -1352,11 +1352,17 @@
     {
      "id": "DA-8",
      "title": "Put it in front of the £500 level and in the walk-through flow",
-     "status": "queued",
-     "description": "Free, in front of the paywall, and the thing a conversation at a stand is run from: build it together, they leave, the vault follows.",
-     "blocked": "DA-5.",
+     "status": "done",
+     "description": "Free, in front of the paywall, and the thing a conversation at a stand is run from: build it together, they leave, the vault follows.<br><br><b>Done in v0.3.18.</b> <a href=\"/describe/\">/describe/</a> is the lab prototype's engine drawn in the store's design, linked from the product page's aside on every level and pointing at the £500 level as the half that needs a person. The walk-through flow (DA-6) still waits on the prompt that turns a definition into a vault.",
      "source": "lead",
-     "memo": "2026-09-16-describe-your-agent"
+     "memo": "2026-09-16-describe-your-agent",
+     "shipped": {
+      "version": "v0.3.18",
+      "urls": [
+       "/describe/",
+       "/product/"
+      ]
+     }
     }
    ]
   },
@@ -1369,39 +1375,76 @@
     {
      "id": "TK-1",
      "title": "Ship the four-fact strip, every fact linked to its claim",
-     "status": "next",
-     "description": "<b>From 01 Marketplace, corrected by the one reader who checks things.</b> Four short statements between the hero and the first product section: fifteen application templates, four levels, six vaults open to read now, the top two signed by a person. Every one of the four is already true here and already in the ledger.<br><br><b>Each item links to its claim.</b> The concept's version has four ticks and not one of them is a link, which is the difference between a trust strip and a claim — and the reason this store can ship the idea and the concept could not."
+     "status": "done",
+     "description": "<b>From 01 Marketplace, corrected by the one reader who checks things.</b> Four short statements between the hero and the first product section: fifteen application templates, four levels, six vaults open to read now, the top two signed by a person. Every one of the four is already true here and already in the ledger.<br><br><b>Each item links to its claim.</b> The concept's version has four ticks and not one of them is a link, which is the difference between a trust strip and a claim — and the reason this store can ship the idea and the concept could not.<br><br><b>Superseded by the design that is the store from v0.3.16, and done there.</b> This unit was written as an edit to the previous design; the new one carries it as built.",
+     "shipped": {
+      "version": "v0.3.18",
+      "urls": [
+       "/#evidence"
+      ]
+     }
     },
     {
      "id": "TK-2",
      "title": "Set the price at 42px on every card",
-     "status": "next",
-     "description": "<b>The live card sets the price at 28px inline with the delivery estimate, at body weight.</b> Every concept sets it at 42px as the second-largest thing in the card, and every reader shown that version used the prices to compare.<br><br>A type-scale change, not a redesign. It is the measurable difference between a card somebody compares and a card somebody reads."
+     "status": "done",
+     "description": "<b>The live card sets the price at 28px inline with the delivery estimate, at body weight.</b> Every concept sets it at 42px as the second-largest thing in the card, and every reader shown that version used the prices to compare.<br><br>A type-scale change, not a redesign. It is the measurable difference between a card somebody compares and a card somebody reads.<br><br><b>Superseded by the design that is the store from v0.3.16, and done there.</b> This unit was written as an edit to the previous design; the new one carries it as built.",
+     "shipped": {
+      "version": "v0.3.18",
+      "urls": [
+       "/",
+       "/compare/"
+      ]
+     }
     },
     {
      "id": "TK-3",
      "title": "Rebuild the card anatomy: level and delivery on one line, one action",
-     "status": "queued",
-     "description": "<b>Identical order in every card</b> so the eye can run down a column: level and delivery on one 12px line, the name, one line of what it is, the price, one sentence, one action.<br><br><b>The claim chips have to go somewhere.</b> They are load-bearing — they are how a reader checks that “delivered by a person” is a thing somebody stood behind, and they are one of the two elements that won the two readers who would spend the most. This is a move, not a deletion."
+     "status": "done",
+     "description": "<b>Identical order in every card</b> so the eye can run down a column: level and delivery on one 12px line, the name, one line of what it is, the price, one sentence, one action.<br><br><b>The claim chips have to go somewhere.</b> They are load-bearing — they are how a reader checks that “delivered by a person” is a thing somebody stood behind, and they are one of the two elements that won the two readers who would spend the most. This is a move, not a deletion.<br><br><b>Superseded by the design that is the store from v0.3.16, and done there.</b> This unit was written as an edit to the previous design; the new one carries it as built.",
+     "shipped": {
+      "version": "v0.3.18",
+      "urls": [
+       "/",
+       "/compare/"
+      ]
+     }
     },
     {
      "id": "TK-4",
      "title": "Applications as chips, with a sixth that converts the miss",
-     "status": "queued",
-     "description": "<b>From 02 Guided, which lost the panel four-one and won this outright.</b> One pill per application, each a link, with a sixth reading “something else — from £500”.<br><br>A visitor whose agent is not in the list currently reaches the end of a directory. The sixth chip sends them to the level that exists precisely because their deployment is not the template."
+     "status": "done",
+     "description": "<b>From 02 Guided, which lost the panel four-one and won this outright.</b> One pill per application, each a link, with a sixth reading “something else — from £500”.<br><br>A visitor whose agent is not in the list currently reaches the end of a directory. The sixth chip sends them to the level that exists precisely because their deployment is not the template.<br><br><b>Superseded by the design that is the store from v0.3.16, and done there.</b> This unit was written as an edit to the previous design; the new one carries it as built.",
+     "shipped": {
+      "version": "v0.3.18",
+      "urls": [
+       "/#agents"
+      ]
+     }
     },
     {
      "id": "TK-5",
      "title": "Forty-eight header links down to four",
-     "status": "queued",
-     "description": "<b>The review's first recommendation and the right one.</b> Three destinations and the order stay in the header; eleven evidence and buying-mechanics destinations move to the footer; eight already have a home in the console.<br><br><b>Two things do not move.</b> The version badge is how a reader knows which build they are quoting, and the model-assistance strip is required above the main element by this repository's own rules with a check that refuses a page without it. They can get quieter. They cannot go to the footer.",
-     "blocked": "TK-6, which changes the same fold"
+     "status": "done",
+     "description": "<b>The review's first recommendation and the right one.</b> Three destinations and the order stay in the header; eleven evidence and buying-mechanics destinations move to the footer; eight already have a home in the console.<br><br><b>Two things do not move.</b> The version badge is how a reader knows which build they are quoting, and the model-assistance strip is required above the main element by this repository's own rules with a check that refuses a page without it. They can get quieter. They cannot go to the footer.<br><br><b>Superseded by the design that is the store from v0.3.16, and done there.</b> This unit was written as an edit to the previous design; the new one carries it as built.",
+     "shipped": {
+      "version": "v0.3.18",
+      "urls": [
+       "/"
+      ]
+     }
     },
     {
      "id": "TK-6",
      "title": "Cut the disclosure strip to one line without moving it",
-     "status": "queued",
-     "description": "<b>It is two lines on a phone before the headline starts, and the headline starts 358px down.</b> One line with the rest behind the link is the same disclosure at a third of the height.<br><br><b>It stays above main.</b> It is one of the two elements that won the two readers who would sign off £1,500, and a build check holds the floor, so the failure mode is loud rather than silent."
+     "status": "done",
+     "description": "<b>It is two lines on a phone before the headline starts, and the headline starts 358px down.</b> One line with the rest behind the link is the same disclosure at a third of the height.<br><br><b>It stays above main.</b> It is one of the two elements that won the two readers who would sign off £1,500, and a build check holds the floor, so the failure mode is loud rather than silent.<br><br><b>Superseded by the design that is the store from v0.3.16, and done there.</b> This unit was written as an edit to the previous design; the new one carries it as built.",
+     "shipped": {
+      "version": "v0.3.18",
+      "urls": [
+       "/"
+      ]
+     }
     },
     {
      "id": "TK-7",

@@ -2211,17 +2211,27 @@ def check_the_five_audiences_hide_nothing():
             fail(f"are/{aid}: the audience page was not built")
             continue
         page = f.read_text()
+        # THE DOOR IS DRAWN IN THE STORE'S DESIGN FROM v0.3.18: four offer cards,
+        # each a "Buy this level" link to the product page. Reachable means the
+        # card is there with its link; leading means exactly one card carries
+        # the lead class and it is the one data/audiences.yml names.
         for lvl in levels:
-            if f'href="../../d/{lvl}/index.html"' not in page and f'/d/{lvl}/' not in page:
+            if f'product/index.html?level={lvl}&' not in page and f'product/?level={lvl}&' not in page:
                 fail(f"are/{aid}: level {lvl} is not reachable from this view. Leading with what "
                      "fits is a view; removing a level is a different catalogue, and this site "
                      "does not show different people different catalogues")
         if "display:none" in page:
             fail(f"are/{aid}: something on this page is display:none. A quieted level is present "
                  "and reachable; a hidden one is a claim nobody made")
-        if f'<div class="skus skus-one"><div class="sku" id="sku-' not in page:
-            fail(f"are/{aid}: does not lead with a single level. The whole point of the view is "
-                 "that it opens on one")
+        leads_found = re.findall(r'<article class="n-offer n-offer--lead[^"]*" data-offer="(t\d)"', page)
+        if leads_found != [leads]:
+            fail(f"are/{aid}: leads with {leads_found or 'nothing'} and data/audiences.yml says "
+                 f"{leads}. The whole point of the view is that it opens on one, and on that one")
+        for q in quiet:
+            if f'n-offer--quiet" data-offer="{q}"' not in page:
+                fail(f"are/{aid}: level {q} should be drawn quieter for this reader and is not. "
+                     "Quiet is a hierarchy, and a hierarchy the page does not draw is one it "
+                     "does not have")
         md = OUT / "are" / aid / "index.md"
         if not md.exists():
             fail(f"are/{aid}: has no markdown twin")
@@ -2971,12 +2981,30 @@ def check_next_is_the_offer_data():
             fail(f"{p}: no level has a checkout link and the page does not say so. "
                  "A buying action that looks live and does nothing is the one thing "
                  "a store must never ship")
-        # the homepage's card actions are "explore", which is honest — it carries
-        # the same statement in words. The product page has the buy action, so it
-        # is the one that must render a disabled control.
-        if p.endswith("product/index.html") and not live:
-            if 'aria-disabled="true"' not in body:
+        # THE DISABLED CONTROL LIVES WHERE THE MONEY WOULD. Until v0.3.18 this
+        # held the product page to a disabled buy button, because its button was
+        # the only buying action and a live-looking one would have done nothing.
+        # The v4 model changed what a buy action IS: "Buy this level" is a link
+        # to the product page and "Add to your order" adds a line to the order
+        # this browser holds — both do something real. The one control that
+        # would take money is on the checkout, so that is the page that must
+        # render it disabled with its reason while no link exists.
+        if p.endswith("pay/index.html") and not live:
+            if 'aria-disabled="true"' not in body and "aria-disabled" not in (
+                    OUT / "assets" / "next.js").read_text():
                 fail(f"{p}: has no disabled buying action while no checkout link exists")
+        # and every buy action anywhere is one of the two real things
+        for href in re.findall(r'<a[^>]*class="[^"]*n-btn[^"]*"[^>]*href="([^"]*)"[^>]*>\s*Buy this level',
+                               body):
+            if "product/" not in href or "level=" not in href or "policy=" not in href:
+                fail(f"{p}: a 'Buy this level' action goes to {href!r}, which is not the "
+                     "product page with a level and a policy. A buy action that lands "
+                     "somewhere a line cannot be added is a buy action that does nothing")
+        if p.endswith("product/index.html"):
+            if 'id="p-buy"' in body and 'data-add-line="' not in body:
+                fail(f"{p}: the product page's buy button does not add a line to the order. "
+                     "A button that looks like it buys and does not is the one thing a store "
+                     "must never ship")
 
     # THE RULE THAT TURNED ROUND WHEN THE DESIGN SHIPPED.
     #

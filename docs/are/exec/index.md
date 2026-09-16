@@ -2,19 +2,16 @@
 
 **You arrive asking:** Can I have this in a form my board can read?
 
-## The one that fits
-
-**Corrected for your situation — £500**, 1 to 3 days from your reply, not from your payment. Corrected for your situation is the first level where the assumptions are yours rather than a template's, which is the difference between a document you can put in front of a board and one you have to explain first.
-
-## What changes for you
-
 Who the document is written for. The material is the same; what an executive needs is the version that survives a board pack, and the store is explicit that this is being built rather than already sitting there.
 
-## The rest of the ladder
+## The four levels
 
-- **The pack, downloaded** — £10 — Every file in the vault, downloaded by you. Yours to use, keep and hand to your agent.
-- **A working vault** — £50 — The same material as a vault you hold the keys to: clone it, change it, version it, and hand anyone a read key.
-- **Two sessions and a custom vault** — £1,500 — Half an hour with your team to find out what is actually running, and half an hour to deliver it — reviewed and signed off by a security professional.
+- **ABP Pack** — £10 — The ABP files and instructions, packaged for you to keep. — drawn quieter, same price
+- **ABP Vault** — £50 — The pack as a vault, with its reading app, your keys and version history.
+- **ABP Tailored** — £500 — A named security professional corrects the mandate against your details. — first for you
+- **ABP Reviewed** — £1,500 — Two half-hour sessions and a custom vault, reviewed and signed off.
+
+**Why first:** Corrected for your situation is the first level where the assumptions are yours rather than a template's, which is the difference between a document you can put in front of a board and one you have to explain first.
 
 ## Go and look at one first
 

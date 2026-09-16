@@ -4501,76 +4501,11 @@ BLOCKS["who-are-you"] = block_who_are_you
 def audience_pages(out_dir, ctx_shared):
     """One page per audience: the level that fits, then the rest, then the one
     published vault that speaks to them."""
+    # THE FIVE DOORS ARE BUILT BY _next_doors NOW, in the design the store uses;
+    # this function keeps the index. The old per-audience pages drew the old
+    # level cards and are not archived: they were never a design of their own,
+    # and a reader who wants the previous design has /v1/audiences/.
     made = {}
-    ladder = [l for l in LEVELS]
-    for a in AUDIENCES:
-        url = f"{AUDIENCE_ROOT}{a['id']}/"
-        ctx = dict(ctx_shared)
-        ctx.update({"page": f"are/{a['id']}", "page_url": url, "fm": {}, "toc": []})
-        lead_offer = OFFERS_BY_ID[a["leads_with"]]
-        lead_level = next(l for l in ladder if l["offer"] == a["leads_with"])
-        rest = [l for l in ladder if l["offer"] != a["leads_with"]]
-        ev = next(w for w in EVIDENCE["works"] if w["id"] == a["evidence"])
-        ctx["external_links"].add(ev["url"])
-
-        def card(l, quiet=False):
-            o = OFFERS_BY_ID[l["offer"]]
-            return (f'<div class="sku{" sku-quiet" if quiet else ""}" id="sku-{l["id"]}">'
-                    f'<div class="sku-n">{l["n"]}</div>'
-                    f'<h3 class="sku-name">{html.escape(l["name"])}</h3>'
-                    f'<p class="sku-who">{html.escape(l["who"])}</p>'
-                    f'<div class="sku-price"><b>{html.escape(l["price_label"])}</b>'
-                    f'<span>{html.escape(o["eta"])}</span></div>'
-                    f'<p class="sku-lede">{inline(l["lede"], ctx)}</p>'
-                    f'<p class="sku-state">{chip(o["state_badge"], claim_id=o["claim"])}</p>'
-                    f'<p class="sku-go">{checkout_html(o, ctx)}'
-                    f'<a class="sku-more" href="/d/{o["id"]}/">What arrives, and what does not '
-                    '&rarr;</a></p></div>')
-
-        body = (
-            shop_island(rel_prefix(url))
-            + f'<div class="a-ask"><b>You arrive asking</b><q>{html.escape(a["arrives_with"])}</q>'
-            f'</div>'
-            f'<h2 id="the-one-that-fits">The one that fits</h2>'
-            f'<div class="skus skus-one">{card(lead_level)}</div>'
-            f'<p>{inline(a["why"], ctx)}</p>'
-            f'<h2 id="what-changes">What changes for you</h2>'
-            f'<p>{inline(a["what_changes"], ctx)}</p>'
-            f'<h2 id="the-rest">The rest of the ladder</h2>'
-            '<p><b>Nothing is hidden from anybody.</b> These are the same four levels every reader '
-            'of this store sees; what the page above does is open on the one that usually fits the '
-            'question you arrived with. If it is the wrong one, it is right here.</p>'
-            f'<div class="skus">{"".join(card(l, l["offer"] in a["quiet"]) for l in rest)}</div>'
-            f'<h2 id="go-and-look">Go and look at one first</h2>'
-            f'<p>{inline(a["evidence_why"], ctx)}</p>'
-            f'<div class="ev-grid"><div class="ev"><div class="ev-h">'
-            f'<a href="{ev["url"]}"><b>{html.escape(ev["title"])}</b></a>'
-            f'<span class="ev-m"><code>{html.escape(ev["vault"])}</code> · '
-            f'{html.escape(ev["size"])} · {html.escape(ev["published"])}</span></div>'
-            f'<p class="ev-q">&ldquo;{html.escape(ev["quoted"])}&rdquo;</p>'
-            f'<p class="ev-w">{inline(ev["why"], ctx)}</p></div></div>'
-            '<p class="small dim">It opens with a read key published on its own page — no '
-            'account, nothing to install, and nothing asked of you for looking. '
-            f'<a href="/">Five more like it</a> · <a href="{AUDIENCE_ROOT}">the other four '
-            'ways in</a>.</p>')
-
-        md = [f"# {a['name']}\n", f"**You arrive asking:** {a['arrives_with']}\n",
-              f"## The one that fits\n\n**{lead_level['name']} — "
-              f"{lead_level['price_label']}**, {lead_offer['eta'].lower()} "
-              f"{lead_offer['eta_from']}. {_strip(a['why'])}\n",
-              f"## What changes for you\n\n{_strip(a['what_changes'])}\n",
-              "## The rest of the ladder\n"]
-        md += [f"- **{l['name']}** — {l['price_label']} — {_strip(l['lede'])}"
-               for l in rest]
-        md += ["", f"## Go and look at one first\n\n{_strip(a['evidence_why'])}\n",
-               f"- **{ev['title']}** — {ev['url']}"]
-        made[url] = _selling_page(out_dir, ctx_shared, url,
-            {"title": a["name"],
-             "description": f"{a['arrives_with']} {_strip(a['what_changes'])}"[:300],
-             "lead": inline(a["what_changes"], ctx)},
-            f" / <a href=\"{AUDIENCE_ROOT}\">who you are</a> / {html.escape(a['short'])}",
-            body, "\n".join(md))
-
     # the index: the five doors, and nothing else
     idx_body = (
         '<p class="lead">Five ways in, over the same four things. <b>Nothing is hidden from '
@@ -5760,6 +5695,14 @@ NEXT_ART_BY_OFFER = {"t1": "pack.jpg", "t2": "vault.jpg",
 # the cheapest thing, which is a real recommendation and is recorded as one.
 NEXT_LEAD = "t2"
 
+# WHICH POLICY A "BUY THIS LEVEL" LINK CARRIES WHEN NOBODY HAS PICKED ONE. The
+# v4 handback's every offer card links to the product page with a level AND a
+# policy, and it defaults the policy to the shape this site is maintained from.
+# That is a real default and the product page says it is one, beside a link to
+# change it. An order line is a policy at a level; a level on its own cannot be
+# added to anything, which is why the cards do not add and the product page does.
+NEXT_DEFAULT_POLICY = "claude-code-web"
+
 
 def _next_offers():
     """The four sellable levels, shaped for the page and for the JSON island.
@@ -5829,6 +5772,47 @@ def _next_offers():
     if len(out) != 4:
         raise SystemExit(f"next: expected four levels, shaped {len(out)}")
     return out
+
+
+def _next_offer_card(l, ctx, policy=None, lead=None, quiet=(), art=True, page=NEXT_ROOT):
+    """The offer card, once, for every page that shows the four levels.
+
+    THE ACTION IS "BUY THIS LEVEL" AND IT IS A LINK, NOT A BUTTON. It goes to the
+    product page carrying the level and a policy — the one the page was opened
+    for, or the site's default — and the product page is where a line is added
+    to the order. The design round's cards said "Explore", which was honest and
+    was also the thing a buyer noticed first: a store whose cards do not sell.
+
+    `lead` draws the amber action; `quiet` draws a level lower in the hierarchy
+    without hiding it, and a build check refuses display:none on any of them."""
+    lead_id = lead if lead is not None else NEXT_LEAD
+    is_lead = l["id"] == lead_id
+    is_quiet = l["id"] in quiet
+    cls = "n-offer" + (" n-offer--lead" if is_lead else "") + (" n-offer--quiet" if is_quiet else "")
+    btn = "n-btn" if is_lead else "n-btn n-btn--ghost"
+    href = f'{NEXT_ROOT}product/?level={l["id"]}&amp;policy={policy or NEXT_DEFAULT_POLICY}'
+    split = f'<span class="n-offer__split">{l["split"]}</span>' if l["split"] else ""
+    ctx["claim_uses"].setdefault(l["claim"], set()).add(page)
+    pic = ""
+    if art:
+        alt = f'{l["short_name"]} — concept artwork for a digital deliverable'
+        pic = (f'<div class="n-offer__art"><img src="{l["art"]}" alt="{html.escape(alt)}" '
+               f'loading="lazy" width="720" height="480">'
+               f'<span class="n-offer__n">{html.escape(l["n"])}</span></div>')
+    return (
+        f'<article class="{cls}" data-offer="{l["id"]}">{pic}'
+        f'<div class="n-offer__body">'
+        f'<p class="n-offer__meta"><b>LEVEL {html.escape(l["n"])}</b>'
+        f'<span>{html.escape(l["eta"])}</span></p>'
+        f'<h3>ABP {html.escape(l["short_name"])}</h3>'
+        f'<p class="n-offer__sub">{html.escape(l["short_sub"])}</p>'
+        f'<p class="n-price"><b>{html.escape(l["price"])}</b><span>GBP</span></p>'
+        f'<p class="n-offer__clock">{html.escape(l["clock"])}</p>'
+        f'<p class="n-offer__what">{inline(l["short_what"], ctx)}</p>'
+        f'<p class="n-offer__claim">{_next_claim(l, ctx)}</p>'
+        f'<div class="n-offer__foot">'
+        f'<a class="{btn} n-btn--wide" href="{href}">Buy this level {_ARROW}</a>{split}</div>'
+        '</div></article>')
 
 
 def _next_audiences():
@@ -5913,6 +5897,9 @@ def next_html(url, fm, body, model):
     # first reader of a moved address is usually not a person.
     refresh = (f'<meta http-equiv="refresh" content="0; url={fm["moved_to"]}">\n'
                if fm.get("moved_to") else "")
+    # a page that needs a second engine names it; every script still loads once
+    extra_scripts = "".join(f'<script src="{s}" defer></script>\n'
+                            for s in (fm.get("scripts") or []))
 
 
     return relativise(f"""<!doctype html>
@@ -5928,7 +5915,7 @@ def next_html(url, fm, body, model):
 <link rel="stylesheet" href="/assets/next.css">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <script src="/assets/next.js" defer></script>
-</head>
+{extra_scripts}</head>
 <body>
 <a class="n-skip" href="#main">Skip to content</a>
 
@@ -5959,6 +5946,7 @@ def n_footer():
       <a href="{NEXT_COMPARE}">Compare what arrives</a>
       <a href="{NEXT_CART}">Your order</a>
       <a href="{NEXT_PAID}">What lands, and when</a>
+      <a href="{NEXT_DESCRIBE}">Describe your agent</a>
     </div>
     <div><b>Evidence</b>
       <a href="{NEXT_LEDGER}">The claim ledger</a>
@@ -6025,32 +6013,7 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
         f'<span>{html.escape(a["door"])}</span></a>'
         for a in AUDIENCES)
 
-    def card(l):
-        lead_cls = " n-offer--lead" if l["id"] == NEXT_LEAD else ""
-        btn_cls = "n-btn" if l["id"] == NEXT_LEAD else "n-btn n-btn--ghost"
-        split = (f'<span class="n-offer__split">{l["split"]}</span>' if l["split"] else "")
-        alt = f'{l["short_name"]} — concept artwork for a digital deliverable'
-        return (
-            f'<article class="n-offer{lead_cls}">'
-            f'<div class="n-offer__art">'
-            f'<img src="{l["art"]}" alt="{html.escape(alt)}" loading="lazy" '
-            f'width="720" height="480">'
-            f'<span class="n-offer__n">{html.escape(l["n"])}</span></div>'
-            f'<div class="n-offer__body">'
-            f'<p class="n-offer__meta"><b>LEVEL {html.escape(l["n"])}</b>'
-            f'<span>{html.escape(l["eta"])}</span></p>'
-            f'<h3>ABP {html.escape(l["short_name"])}</h3>'
-            f'<p class="n-offer__sub">{html.escape(l["short_sub"])}</p>'
-            f'<p class="n-price"><b>{html.escape(l["price"])}</b><span>GBP</span></p>'
-            f'<p class="n-offer__clock">{html.escape(l["clock"])}</p>'
-            f'<p class="n-offer__what">{inline(l["short_what"], ctx_shared)}</p>'
-            f'<p class="n-offer__claim">{_next_claim(l, ctx_shared)}</p>'
-            f'<div class="n-offer__foot">'
-            f'<a class="{btn_cls} n-btn--wide" href="{l["url"]}">'
-            f'Explore ABP {html.escape(l["short_name"])} {_ARROW}</a>{split}</div>'
-            "</div></article>")
-
-    cards = "".join(card(l) for l in levels)
+    cards = "".join(_next_offer_card(l, ctx_shared) for l in levels)
 
     # ---- the applications. The sixth chip is the point of the component: a
     # visitor whose agent is not on the list lands on the level that exists for
@@ -6259,8 +6222,15 @@ def _next_product(out_dir, ctx_shared, levels, auds, model):
                                  "anywhere in its output."),
         ])
 
-    buy_label = ("Buy ABP " + lead["short_name"] + " →" if lead["buyable"]
-                 else "The payment link has not been issued yet")
+    # ---- what you are buying. A policy at a level. The policy comes off the
+    # address and is the site's default until somebody changes it; the page
+    # says which, because a default that looks like a choice is a wrong order.
+    default_shape = next(s for s in model["shapes"] if s["slug"] == NEXT_DEFAULT_POLICY)
+    level_rows = "".join(
+        f'<button type="button" data-level="{l["id"]}" '
+        f'aria-pressed="{"true" if l["id"] == lead["id"] else "false"}">'
+        f'ABP {html.escape(l["short_name"])} &middot; {html.escape(l["price"])}</button>'
+        for l in levels)
 
     body = (
         '<section class="n-sect">'
@@ -6309,8 +6279,13 @@ def _next_product(out_dir, ctx_shared, levels, auds, model):
 
         # ----------------------------------------------------------- right
         '<aside class="n-buy">'
-        '<p class="n-buy__label">Your selected ABP</p>'
-        '<h2>ABP <span id="p-buy-name">' + html.escape(lead["short_name"]) + '</span></h2>'
+        '<p class="n-buy__label">What you are buying</p>'
+        '<h2 id="p-policy">' + html.escape(default_shape["title"]) + '</h2>'
+        '<p class="n-buy__policy"><code id="p-policy-code">' + html.escape(default_shape["slug"])
+        + '/</code> <span id="p-policy-default">&middot; the default shape; '
+        f'<a href="{NEXT_PICKER}">change it {_OUT}</a></span></p>'
+        '<p class="n-buy__level">ABP <span id="p-buy-name">' + html.escape(lead["short_name"])
+        + '</span></p>'
         '<p class="n-price"><b id="p-price">' + html.escape(lead["price"])
         + '</b><span>GBP</span></p>'
         '<p class="n-buy__split" id="p-split"'
@@ -6318,15 +6293,28 @@ def _next_product(out_dir, ctx_shared, levels, auds, model):
         + (lead["split"] or "") + "</p>"
         '<p class="n-buy__clock" id="p-clock">' + html.escape(lead["clock"]) + '</p>'
         '<p class="n-buy__what" id="p-what">' + inline(lead["what"], ctx_shared) + '</p>'
+        # THE BUTTON ADDS A LINE TO THE ORDER THIS BROWSER IS HOLDING. It is not
+        # a payment and does not pretend to be one: the page that takes money is
+        # the checkout, and that is where the disabled control with its reason
+        # lives. A button here that did nothing would be the dishonest version.
         '<button class="n-btn n-btn--wide" id="p-buy" type="button" '
-        'aria-disabled="' + ("false" if lead["buyable"] else "true") + '">'
-        + html.escape(buy_label) + '</button>'
-        '<p class="n-buy__note">Design round &middot; no payment is collected on this page, '
-        'and this site has no form, input or field anywhere in its output.</p>'
+        f'data-add-line="{NEXT_DEFAULT_POLICY}|{lead["cart_id"]}">'
+        'Add ABP ' + html.escape(lead["short_name"]) + ' to your order ' + _ARROW + '</button>'
+        f'<p class="n-buy__added" id="p-added" hidden><a href="{NEXT_CART}">'
+        f'Added &mdash; open your order {_OUT}</a></p>'
+        '<p class="n-buy__note">Kept in this browser. No payment link has been issued on any '
+        'level, so nothing here takes money; the checkout says what would happen when one '
+        'is.</p>'
+        '<details class="n-buy__change"><summary>Change level</summary>'
+        '<div class="n-switch n-mt" role="group" aria-label="Choose a level">' + level_rows
+        + '</div></details>'
         '<div class="n-buy__rows">'
         '<p>' + _next_claim(lead, ctx_shared).replace('id="p-claim"', "")
                  .replace('<a class="n-claim', '<a id="p-claim" class="n-claim') + '</p>'
-        '<p class="n-fine"><a href="/policies/">Read the free example first &#8599;</a></p>'
+        '<p class="n-fine"><a id="p-policy-url" href="' + html.escape(default_shape["url"])
+        + '" rel="nofollow">Read the free example first &#8599;</a></p>'
+        '<p class="n-fine">One agent, one deployment. Commercial licence included.</p>'
+        f'<p class="n-fine"><a href="{NEXT_DESCRIBE}">Describe your agent first {_ARROW}</a></p>'
         '</div></aside>'
         '</div></section>')
 
@@ -6589,6 +6577,42 @@ def _next_admin(out_dir, ctx_shared, levels):
         'third link therefore leaves the round, and the strip at the top of every page '
         'says the round is a round.</p>'
 
+        '<h2 id="parity">The parity pass against v4</h2>'
+        '<p>On 16 September the project lead put the live store beside '
+        '<a href="https://sgit-store-v4.diniscruz.chatgpt.site" rel="nofollow">the v4 '
+        'site</a> and found bits missing, the buy references first. The site is byte-for-'
+        'byte the pack mirrored here, so the gap was not a newer version: it was what the '
+        'first implementation left out of the pack. Every v4 screen was then diffed '
+        'against its page here.</p>'
+        '<p><b>Taken.</b> <em>Buy this level</em> on every offer card, everywhere, as v4 '
+        'has it: a link to the product page carrying a level and a policy, where '
+        '<em>Add to your order</em> adds the line. The product page sells a policy at a '
+        'level, names the default shape as a default beside a link to change it, and '
+        'carries the level switcher in its own aside. The comparison leads with the four '
+        'cards and a print action. The five doors are drawn in this design at '
+        f'<a href="{AUDIENCE_ROOT}founder/">/are/</a>, with the reader’s question as '
+        'the headline and the cards under it, and the lens on '
+        f'<a href="{NEXT_AUDIENCE}">who this is for</a> shows them too. '
+        f'<a href="{NEXT_DESCRIBE}">Describe your agent</a> exists in the store rather than '
+        'only in the lab, on the lab’s own engine. The ledger explains its ten '
+        'states. The page after paying prints. The picker panel names the two files you '
+        'hand the agent and opens the example vault on the shape’s own page.</p>'
+        '<p><b>Deliberately not taken.</b> The preview controls on v4’s cart and '
+        'checkout (<em>load example order</em>, <em>show 100% code applied</em>) are '
+        'design states, not store controls. v4’s checkout button reads as live and '
+        'says <em>preview</em> in a callout underneath; this one is a disabled control '
+        'that carries its reason, because no payment link has been issued and a button '
+        'that looks live and does nothing is the one thing a store must never ship. The '
+        'panel’s scenario selector and side-effect ladder are placeholders in the '
+        'pack itself and stay out until the data exists. The post-purchase vault frame '
+        'with a file list is a drawing of a vault; the page after paying links to the '
+        'real one embedded on each level’s landing page instead. The design-handoff '
+        'explorer on v4’s front page is for reviewing a handback, not for buying. '
+        'And the product names are the ones ruled on 16 September, not v4’s.</p>'
+        '<p><b>Found on the way.</b> Five “the same X on the store that sells '
+        'today” links were pointing at themselves since the swap; they point at the '
+        'archive now.</p>'
+
         '<h2 id="next">What is not there yet</h2>'
         '<p>The two add-ons attach to a level and have no page in this design. The '
         'admin console is untouched by the round: it is a different job for a different '
@@ -6738,6 +6762,9 @@ def _next_shapes():
         out.append({
             "slug": s["slug"], "code": s["code"], "title": s["title"],
             "summary": s["summary"], "glyph": s["glyph"],
+            # the published page for this shape, which is where its example vault
+            # opens; the catch-all has none and the page says so
+            "url": (s.get("url") or "").strip(),
             "family": s["family"], "family_label": NEXT_FAMILIES[s["family"]],
             "evidence": ev,
             "evidence_state": ev,
@@ -6903,6 +6930,16 @@ def _next_picker(out_dir, ctx_shared, levels, shapes, model):
         'published for any shape, so the cells are counted rather than classified and none '
         f'of them is coloured in. <a href="{NEXT_ADMIN}#behaviour">Why that matters '
         f'{_OUT}</a></p>'
+        # THE TWO FILES YOU HAND THE AGENT ship in every template pack and every
+        # vault — the offer data says so — and the example vault for a shape is
+        # its own published page upstream. Both are the handback's, both are true.
+        '<h4 class="n-mt-lg">The files you hand the agent</h4>'
+        '<div class="n-files">'
+        '<div class="n-files__row"><code>AGENTS.md</code><span>Guidance</span></div>'
+        '<div class="n-files__row"><code>SKILL.md</code><span>Method</span></div>'
+        '</div>'
+        '<p class="n-mt"><a class="n-btn n-btn--ghost" id="panel-open" href="#" '
+        f'rel="nofollow">Open the example vault {_OUT}</a></p>'
         '</div>'
         + _next_till(levels, shapes) +
         '</aside>')
@@ -6916,8 +6953,8 @@ def _next_picker(out_dir, ctx_shared, levels, shapes, model):
         'actually contains, then pick the level you want it at. Every number on this page '
         'is read from the published catalogue and none of it was written here.</p>'
         '</div>'
-        f'<p class="n-head__aside"><a href="/policies/">The same fifteen on the store that '
-        f'sells today {_OUT}</a></p></div>'
+        f'<p class="n-head__aside"><a href="{V1_ROOT}policies/">The same fifteen in the '
+        f'previous design {_OUT}</a></p></div>'
 
         '<div class="n-filters">'
         '<div class="n-filters__row">'
@@ -7150,7 +7187,9 @@ def _next_paid(out_dir, ctx_shared, levels, model):
         'is holding &mdash; with its real reference, its real SKUs and its real totals '
         '&mdash; and not a receipt for something nobody bought.</p>'
 
-        '<div class="n-mt-lg" id="receipt">'
+        '<p class="n-mt-lg"><button class="n-btn n-btn--ghost n-print" type="button" '
+        'data-print>Print this page</button></p>'
+        '<div class="n-mt" id="receipt">'
         '<div class="n-empty"><h2>This browser is not holding an order</h2>'
         '<p>Build one and it appears here, reference and all.</p>'
         f'<a class="n-btn" href="{NEXT_PICKER}">Pick an agent {_ARROW}</a></div>'
@@ -7215,6 +7254,7 @@ NEXT_COMPARE = NEXT_ROOT + "compare/"
 NEXT_AUDIENCE = NEXT_ROOT + "audiences/"
 NEXT_LEDGER = NEXT_ROOT + "ledger/"
 NEXT_WHO = NEXT_ROOT + "who/"
+NEXT_DESCRIBE = NEXT_ROOT + "describe/"
 
 
 def _next_cmp_cell(v):
@@ -7231,6 +7271,10 @@ def _next_compare(out_dir, ctx_shared, levels, model):
     The free column leads because it is the argument rather than an objection:
     the fifteen templates are published and anybody can take one, and what each
     paid step adds is only legible next to a column that does not have it."""
+    dl = next((x for x in DOWNLOADS["downloads"] if x["url"] == "/compare/"), None)
+    if not dl:
+        raise SystemExit("next: no brochure in data/downloads.json \u2014 "
+                         "run node tools/make_pdfs.mjs")
     cols = COMPARISON["columns"]
     head = ""
     for c in cols:
@@ -7256,10 +7300,6 @@ def _next_compare(out_dir, ctx_shared, levels, model):
                         f'<span class="n-cmp__why">{html.escape(r["why"])}</span></th>'
                         + "".join(_next_cmp_cell(r[c["id"]]) for c in cols) + "</tr>")
 
-    dl = next((x for x in DOWNLOADS["downloads"] if x["url"] == "/compare/"), None)
-    if not dl:
-        raise SystemExit("next: no brochure in data/downloads.json \u2014 "
-                         "run node tools/make_pdfs.mjs")
     stale = dl["version"] != SITE["version"]
     paper = ('<p class="n-note n-mt-lg" id="the-brochure"><b>The same table on paper.</b> '
              f'<a href="/assets/downloads/{dl["file"]}" download>'
@@ -7272,17 +7312,35 @@ def _next_compare(out_dir, ctx_shared, levels, model):
                 if stale else f'Taken at {html.escape(dl["version"])}.')
              + "</p>")
 
+    # THE FOUR CARDS ABOVE THE TABLE. The handback's pricing screen leads with the
+    # offer cards and their buy actions and puts the table under them as "compare
+    # every detail"; the first build here had the table alone, which is a
+    # comparison with nothing to buy at the end of it.
+    cards = "".join(_next_offer_card(l, ctx_shared, art=False, page=NEXT_COMPARE)
+                    for l in levels)
     body_html = (
         '<section class="n-sect">'
         '<div class="n-head"><div class="n-head__text">'
+        '<p class="n-eyebrow">The four levels</p>'
+        '<h1>One policy. Choose how it arrives.</h1>'
+        '<p class="n-mt">Start free, or buy the delivery and the help you need. The '
+        'behaviour policy is the same document at every level; what changes is the form '
+        'it arrives in and who does the correcting.</p></div>'
+        f'<p class="n-head__aside"><a class="n-btn n-btn--ghost n-print" '
+        f'href="/assets/downloads/{dl["file"]}" download>Print A4 brochure</a></p></div>'
+        f'<div class="n-grid n-grid--4">{cards}</div>'
+        '</section>'
+
+        '<section class="n-sect n-sect--tint">'
+        '<div class="n-head"><div class="n-head__text">'
         f'<p class="n-eyebrow">{nrows} rows, five columns</p>'
-        '<h1>What arrives, at every level.</h1>'
+        '<h2>Compare every detail.</h2>'
         '<p class="n-mt">Free first, because it is the argument rather than an objection: '
         'the fifteen templates are published with read keys and anybody can take one. What '
         'each paid step adds only means anything next to a column that does not have '
         'it.</p></div>'
-        f'<p class="n-head__aside"><a href="/compare/">The same table on the store that '
-        f'sells today {_OUT}</a></p></div>'
+        f'<p class="n-head__aside"><a href="{V1_ROOT}compare/">The same table in the '
+        f'previous design {_OUT}</a></p></div>'
 
         f'<div class="n-cmpwrap"><table class="n-cmp">'
         f'<thead><tr><th></th>{head}</tr></thead>'
@@ -7357,11 +7415,17 @@ def _next_audience_page(out_dir, ctx_shared, levels, auds, model):
             f'{html.escape(a["why"])}</p>'
             + (f'<p class="n-fine n-dim n-mt">Drawn quieter for this reader, and still on '
                f'the page at the same price: {html.escape(quiet)}.</p>' if quiet else "")
-            + f'<p class="n-mt"><a class="n-btn" href="{NEXT_ROOT}product/'
-              f'?level={lead["id"]}&amp;audience={a["id"]}">'
-              f'See ABP {html.escape(lead["short_name"])} {_ARROW}</a> '
-              f'<a class="n-btn n-btn--ghost" href="/are/{a["id"]}/">'
-              f'Everything written for this reader {_OUT}</a></p>'
+            # THE FOUR CARDS, UNDER THE LENS. The handback's audience screens put
+            # the offer cards right below the reader's own question, lead and
+            # quiet drawn by hierarchy and never by hiding. The first build here
+            # had a sentence and a link where the cards should have been.
+            + '<div class="n-grid n-grid--4 n-mt-lg">'
+            + "".join(_next_offer_card(l, ctx_shared, lead=a["leads_with"],
+                                       quiet=a.get("quiet") or (), art=False,
+                                       page=NEXT_AUDIENCE) for l in levels)
+            + '</div>'
+            + f'<p class="n-mt"><a class="n-btn n-btn--ghost" href="/are/{a["id"]}/">'
+              f'Everything written for this reader {_ARROW}</a></p>'
             '</div>')
 
     body = (
@@ -7373,8 +7437,8 @@ def _next_audience_page(out_dir, ctx_shared, levels, auds, model):
         'with the same four products. What a door changes is the sentence and which level '
         'it points at first — never the price, never the product, and never which '
         'levels you are allowed to see.</p></div>'
-        f'<p class="n-head__aside"><a href="/audiences/">The five doors on the store that '
-        f'sells today {_OUT}</a></p></div>'
+        f'<p class="n-head__aside"><a href="{V1_ROOT}audiences/">The five doors in the '
+        f'previous design {_OUT}</a></p></div>'
         f'<div class="n-aud">{doors}</div>'
         + (f'<p class="n-fine n-dim n-mt">{html.escape(art["label"])} &mdash; illustrative '
            'artwork for a digital deliverable, not a photograph of anybody.</p>'
@@ -7406,6 +7470,187 @@ def _next_audience_page(out_dir, ctx_shared, levels, auds, model):
         "title": "Who is this for?",
         "description": ("Five readers, five questions, the same four products: what each "
                         "door changes and what it never changes."),
+    }, body, model, "\n".join(md))
+
+
+def _next_doors(out_dir, ctx_shared, levels, model):
+    """One page per audience at /are/<id>/, in this design.
+
+    The reader's own question is the headline, the four levels are under it with
+    the one that usually fits drawn first and the ones that usually do not drawn
+    quieter, and NOTHING IS HIDDEN: every level is on every door at its price,
+    and check_the_five_audiences_hide_nothing refuses a door that drops one.
+    Then why that one is first, one published vault to go and look at before
+    spending anything, and the other four doors."""
+    made = {}
+    for a in AUDIENCES:
+        url = f"{AUDIENCE_ROOT}{a['id']}/"
+        lead = next(l for l in levels if l["id"] == a["leads_with"])
+        ev = next(w for w in EVIDENCE["works"] if w["id"] == a["evidence"])
+        ctx_shared["external_links"].add(ev["url"])
+        cards = "".join(_next_offer_card(l, ctx_shared, lead=a["leads_with"],
+                                         quiet=a.get("quiet") or (), art=False, page=url)
+                        for l in levels)
+        others = "".join(
+            f'<a class="n-fchip" href="{AUDIENCE_ROOT}{o["id"]}/">'
+            f'{html.escape(next(x for x in _next_audiences() if x["id"] == o["id"])["label"])}'
+            '</a>' for o in AUDIENCES if o["id"] != a["id"])
+        body = (
+            '<section class="n-sect">'
+            '<div class="n-head"><div class="n-head__text">'
+            f'<p class="n-eyebrow">{html.escape(a["name"])}</p>'
+            f'<h1>{html.escape(a["arrives_with"])}</h1>'
+            f'<p class="n-mt">{html.escape(a["what_changes"])}</p></div>'
+            f'<p class="n-head__aside"><a href="{NEXT_AUDIENCE}">The five doors, side by '
+            f'side {_ARROW}</a></p></div>'
+            f'<div class="n-grid n-grid--4">{cards}</div>'
+            f'<p class="n-note n-mt-lg"><b>Why ABP {html.escape(lead["short_name"])} is first '
+            f'for you.</b> {html.escape(a["why"])} <b>Nothing is hidden from anybody</b>: '
+            'these are the same four levels every reader of this store sees, at the same '
+            'prices; this page opens on the one that usually fits the question you arrived '
+            'with.</p>'
+            '</section>'
+
+            '<section class="n-sect n-sect--tint">'
+            '<div class="n-head"><div class="n-head__text">'
+            '<p class="n-eyebrow">Go and look at one first</p>'
+            f'<h2>{html.escape(ev["title"])}</h2>'
+            f'<p class="n-mt">{html.escape(a["evidence_why"])}</p></div></div>'
+            '<div class="n-works" style="grid-template-columns:minmax(0,1fr)">'
+            f'<a class="n-work" href="{ev["url"]}" rel="nofollow" style="color:inherit;'
+            'background:var(--n-panel);border-color:var(--n-line)">'
+            f'<b>{html.escape(ev["title"])}</b>'
+            f'<span class="n-work__why" style="color:var(--n-dim)">&ldquo;'
+            f'{html.escape(ev["quoted"])}&rdquo; {html.escape(ev["why"])}</span>'
+            f'<span class="n-work__meta" style="color:var(--n-dim-2)">'
+            f'<code>{html.escape(ev["vault"])}</code> &middot; {html.escape(ev["size"])} '
+            f'&middot; published {html.escape(ev["published"])} {_OUT}</span></a></div>'
+            '<p class="n-fine n-dim n-mt">It opens with a read key published on its own '
+            'page &mdash; no account, nothing to install, and nothing asked of you for '
+            f'looking. <a href="{NEXT_ROOT}#evidence">Five more like it</a>.</p>'
+            f'<p class="n-mt-lg n-fine n-dim">The other four ways in:</p>'
+            f'<div class="n-switch">{others}</div>'
+            '</section>')
+        md = [f"# {a['name']}\n", f"**You arrive asking:** {a['arrives_with']}\n",
+              f"{_strip(a['what_changes'])}\n", "## The four levels\n"]
+        for l in levels:
+            tag = (" — first for you" if l["id"] == a["leads_with"]
+                   else " — drawn quieter, same price" if l["id"] in (a.get("quiet") or ()) else "")
+            md.append(f"- **ABP {l['short_name']}** — {l['price']} — {_strip(l['short_what'])}{tag}")
+        md += ["", f"**Why first:** {_strip(a['why'])}", "",
+               f"## Go and look at one first\n\n{_strip(a['evidence_why'])}\n",
+               f"- **{ev['title']}** — {ev['url']}"]
+        made[url] = _next_emit(out_dir, url, {
+            "title": a["name"],
+            "description": f"{a['arrives_with']} {_strip(a['what_changes'])}"[:300],
+        }, body, model, "\n".join(md))
+    return made
+
+
+def _next_describe(out_dir, ctx_shared, levels, model):
+    """Describe your agent, in this design.
+
+    THE ENGINE IS THE LAB'S, UNCHANGED. assets/agent.js has driven the two lab
+    prototypes since the vocabulary was promoted: click a capability to give it
+    to the agent, click again to take it away, copy the result out as the GRANT
+    half of a policy or download it as JSON, nothing leaves the browser. That is
+    the whole of what the handback's screen does too, so this page re-draws the
+    lab's markup in the store's design and binds the same script to it. The
+    twenty-three primitives, their families and their glosses come off the same
+    island the lab uses.
+
+    WHAT IT PRODUCES IS THE GRANT AND THE PAGE SAYS SO TWICE. Not the mandate,
+    not the delta, not a policy — the half a person can answer from their own
+    deployment, which is why it is the half given away. The half that needs
+    somebody to look is the corrected level, and that is the one link out."""
+    tailored = next(l for l in levels if l["id"] == "t3")
+    fams = ""
+    for fam, gloss in CAP_FAMILIES.items():
+        rows = [c for c in CAPS if c["family"] == fam]
+        if not rows:
+            continue
+        fams += (f'<section class="fam" data-fam="{html.escape(fam)}">'
+                 f'<h4>{html.escape(fam)}<span>{html.escape(gloss)}</span></h4>'
+                 f'<div class="fam-caps">{"".join(_cap_chip(c) for c in rows)}</div>'
+                 '</section>')
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-head"><div class="n-head__text">'
+        '<p class="n-eyebrow">Describe your agent</p>'
+        '<h1>Make its reach visible.</h1>'
+        f'<p class="n-mt">Choose what your agent can do, out of the {CAPABILITIES["count"]} '
+        'things an agent can be granted. What you build stays in this browser and leaves '
+        'as text you copy out or a file you download; nothing here is sent anywhere.</p>'
+        '</div>'
+        f'<p class="n-head__aside"><a href="/what-is-in-one/">What a grant is, and what it is '
+        f'not {_ARROW}</a></p></div>'
+        + agent_model_island(rel_prefix(NEXT_DESCRIBE)) +
+        '<div class="ag n-describe" data-mode="describe">'
+        '<div class="n-describe__grid">'
+        '<div class="ag-palette">' + fams + '</div>'
+        '<aside class="n-describe__side">'
+        '<div class="ag-stage"><div class="ag-core"><span class="n-describe__mark">ABP</span>'
+        '<b>Your agent</b><span class="ag-count" data-ag-count>nothing yet</span></div></div>'
+        '<div class="ag-out"><h3>What you have said it can do</h3>'
+        '<div data-ag-list class="ag-list"><p class="n-dim n-fine">Nothing selected. Click a '
+        'capability on the left.</p></div>'
+        '<div class="ag-acts">'
+        '<button type="button" class="n-btn" data-ag-copy>Copy the definition</button>'
+        '<button type="button" class="n-btn n-btn--ghost" data-ag-download>Download as JSON'
+        '</button>'
+        '<button type="button" class="n-btn n-btn--ghost" data-ag-clear>Start again</button>'
+        '</div>'
+        '<p class="n-fine n-dim">Self-described, not measured. It goes to your clipboard or '
+        'your downloads and nowhere else.</p>'
+        '</div></aside></div></div>'
+        '</section>'
+
+        '<section class="n-sect n-sect--tint">'
+        '<div class="n-head"><div class="n-head__text">'
+        '<h2>What this produces, and what it does not</h2>'
+        '<p class="n-mt"><b>It produces the grant</b> — everything the agent <em>can</em> '
+        'do, as you describe it. That is one of four objects in an Agent Behaviour Policy. '
+        'It is not the mandate, not the delta between them, and not a policy. It is the '
+        'half you can answer from the deployment, which is why it is the half given away; '
+        'and it is described by hand, so <code>MAP-A-GRANT.md</code>, which ships in every '
+        'template pack and measures the same thing from the deployment, will disagree with '
+        'it wherever somebody guessed.</p></div></div>'
+        '<div class="n-grid n-grid--2">'
+        '<div class="n-object"><p class="n-object__n">THE HALF THAT NEEDS A PERSON</p>'
+        f'<h3>ABP {html.escape(tailored["short_name"])}, {html.escape(tailored["price"])}</h3>'
+        f'<p>{inline(tailored["short_what"], ctx_shared)} The document this page produces '
+        'is one of the two files you send back; the corrected vault follows '
+        f'{html.escape(tailored["eta"].lower())} from your reply.</p>'
+        f'<p class="n-object__claim">'
+        f'{_next_claim_chip("abp-correction-by-a-person", ctx_shared, NEXT_DESCRIBE)}</p>'
+        f'<p class="n-mt"><a class="n-btn" href="{NEXT_ROOT}product/?level=t3&amp;policy='
+        f'{NEXT_DEFAULT_POLICY}">Buy this level {_ARROW}</a></p></div>'
+        '<div class="n-object"><p class="n-object__n">THE VOCABULARY IS NOT OURS</p>'
+        f'<h3>{CAPABILITIES["count"]} primitives on one grammar</h3>'
+        f'<p><code>{html.escape(CAPABILITIES["grammar"])}</code>, promoted from '
+        'riskmandate.ai\u2019s own template vault so that what you describe here is in the '
+        'same words as the document you would receive. Nothing in it was written by this '
+        f'store. <a href="{NEXT_PICKER}">The fifteen published shapes {_ARROW}</a></p></div>'
+        '</div></section>')
+
+    md = ["# Describe your agent\n",
+          f"Choose what your agent can do, out of {CAPABILITIES['count']} primitives on a "
+          f"`{CAPABILITIES['grammar']}` grammar. What you build stays in the browser and "
+          "leaves as text or JSON.\n",
+          "It produces the GRANT only: not the mandate, not the delta, not a policy. It is "
+          "described by hand, not measured; MAP-A-GRANT.md measures the same thing from the "
+          "deployment and will disagree wherever somebody guessed.\n",
+          "## The families\n"]
+    for fam, gloss in CAP_FAMILIES.items():
+        rows = [c for c in CAPS if c["family"] == fam]
+        if rows:
+            md.append(f"- **{fam}** \u2014 {gloss}: " + ", ".join(f"`{c['id']}`" for c in rows))
+    return _next_emit(out_dir, NEXT_DESCRIBE, {
+        "title": "Describe your agent",
+        "description": (f"Choose what your agent can do out of {CAPABILITIES['count']} "
+                        "capability primitives and take the grant away as text or JSON. "
+                        "Nothing is sent anywhere."),
+        "scripts": ["/assets/agent.js"],
     }, body, model, "\n".join(md))
 
 
@@ -7493,13 +7738,22 @@ def _next_ledger(out_dir, ctx_shared, model, built):
         '<p class="n-mt">Every chip on every page in this design round links to a row '
         'below. A claim that cannot be pointed at something is not a claim this site '
         'makes — it is either marked as absent or it is not on a page.</p></div>'
-        f'<p class="n-head__aside"><a href="/ledger/">The same ledger on the store that '
-        f'sells today {_OUT}</a></p></div>'
+        f'<p class="n-head__aside"><a href="{V1_ROOT}ledger/">The same ledger in the '
+        f'previous design {_OUT}</a></p></div>'
         f'<div class="n-panel__stats">{tiles}</div>'
         '<p class="n-fine n-dim n-mt">Ten states, and only <b>exists and runs</b> is fully '
         'earned. The rest say what kind of thing stands behind a sentence: read from a '
         'published source, measured on a named workload, arithmetic with the workings '
         'shown, a specification for something not built, or a person’s time.</p>'
+        '<h2 class="n-mt-lg" id="the-states">What each state means</h2>'
+        '<div class="n-states n-mt">'
+        + "".join(
+            f'<div class="n-states__row" id="state-{k}">'
+            f'<span class="n-claim n-claim--{k}">{html.escape(v[0])}</span>'
+            f'<p>{html.escape(v[2])}</p>'
+            f'<span class="n-states__n">{counts.get(k, 0)}</span></div>'
+            for k, v in STATES.items())
+        + '</div>'
         + sections +
         '</section>')
 
@@ -7567,8 +7821,8 @@ def _next_who(out_dir, ctx_shared, levels, model):
         '<p class="n-mt">Two of the four levels are somebody’s time rather than a '
         'pipeline, which is why their delivery estimates depend on a calendar. This is '
         'who.</p></div>'
-        f'<p class="n-head__aside"><a href="/who/">The register on the store that sells '
-        f'today {_OUT}</a></p></div>'
+        f'<p class="n-head__aside"><a href="{V1_ROOT}who/">The register in the previous '
+        f'design {_OUT}</a></p></div>'
 
         '<p class="n-note n-note--hold"><b>Nothing below was written from what anybody told '
         'us.</b> Every line is read off a published page, and the page and the date it was '
@@ -7662,7 +7916,8 @@ def next_pages(out_dir, ctx_shared, built=None):
     model = {"levels": levels, "audiences": auds, "shapes": shapes,
              "order": _next_order_model(),
              "picker_url": NEXT_PICKER, "checkout_url": NEXT_PAY,
-             "ledger_url": NEXT_LEDGER,
+             "ledger_url": NEXT_LEDGER, "product_url": NEXT_ROOT + "product/",
+             "cart_url": NEXT_CART, "default_policy": NEXT_DEFAULT_POLICY,
              # The CODE is not here and is not anywhere in docs/. What ships is
              # sha256 of it, keyed on the record's stable id; data/discounts.yml
              # says at length why, and a check greps the whole built tree for
@@ -7683,6 +7938,8 @@ def next_pages(out_dir, ctx_shared, built=None):
     pages[NEXT_COMPARE] = _next_compare(out_dir, ctx_shared, levels, model)
     pages[NEXT_AUDIENCE] = _next_audience_page(out_dir, ctx_shared, levels, auds, model)
     pages[NEXT_WHO] = _next_who(out_dir, ctx_shared, levels, model)
+    pages.update(_next_doors(out_dir, ctx_shared, levels, model))
+    pages[NEXT_DESCRIBE] = _next_describe(out_dir, ctx_shared, levels, model)
     # LAST, AND THAT IS THE POINT. The ledger prints where each claim is said,
     # and it can only print the pages that have already registered a citation.
     pages[NEXT_LEDGER] = _next_ledger(out_dir, ctx_shared, model,

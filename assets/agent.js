@@ -64,7 +64,8 @@
         'policy.',
       grammar: M.grammar,
       reaches: M.reaches,
-      described_on: 'store.sgit.ai/lab/agent-' + mode + '/',
+      // wherever this page is: the lab's two prototypes, or the store's own page
+      described_on: 'store.sgit.ai' + location.pathname.replace(/index\.html$/, ''),
       prototype: true,
       count: caps.length,
       irreversible_count: irreversible.length,

@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.17",
+  "current": "v0.3.18",
   "releases": [
+    {
+      "version": "v0.3.18",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the buy references, and the rest of v4 that the store was missing",
+      "summary": "The live store was put beside the v4 site and found wanting, the buy references\nfirst. The v4 site is byte-for-byte the pack already mirrored here, so the gap\nwas not a newer version: it was what the first implementation left out. Every v4\nscreen was diffed against its page.\n\n**Buy this level, on every offer card, everywhere.** As v4 has it: a link to the\nproduct page carrying a level and a policy, where *Add to your order* adds the\nline. The product page now sells a policy at a level, names the default shape as\na default beside a link to change it, and the disabled control that says no\npayment link exists lives on the checkout \u2014 the page that would take money \u2014\nrather than on a button that now does something real.\n\nThe comparison leads with the four cards and a print action. The five audience\ndoors are drawn in this design, the reader's question as the headline and the\ncards under it, lead and quiet drawn by hierarchy and never by hiding. Describe\nyour agent is in the store, on the lab's own engine. The ledger explains its ten\nstates, the page after paying prints, and the picker panel names the two files\nyou hand the agent and opens the example vault on the shape's own page.\n\nDeliberately not taken: v4's preview controls, its live-looking checkout button,\nthe placeholder scenario selector and side-effect ladder, the drawn vault frame,\nthe handoff explorer, and its product names.\n\nSix deliberate breaks on the retargeted checks, six failures by name. Five\n\"the same X on the store that sells today\" links had pointed at themselves since\nthe swap; they point at the archive now.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.17",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "b8ca1ff3b5293f693f7bc3834e0ae79a75b2cd49",
       "site": "store.sgit.ai",
       "title": "five readers walked the whole store, and four stopped in the same place",
       "summary": "The previous panel ended by naming what it could not do: a panel is a weaker\ninstrument than a journey. This is the journey. The same five readers, written on\n15 September and carried across unchanged, each walked ten screens in the order a\nbuyer meets them, at 1280 and at 390.\n\n**Four of the five reached the checkout and stopped.** Not because the page is\nunclear \u2014 three of them called the disabled button the most honest thing on the\nsite \u2014 but because there is nothing on that page to do next. No address, no way\nto be told when the till opens. That is the true state of the till and not a flaw\nin the drawing of it, and it is the only finding here that costs a buyer\nsomething today.\n\nFive of the six findings carry a measurement, which is the only defence this\ninstrument has. The evidence band begins 3,098 pixels down a 4,395-pixel front\npage, and 6,677 of 9,406 on a phone. The picker's filter bar is 521 pixels tall\nwith eighteen chips, and the first of the fifteen policy shapes starts at 1,220\npixels on an 844-pixel viewport.\n\nThree new units on the board and one unblocked. The walkthrough was repointed at\nthe archive it now drives and caught a real defect on the way: the previous\ndesign's checkout was sending buyers to /order/, which the swap had removed.\n\nThis run has no vault. The two before it are published as encrypted vaults;\npushing to one needs its write key on a command line and that was refused here.\nThe page says so where the vault would have been.",
