@@ -332,3 +332,76 @@ table.units .u-who{display:inline-block;margin-top:2px;margin-left:6px;font-size
   background:var(--c-r2-soft);color:var(--c-r2)}
 table.units .u-w code{font-size:11px}
 table.units tr.st-done{background:color-mix(in srgb,var(--c-r4-soft) 45%,transparent)}
+
+/* A WIDE TABLE SCROLLS RATHER THAN PUSHING THE PAGE SIDEWAYS. The console has
+   its own stylesheet and does not load site.css, so .tablewrap — which that file
+   has always defined — did nothing here. No console table had been wide enough
+   to show it until the concept critique put a five-column comparison on a phone,
+   at which point the whole page scrolled horizontally. This is the site rule,
+   restated where the console can see it. */
+.tablewrap{overflow-x:auto;margin:14px 0;-webkit-overflow-scrolling:touch}
+.tablewrap table{margin:0}
+
+/* ----------------------------------------------- the concept critique ----
+   /admin/concepts/ is a review of three homepage directions drawn for this
+   store from outside. It is mostly screenshots and judgements about them, so
+   it needs two things the rest of the console does not: images that sit at a
+   readable size without dominating, and a for/against pair that reads as a
+   pair rather than as two paragraphs that happen to be adjacent. */
+
+.cx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:22px 0 8px}
+.cx-shot{margin:0}
+.cx-shot img{width:100%;display:block;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+.cx-shot a:hover img{border-color:var(--accent)}
+.cx-shot figcaption{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.45}
+@media (max-width:760px){.cx-grid{grid-template-columns:1fr}}
+
+/* the verdict, said once, at the top, before any of the evidence for it */
+.cx-verdict{border:1px solid var(--line2);border-left:3px solid var(--accent);
+  background:var(--panel);border-radius:6px;padding:18px 20px;margin:24px 0}
+.cx-verdict>b{display:block;font-size:17px;margin-bottom:8px}
+.cx-verdict p{margin:0;color:var(--ink)}
+
+/* the measurement table. cx-against marks a row where the live page loses, and
+   five of the seven are — a table that did not say so would read as neutral. */
+table.cx-t td,table.cx-t th{vertical-align:top}
+table.cx-t th:not(:first-child),table.cx-t td:not(:first-child){text-align:right;white-space:nowrap}
+td.cx-m{width:46%}
+td.cx-m .cx-note{display:block;font-size:12px;color:var(--dim);font-weight:400;
+  margin-top:4px;line-height:1.45;white-space:normal}
+tr.cx-against td.cx-cur{color:var(--red);font-weight:600}
+tr.cx-against td.cx-cur::after{content:"";display:inline-block;width:0}
+
+/* one concept */
+.cx-c,.cx-mv,.cx-fd{border-top:1px solid var(--line);padding-top:20px;margin-top:26px}
+.cx-hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.cx-hd h3{margin:0}
+.cx-n{font:600 12px/1 var(--mono);color:var(--dim2);letter-spacing:.08em}
+.cx-ref{font-size:12px;color:var(--dim);margin:6px 0 10px}
+.cx-c .cx-shot{max-width:300px;float:right;margin:0 0 16px 22px}
+@media (max-width:700px){.cx-c .cx-shot{float:none;max-width:100%;margin:16px 0}}
+.cx-fa{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:16px 0;clear:both}
+.cx-fa>div{border-left:2px solid var(--line2);padding-left:14px}
+.cx-fa .cx-f{border-left-color:var(--green)}
+.cx-fa .cx-a{border-left-color:var(--warm)}
+.cx-fa b{display:block;font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:6px}
+.cx-fa p{margin:0}
+@media (max-width:700px){.cx-fa{grid-template-columns:1fr;gap:14px}}
+
+/* a move we are taking, and the price of taking it */
+.cx-from{font-size:12px;color:var(--dim);margin:4px 0 10px}
+.cx-why,.cx-cost{margin:10px 0 0}
+.cx-cost{color:var(--ink);font-size:14px;border-left:2px solid var(--line2);padding-left:14px}
+.cx-ref-list li{margin-bottom:12px}
+.cx-act{border-left:2px solid var(--accent);padding-left:14px;margin-top:12px}
+/* the price-ladder pair reads as one comparison, so it gets the full width and
+   the two halves sit at the same scale rather than at the grid's */
+.cx-ladder{grid-template-columns:1fr;gap:26px}
+.cx-ladder .cx-shot img{border-color:var(--line2)}
+/* At phone width the five columns cannot all be read at once whatever we do, so
+   the metric column stops being 46% of a 390px screen and the table scrolls. */
+@media (max-width:640px){
+  td.cx-m{width:auto;min-width:200px}
+  table.cx-t{font-size:12.5px}
+}

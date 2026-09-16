@@ -1,0 +1,101 @@
+{
+  "_what_this_is": "The ChatGPT-made homepage concepts for this store, mirrored so the critique at /admin/concepts/ points at something fixed. Three homepage directions and the model's own review of them, taken from the URL below on the date below. This is somebody else's design work, quoted and screenshotted as such.",
+  "_how_to_refresh": "python3 tools/promote_concepts.py, then node tools/shoot_concepts.mjs to regenerate every screenshot on the page from the new mirror.",
+  "_one_thing_removed": "Each mirrored HTML page had the host CDN's injected bot-check bootstrap removed before hashing, because it carries a fresh nonce on every response and would otherwise report drift within seconds of the mirror being taken. Nothing the author wrote was touched; cdn_script_removed below counts the deletions per file.",
+  "source": "https://riskmandate-store-concepts.diniscruz.chatgpt.site",
+  "made_by": "A ChatGPT session, at the project lead's direction",
+  "retrieved": "2026-09-16",
+  "retrieved_at": "2026-09-16T03:50:12+00:00",
+  "pages": [
+    {
+      "path": "index.html",
+      "id": "marketplace",
+      "kind": "concept",
+      "nav_label": "01 Marketplace"
+    },
+    {
+      "path": "guided.html",
+      "id": "guided",
+      "kind": "concept",
+      "nav_label": "02 Guided"
+    },
+    {
+      "path": "studio.html",
+      "id": "studio",
+      "kind": "concept",
+      "nav_label": "03 Studio"
+    },
+    {
+      "path": "review.html",
+      "id": "review",
+      "kind": "review",
+      "nav_label": "Review & artwork"
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 7437,
+      "sha256": "6fe95ae8c0da8b722222899382f77e56194a28e9c1e3dbde9ef874f91d877cf0",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/",
+      "cdn_script_removed": 1
+    },
+    {
+      "path": "guided.html",
+      "bytes": 7467,
+      "sha256": "955f3b854d3921a6c09677a86f6ad33b1a3c1c6565633941f2495577eeb03ba7",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/guided",
+      "cdn_script_removed": 1
+    },
+    {
+      "path": "studio.html",
+      "bytes": 7406,
+      "sha256": "86129bd117fbddfc97eade7b849e551a553dbe81a5cb747b411de63f0fc10b15",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/studio",
+      "cdn_script_removed": 1
+    },
+    {
+      "path": "review.html",
+      "bytes": 7379,
+      "sha256": "cef5cae39425c8195d5462d21f478e57d64787f60b7de01e1132f78826c01b9c",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/review",
+      "cdn_script_removed": 1
+    },
+    {
+      "path": "style.css",
+      "bytes": 13122,
+      "sha256": "3c5e27651c58292cf2e653b571faaf75aa0c3950b3ad2c1a240cdae82f316ebd",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/style.css"
+    },
+    {
+      "path": "app.js",
+      "bytes": 1772,
+      "sha256": "4acff796f1133510a0888d315ddb618d8049547fb441f35065501ff87cb0987f",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/app.js"
+    },
+    {
+      "path": "assets/marketplace.png",
+      "bytes": 2072654,
+      "sha256": "c25c561c43abd098f6b7d8e8ed7e3d68f0595bf847f26b75101d2a6626668939",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/assets/marketplace.png"
+    },
+    {
+      "path": "assets/guided.png",
+      "bytes": 2212746,
+      "sha256": "dbe2690a14c52b9c148c249a8dc8c592d56c42f6fec90d272e3436a6da09bfb4",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/assets/guided.png"
+    },
+    {
+      "path": "assets/studio.png",
+      "bytes": 1664322,
+      "sha256": "a820a7c5ae5406ccbac6827651af264a7e00dadb8f60cb0a991dd99e7a12b070",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/assets/studio.png"
+    },
+    {
+      "path": "assets/infographic.png",
+      "bytes": 1521223,
+      "sha256": "1f8f34372c55f62ee8f2db8f5cbeebd9e4e9fa994aec6980b0a09f14bbf94ae2",
+      "resolved": "https://riskmandate-store-concepts.diniscruz.chatgpt.site/assets/infographic.png"
+    }
+  ]
+}

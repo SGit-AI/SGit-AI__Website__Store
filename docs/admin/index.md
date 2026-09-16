@@ -57,6 +57,8 @@ screenshot) and [as an agent](/admin/downloads/store-walkthrough-as-an-agent-v0.
 | | |
 |---|---|
 | [Reviews, dated and kept](/admin/reviews/) | Every review of this store, newest first. A review is a moment locked: the version it was taken against, the screenshots, and a stance on every proposal in it. |
+| [What happened to each memo](/admin/status/) | The join: every memo from the project lead, the units of work it became, the page each one built and the release it shipped in. |
+| [The homepage concepts, reviewed](/admin/concepts/) | Three homepage directions drawn for this store from outside, screenshotted and measured against the live page — what is taken, what is refused, and the live pricing contradiction the review found. |
 | [The claim ledger](/ledger/) | Every factual claim this site makes, with the state it earned and the date. Pages cite a claim and the chip links back here. |
 | [What we do not say, and why](/disclosures/) | The words this site will not use, the sentence it will not print, and the naming collision that is still open. |
 | [The dev packs](/dev-packs/) | The working documents behind the store, and the manifest of which of them are held back and why. |

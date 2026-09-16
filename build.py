@@ -132,6 +132,8 @@ NAV = [
         ("The console", "/admin/"),
         ("The work", "/admin/work/"),
         ("The memo queue", "/admin/memos/"),
+        ("What happened to each memo", "/admin/status/"),
+        ("The homepage concepts, reviewed", "/admin/concepts/"),
         ("Taking money", "/admin/rails/"),
         ("Reviews, dated and kept", "/admin/reviews/"),
         ("Run the whole flow yourself", "/admin/try/"),
@@ -1821,11 +1823,13 @@ CONSOLE_RAIL = [
     ("Where it stands", [
         ("Console", "/admin/", None, False),
         ("Reviews", "/admin/reviews/", "reviews", False),
+        ("Homepage concepts", "/admin/concepts/", None, False),
         ("Run the flow yourself", "/admin/try/", None, False),
     ]),
     ("The work", [
         ("The board", "/admin/work/", "work_open", False),
         ("The memo queue", "/admin/memos/", "memos", False),
+        ("What happened to each memo", "/admin/status/", None, False),
     ]),
     ("Next: taking money", [
         ("Both rails", "/admin/rails/", "blockers", False),
@@ -5019,6 +5023,263 @@ def status_page(out_dir, ctx_shared):
                    "every piece of it landed.")},
         ' / <a href="/admin/">admin</a> / status', body, "\n".join(md))}
 
+# --------------------------------------------------- the concept critique ----
+# THREE HOMEPAGE CONCEPTS ARRIVED FROM OUTSIDE ON 16 SEPTEMBER, made by a ChatGPT
+# session at the project lead's direction and drawn from this store's live
+# homepage. This page reviews them.
+#
+# WHY IT IS GENERATED FROM A MIRROR. The concepts live on somebody else's host.
+# A critique that quotes and screenshots a page which can change underneath it is
+# an assertion about something nobody can check, so tools/promote_concepts.py
+# takes the pages once and hashes them, tools/shoot_concepts.mjs shoots every
+# image on this page from that mirror plus this repository's own docs/, and
+# --check answers "has the upstream moved" without anybody having to remember.
+#
+# THE NUMBERS ARE THE ARGUMENT. A design critique that says a page feels long is
+# an opinion; four measurements decided most of what is below and three of the
+# four go against the live homepage. They are held in the data file with the
+# method beside them, because a measurement whose method is not recorded is a
+# number somebody made up.
+
+CONCEPTS_URL = "/admin/concepts/"
+CONCEPT_SRC = json.loads((DATA / "concepts" / "source.json").read_text())
+CRITIQUE = json.loads((DATA / "concepts" / "critique.json").read_text())
+
+# Rank 1 is the only filled state on this site's four-rank scale, and it is spent
+# here on "take it" — the verdicts that cost this store work. A concept we admired
+# and did not adopt does not get the filled chip.
+_VERDICT_RANK = {"adopt": 1, "adopt-in-part": 2, "reject": 4}
+_FINDING_RANK = {"confirmed": 1, "open": 2, "fixed": 3}
+
+
+def _concept_shot(cid, kind, alt, cap):
+    """One screenshot with its caption. Every path here is produced by
+    tools/shoot_concepts.mjs; a missing file would be a broken image on a page
+    whose whole claim is that its evidence exists, so the build refuses it."""
+    src = f"/assets/shots/concepts/{cid}-{kind}"
+    if not (ASSETS / "shots" / "concepts" / f"{cid}-{kind}").exists():
+        raise SystemExit(f"concepts: {src} is on the page and not in assets/ — "
+                         "run node tools/shoot_concepts.mjs")
+    return (f'<figure class="cx-shot"><a href="{src}">'
+            f'<img src="{src}" alt="{html.escape(alt)}" loading="lazy"></a>'
+            f'<figcaption>{cap}</figcaption></figure>')
+
+
+def concepts_page(out_dir, ctx_shared):
+    src = CONCEPT_SRC
+    by_id = {c["id"]: c for c in CRITIQUE["concepts"]}
+
+    # the four homepages, side by side, at the fold
+    folds = "".join(
+        _concept_shot(cid, "desktop.jpg",
+                      f"{name} homepage at 1200 by 750",
+                      f'<b>{name}</b> &mdash; {sub} &middot; '
+                      f'<a href="/assets/shots/concepts/{cid}-desktop-full.jpg">whole page</a>')
+        for cid, name, sub in [
+            ("current", "Live today", "store.sgit.ai, v" + CRITIQUE["reviewed_version"].lstrip("v")),
+            ("marketplace", "01 Marketplace", "take the card grid"),
+            ("guided", "02 Guided", "wrong buyer"),
+            ("studio", "03 Studio", "take the headline"),
+        ])
+
+    # THE PRICE LADDER, BOTH WAYS, CROPPED TO ITSELF. This is the comparison the
+    # page actually argues from, and until the check caught it, it was the one
+    # piece of evidence sitting in the repository and not on the page.
+    ladder = (_concept_shot("cards", "current.png", "The four cards on the live homepage",
+                            "<b>Live today.</b> Price at 28px inline with the delivery "
+                            "estimate, up to sixty words of body, and a grey box where a "
+                            "buy button belongs.")
+              + _concept_shot("cards", "marketplace.png", "The four cards in the Marketplace concept",
+                              "<b>01 Marketplace.</b> Level and delivery on one 12px line, "
+                              "the price at 42px, one sentence, one action, identical in "
+                              "all four."))
+
+    # the mobile fold, where the length problem is worst and the live page is
+    # twice the height of any concept
+    mobiles = "".join(
+        _concept_shot(cid, "mobile.jpg", f"{name} at 390 by 780", f"<b>{name}</b> &mdash; {h}")
+        for cid, name, h in [
+            ("current", "Live today", "10,710px tall"),
+            ("marketplace", "01 Marketplace", "5,042px"),
+            ("guided", "02 Guided", "5,131px"),
+            ("studio", "03 Studio", "5,176px"),
+        ])
+
+    def _mrow(r):
+        # THE ROWS THAT GO AGAINST THE LIVE HOMEPAGE ARE MARKED, because five of
+        # the seven do, and a table where that is not visible reads as neutral
+        # when it is not.
+        cls = ' class="cx-against"' if r.get("against") else ""
+        return (
+            f"<tr{cls}>"
+            f'<td class="cx-m"><b>{html.escape(r["metric"])}</b>'
+            f'<span class="cx-note">{inline(r["note"], ctx_shared)}</span></td>'
+            f'<td class="cx-cur">{html.escape(r["current"])}</td>'
+            f'<td>{html.escape(r["marketplace"])}</td>'
+            f'<td>{html.escape(r["guided"])}</td>'
+            f'<td>{html.escape(r["studio"])}</td></tr>')
+
+    mrows = "".join(_mrow(r) for r in CRITIQUE["measurements"]["rows"])
+
+    cards = "".join(
+        f'<section class="cx-c" id="c-{c["id"]}">'
+        f'<div class="cx-hd"><span class="cx-n">{c["n"]}</span>'
+        f'<h3>{html.escape(c["name"])}</h3>'
+        f'<span class="st st--{_VERDICT_RANK[c["verdict"]]}">'
+        f'{html.escape(c["verdict_label"])}</span></div>'
+        f'<p class="cx-ref">{html.escape(c["reference"])}</p>'
+        f'<p>{inline(c["claim"], ctx_shared)}</p>'
+        + f'<div class="cx-fa"><div class="cx-f"><b>What it gets right</b>'
+        f'<p>{inline(c["for"], ctx_shared)}</p></div>'
+        f'<div class="cx-a"><b>What it costs</b>'
+        f'<p>{inline(c["against"], ctx_shared)}</p></div></div>'
+        f'<p class="small dim"><b>Artwork.</b> {inline(c["artwork"], ctx_shared)}</p>'
+        "</section>"
+        for c in CRITIQUE["concepts"])
+
+    moves = "".join(
+        f'<section class="cx-mv" id="m-{m["id"]}">'
+        f'<h3>{html.escape(m["title"])}</h3>'
+        f'<p class="cx-from">from <b>{html.escape(m["from"])}</b></p>'
+        f'<p>{inline(m["what"], ctx_shared)}</p>'
+        f'<p class="cx-why"><b>Why.</b> {inline(m["why"], ctx_shared)}</p>'
+        f'<p class="cx-cost"><b>What it costs us.</b> {inline(m["cost"], ctx_shared)}</p>'
+        "</section>"
+        for m in CRITIQUE["moves"])
+
+    refused = "".join(
+        f'<li><b>{inline(r["what"], ctx_shared)}.</b> {inline(r["why"], ctx_shared)}</li>'
+        for r in CRITIQUE["refused"])
+
+    findings = "".join(
+        f'<section class="cx-fd">'
+        f'<div class="cx-hd"><span class="st st--{_FINDING_RANK[f["state"]]}">'
+        f'{html.escape(f["state_label"])}</span>'
+        f'<h3>{inline(f["what"], ctx_shared)}</h3></div>'
+        f'<p><b>Checked.</b> {inline(f["checked"], ctx_shared)}</p>'
+        f'<p>{inline(f["why_it_matters"], ctx_shared)}</p>'
+        f'<p class="cx-act"><b>What happens about it.</b> {inline(f["action"], ctx_shared)}</p>'
+        "</section>"
+        for f in CRITIQUE["findings"])
+
+    filelist = "".join(
+        f'<tr><td><code>{html.escape(f["path"])}</code></td>'
+        f'<td class="num">{f["bytes"]:,}</td>'
+        f'<td><code class="small">{f["sha256"][:16]}</code></td></tr>'
+        for f in src["files"])
+
+    e = CRITIQUE["endorsement"]
+    body = (
+        f'<p class="lead">Three homepage directions were drawn for this store by a '
+        f'ChatGPT session, from the live page, on {CRITIQUE["reviewed_on"]}. '
+        f'<b>This is the review of them.</b> Two contain structure worth taking, one is '
+        f'pointed at a buyer this store does not have, and the review page attached to them '
+        f'found a live pricing contradiction between this store and RiskMandate.ai that '
+        f'nobody here had noticed.</p>'
+        f'<p class="small dim"><b>They are somebody else\u2019s work and are shown as such.</b> '
+        f'The pages, the stylesheet and the four generated images are mirrored under '
+        f'<code>data/concepts/</code> with a sha256 each, because a critique of a page that '
+        f'can change underneath it is a critique of nothing. Source: '
+        f'<a href="{src["source"]}" rel="nofollow">{html.escape(src["source"].split("//")[1])}</a>, '
+        f'retrieved {src["retrieved"]}.</p>'
+
+        f'<div class="cx-verdict"><b>{html.escape(e["verdict"])}</b>'
+        f'<p>{inline(e["body"], ctx_shared)}</p></div>'
+
+        '<h2 id="at-the-fold">The four of them, at the fold</h2>'
+        '<p>Same viewport, same encoder, same wait. The only variable is the page.</p>'
+        f'<div class="cx-grid">{folds}</div>'
+
+        '<h2 id="mobile">The same four at 390px</h2>'
+        '<p>This is where the difference stops being a matter of taste. The live homepage is '
+        '<b>10,710 pixels tall on a phone</b> &mdash; thirteen and a half screens &mdash; against '
+        'roughly five thousand for each concept. The first thing a visitor meets is a '
+        'nav block and a disclosure strip, and the headline starts 358px down.</p>'
+        f'<div class="cx-grid">{mobiles}</div>'
+        '<p class="small dim">The disclosure strip is not a candidate for removal: it is required '
+        'above the main element on every page here and a build check refuses a page without it. '
+        'What is a candidate is everything above it.</p>'
+
+        '<h2 id="numbers">What the measurements say</h2>'
+        f'<p>{inline(CRITIQUE["measurements"]["_why_it_is_here"], ctx_shared)}</p>'
+        '<div class="tablewrap"><table class="cx-t"><thead><tr><th>Measured</th>'
+        '<th>Live today</th><th>01 Market</th><th>02 Guided</th><th>03 Studio</th>'
+        f'</tr></thead><tbody>{mrows}</tbody></table></div>'
+        f'<p class="small dim"><b>Method.</b> {inline(CRITIQUE["measurements"]["_method"], ctx_shared)}</p>'
+
+        '<h2 id="each">Each concept, and what it is for</h2>'
+        + cards +
+
+        '<h2 id="take">What this store takes</h2>'
+        '<p>The single comparison that decided most of it &mdash; the same four offers, '
+        'priced the same, one week apart in design thinking:</p>'
+        f'<div class="cx-grid cx-ladder">{ladder}</div>'
+        '<p>Six moves. Each one names what it costs us, because a borrowed idea whose '
+        'price is not written down gets adopted and then quietly reverted.</p>'
+        + moves +
+
+        '<h2 id="refuse">What it refuses</h2>'
+        f'<ul class="cx-ref-list">{refused}</ul>'
+
+        '<h2 id="findings">What the outside review found about the live site</h2>'
+        '<p>Four claims were made about this store rather than about the concepts. '
+        'Every one was checked.</p>'
+        + findings +
+
+        '<h2 id="honest">What this page is not</h2>'
+        f'<p>{inline(e["not_a_measurement"], ctx_shared)}</p>'
+
+        '<h2 id="mirror">The mirror</h2>'
+        '<p>Ten files, taken once and hashed. '
+        '<code>python3 tools/promote_concepts.py --check</code> re-fetches them and reports '
+        'any drift; <code>node tools/shoot_concepts.mjs</code> regenerates every image above '
+        'from the mirror and from this repository\u2019s own build.</p>'
+        f'<p class="small dim">{inline(src["_one_thing_removed"], ctx_shared)}</p>'
+        '<div class="tablewrap"><table><thead><tr><th>File</th><th class="num">Bytes</th>'
+        f'<th>sha256</th></tr></thead><tbody>{filelist}</tbody></table></div>')
+
+    md = [f"# The homepage concepts, reviewed\n",
+          f"Three homepage directions drawn for this store by a ChatGPT session on "
+          f"{CRITIQUE['reviewed_on']}, reviewed against the live page at "
+          f"{CRITIQUE['reviewed_version']}.\n",
+          f"Source: {src['source']} (retrieved {src['retrieved']}, mirrored and hashed).\n",
+          f"\n## Verdict\n\n**{e['verdict']}**\n\n{e['body']}\n",
+          "\n## Measured\n"]
+    md.append("| Measured | Live | 01 Market | 02 Guided | 03 Studio |")
+    md.append("|---|---|---|---|---|")
+    for r in CRITIQUE["measurements"]["rows"]:
+        md.append(f"| {r['metric']} | {r['current']} | {r['marketplace']} | "
+                  f"{r['guided']} | {r['studio']} |")
+    md.append("\n## Each concept\n")
+    for c in CRITIQUE["concepts"]:
+        md.append(f"\n### {c['n']} {c['name']} — {c['verdict_label']}\n")
+        md.append(f"{c['claim']}\n\n**Right:** {c['for']}\n\n**Costs:** {c['against']}\n")
+    md.append("\n## Taken\n")
+    for m in CRITIQUE["moves"]:
+        md.append(f"\n### {m['title']} (from {m['from']})\n\n{m['what']}\n\n"
+                  f"*Why:* {m['why']}\n\n*Costs us:* {m['cost']}\n")
+    md.append("\n## Refused\n")
+    for r in CRITIQUE["refused"]:
+        md.append(f"- **{r['what']}.** {r['why']}")
+    md.append("\n## Findings about the live site\n")
+    for f in CRITIQUE["findings"]:
+        md.append(f"\n### {f['what']} — {f['state_label']}\n\n{f['checked']}\n\n"
+                  f"{f['why_it_matters']}\n\n*Action:* {f['action']}\n")
+    md.append(f"\n## Not a measurement\n\n{e['not_a_measurement']}\n")
+
+    return {CONCEPTS_URL: _console_page(
+        out_dir, ctx_shared, CONCEPTS_URL,
+        {"title": "The homepage concepts, reviewed",
+         "description": ("Three homepage directions drawn for store.sgit.ai by a ChatGPT "
+                         "session, screenshotted, measured against the live page, and "
+                         "reviewed: what is taken, what is refused, and the live pricing "
+                         "contradiction the outside review found."),
+         "blurb": ("<b>Three concepts, two worth taking from, one live defect found.</b> "
+                   "Somebody else\u2019s design work, mirrored and hashed so the critique "
+                   "points at something fixed.")},
+        ' / <a href="/admin/">admin</a> / concepts', body, "\n".join(md))}
+
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -5103,6 +5364,7 @@ def build(out_dir):
     extra.update(work_pages(out_dir, ctx_shared))
     extra.update(memo_pages(out_dir, ctx_shared))
     extra.update(status_page(out_dir, ctx_shared))
+    extra.update(concepts_page(out_dir, ctx_shared))
     extra.update(audience_pages(out_dir, ctx_shared))
     extra.update(reviewer_pages(out_dir, ctx_shared))
     extra.update(paid_pages(out_dir, ctx_shared))

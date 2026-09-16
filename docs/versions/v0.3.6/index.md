@@ -11,7 +11,7 @@ TWO THINGS THE PAGE GOT WRONG ABOUT ITSELF BEFORE IT SHIPPED. It printed 55 done
 And one thing that would have stopped the gate dead: an elif attached to a block that no longer ended where it used to, which is a syntax error rather than a wrong answer. The gate refused to run at all until it was fixed, which is the right failure.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `a2fa742f7a008985b14a24a7d0d989387fbe30c2`
 - Reconstructed: no
 
 ---

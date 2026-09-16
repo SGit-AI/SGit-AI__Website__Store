@@ -33,6 +33,7 @@ somebody will eventually try to relax:
 A check that only fires on the source, or only on a page somebody remembered to
 list, is not a gate. Every one below walks all of docs/.
 """
+import hashlib
 import json
 import os
 import re
@@ -2574,6 +2575,100 @@ def check_every_done_unit_points_at_something():
             fail("admin/status/: has no markdown twin")
 
 
+
+# ---------------------- the concept critique shows what it says it shows ------
+# /admin/concepts/ reviews three homepage directions drawn for this store from
+# outside. It is an evidence page: fourteen screenshots, seven measurements and a
+# ten-file mirror with a sha256 each, and its entire claim on a reader is that
+# those things are what it says they are.
+#
+# THREE WAYS THAT CAN GO WRONG WITHOUT ANYBODY NOTICING, and this check is one
+# assertion for each.
+#
+# A screenshot can go missing from the PAGE. A 404 is already caught, properly,
+# by check_links — the first draft of this check re-implemented that with a
+# weaker regex, matched nothing because the build writes relative URLs, and
+# passed a deliberate break. So this asserts the thing check_links cannot: that
+# the set of images on the page and the set committed under assets/shots/concepts/
+# are the same set. A figure quietly dropped from the page still leaves a page
+# full of working images, and an orphaned file is a screenshot somebody took to
+# make a point that is no longer being made.
+#
+# The mirror can drift from its own record. source.json carries a sha256 per
+# file; if the bytes under mirror/ stop matching it, then every screenshot on the
+# page was taken from something other than what the page says was reviewed, and
+# the hashes — the whole reason for mirroring — are decoration.
+#
+# A verdict can be invented. The page renders a verdict chip per concept off a
+# fixed table of three, and a typo in the data would silently become a chip at
+# whatever rank the lookup happened to give it.
+#
+# WHAT THIS CHECK DOES NOT DO is verify the mirror against the live upstream.
+# That needs the network, the build opens none, and it is what
+# `python3 tools/promote_concepts.py --check` is for.
+CONCEPT_VERDICTS = {"adopt", "adopt-in-part", "reject"}
+CONCEPT_FINDING_STATES = {"confirmed", "open", "fixed"}
+
+
+def check_the_concept_critique_shows_what_it_says():
+    page = OUT / "admin" / "concepts" / "index.html"
+    if not page.exists():
+        fail("admin/concepts/: the critique page is not in the build")
+        return
+    text = page.read_text()
+
+    # 1. the images on the page and the images in the repository are one set.
+    #    URLs are written relative by the build, so match on the basename.
+    shown = set(re.findall(r'[\'"]([\w.-]+\.(?:jpg|png))[\'"]', text)) | set(
+        re.findall(r'shots/concepts/([\w.-]+\.(?:jpg|png))', text))
+    have = {f.name for f in (ROOT / "assets" / "shots" / "concepts").glob("*")
+            if f.suffix in (".jpg", ".png")}
+    for orphan in sorted(have - shown):
+        fail(f"assets/shots/concepts/{orphan}: committed and not shown on the critique "
+             "page — a screenshot nobody is arguing from")
+    for missing in sorted(shown - have):
+        fail(f"admin/concepts/: shows {missing}, which is not in assets/shots/concepts/ — "
+             "run node tools/shoot_concepts.mjs")
+
+    # 2. the mirror still matches the hashes the page prints
+    src_rec = json.loads((ROOT / "data" / "concepts" / "source.json").read_text())
+    mirror = ROOT / "data" / "concepts" / "mirror"
+    for f in src_rec["files"]:
+        m = mirror / f["path"]
+        if not m.exists():
+            fail(f"data/concepts/mirror/{f['path']}: recorded in source.json and not on disk")
+            continue
+        got = hashlib.sha256(m.read_bytes()).hexdigest()
+        if got != f["sha256"]:
+            fail(f"data/concepts/mirror/{f['path']}: sha256 is {got[:12]}, source.json says "
+                 f"{f['sha256'][:12]} — the mirror and its own record disagree")
+        if f["sha256"][:16] not in text:
+            fail(f"admin/concepts/: does not print the hash for {f['path']}, so a reader "
+                 "cannot check the file it was reviewed from")
+
+    # 3. every verdict and finding state is one the page can actually render
+    crit = json.loads((ROOT / "data" / "concepts" / "critique.json").read_text())
+    for c in crit["concepts"]:
+        if c["verdict"] not in CONCEPT_VERDICTS:
+            fail(f"admin/concepts/: concept {c['id']!r} has verdict {c['verdict']!r}, which is "
+                 f"not one of {sorted(CONCEPT_VERDICTS)}")
+        if c["verdict_label"] not in text:
+            fail(f"admin/concepts/: concept {c['id']!r} is in the data and its verdict "
+                 "is not on the page")
+    for f in crit["findings"]:
+        if f["state"] not in CONCEPT_FINDING_STATES:
+            fail(f"admin/concepts/: finding {f['id']!r} has state {f['state']!r}, which is "
+                 f"not one of {sorted(CONCEPT_FINDING_STATES)}")
+
+    # 4. a finding about the live site that claims to be confirmed has to say
+    #    what was checked — "confirmed" with no check behind it is the one
+    #    status on this page that can be wrong and look right.
+    for f in crit["findings"]:
+        if f["state"] == "confirmed" and len(f.get("checked", "")) < 40:
+            fail(f"admin/concepts/: finding {f['id']!r} is marked confirmed and does not "
+                 "record what was checked")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2612,6 +2707,7 @@ def main():
         check_the_network_claim_is_qualified,
         check_the_capability_vocabulary_is_promoted_not_invented,
         check_every_done_unit_points_at_something,
+        check_the_concept_critique_shows_what_it_says,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

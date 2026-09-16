@@ -1,0 +1,224 @@
+{
+  "_what_this_is": "The review of the three homepage concepts mirrored in data/concepts/mirror/. Verdicts, the measurements behind them, what this store takes and what it refuses, and what the outside review got right about the live site. The concepts are somebody else's work — made by a ChatGPT session at the project lead's direction — and are quoted and screenshotted as such.",
+  "_how_to_change_it": "Edit this file. The page at /admin/concepts/ is generated from it, the screenshots come from tools/shoot_concepts.mjs, and the measurements are re-run by hand and pasted into `measurements` with the method recorded. Nothing on the page is typed twice.",
+  "reviewed_on": "16 September 2026",
+  "reviewed_version": "v0.3.6",
+  "measurements": {
+    "_method": "Chromium at 1200×750 and 390×780, every page served from loopback — this repository's docs/ for the current homepage and data/concepts/mirror/ for the three concepts. Word count is document.body.innerText; nav links are header and nav anchors; height is document.body.scrollHeight. Re-runnable: the tool that shot the screenshots serves the same two roots.",
+    "_why_it_is_here": "A design critique that says a page feels long is an opinion. These are the seven things that were actually measured, and six of the seven go against the live homepage — which is most of the argument below, before a word of taste is spent.",
+    "rows": [
+      {
+        "metric": "Words on the page",
+        "current": "1,980",
+        "marketplace": "457",
+        "guided": "465",
+        "studio": "449",
+        "note": "The current homepage carries four and a third times the copy of any concept.",
+        "against": true
+      },
+      {
+        "metric": "Links in the header",
+        "current": "48",
+        "marketplace": "9",
+        "guided": "9",
+        "studio": "9",
+        "note": "Counted across header and nav, dropdowns expanded. The concepts put operational destinations in the footer.",
+        "against": true
+      },
+      {
+        "metric": "Page height, desktop",
+        "current": "5,153px",
+        "marketplace": "3,296px",
+        "guided": "3,235px",
+        "studio": "3,788px",
+        "note": "At 1200×750.",
+        "against": true
+      },
+      {
+        "metric": "Page height, mobile",
+        "current": "10,710px",
+        "marketplace": "5,042px",
+        "guided": "5,131px",
+        "studio": "5,176px",
+        "note": "At 390×780. Thirteen and a half phone screens against six and a half.",
+        "against": true
+      },
+      {
+        "metric": "Headline size, desktop",
+        "current": "40px",
+        "marketplace": "55px",
+        "guided": "58px",
+        "studio": "72px",
+        "note": "The memo asked for big banners and big stuff. The concepts did it and this page did not.",
+        "against": true
+      },
+      {
+        "metric": "Price size on a card",
+        "current": "28px",
+        "marketplace": "42px",
+        "guided": "42px",
+        "studio": "42px",
+        "note": "Each concept sets the price as the second-largest thing on the page. Here it sits inline with the delivery estimate at body weight.",
+        "against": true
+      },
+      {
+        "metric": "Buy button on a card",
+        "current": "none",
+        "marketplace": "none",
+        "guided": "none",
+        "studio": "none",
+        "note": "Not a difference — an agreement, and the finding that matters most. Neither the live store nor any concept has one. See below.",
+        "against": false
+      }
+    ]
+  },
+  "concepts": [
+    {
+      "id": "marketplace",
+      "n": "01",
+      "name": "Marketplace",
+      "reference": "Stated reference: Amazon-style shopping clarity",
+      "claim": "A store header, a visible price ladder and four compact offer cards. Built for a buyer who already knows roughly what they want and is choosing between levels.",
+      "verdict": "adopt",
+      "verdict_label": "Take the structure",
+      "for": "The price ladder is the best thing on any of the three pages and it is better than what is live. Four cards, identical anatomy, level number top-left, delivery estimate top-right, the price at 42px, one action. A buyer can compare four things without reading a sentence — which is exactly what somebody comparing four things wants to do.",
+      "against": "The navy header is a second brand. It is not this store's palette, and the store already has a header that does a job the concept's header does not: it says which version of the site you are reading and that every offer is an instance. Take the card grid, not the chrome.",
+      "artwork": "Isometric navy folio with translucent orange permission layers. Competent, and the one genuinely arresting image of the three."
+    },
+    {
+      "id": "guided",
+      "n": "02",
+      "name": "Guided",
+      "reference": "Stated reference: approachable retail merchandising",
+      "claim": "Forest green, rounded everything, a serif headline and softer language. Built for a buyer who does not yet know what this is.",
+      "verdict": "reject",
+      "verdict_label": "Wrong buyer",
+      "for": "The agent chips — pill-shaped, one per application, five across — are a better 'which agent do you run?' than the live one, and the rounded card is easier to scan than a bordered box.",
+      "against": "'A clearer policy. A more confident you.' is selling a feeling to somebody buying a document they will hand to an auditor. The whole reason a C-level exec or a GRC lead is on this page is that somebody is going to ask them a hard question, and warmth is not the answer to it. The palette is also a third brand, unrelated to either property.",
+      "artwork": "Green folios on stepped plinths. Well made and pointed at the wrong shelf."
+    },
+    {
+      "id": "studio",
+      "n": "03",
+      "name": "Studio",
+      "reference": "Stated reference: product storytelling, centred and premium",
+      "claim": "A centred statement at 72px, a single large object, and a great deal of air. Built to make a first impression before it sells anything.",
+      "verdict": "adopt-in-part",
+      "verdict_label": "Take the headline, leave the room",
+      "for": "'Powerful agents. Clear boundaries.' is the sharpest line produced anywhere in this exercise, including by this repository. Two three-word halves, the tension stated rather than explained, and it survives being read at a glance across a room. The 72px setting is right.",
+      "against": "The centred hero spends 850px before the first product. This store sells four things at four prices and the fastest question a visitor has is what they cost; an Apple-shaped page defers that question by design because Apple sells one thing at a time. It is also the tallest of the three concepts while carrying the least.",
+      "artwork": "Frosted glass layers over a cobalt core. The most literal rendering of the grant/mandate/gap idea, and the most reusable of the four images."
+    }
+  ],
+  "moves": [
+    {
+      "id": "price-ladder",
+      "from": "Marketplace",
+      "title": "Set the price like it is the product",
+      "what": "Four cards of one anatomy: level and delivery on one line at 12px, the name, one line of what it is, the price at 42px, one sentence, one action. Identical order in every card so the eye can run down a column instead of reading four paragraphs.",
+      "why": "The current cards put the price at 28px inline with the delivery estimate, then follow it with up to sixty words. A buyer comparing four levels is doing a table lookup and the page is handing them prose.",
+      "cost": "The claim chips currently sitting inside each card have to go somewhere. They are load-bearing — they are how a reader checks that 'delivered by a person' is a thing somebody stood behind — so this is a move, not a deletion."
+    },
+    {
+      "id": "one-line-headline",
+      "from": "Studio",
+      "title": "Say the tension in six words, at 72px",
+      "what": "A headline of two short halves that names what the product is for, set large enough to read at a glance, with the explanation demoted to a subhead.",
+      "why": "'Every agent needs a licence to operate' is a good line carrying a real risk: the review flagged that 'licence to operate' reads as regulatory permission unless something next to it says otherwise. 'Powerful agents. Clear boundaries.' has no such ambiguity and is shorter.",
+      "cost": "Nothing, if the phrase that replaces it is as specific. A vaguer line at 72px is worse than a precise one at 40px."
+    },
+    {
+      "id": "trust-strip",
+      "from": "Marketplace",
+      "title": "Four facts across, under the hero",
+      "what": "A single row of four short, checkable statements between the hero and the first product section: fifteen application templates, four levels, public examples, professional support.",
+      "why": "It answers the four questions a visitor forms in the first five seconds without opening a section, and every one of the four is already true here and already evidenced in the ledger. It is a free win and the only reason it is not live is that nobody drew it.",
+      "cost": "None, provided every item stays linked to its claim. A trust strip whose items are not checkable is the exact thing this store refuses."
+    },
+    {
+      "id": "nav-diet",
+      "from": "the review page",
+      "title": "Forty-eight links is not navigation",
+      "what": "Keep three destinations in the header — the levels, the applications, what is inside one — and move evidence, disclosures, admin and the version badge into the footer and the console.",
+      "why": "The header currently offers forty-eight ways to leave the page a visitor has been on for two seconds. The concepts offer nine. This was the review's first recommendation and it is right.",
+      "cost": "Real, and it needs a ruling. The version badge and the model-assistance strip are not decoration: one is how a reader knows which build they are reading and the other is required above the main element by this repository's own hard rules. They can be made quieter. They cannot go to the footer."
+    },
+    {
+      "id": "agent-chips",
+      "from": "Guided",
+      "title": "Applications as chips, not as a list",
+      "what": "One pill per application, five across, each a link, with a sixth reading 'something different — a tailored policy starts at £500'.",
+      "why": "It turns the application list from a directory into a self-identification, and the sixth chip converts the miss into the £500 level instead of a dead end. The live page lists applications; it does not route on them.",
+      "cost": "None. This one is straightforwardly better."
+    },
+    {
+      "id": "no-invented-proof",
+      "from": "the review page",
+      "title": "The one we already do, and should keep doing",
+      "what": "The review's recommendation was to keep proof pointed at public examples a reader can open, and to invent none of the devices a store reaches for when it has no buyers yet — star ratings, testimonials, customer counts and standards-body marks.",
+      "why": "It is recorded here because a product-page memo asked for a reviews and stars section, and an outside reader — with no knowledge of this repository's rules — independently arrived at the reason not to fake one. It is also, quietly, the second-hardest rule on this site: the words for that last device are barred outright, and this page's first draft tripped the check by quoting the review's own sentence approvingly. The rule does not care why the word is there, which is the point of it.",
+      "cost": "None. It costs the thing that was never going to be bought anyway. When the stars arrive they have to be real reviews from real buyers, and until there are buyers there are no stars."
+    }
+  ],
+  "refused": [
+    {
+      "what": "The three palettes",
+      "why": "Navy-and-amber, forest green and cobalt are three brands, none of them this one and none of them RiskMandate's. The concepts were drawn against a page rather than against a design system, so this is not a criticism of them — but adopting one would mean the store and the product site look like two companies, on the same week we decided a buyer should never notice leaving one for the other."
+    },
+    {
+      "what": "Arial and Georgia",
+      "why": "Every concept sets its type in Arial, Helvetica and Georgia with tight negative letter-spacing, which reads as a placeholder for a typeface rather than a choice of one. The live site's serif-and-system-sans pairing is better considered. Take the sizes; keep the faces."
+    },
+    {
+      "what": "The footer disclosure",
+      "why": "All three concepts put the model-assistance and not-a-compliance-assessment language in small grey type at the bottom. This site puts it above the main element on every page and a build check refuses to ship a page without it. That is not a style preference and it is not negotiable, and it is the one place where a concept cannot be adopted as drawn."
+    },
+    {
+      "what": "Dropping the persona doors",
+      "why": "All three concepts open on the product and route by application — which agent do you run. The live page opens on who you are. The memo was explicit about wanting the second: a laptop open, somebody comes along, who are you, a founder, boom. Application routing is a good addition and a bad replacement, and the concepts were drawn before the audiences existed so they cannot be faulted for it."
+    }
+  ],
+  "findings": [
+    {
+      "id": "price-contradiction",
+      "state": "confirmed",
+      "state_label": "Live, and ours",
+      "what": "The review reported that this store lists £10 for the download pack while RiskMandate.ai says £5.",
+      "checked": "Checked on 16 September against riskmandate.ai's homepage, which carries the line '1 · £5 The pack, downloaded'. The contradiction is live as this page is published.",
+      "why_it_matters": "The price moved from £5 to £10 on this store on a memo from the project lead, and the product site was not moved with it. A buyer who reads both properties — which is the whole point of them being one flow — sees two prices for one thing. An outside reader with no access to either repository found it in a single pass.",
+      "action": "Carried into the RiskMandate brief as a correction, not a suggestion."
+    },
+    {
+      "id": "licence-to-operate",
+      "state": "confirmed",
+      "state_label": "Fair, and open",
+      "what": "The review said 'licence to operate' is a useful idea that needs context beside it, so a buyer does not read the deliverable as regulatory permission.",
+      "checked": "The homepage headline is 'Every agent needs a licence to operate' and the phrase is not defined until the second paragraph.",
+      "why_it_matters": "This store bars the words that would imply a compliance product, checks for them on every build, and then leads with a phrase that a reader can take that way unaided. The bar is doing its job on vocabulary and missing it on the headline.",
+      "action": "Open. Needs a ruling from the project lead, because the phrase is also the name of a document inside the vault."
+    },
+    {
+      "id": "delivery-timing",
+      "state": "fixed",
+      "state_label": "Already fixed",
+      "what": "The review found the £50 card saying 1–2 days while other copy said the first two levels are produced immediately.",
+      "checked": "True of the page the concepts were drawn from. Not true of the current build: every level now carries an estimate and the clock it runs from — immediately, 1 to 2 days, and for the upper two, 1 to 3 and 1 to 5 days from your reply rather than from your payment.",
+      "why_it_matters": "It is worth recording that an outside reader found a contradiction the delivery-times work had already closed, because it dates the concepts precisely and it means the rest of their findings were made against a real page rather than a guess.",
+      "action": "None."
+    },
+    {
+      "id": "no-payment-link",
+      "state": "open",
+      "state_label": "Still true, and the biggest one",
+      "what": "The review noted the store says its payment links have not been issued, and that no concept simulates a completed purchase.",
+      "checked": "True. Six products are priced in Stripe and reconcile to the penny on every release; three coupons exist; and every card on the homepage still shows a grey box reading 'the payment link has not been issued yet' where a buy button belongs.",
+      "why_it_matters": "This is the finding that outranks every design question on this page. Three concepts were commissioned to make the homepage sell, and all three of them — faithfully, because they were drawn from the live page — reproduce a store that cannot take money. The best hero in the world above a disabled button converts nothing.",
+      "action": "It is the first unit of the take-money workstream and it is what the next release is for."
+    }
+  ],
+  "endorsement": {
+    "verdict": "Endorsed in part, and worth the exercise",
+    "body": "Two of the three concepts contain structure this store should adopt, one of them contains a headline better than ours, and the review page attached to them found a live pricing contradiction between the two properties that nobody inside had noticed. That is a good return. What none of the three could supply is the thing that was never on the page they were drawn from: a buy button. They are a better shop window for the same closed shop — which is a fair description of what was asked for, and the reason the next release is the till rather than the window.",
+    "not_a_measurement": "Every judgement on this page is a design judgement, made by reading and measuring the pages. Nothing here was A/B tested, no visitor was observed, and no conversion number exists for any of the four designs. The review page attached to the concepts says the same of itself, and it is right to."
+  }
+}
