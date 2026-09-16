@@ -28,6 +28,8 @@
 # One line per value: the YAML subset in build.py drops wrapped continuation lines.
 
 - id: founder
+  next_label: "Founder"
+  next_reading: "You are shipping with agents and somebody is going to ask what they can do. This is the answer, written down once, before the conversation that needs it."
   order: 1
   short: A founder
   name: You are a founder
@@ -41,6 +43,8 @@
   evidence_why: "One agent, its grant, its mandate and the delta between them, run end to end. It is the shape of the thing you would be holding."
 
 - id: investor
+  next_label: "Investor"
+  next_reading: "You are backing companies that run agents. This is a consistent record of capability, mandate and gap that reads the same across a portfolio."
   order: 2
   short: An investor
   name: You are backing a company
@@ -54,6 +58,8 @@
   evidence_why: "An eleven-step risk-acceptance walk over one evolving register — a worked example of the thing at the top of this ladder, published rather than described."
 
 - id: exec
+  next_label: "C-level exec"
+  next_reading: "You have to answer for it to a board. This is the document you put in front of them, with a named professional behind the two upper levels."
   order: 3
   short: A C-level exec
   name: You have to answer for it
@@ -67,6 +73,8 @@
   evidence_why: "A standard turned into rows a position can be measured against, with what is attested kept permanently apart from what is evidenced. That separation is the thing a board actually needs."
 
 - id: security
+  next_label: "Security professional"
+  next_reading: "You do this for a living. This is the grant measured rather than assumed, the barrier on each capability, and the delta derived from both."
   order: 4
   short: A security professional
   name: You do this for a living
@@ -80,6 +88,8 @@
   evidence_why: "The estate, the role risk map, the risk chains, the register and the acceptance gate. If the method is wrong, this is the page where you will see it."
 
 - id: governance
+  next_label: "Risk & governance"
+  next_reading: "You own the register. This is the mapping between what the agent can reach and what was authorised, dated and versioned so it can be cited."
   order: 5
   short: Risk and governance
   name: You own the register

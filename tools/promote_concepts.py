@@ -33,6 +33,7 @@ import sys
 import urllib.request
 
 BASE = "https://riskmandate-store-concepts.diniscruz.chatgpt.site"
+BASE_V3 = "https://abp-marketplace-v3.diniscruz.chatgpt.site"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MIRROR = ROOT / "data" / "concepts" / "mirror"
 RECORD = ROOT / "data" / "concepts" / "source.json"
@@ -53,10 +54,10 @@ ASSETS = ["style.css", "app.js",
           "assets/studio.png", "assets/infographic.png"]
 
 
-def fetch(rel):
+def fetch(rel, base=None):
     """GET one path. Redirects are followed: the host serves .html at an
     extensionless URL and answers the .html form with a 307."""
-    url = f"{BASE}/{rel}"
+    url = f"{base or BASE}/{rel}"
     req = urllib.request.Request(url, headers={"user-agent": "store.sgit.ai concept mirror"})
     with urllib.request.urlopen(req, timeout=60) as r:
         return r.read(), r.geturl()

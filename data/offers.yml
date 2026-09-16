@@ -1,3 +1,16 @@
+# THE SHORT NAMES, RULED ON 16 SEPTEMBER.
+#
+# Every offer now carries `short_name` and `short_sub` beside the long `question`
+# and `gets`. The pair is the answer to a thing that had been open since the
+# concept critique: "Professional review" reads out loud in a board meeting and
+# "Two sessions and a custom vault" is the more honest description of what
+# arrives, and the store needed both rather than a choice between them.
+#
+# So: Pack, Vault, Tailored, Reviewed at heading size; the precise line under it.
+# The names came out of the v3 design round and were ruled by the project lead.
+# check_prices freezes them like every other field here — a name that drifts from
+# this file fails the release, which is the point of a name a buyer repeats.
+#
 # The offers. THIS FILE IS THE ONLY PLACE A PRICE EXISTS.
 #
 # FOUR LEVELS OF ONE THING, and two add-ons. Every level is the same document — an
@@ -108,6 +121,18 @@
 
 - id: t1
   tier: "1"
+  short_name: Pack
+  short_sub: "The material, downloaded."
+  next_what: "The ABP files and instructions, packaged for you to keep."
+  next_included:
+    - The behaviour policy, the grant, the mandate and the delta
+    - The agent instructions and the mapping prompt
+    - Every file from the published vault, downloaded
+    - A commercial licence to you over material that is public under CC BY
+  next_excluded:
+    - A vault you hold the keys to
+    - Version history, or a read key you can hand on
+    - Any correction for your deployment
   question: Can I just have the pack?
   price_label: "£10"
   price_min: 1000
@@ -146,6 +171,17 @@
 
 - id: t2
   tier: "2"
+  short_name: Vault
+  short_sub: "The material, in a working vault."
+  next_what: "The pack as a vault, with its reading app, your keys and version history."
+  next_included:
+    - Everything in ABP Pack
+    - A working vault with its own reading app
+    - Your own keys, and your own version history
+    - A read key you can hand to anybody who asks how you govern the agent
+  next_excluded:
+    - Correction done for you
+    - Time with a security professional
   question: Can I have a vault I hold the keys to?
   price_label: "£50"
   price_min: 5000
@@ -182,6 +218,16 @@
 
 - id: t3
   tier: "3"
+  short_name: Tailored
+  short_sub: "Your deployment, reflected in the mandate."
+  next_what: "A named security professional corrects the mandate against your details."
+  next_included:
+    - Everything in ABP Vault
+    - The mandate corrected against your industry, use case and deployment
+    - The work done and signed off by a named security professional
+  next_excluded:
+    - The two sessions that come with ABP Reviewed
+    - Any guarantee about a particular outcome
   question: Can you correct it for my situation?
   price_label: "£500"
   price_min: 50000
@@ -219,6 +265,16 @@
 
 - id: t4
   tier: "4"
+  short_name: Reviewed
+  short_sub: "Two sessions and a custom vault."
+  next_what: "Two half-hour sessions and a custom vault, reviewed and signed off."
+  next_included:
+    - Everything in ABP Tailored
+    - Two half-hour sessions with the professional doing the work
+    - A custom vault, reviewed and signed off
+  next_excluded:
+    - Ongoing monitoring, or anything recurring
+    - Any guarantee about a particular outcome
   question: Can somebody go through it with my team?
   price_label: "£1,500"
   price_min: 150000

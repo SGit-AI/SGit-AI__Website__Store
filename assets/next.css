@@ -1,0 +1,572 @@
+/* assets/next.css — the next store.
+ * ============================================================================
+ *
+ * WHAT THIS IS. The stylesheet for /next/, which implements the v3 design
+ * direction "01 / ABP first" chosen on 16 September. It is deliberately NOT a
+ * layer on top of site.css.
+ *
+ * WHY NOT A LAYER. The v3 source does it that way — it loads this site's own
+ * stylesheet and then overrides :root in a second file. That is the right move
+ * for a mockup and the wrong one to ship: it carries 26KB of a design we are
+ * moving away from, and every new component then fights an old rule it did not
+ * know about. The pages under /next/ load this file and nothing else, so what
+ * you read here is what renders.
+ *
+ * THE COST IS STATED RATHER THAN HIDDEN: a handful of components exist twice
+ * for now, here and in site.css, in two visual languages. They converge when
+ * /next/ replaces the current store, and until then the duplication is the
+ * price of not making either design worse.
+ *
+ * HOW IT IS ORGANISED
+ *   1. tokens          the design decisions, all of them, in one place
+ *   2. reset + base    the smallest set that stops surprises
+ *   3. layout          shell, sections, grids
+ *   4. components      one block each, alphabetical inside their group
+ *   5. utilities       a short list, on purpose
+ *   6. responsive      one breakpoint set at the end, not scattered
+ *   7. print + motion  the two media contexts that carry real rules
+ *
+ * NAMING. Components are `.n-<block>` and their parts `.n-<block>__<part>`,
+ * with `--<modifier>` for variants. The `n-` prefix means a class can never
+ * collide with site.css if the two ever meet on one page.
+ */
+
+/* ============================================================================
+ * 1. TOKENS
+ * The Marketplace palette from the v3 source, named for what each value DOES
+ * rather than what colour it is, so a re-theme is this block and nothing else.
+ * ========================================================================== */
+:root {
+  /* -- surface ------------------------------------------------------------ */
+  --n-page:        #ffffff;
+  --n-panel:       #ffffff;
+  --n-tint:        #edf3f8;   /* hero ground, quiet bands */
+  --n-tint-2:      #f8fafc;   /* the levels band */
+  --n-deep:        #142c42;   /* header, footer mark, evidence block */
+  --n-deep-2:      #0f2233;
+  --n-ink-band:    #111111;   /* the design-round strip */
+
+  /* -- ink ---------------------------------------------------------------- */
+  --n-fg:          #142632;
+  --n-dim:         #536573;
+  --n-dim-2:       #62717a;
+  --n-on-deep:     #ffffff;
+  --n-on-deep-dim: #c7d6e1;
+
+  /* -- line --------------------------------------------------------------- */
+  --n-line:        #e2e6e8;
+  --n-line-2:      #d9e1e7;
+  --n-line-deep:   #2a4560;
+
+  /* -- action ------------------------------------------------------------- */
+  --n-cta:         #f5ae42;
+  --n-cta-hover:   #ef9f27;
+  --n-cta-ink:     #142c42;
+  --n-cta-edge:    #e9a33a;   /* the rule above the leading card */
+  --n-focus:       #1677e8;
+
+  /* -- claim states -------------------------------------------------------
+   * Ten states, from the ledger. Only `exists` is the fully-earned one: if
+   * most chips look confident the component has failed. `spec` and `partial`
+   * are deliberately NOT the same here — they share a class on the current
+   * store and render identically, which the design brief recorded as a bug. */
+  --n-st-exists:    #0b5e57;  --n-st-exists-bg:    rgba(15,118,110,.10);
+  --n-st-measured:  #14622f;  --n-st-measured-bg:  rgba(21,128,61,.10);
+  --n-st-docs:      #3f4854;  --n-st-docs-bg:      rgba(71,85,105,.10);
+  --n-st-projected: #075985;  --n-st-projected-bg: rgba(3,105,161,.10);
+  --n-st-spec:      #8f4308;  --n-st-spec-bg:      rgba(180,83,9,.10);
+  --n-st-person:    #1d4ed8;  --n-st-person-bg:    rgba(29,78,216,.10);
+  --n-st-unlocated: #7d4c06;  --n-st-unlocated-bg: rgba(161,98,7,.12);
+  --n-st-booking:   #075985;  --n-st-booking-bg:   rgba(3,105,161,.10);
+  --n-st-partial:   #6b4a16;  --n-st-partial-bg:   rgba(161,98,7,.07);
+  --n-st-absent:    #8f1d1d;  --n-st-absent-bg:    rgba(185,28,28,.09);
+
+  /* -- type ---------------------------------------------------------------
+   * The v3 source declares `Arial, Helvetica, sans-serif` outright. That
+   * renders as intended on the two platforms it was drawn on and as Liberation
+   * Sans or worse everywhere else — a placeholder for a typeface rather than a
+   * choice of one, which the concept critique already said once. This stack
+   * resolves to the SAME faces on macOS and Windows and degrades to a real
+   * grotesque elsewhere, so the design is unchanged where it was judged and
+   * better where it was not. */
+  --n-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
+            "Segoe UI", Arial, sans-serif;
+  --n-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+            "Liberation Mono", monospace;
+
+  --n-h1:      clamp(42px, 4.6vw, 72px);
+  --n-h2:      clamp(28px, 3vw, 44px);
+  --n-h3:      24px;
+  --n-price:   42px;
+  --n-lede:    18px;
+  --n-body:    16px;
+  --n-small:   14px;
+  --n-fine:    13px;
+  --n-micro:   12px;
+  --n-eyebrow: 12px;
+
+  /* -- shape and rhythm --------------------------------------------------- */
+  --n-r-sm:    4px;
+  --n-r:       5px;
+  --n-r-card:  8px;
+  --n-r-block: 10px;
+  --n-r-pill:  99px;
+
+  --n-gap:     18px;
+  --n-gap-lg:  28px;
+  --n-pad-x:   4%;
+  --n-pad-y:   65px;
+  --n-shadow:  0 1px 2px rgba(20,38,50,.05), 0 6px 20px rgba(20,38,50,.05);
+
+  --n-measure: 68ch;
+  --n-wide:    1440px;
+}
+
+/* ============================================================================
+ * 2. RESET AND BASE
+ * ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 24px; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--n-page);
+  color: var(--n-fg);
+  font: var(--n-body)/1.65 var(--n-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin: 0; line-height: 1.12; letter-spacing: -.04em; }
+h1 { font-size: var(--n-h1); font-weight: 650; letter-spacing: -.045em; line-height: 1.1; }
+h2 { font-size: var(--n-h2); font-weight: 550; }
+h3 { font-size: var(--n-h3); font-weight: 600; letter-spacing: -.025em; }
+p  { margin: 0; }
+ul, ol { margin: 0; padding: 0; }
+
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+img { display: block; max-width: 100%; }
+code { font-family: var(--n-mono); font-size: .88em; }
+
+/* One focus rule for everything. Visible, and never removed. */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 3px solid var(--n-focus);
+  outline-offset: 3px;
+  border-radius: var(--n-r-sm);
+}
+
+.n-skip {
+  position: absolute; left: 16px; top: -100px; z-index: 60;
+  background: var(--n-panel); color: var(--n-fg);
+  padding: 12px 16px; border-radius: var(--n-r);
+}
+.n-skip:focus { top: 10px; }
+
+/* ============================================================================
+ * 3. LAYOUT
+ * ========================================================================== */
+.n-wrap  { max-width: var(--n-wide); margin-inline: auto; }
+.n-sect  { padding: var(--n-pad-y) var(--n-pad-x); }
+.n-sect--tint  { background: var(--n-tint-2); }
+.n-sect--quiet { background: var(--n-tint); }
+.n-sect--tight { padding-block: 42px; }
+
+.n-head { display: flex; align-items: flex-end; justify-content: space-between;
+          gap: var(--n-gap-lg); margin-bottom: var(--n-gap-lg); }
+.n-head__text { min-width: 0; }
+.n-head h2 { margin-bottom: 10px; }
+.n-head p  { color: var(--n-dim); max-width: var(--n-measure); }
+.n-head__aside { font-size: var(--n-small); white-space: nowrap; }
+.n-head__aside a { text-decoration: underline; text-underline-offset: 4px; }
+
+.n-grid { display: grid; gap: var(--n-gap); }
+.n-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.n-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.n-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.n-grid--5 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+
+/* ============================================================================
+ * 4. COMPONENTS — chrome
+ * ========================================================================== */
+
+/* The design-round strip. Says which round of the design this is and links back
+ * to the current store, because /next/ is not the store yet and a reader who
+ * arrives here from a search result has to be told so in the first 40px. */
+.n-roundbar {
+  background: var(--n-ink-band); color: #fff;
+  font: var(--n-micro)/1.5 var(--n-sans);
+  padding: 9px var(--n-pad-x);
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+}
+.n-roundbar b { letter-spacing: .1em; font-weight: 700; }
+.n-roundbar a { color: #fff; opacity: .72; }
+.n-roundbar a:hover, .n-roundbar a[aria-current] { opacity: 1; }
+.n-roundbar__end { margin-left: auto; }
+
+/* Header. Four destinations and the order — down from forty-eight, which the
+ * concept critique measured and the panel confirmed. */
+.n-header {
+  background: var(--n-deep); color: var(--n-on-deep);
+  padding: 20px var(--n-pad-x); min-height: 92px;
+  display: flex; align-items: center; gap: 35px;
+}
+.n-mark { display: inline-flex; align-items: baseline; font-size: 30px;
+          letter-spacing: -.05em; white-space: nowrap; }
+.n-mark b { font-size: 34px; font-weight: 750; }
+.n-mark span { font-size: 23px; color: var(--n-on-deep-dim); margin-left: 3px; }
+.n-nav { margin-left: auto; display: flex; align-items: center; gap: 35px;
+         font-size: var(--n-small); }
+.n-nav a[aria-current] { text-decoration: underline; text-underline-offset: 6px; }
+
+/* The disclosure. Above main on every page, always — a build check refuses a
+ * page without it, and the reader panel found it was one of the two things that
+ * won the two readers who would spend the most. */
+.n-disclosure {
+  background: #f5f7fa; border-bottom: 1px solid var(--n-line);
+  padding: 7px var(--n-pad-x);
+  font-size: 11.5px; line-height: 1.5; color: var(--n-dim);
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline;
+}
+.n-disclosure a { text-decoration: underline; text-underline-offset: 3px; }
+
+.n-footer { background: var(--n-tint-2); border-top: 1px solid var(--n-line);
+            padding: 52px var(--n-pad-x) 30px; font-size: var(--n-small); }
+.n-footer__cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+                  gap: 40px; }
+.n-footer b { display: block; margin-bottom: 14px; font-size: var(--n-fine);
+              letter-spacing: .06em; text-transform: uppercase; color: var(--n-dim); }
+.n-footer a { display: block; margin-bottom: 9px; }
+.n-footer__note { grid-column: 1 / -1; border-top: 1px solid var(--n-line-2);
+                  margin-top: 34px; padding-top: 22px;
+                  color: var(--n-dim); font-size: var(--n-micro); max-width: 110ch; }
+
+/* ============================================================================
+ * 4. COMPONENTS — content
+ * ========================================================================== */
+
+.n-eyebrow { font-size: var(--n-eyebrow); font-weight: 700; letter-spacing: .1em;
+             text-transform: uppercase; color: var(--n-dim); margin-bottom: 22px; }
+
+/* Button. Three states and one of them is real and shipping: a disabled action
+ * with a reason beside it, which is what every card carries until the payment
+ * link is issued. It has to look deliberate rather than broken. */
+.n-btn {
+  display: inline-flex; align-items: center; justify-content: space-between;
+  gap: 18px; padding: 15px 23px;
+  background: var(--n-cta); color: var(--n-cta-ink);
+  border: 1px solid var(--n-cta); border-radius: var(--n-r);
+  font: 650 15px/1 var(--n-sans); cursor: pointer;
+}
+.n-btn:hover { background: var(--n-cta-hover); border-color: var(--n-cta-hover);
+               text-decoration: none; }
+.n-btn--ghost { background: var(--n-panel); color: var(--n-cta-ink);
+                border-color: var(--n-line-2); }
+.n-btn--ghost:hover { background: var(--n-panel); border-color: var(--n-fg); }
+.n-btn--wide { width: 100%; }
+.n-btn[aria-disabled="true"] {
+  background: var(--n-panel); color: var(--n-dim-2);
+  border: 1px dashed var(--n-line-2); font-weight: 500; cursor: default;
+}
+.n-btn[aria-disabled="true"]:hover { background: var(--n-panel);
+                                     border-color: var(--n-line-2); }
+
+/* Claim chip. Links to the ledger. */
+.n-claim {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: var(--n-r-pill); border: 1px solid;
+}
+.n-claim:hover { text-decoration: none; filter: brightness(.95); }
+.n-claim--exists    { color: var(--n-st-exists);    background: var(--n-st-exists-bg);    border-color: rgba(15,118,110,.35); }
+.n-claim--measured  { color: var(--n-st-measured);  background: var(--n-st-measured-bg);  border-color: rgba(21,128,61,.32); }
+.n-claim--docs      { color: var(--n-st-docs);      background: var(--n-st-docs-bg);      border-color: rgba(71,85,105,.30); }
+.n-claim--projected { color: var(--n-st-projected); background: var(--n-st-projected-bg); border-color: rgba(3,105,161,.30); }
+.n-claim--spec      { color: var(--n-st-spec);      background: var(--n-st-spec-bg);      border-color: rgba(180,83,9,.35); }
+.n-claim--person    { color: var(--n-st-person);    background: var(--n-st-person-bg);    border-color: rgba(29,78,216,.32); }
+.n-claim--unlocated { color: var(--n-st-unlocated); background: var(--n-st-unlocated-bg); border-color: rgba(161,98,7,.35); }
+.n-claim--booking   { color: var(--n-st-booking);   background: var(--n-st-booking-bg);   border-color: rgba(3,105,161,.30); }
+.n-claim--partial   { color: var(--n-st-partial);   background: var(--n-st-partial-bg);   border-color: rgba(161,98,7,.30); border-style: dashed; }
+.n-claim--absent    { color: var(--n-st-absent);    background: var(--n-st-absent-bg);    border-color: rgba(185,28,28,.32); }
+
+/* Hero. Copy left, artwork right, and the artwork is marked as artwork. */
+.n-hero { background: var(--n-tint); display: grid;
+          grid-template-columns: 1fr 1fr; min-height: 505px; }
+.n-hero__copy { padding: 52px 6% 45px 8%; align-self: center; }
+.n-hero h1 { margin-bottom: 24px; text-wrap: balance; }
+.n-hero__lede { font-size: var(--n-lede); line-height: 1.7; color: var(--n-dim);
+                max-width: 500px; }
+.n-hero__lede strong { color: var(--n-fg); font-weight: 600; }
+.n-hero__support { font-size: 15px; line-height: 1.65; color: var(--n-dim);
+                   max-width: 500px; margin-top: 16px; }
+.n-hero__actions { display: flex; align-items: center; gap: 25px; margin: 27px 0 24px;
+                   flex-wrap: wrap; }
+.n-hero__actions > a:not(.n-btn) { font-size: var(--n-small); white-space: nowrap;
+                                   text-decoration: underline; text-underline-offset: 4px; }
+.n-hero__price { font-size: var(--n-fine); color: var(--n-dim); }
+.n-hero__price b { font-size: var(--n-lede); color: var(--n-fg); }
+.n-hero__art { position: relative; }
+.n-hero__art img { width: 100%; height: 100%; min-height: 505px; max-height: 620px;
+                   object-fit: cover; }
+.n-artnote { position: absolute; left: 0; bottom: 0; right: 0;
+             background: rgba(20,44,66,.72); color: #fff;
+             font: 11px/1.4 var(--n-mono); padding: 7px 14px; }
+
+/* Trust strip. Four facts, every one of them a link to the claim that evidences
+ * it — the concept version had four ticks and no links, which the one reader who
+ * checks things rejected on sight. */
+.n-trust { display: flex; gap: 20px; justify-content: space-between; flex-wrap: wrap;
+           padding: 21px var(--n-pad-x); border-bottom: 1px solid var(--n-line);
+           background: var(--n-panel); }
+.n-trust a { display: inline-flex; align-items: center; gap: 9px;
+             font-size: var(--n-fine); color: var(--n-fg);
+             text-decoration: underline; text-decoration-color: var(--n-line-2);
+             text-underline-offset: 4px; }
+.n-trust a:hover { text-decoration-color: currentColor; }
+.n-trust svg { flex: none; }
+
+/* Persona doors. Five across; still first, above the product, because the memo
+ * was explicit and all three concepts had dropped them. */
+.n-doors a { display: flex; flex-direction: column; gap: 5px;
+             background: var(--n-panel); border: 1px solid var(--n-line);
+             border-radius: var(--n-r-card); padding: 15px 17px 16px; }
+.n-doors a:hover { border-color: var(--n-fg); text-decoration: none; }
+.n-doors b { font-size: 15.5px; }
+.n-doors span { font-size: var(--n-fine); color: var(--n-dim); line-height: 1.45; }
+
+/* The offer card. Anatomy is fixed so a reader can run down a column instead of
+ * reading four paragraphs: artwork with its level number, LEVEL NN + what form
+ * it takes, the short name, the precise line, the price at 42px, the clock, one
+ * sentence, the claim, one action. */
+.n-offer { display: flex; flex-direction: column;
+           background: var(--n-panel); border: 1px solid var(--n-line);
+           border-radius: var(--n-r-card); overflow: hidden; }
+.n-offer--lead { border-top: 4px solid var(--n-cta-edge); }
+.n-offer__art { position: relative; background: var(--n-tint); }
+.n-offer__art img { width: 100%; max-height: 220px; object-fit: cover; }
+.n-offer__n { position: absolute; top: 12px; left: 12px;
+              background: var(--n-panel); color: var(--n-fg);
+              font: 700 11px/1 var(--n-mono); letter-spacing: .06em;
+              padding: 6px 8px; border-radius: var(--n-r-sm);
+              border: 1px solid var(--n-line); }
+.n-offer__body { display: flex; flex-direction: column; flex: 1; padding: 24px; }
+.n-offer__meta { display: flex; justify-content: space-between; gap: 10px;
+                 font: 11px/1.4 var(--n-mono); letter-spacing: .06em;
+                 color: var(--n-dim); margin-bottom: 14px; }
+.n-offer__meta b { color: var(--n-fg); font-weight: 700; }
+.n-offer h3 { margin-bottom: 6px; }
+.n-offer__sub { font-size: var(--n-small); color: var(--n-dim); min-height: 2.6em; }
+.n-price { display: flex; align-items: baseline; gap: 8px; margin: 20px 0 4px; }
+.n-price b { font-size: var(--n-price); font-weight: 650; letter-spacing: -.045em;
+             line-height: 1; }
+.n-price span { font-size: var(--n-micro); color: var(--n-dim); }
+.n-offer__clock { font-size: var(--n-fine); color: var(--n-dim); }
+.n-offer__what { font-size: var(--n-small); line-height: 1.55; margin-top: 16px; }
+.n-offer__claim { margin-top: 16px; }
+.n-offer__foot { margin-top: auto; padding-top: 20px; }
+/* The card action carries the longest label on the page — "Explore ABP Reviewed"
+   — in the narrowest box. A wrapped button in two of four cards breaks the row
+   that the whole section exists to let a reader compare, so this one tightens
+   rather than letting it fall to two lines. */
+.n-offer__foot .n-btn { gap: 10px; padding-inline: 16px; font-size: 14px;
+                        white-space: nowrap; }
+.n-offer__split { display: block; font-size: var(--n-micro); color: var(--n-dim);
+                  margin-top: 9px; }
+
+/* Application chips. The sixth is the point of the component: a visitor whose
+ * agent is not on the list reaches the level that exists for exactly that,
+ * rather than the end of a directory. */
+.n-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.n-chips a { display: flex; align-items: center; justify-content: space-between;
+             gap: 12px; min-height: 56px; padding: 16px 20px;
+             background: var(--n-panel); border: 1px solid var(--n-line);
+             border-radius: var(--n-r-pill); font-size: 14.5px; font-weight: 600; }
+.n-chips a:hover { border-color: var(--n-fg); text-decoration: none; }
+.n-chips a svg { flex: none; opacity: .45; }
+.n-chips a.is-other { background: var(--n-tint); border-style: dashed;
+                      color: var(--n-dim); }
+
+/* The four objects an ABP brings together. */
+.n-object { background: var(--n-panel); border: 1px solid var(--n-line);
+            border-radius: var(--n-r-card); padding: 22px; }
+.n-object__n { font: 700 11px/1 var(--n-mono); color: var(--n-dim-2);
+               letter-spacing: .1em; }
+.n-object h3 { margin: 12px 0 8px; font-size: 19px; }
+.n-object p { font-size: var(--n-small); color: var(--n-dim); line-height: 1.55; }
+.n-object__claim { margin-top: 14px; }
+
+/* ============================================================================
+ * 4. COMPONENTS — the product page
+ * ========================================================================== */
+.n-product { display: grid; grid-template-columns: minmax(0, 1fr) 360px;
+             gap: 48px; align-items: start; }
+
+.n-media__frame { border: 1px solid var(--n-line); border-radius: var(--n-r-card);
+                  overflow: hidden; background: var(--n-tint); }
+.n-media__frame img { width: 100%; }
+.n-media__cap { font: 11px/1.5 var(--n-mono); color: var(--n-dim);
+                padding: 9px 14px; background: var(--n-panel);
+                border-top: 1px solid var(--n-line); }
+/* The empty slot. It is not a placeholder to be removed later — it is how the
+ * page stays honest while the screenshots are still being taken. */
+.n-media__empty { display: flex; flex-direction: column; align-items: center;
+                  justify-content: center; gap: 12px; text-align: center;
+                  min-height: 300px; padding: 30px;
+                  border: 1px dashed var(--n-line-2); border-radius: var(--n-r-card);
+                  background: var(--n-tint-2); color: var(--n-dim); }
+.n-media__empty b { color: var(--n-fg); font-size: var(--n-small); }
+.n-media__empty span { font-size: var(--n-fine); max-width: 46ch; line-height: 1.55; }
+
+/* A row of buttons that swap one region. Used for the media tabs, the level
+ * switcher and the audience editions — one component, three jobs. */
+.n-switch { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.n-switch button { padding: 9px 15px; font: 500 var(--n-fine)/1.4 var(--n-sans);
+                   background: var(--n-panel); color: var(--n-fg);
+                   border: 1px solid var(--n-line); border-radius: var(--n-r);
+                   cursor: pointer; }
+.n-switch button:hover { border-color: var(--n-fg); }
+.n-switch button[aria-pressed="true"] { background: var(--n-deep); color: #fff;
+                                        border-color: var(--n-deep); font-weight: 600; }
+
+/* The buy rail. Sticky on desktop, because a reader deep in the specifications
+ * should not have to scroll back up to find the price. */
+.n-buy { position: sticky; top: 20px;
+         background: var(--n-panel); border: 1px solid var(--n-line);
+         border-top: 3px solid var(--n-cta); border-radius: var(--n-r-card);
+         padding: 24px; box-shadow: var(--n-shadow); }
+.n-buy__label { font: 700 11px/1 var(--n-sans); letter-spacing: .1em;
+                text-transform: uppercase; color: var(--n-dim); }
+.n-buy h2 { font-size: 22px; margin: 12px 0 0; letter-spacing: -.02em; }
+.n-buy .n-price { margin: 14px 0 6px; }
+.n-buy__split { font-size: var(--n-small); font-weight: 600; }
+.n-buy__clock { font-size: var(--n-fine); color: var(--n-dim); margin-top: 6px; }
+.n-buy__what { font-size: var(--n-small); color: var(--n-dim); line-height: 1.55;
+               margin: 16px 0 20px; }
+.n-buy__note { font-size: var(--n-micro); color: var(--n-dim); margin-top: 10px; }
+.n-buy__rows { margin-top: 18px; display: grid; gap: 10px; }
+
+/* What arrives, and what does not — two lists, because a paragraph hides the
+ * second one and the second one is the honest half. */
+.n-arrives { display: grid; grid-template-columns: 1fr 1fr; gap: var(--n-gap); }
+.n-arrives > div { border: 1px solid var(--n-line); border-radius: var(--n-r-card);
+                   padding: 22px; }
+.n-arrives b { display: block; margin-bottom: 14px; font-size: var(--n-small); }
+.n-arrives li { list-style: none; position: relative; padding-left: 22px;
+                margin-bottom: 10px; font-size: var(--n-small);
+                color: var(--n-dim); line-height: 1.5; }
+.n-arrives li::before { position: absolute; left: 0; top: -1px; font-weight: 700; }
+.n-arrives__in  li::before { content: "✓"; color: var(--n-st-exists); }
+.n-arrives__out li::before { content: "—"; color: var(--n-dim-2); }
+
+/* Specifications. A datasheet, not prose. */
+.n-specs { width: 100%; border-collapse: collapse; font-size: var(--n-small); }
+.n-specs th, .n-specs td { text-align: left; vertical-align: top;
+                           padding: 14px 0; border-bottom: 1px solid var(--n-line); }
+.n-specs th { width: 30%; font-weight: 500; color: var(--n-dim); padding-right: 20px; }
+
+/* Reviews, empty — and it says so rather than being padded. */
+.n-reviews { border: 1px dashed var(--n-line-2); border-radius: var(--n-r-card);
+             padding: 42px 24px; text-align: center; background: var(--n-tint-2); }
+.n-reviews__label { font: 700 11px/1 var(--n-sans); letter-spacing: .1em;
+                    text-transform: uppercase; color: var(--n-dim); }
+.n-reviews h3 { margin: 14px 0 8px; font-weight: 550; }
+.n-reviews p { font-size: var(--n-fine); color: var(--n-dim); }
+
+/* A note that is a ruling, a caveat or an example — three kinds, and they must
+ * not all look the same, because one of them means "this is not what you think". */
+.n-note { border-left: 3px solid var(--n-line-2); padding: 2px 0 2px 16px;
+          font-size: var(--n-small); color: var(--n-dim); line-height: 1.6; }
+.n-note--hold { border-left-color: var(--n-cta); }
+.n-note--example { border-left-color: var(--n-st-projected); }
+.n-note b { color: var(--n-fg); }
+
+/* ============================================================================
+ * 5. UTILITIES — a short list, on purpose
+ * ========================================================================== */
+.n-measure { max-width: var(--n-measure); }
+.n-dim     { color: var(--n-dim); }
+.n-fine    { font-size: var(--n-fine); }
+.n-mt      { margin-top: 20px; }
+.n-mt-lg   { margin-top: 36px; }
+[hidden]   { display: none !important; }
+
+/* ============================================================================
+ * 6. RESPONSIVE — one place, not scattered through the file
+ * ========================================================================== */
+@media (max-width: 1080px) {
+  .n-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .n-grid--5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .n-product { grid-template-columns: 1fr; gap: 32px; }
+  .n-buy { position: static; }
+  .n-nav { gap: 22px; }
+}
+
+@media (max-width: 760px) {
+  :root { --n-pad-x: 5%; --n-pad-y: 44px; --n-price: 34px; }
+
+  .n-header { flex-wrap: wrap; gap: 14px; min-height: 0; }
+  .n-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between;
+           gap: 10px; font-size: var(--n-fine); }
+  /* THE CHROME IS THE FIRST THING A PHONE SHOWS AND IT WAS EATING 335px.
+     Three strips — the design-round bar, the header and the disclosure — each
+     wrapping to three lines put the headline further down than on the store we
+     are replacing. Each one keeps its job and loses its second line: the round
+     bar drops its explanatory clause, the disclosure shows its first sentence
+     with the rest behind the link it already carries, and the nav scrolls on one
+     row rather than wrapping. Nothing is removed; the detail is one tap away. */
+  .n-roundbar { gap: 4px 14px; padding-block: 7px; }
+  .n-roundbar__end { margin-left: auto; }
+  .n-roundbar > span:not(.n-roundbar__end) { display: none; }
+
+  .n-nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+           -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .n-nav::-webkit-scrollbar { display: none; }
+  .n-nav a { white-space: nowrap; }
+
+  .n-disclosure { gap: 4px 12px; padding-block: 6px; font-size: 11px; }
+  .n-disclosure > span:first-child { display: -webkit-box; -webkit-line-clamp: 1;
+                                     -webkit-box-orient: vertical; overflow: hidden; }
+  .n-disclosure > span:last-child { margin-left: auto; opacity: .7; }
+
+  /* The hero stacks and the artwork stops being a half-screen. A founder's
+     first look happens here, so the headline and the action come before it. */
+  .n-hero { display: flex; flex-direction: column; min-height: 0; }
+  .n-hero__copy { padding: 34px var(--n-pad-x) 30px; order: 1; }
+  .n-hero__art { order: 2; }
+  .n-hero__art img { min-height: 0; height: 240px; }
+  .n-hero__actions { gap: 14px; }
+  .n-hero__actions .n-btn { width: 100%; }
+
+  .n-trust { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .n-grid--4, .n-grid--3, .n-grid--2 { grid-template-columns: 1fr; }
+  .n-grid--5 { grid-template-columns: 1fr 1fr; }
+  .n-chips { grid-template-columns: 1fr; }
+  .n-arrives { grid-template-columns: 1fr; }
+  .n-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .n-head__aside { white-space: normal; }
+  .n-offer__sub { min-height: 0; }
+  .n-footer__cols { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .n-footer__cols > div:first-child { grid-column: 1 / -1; }
+  .n-specs th { width: 42%; }
+}
+
+/* ============================================================================
+ * 7. PRINT AND MOTION
+ * ========================================================================== */
+@media print {
+  .n-roundbar, .n-switch, .n-skip, .n-footer__cols { display: none; }
+  .n-header { background: none; color: var(--n-fg); border-bottom: 2px solid var(--n-fg); }
+  .n-mark span { color: var(--n-dim); }
+  .n-hero { display: block; background: none; }
+  .n-buy { position: static; box-shadow: none; }
+  .n-offer, .n-object, .n-buy { break-inside: avoid; }
+  body { background: #fff; }
+  /* the disclosure prints: paper is a surface like any other */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .001ms !important;
+                           transition-duration: .001ms !important; }
+}

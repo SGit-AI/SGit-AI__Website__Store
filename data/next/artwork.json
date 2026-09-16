@@ -1,0 +1,52 @@
+{
+  "_what_this_is": "The v3 product artwork as this site ships it: the mirrored PNGs re-encoded to JPEG at a size a card actually uses. Written by tools/shoot_v3.mjs, never by hand — source_sha256 ties each file back to the PNG that arrived.",
+  "_how_to_refresh": "python3 tools/promote_v3.py && node tools/shoot_v3.mjs",
+  "width": 720,
+  "quality": 0.82,
+  "art": [
+    {
+      "file": "pack.jpg",
+      "label": "ABP Pack",
+      "from": "marketplace.png",
+      "source_sha256": "c25c561c43abd098f6b7d8e8ed7e3d68f0595bf847f26b75101d2a6626668939",
+      "source_bytes": 2072654,
+      "source_size": "1536×1024",
+      "size": "720×480",
+      "bytes": 40251,
+      "quality": 0.82
+    },
+    {
+      "file": "vault.jpg",
+      "label": "ABP Vault",
+      "from": "vault-marketplace.png",
+      "source_sha256": "677509ba1f9ec793a6e95afd2c726736a9b79c37c5b121ea8c2ad057a010f1d7",
+      "source_bytes": 2027739,
+      "source_size": "1536×1024",
+      "size": "720×480",
+      "bytes": 29021,
+      "quality": 0.82
+    },
+    {
+      "file": "tailored.jpg",
+      "label": "ABP Tailored",
+      "from": "toolkit-marketplace.png",
+      "source_sha256": "6a5438806a34c3089149b740587d56d4016d4f7a031a466d5e658cd0f0105e00",
+      "source_bytes": 1869647,
+      "source_size": "1536×1024",
+      "size": "720×480",
+      "bytes": 34011,
+      "quality": 0.82
+    },
+    {
+      "file": "reviewed.jpg",
+      "label": "ABP Reviewed",
+      "from": "reviewed-marketplace.png",
+      "source_sha256": "4a91f746d9bd03d36eae8afb578437b4ce021a6fd9d4d4613f01bc3b882d1e61",
+      "source_bytes": 1892015,
+      "source_size": "1536×1024",
+      "size": "720×480",
+      "bytes": 25936,
+      "quality": 0.82
+    }
+  ]
+}

@@ -1401,9 +1401,16 @@
         {
           "id": "TK-7",
           "title": "A short name and a precise subtitle, in the same card",
-          "status": "next",
-          "owner": "lead",
-          "description": "<b>Needs a ruling.</b> The concepts' names are boardroom-legible and this store's are not: “professional review” against “two sessions and a custom vault”. And the live names are the more honest ones — the first says exactly what arrives and the second could describe a phone call.<br><br><b>The proposal is both, in one card</b>: a short name at heading size, the precise description as the line under it. The ruling is whether the short names are the project lead's to write, because they are the words a buyer repeats to their board."
+          "status": "done",
+          "description": "<b>Ruled on 16 September, by the project lead, out of the v3 design round.</b> Pack, Vault, Tailored, Reviewed — a short name at heading size with the precise line underneath, which is the anatomy the design brief proposed rather than a choice between the two.<br><br>They live in <code>data/offers.yml</code> as <code>short_name</code> and <code>short_sub</code> beside the price, and check_next_is_the_offer_data holds both /next/ pages to them: a name that drifts from that file fails the release, which is the point of a name a buyer repeats to their board.",
+          "shipped": {
+            "version": "v0.3.13",
+            "urls": [
+              "/next/#levels",
+              "/next/product/",
+              "/admin/next/#names"
+            ]
+          }
         },
         {
           "id": "TK-8",
@@ -1425,6 +1432,19 @@
           "status": "queued",
           "owner": "lead",
           "description": "<b>The one thing that would outweigh the whole panel.</b> Five invented readers cannot tell you what a stranger does, and the weakness is not the sample size — it is that the sample and the thing being sampled have the same author. A bigger panel scales the problem rather than the evidence, and is recorded as won't-do on the review so nobody reads the silence as a plan.<br><br><b>One person who has never seen the store</b>, shown the same four folds at the same two sizes and asked the same six questions."
+        },
+        {
+          "id": "TK-11",
+          "title": "Rule on the mission line the v3 design carries",
+          "status": "next",
+          "owner": "lead",
+          "description": "<b>The one section of the chosen design that is not built.</b> The v3 pages carry a mission line under the heading <em>why RiskMandate exists</em> that uses a word this site bars absolutely, on every page, with no allowlist and no carve-out for a quotation — because a positioning phrase is a claim, but a priced checkout is an offer, and every page here carries a price.<br><br><b>Their own notes page records that the project lead asked for that line.</b> So this is a collision between two things somebody is right about, and it is not the builder's to settle. Three ways out: the line stays off store.sgit.ai and lives on riskmandate.ai instead; or it is rewritten to say the same thing in words a priced page may use; or the rule is changed, which is a bigger decision than one section.<br><br>Recorded at <a href=\"/admin/next/#not-built\">/admin/next/</a> rather than silently dropped."
+        },
+        {
+          "id": "TK-12",
+          "title": "Build the rest of the next store, and wire the flow",
+          "status": "queued",
+          "description": "<b>Two pages of the next store exist: the homepage and the product page.</b> The cart, the checkout, the post-purchase page, the policy picker and the comparison are waiting on the next design round, and the buying flow is not wired at all.<br><br>That is the order it was asked for. When the next set of designs lands, the component layer and the data model are already there — assets/next.css and assets/next.js were written for the whole flow rather than for two pages."
         }
       ]
     }

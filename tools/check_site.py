@@ -2837,6 +2837,124 @@ def check_the_brochure_has_not_drifted():
                      "published downloads directory")
 
 
+
+# ------------------------------------ /next/ says what the data says ---------
+# /next/ is a second store front built from the same files as the first one, and
+# that is the whole reason it is allowed to exist: there is no second copy of a
+# price, a name or a delivery estimate to drift. This check holds that, plus the
+# three things that are true of /next/ and of nothing else on the site.
+#
+# THE NAMES AND PRICES ARE THE OFFER FILE'S. A page that says ABP Vault costs £60
+# is worse than a page that says nothing, and the failure mode is silent: nobody
+# reads four cards against a YAML file by eye.
+#
+# NOTHING THERE CAN BE BOUGHT, AND IT SAYS SO. Until a checkout_url exists, every
+# buying action must be a disabled control carrying its reason. A live-looking
+# button that does nothing is the one thing a store must never ship.
+#
+# IT IS MARKED AS A DESIGN ROUND. These pages are reachable, indexable-adjacent
+# and look like a shop. A reader who lands on one from a search result has to be
+# told in the first screen that the shop is elsewhere.
+#
+# AND THE ARTWORK IS THE RE-ENCODE, NOT THE ORIGINAL. The four renders are 7.9MB
+# of PNG upstream and 126KB of JPEG here; a page pointing at the originals would
+# be a twenty-fold regression nobody would notice on a fast connection.
+NEXT_PAGES = ("next/index.html", "next/product/index.html")
+
+
+def check_next_is_the_offer_data():
+    offers = {}
+    src = (ROOT / "data" / "offers.yml").read_text()
+    cur = None
+    for line in src.split("\n"):
+        m = re.match(r"^- id: (\S+)", line)
+        if m:
+            cur = m.group(1); offers[cur] = {}
+            continue
+        if cur is None:
+            continue
+        m = re.match(r"^  ([a-z_]+): (.*)$", line)
+        if m:
+            offers[cur].setdefault(m.group(1), m.group(2).strip().strip('"'))
+
+    missing = [p for p in NEXT_PAGES if not (OUT / p).exists()]
+    if missing:
+        fail(f"/next/: {missing} not in the build")
+        return
+    bodies = {p: (OUT / p).read_text() for p in NEXT_PAGES}
+    text = "\n".join(bodies.values())
+
+    # PER PAGE, NOT OVER THE SET. The first version of this joined both pages and
+    # asserted against the join, so a price edited on the homepage alone passed —
+    # the product page still carried the right one. Both pages render all four
+    # levels, so both have to agree with the file.
+    for tid in ("t1", "t2", "t3", "t4"):
+        o = offers.get(tid, {})
+        for field in ("short_name", "price_label", "next_what"):
+            if not o.get(field):
+                fail(f"data/offers.yml: {tid} has no {field}, which /next/ renders")
+        for p, body in bodies.items():
+            for field in ("short_name", "price_label"):
+                if o.get(field) and o[field] not in body:
+                    fail(f"{p}: does not carry {tid}'s {field} {o[field]!r} from "
+                         "data/offers.yml — the only file a price or a name exists in")
+        if o.get("short_sub") and o["short_sub"] not in text:
+            fail(f"/next/: does not carry {tid}'s short_sub {o['short_sub']!r}")
+
+    # the four names appear as a set, in order, on the levels row
+    home = (OUT / "next" / "index.html").read_text()
+    order = [offers[t].get("short_name", "") for t in ("t1", "t2", "t3", "t4")]
+    at = [home.find("ABP " + n) for n in order]
+    if -1 in at:
+        fail("/next/: the four level names are not all on the homepage")
+    elif at != sorted(at):
+        fail(f"/next/: the levels are out of order on the homepage — {order} render "
+             f"at {at}")
+
+    # nothing is buyable while no checkout link exists, and the page says so
+    live = [t for t in ("t1", "t2", "t3", "t4") if (offers[t].get("checkout_url") or "")]
+    for p in NEXT_PAGES:
+        body = (OUT / p).read_text()
+        said = ("has not been issued yet" in body
+                or "No payment link has been issued" in body)
+        if not live and not said:
+            fail(f"{p}: no level has a checkout link and the page does not say so. "
+                 "A buying action that looks live and does nothing is the one thing "
+                 "a store must never ship")
+        # the homepage's card actions are "explore", which is honest — it carries
+        # the same statement in words. The product page has the buy action, so it
+        # is the one that must render a disabled control.
+        if p.endswith("product/index.html") and not live:
+            if 'aria-disabled="true"' not in body:
+                fail(f"{p}: has no disabled buying action while no checkout link exists")
+
+    # it is marked as a design round rather than as the shop
+    for p in NEXT_PAGES:
+        body = (OUT / p).read_text()
+        if "DESIGN ROUND" not in body:
+            fail(f"{p}: is not marked as a design round. It looks like a shop and is "
+                 "not one")
+        head = body[:body.find("<main")] if "<main" in body else body
+        if "not the live store" not in head:
+            fail(f"{p}: does not say the live store is elsewhere, above the fold")
+
+    # the artwork is the re-encode
+    art = json.loads((ROOT / "data" / "next" / "artwork.json").read_text())
+    for a in art["art"]:
+        f = ROOT / "assets" / "next" / "art" / a["file"]
+        if not f.exists():
+            fail(f"assets/next/art/{a['file']}: recorded in artwork.json and not on disk")
+            continue
+        if f.stat().st_size != a["bytes"]:
+            fail(f"assets/next/art/{a['file']}: is {f.stat().st_size} bytes, the record "
+                 f"says {a['bytes']} — re-run node tools/shoot_v3.mjs")
+        if a["bytes"] >= a["source_bytes"]:
+            fail(f"assets/next/art/{a['file']}: the re-encode is not smaller than the "
+                 f"{a['source_bytes'] // 1024}KB original it came from")
+    if "data/next/mirror" in text:
+        fail("/next/: points at the mirrored originals rather than the re-encoded art")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2878,6 +2996,7 @@ def main():
         check_the_concept_critique_shows_what_it_says,
         check_the_design_brief_points_at_pages_that_exist,
         check_the_brochure_has_not_drifted,
+        check_next_is_the_offer_data,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

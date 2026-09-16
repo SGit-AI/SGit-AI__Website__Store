@@ -1,0 +1,75 @@
+{
+  "_what_this_is": "The v3 design this store's /next/ pages are built from: the chosen direction \"01 / ABP first\", its stylesheets, its data and app layers, and the four product renders. Somebody else's design work, made by a ChatGPT session at the project lead's direction and pinned here so the question \"did we build it faithfully\" has an answer.",
+  "_what_is_not_taken": "The two unchosen directions (vault-first, use-first) and the model's own lab and notes pages. The choice is made; mirroring the alternatives would imply it is not.",
+  "_one_thing_removed": "Each mirrored HTML page had the host CDN's injected bot-check bootstrap removed before hashing \u2014 it carries a fresh nonce on every response and would report drift within seconds of the mirror being taken.",
+  "_one_thing_not_carried_across": "The v3 pages carry a mission line under the heading WHY RISKMANDATE EXISTS that uses a word this store bars absolutely, on every page that carries a price. The mirror keeps their file intact \u2014 it is their page \u2014 and /next/ does not reproduce that section. It is recorded as a ruling for the project lead rather than silently dropped.",
+  "source": "https://abp-marketplace-v3.diniscruz.chatgpt.site",
+  "direction": "01 / ABP first",
+  "made_by": "A ChatGPT session, at the project lead's direction",
+  "retrieved": "2026-09-16",
+  "retrieved_at": "2026-09-16T13:43:39+00:00",
+  "files": [
+    {
+      "path": "index.html",
+      "what": "the chosen direction: 01 / ABP first",
+      "bytes": 13345,
+      "sha256": "4bd678b4ef62606fb144394de9d65c95614a4b427aab07631b955aa9f0ed6d5d",
+      "cdn_script_removed": 1
+    },
+    {
+      "path": "style.css",
+      "what": "the base stylesheet",
+      "bytes": 26364,
+      "sha256": "191df5956c53ab5a051686d10800b462de5adae8e67885d0627d958966e5467e"
+    },
+    {
+      "path": "marketplace.css",
+      "what": "the marketplace layer",
+      "bytes": 6113,
+      "sha256": "98f9a10227445d72da0a53ce2611e76457b58bbbd3f01bd5597d09dbd9f2fccd"
+    },
+    {
+      "path": "data.js",
+      "what": "the four levels and the vault file list, as data",
+      "bytes": 4432,
+      "sha256": "2ef5c502ffc12589040d347a63fe386cf252e26be64d0870d013a1671d029e32"
+    },
+    {
+      "path": "app.js",
+      "what": "level selection, edition switching, file explorer",
+      "bytes": 6097,
+      "sha256": "3918ffd17d8b2582e5f078fafcfee913ce56c7c6af3f46f03d27b95b33440ea9"
+    },
+    {
+      "path": "products.html",
+      "what": "the product page, with the level switcher",
+      "bytes": 10211,
+      "sha256": "36b835144cb8e2bb1dca14c42518ba035a3fcd51a99d24745eec26687248487c",
+      "cdn_script_removed": 1
+    },
+    {
+      "path": "assets/marketplace.png",
+      "what": "ABP Pack artwork",
+      "bytes": 2072654,
+      "sha256": "c25c561c43abd098f6b7d8e8ed7e3d68f0595bf847f26b75101d2a6626668939"
+    },
+    {
+      "path": "assets/vault-marketplace.png",
+      "what": "ABP Vault artwork",
+      "bytes": 2027739,
+      "sha256": "677509ba1f9ec793a6e95afd2c726736a9b79c37c5b121ea8c2ad057a010f1d7"
+    },
+    {
+      "path": "assets/toolkit-marketplace.png",
+      "what": "ABP Tailored artwork",
+      "bytes": 1869647,
+      "sha256": "6a5438806a34c3089149b740587d56d4016d4f7a031a466d5e658cd0f0105e00"
+    },
+    {
+      "path": "assets/reviewed-marketplace.png",
+      "what": "ABP Reviewed artwork",
+      "bytes": 1892015,
+      "sha256": "4a91f746d9bd03d36eae8afb578437b4ce021a6fd9d4d4613f01bc3b882d1e61"
+    }
+  ]
+}

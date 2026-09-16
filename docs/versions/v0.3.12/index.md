@@ -13,7 +13,7 @@ check_the_brochure_has_not_drifted holds four things and notes a fifth: the file
 One unit of that memo is still open and it is not mine: what support means, and who answers the mailbox.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `04bebcf86452eb1359d1b93fbf4a9d916761fc1e`
 - Reconstructed: no
 
 ---
