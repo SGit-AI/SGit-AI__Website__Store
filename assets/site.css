@@ -963,3 +963,16 @@ a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
   background:var(--panel)}
 .broch p{margin:.6rem 0 0}
 @media print{.broch{display:none}}
+
+/* THE ARCHIVE STRIP. /v1/ is the design this store used until v0.3.15, kept so
+   the change is visible rather than asserted. Amber rather than the site's own
+   ink, because the one thing a reader of an archived page must not do is take it
+   for the live one. */
+.v1bar { background: #7a4a06; color: #fff; font: 600 12px/1.5 var(--sans, system-ui);
+         padding: 9px 4%; display: flex; gap: 14px; align-items: baseline;
+         flex-wrap: wrap; }
+.v1bar b { letter-spacing: .1em; }
+.v1bar span { font-weight: 400; opacity: .92; }
+.v1bar__end { margin-left: auto; }
+.v1bar a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 700px) { .v1bar__end { margin-left: 0; width: 100%; } }

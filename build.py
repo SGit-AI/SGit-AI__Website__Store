@@ -73,6 +73,43 @@ VERSION = (ROOT / "admin" / "build" / "version.txt").read_text().strip()
 # everywhere — which is why the ruling is cheap to honour and cheap to reverse.
 DOMAIN = "store.sgit.ai"
 
+# ---------------------------------------------------------------------------
+# THE SWAP. The design built through rounds one to four is the store from
+# v0.3.16, and the design it replaces is kept at /v1/ rather than deleted.
+#
+# WHAT MOVED AND WHAT DID NOT. Nine pages existed in both designs, so the new one
+# takes the address and the old one is archived one directory down. Everything
+# else on the site had no second version to choose between: those pages keep
+# their address and are re-drawn in the new chrome, which is what page_html does
+# now. The console at /admin/ and the release archive at /versions/ are neither —
+# they are a different job for a different reader and this round never touched
+# them.
+#
+# /v1/ IS AN ARCHIVE, NOT A SECOND STORE. Its pages carry a strip saying so, its
+# links to the pages that moved are rewritten to stay inside it, and its links to
+# pages that never moved go where they always went, because those pages still
+# exist and are still correct.
+V1_ROOT = "/v1/"
+V1_UNTIL = "v0.3.15"
+# Where an archived page's reader should go instead. Almost always the address it
+# used to have, because that is where its replacement sits. /order/ is the one
+# that is not: the page a payment returns to is /paid/ now, and /order/ is not a
+# page at all, so deriving the way out from the directory name would have sent
+# the one archived page with a different answer to a 404.
+V1_REPLACED_BY = {"/v1/order/": "/paid/"}
+V1_MOVED = {
+    "/": "/v1/",
+    "/policies/": "/v1/policies/",
+    "/compare/": "/v1/compare/",
+    "/audiences/": "/v1/audiences/",
+    "/ledger/": "/v1/ledger/",
+    "/cart/": "/v1/cart/",
+    "/pay/": "/v1/pay/",
+    "/order/": "/v1/order/",
+    "/who/": "/v1/who/",
+}
+
+
 SITE = {
     "domain": DOMAIN,
     "base": f"https://{DOMAIN}",
@@ -103,7 +140,7 @@ NAV = [
         ("The three steps", "/how-it-works/"),
         ("The two rails", "/paying/"),
         ("What a session is", "/booking/"),
-        ("What happens after you pay", "/order/"),
+        ("What happens after you pay", V1_MOVED["/order/"]),
     ]),
     ("Who it is for", "/are/", [
         ("Who you are", "/are/"),
@@ -3052,7 +3089,7 @@ def shape_pages(out_dir, ctx_shared):
         made[url] = page["fm"]["title"]
 
     # ------------------------------------------------------------ the order
-    url = "/cart/"
+    url = V1_MOVED["/cart/"]
     prefix = rel_prefix(url)
     ctx = dict(ctx_shared)
     ctx.update({"page": "cart", "page_url": url, "fm": {}, "toc": []})
@@ -3091,7 +3128,7 @@ def shape_pages(out_dir, ctx_shared):
                    + "".join(f"- `{l['code']}` \u2014 {l['price_label']} \u2014 {l['name']}\n"
                              for l in LEVELS)),
     }
-    target = out_dir / "cart" / "index.html"
+    target = out_dir / url.strip("/") / "index.html"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(page_html(page, ctx, body))
     twin = page["src_md"] + f"\n---\n\n{LICENCE_STAMP}\n"
@@ -3124,7 +3161,7 @@ def shape_pages(out_dir, ctx_shared):
          "this page.** A key is never published and never committed, and a page is a committed "
          "file, so the page says how the key arrives and never carries it.\n"),
     ):
-        u2 = f"/{slug}/"
+        u2 = V1_MOVED[f"/{slug}/"]
         pre2 = rel_prefix(u2)
         c2 = dict(ctx_shared)
         c2.update({"page": slug, "page_url": u2, "fm": {}, "toc": []})
@@ -3138,7 +3175,7 @@ def shape_pages(out_dir, ctx_shared):
             "url": u2, "crumb": crumb, "nav_match": "/policies/",
             "src_md": tail_md,
         }
-        t2 = out_dir / slug / "index.html"
+        t2 = out_dir / u2.strip("/") / "index.html"
         t2.parent.mkdir(parents=True, exist_ok=True)
         t2.write_text(page_html(pg2, c2, b2))
         (t2.parent / "index.md").write_text(tail_md + f"\n---\n\n{LICENCE_STAMP}\n")
@@ -3427,7 +3464,101 @@ about two per cent.</p></div>
 </footer>"""
 
 
+# The nine pages the new design replaced, kept as they were. Their links to each
+# other are rewritten so the archive does not tip a reader into the live store
+# halfway through; their links to pages that never moved go where they always
+# went, because those pages still exist and are still right.
+_V1_LINK = re.compile(
+    r'href="(' + "|".join(re.escape(u) for u in sorted(V1_MOVED, key=len, reverse=True)) + r')(?=["#?])')
+
+
+def _v1_page_html(page, ctx, body):
+    fm = page["fm"]
+    toc = ""
+    if fm.get("toc") and len(ctx["toc"]) > 2:
+        links = "".join(
+            f'<a class="lv{lv}" href="#{anchor}">{html.escape(text)}</a>'
+            for lv, anchor, text in ctx["toc"] if lv == 2)
+        toc = f'<aside class="toc"><b>On this page</b>{links}</aside>'
+    prefix = rel_prefix(page["url"])
+    # The address this page used to have is the address its replacement has now:
+    # /v1/cart/ came from /cart/, and /cart/ is the new one. Derived rather than
+    # carried, so a generated page and a markdown page answer the same way.
+    now = V1_REPLACED_BY.get(page["url"], "/" + page["url"][len(V1_ROOT):])
+    doc = f"""<!doctype html>
+<html lang="en" data-root="{prefix}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{html.escape(fm['title'])} &mdash; the previous design</title>
+<meta name="description" content="{html.escape(fm.get('description', ''))}">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="{SITE['base']}{now}">
+<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="/assets/site.css">
+{f'<link rel="stylesheet" href="{fm["head_css"]}">' if fm.get('head_css') else ''}
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<script src="/assets/site.js" defer></script>
+<script src="/assets/shop.js" defer></script>
+{f'<script src="{fm["head_js"]}" defer></script>' if fm.get('head_js') else ''}
+{f'<script src="{fm["head_js2"]}" defer></script>' if fm.get('head_js2') else ''}
+</head>
+<body>
+<div class="v1bar">
+  <b>THE PREVIOUS DESIGN</b>
+  <span>How this page looked until {html.escape(V1_UNTIL)}. Kept, not maintained.</span>
+  <span class="v1bar__end"><a href="@@OUT@@">the same page, as the store looks now &#8599;</a></span>
+</div>
+{nav_html(page['nav_match'])}
+<div class="disclosure-strip"><div class="row"><b>{MODEL_GENERATED}</b>
+Nothing on this site is a compliance assessment, and no page claims conformity to any standard.
+<a href="/disclosures/">What we do not say, and why</a> &middot;
+<a href="/ledger/">how every claim here is evidenced</a></div></div>
+<main class="doc{' doc-wide' if fm.get('wide') else ''}">
+<p class="crumb"><a href="{V1_ROOT}">the previous design</a>{page['crumb']}</p>
+<h1>{html.escape(fm['title'])}</h1>
+{f'<p class="lead">{inline(fm["lead"], ctx)}</p>' if fm.get('lead') else ''}
+{toc}
+{body}
+</main>
+{footer_html()}
+</body>
+</html>
+"""
+    # Every link to a page that moved is pulled back inside the archive, before
+    # relativise turns what is left into ../ paths. The strip's own way out is
+    # held as a token until after that, because it is the one link on the page
+    # that is supposed to leave.
+    doc = _V1_LINK.sub(lambda m: 'href="' + V1_MOVED[m.group(1)], doc)
+    doc = doc.replace("@@OUT@@", now)
+    return relativise(doc, prefix)
+
+
 def page_html(page, ctx, body):
+    """Every page that is not built out of the offer data: the markdown pages, the
+    shape pages, the delivery pages, the five audience doors, the landing pages.
+
+    THE CHROME IS THE NEW DESIGN'S AND THE BODY IS STILL THE OLD ONE'S. From
+    v0.3.16 these pages are served in the header, disclosure strip and footer that
+    the rest of the store uses, and they load site.css and then next.css: the
+    chrome and the base type come from the new file, and the block components —
+    the tables, the tiles, the specification rows, the level cards — keep the
+    rules that already draw them. A rule in next.css beats a rule in site.css at
+    equal specificity because it is loaded second, which is the whole trick.
+
+    I ARGUED AGAINST THIS LAYERING WHEN THE NEW PAGES WERE BUILT and the argument
+    still holds where it applied: a NEW page with no old blocks in it should not
+    carry 26KB of a design it is replacing, and those pages still do not. These
+    pages are made almost entirely of those blocks. Porting them is real work with
+    no reader-visible result on the day it lands, so it is on the board rather
+    than in front of the swap. The transitional state is one stylesheet too many,
+    not one design too many.
+
+    /v1/ IS THE EXCEPTION. The previous design is kept at /v1/ as it was, chrome
+    and all, because an archive redrawn in the design that replaced it is not an
+    archive of anything."""
+    if page["url"].startswith(V1_ROOT):
+        return _v1_page_html(page, ctx, body)
     fm = page["fm"]
     desc = fm.get("description", "")
     toc = ""
@@ -3456,6 +3587,7 @@ def page_html(page, ctx, body):
 <link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
 <link rel="stylesheet" href="/assets/site.css">
 {f'<link rel="stylesheet" href="{fm["head_css"]}">' if fm.get('head_css') else ''}
+<link rel="stylesheet" href="/assets/next.css">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <script src="/assets/site.js" defer></script>
 <!-- shop.js is on EVERY page because the nav carries an order badge on every page.
@@ -3467,22 +3599,21 @@ def page_html(page, ctx, body):
 {f'<script src="{fm["head_js2"]}" defer></script>' if fm.get('head_js2') else ''}
 </head>
 <body>
-{nav_html(page['nav_match'])}
-<div class="disclosure-strip"><div class="row"><b>{MODEL_GENERATED}</b>
-Nothing on this site is a compliance assessment, and no page claims conformity to any standard.
-<a href="/disclosures/">What we do not say, and why</a> &middot;
-<a href="/ledger/">how every claim here is evidenced</a></div></div>
-<main class="doc{' doc-wide' if fm.get('wide') else ''}">
+<a class="n-skip" href="#main">Skip to content</a>
+{n_chrome_top(page['url'])}
+<main id="main" class="n-sect">
+<div class="n-doc{' is-wide' if fm.get('wide') else ''}">
 <p class="crumb"><a href="/">store.sgit.ai</a>{page['crumb']}</p>
 <h1>{html.escape(fm['title'])}</h1>
 {f'<p class="lead">{inline(fm["lead"], ctx)}</p>' if fm.get('lead') else ''}
 {toc}
 {body}
-<p class="pagenav"><a href="/policies/">Which agent do you run? &rarr;</a>
+<p class="pagenav"><a href="{NEXT_PICKER}">Which agent do you run? &rarr;</a>
 <a href="/how-it-works/">How buying works &rarr;</a>
-<a href="/ledger/">Every claim, with its state &rarr;</a></p>
+<a href="{NEXT_LEDGER}">Every claim, with its state &rarr;</a></p>
+</div>
 </main>
-{footer_html()}
+{n_footer()}
 </body>
 </html>
 """, prefix)
@@ -3500,7 +3631,12 @@ def read_page(path):
     rel = path.relative_to(CONTENT)
     slug = str(rel.with_suffix("")).replace("index", "").strip("/")
     url = "/" + (slug + "/" if slug else "")
-    return {"path": path, "fm": fm, "body": body.lstrip("\n"), "url": url, "src_md": text}
+    # THE SAME MARKDOWN, ONE DIRECTORY DOWN. A page the new design replaced is
+    # still written, still checked and still linked to — it is the previous
+    # design, kept — and the address it used to have now belongs to the page
+    # that replaced it. See V1_MOVED.
+    return {"path": path, "fm": fm, "body": body.lstrip("\n"),
+            "url": V1_MOVED.get(url, url), "was": url, "src_md": text}
 
 
 # ------------------------------------------------------- the rails, the board ----
@@ -4645,8 +4781,9 @@ def reviewer_pages(out_dir, ctx_shared):
             f' / <a href="{REVIEWER_ROOT}">who runs it</a> / {html.escape(r["name"])}',
             body, "\n".join(md))
 
+    idx_url = V1_MOVED[REVIEWER_ROOT]
     idx_ctx = dict(ctx_shared)
-    idx_ctx.update({"page": "who", "page_url": REVIEWER_ROOT, "fm": {}, "toc": []})
+    idx_ctx.update({"page": "who", "page_url": idx_url, "fm": {}, "toc": []})
     idx_body = (
         '<p class="lead">The two upper levels are somebody\'s work, and until 16 September this '
         'store had never said whose. <b>Asking for £1,500 for a security review from nobody in '
@@ -4671,7 +4808,7 @@ def reviewer_pages(out_dir, ctx_shared):
               "The two upper levels are somebody's work. This is who.\n"]
     idx_md += [f"- **{r['name']}** — {r['one_line']} — "
                f"{SITE['base']}{REVIEWER_ROOT}{r['id']}/" for r in REVIEWERS]
-    made[REVIEWER_ROOT] = _selling_page(out_dir, ctx_shared, REVIEWER_ROOT,
+    made[idx_url] = _selling_page(out_dir, ctx_shared, idx_url,
         {"title": "Who runs the review",
          "description": ("The named security professionals who run the £500 correction and the "
                          "£1,500 sessions. One today, built for a list, and every line of every "
@@ -5595,7 +5732,8 @@ def design_brief_page(out_dir, ctx_shared):
 # the board. Quietly shipping it would break the release; quietly dropping it
 # without saying so would be worse.
 
-NEXT_ROOT = "/next/"
+
+NEXT_ROOT = "/"
 NEXT_ADMIN = "/admin/next/"
 NEXT_SOURCE = json.loads((DATA / "next" / "source.json").read_text())
 NEXT_ART = json.loads((DATA / "next" / "artwork.json").read_text())
@@ -5717,54 +5855,20 @@ _OUT = ('<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="cur
         '<polyline points="7 7 17 7 17 17"></polyline></svg>')
 
 
-def next_html(url, fm, body, model):
-    """The shell for /next/.
-
-    It loads assets/next.css and assets/next.js and NOTHING else — not site.css,
-    not shop.js. The v3 source layers its palette on top of this site's own
-    stylesheet, which is right for a mockup and wrong to ship: it carries a
-    design we are leaving and makes every new rule fight an old one. These pages
-    are self-contained, so what the stylesheet says is what renders.
-    """
-    prefix = rel_prefix(url)
+def n_chrome_top(url):
+    """The header, the nav and the disclosure strip: the same on every page the
+    store serves, whether that page came out of a markdown file or out of the
+    offer data. It was inline in one shell while only one shell used it."""
     def _navlink(text, href):
         cur = ' aria-current="page"' if href == url else ""
         return f'<a href="{href}"{cur}>{html.escape(text)}</a>'
-    order_cur = ' aria-current="page"' if url == NEXT_CART else ""
 
-
-    nav = "".join(_navlink(t, h) for t, h in [
-        ("The four levels", NEXT_ROOT + "#levels"),
+    nav = "".join(_navlink(txt, href) for txt, href in [
+        ("The four levels", NEXT_ROOT + "product/"),
         ("Which agent you run", NEXT_PICKER),
         ("What is inside one", "/what-is-in-one/")])
-    return relativise(f"""<!doctype html>
-<html lang="en" data-root="{prefix}">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{html.escape(fm['title'])} &mdash; the next store</title>
-<meta name="description" content="{html.escape(fm.get('description', ''))}">
-<meta name="robots" content="noindex,follow">
-<link rel="canonical" href="{SITE['base']}{url}">
-<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
-<link rel="stylesheet" href="/assets/next.css">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<script src="/assets/next.js" defer></script>
-</head>
-<body>
-<a class="n-skip" href="#main">Skip to content</a>
-
-<div class="n-roundbar">
-  <b>DESIGN ROUND 3</b>
-  <span>01 / ABP first &mdash; built here, not the live store</span>
-  <span class="n-roundbar__end">
-    <a href="/">the store as it sells today &#8599;</a>
-    <span> &middot; </span>
-    <a href="/admin/next/">what this is &#8599;</a>
-  </span>
-</div>
-
-<header class="n-header">
+    order_cur = ' aria-current="page"' if url == NEXT_CART else ""
+    return f"""<header class="n-header">
   <a class="n-mark" href="{NEXT_ROOT}"><b>sgit</b><span>/ store</span></a>
   <nav class="n-nav" aria-label="Primary">{nav}
     <a href="{NEXT_CART}"{order_cur}>Your order<span data-order-count></span></a>
@@ -5779,12 +5883,56 @@ def next_html(url, fm, body, model):
   <a href="/ledger/">How every claim here is evidenced</a>
   <span>{html.escape(SITE['version'])}</span>
 </div>
+<div class="n-codeslot" data-code-bar></div>"""
 
+
+def next_html(url, fm, body, model):
+    """The shell for the store.
+
+    It loads assets/next.css and assets/next.js and NOTHING else — not site.css,
+    not shop.js. The v3 source layers its palette on top of this site's own
+    stylesheet, which is right for a mockup and wrong to ship: it carries a
+    design we are leaving and makes every new rule fight an old one. These pages
+    are self-contained, so what the stylesheet says is what renders.
+    """
+    prefix = rel_prefix(url)
+    # A page that moved says so in the head as well as in the body, because the
+    # first reader of a moved address is usually not a person.
+    refresh = (f'<meta http-equiv="refresh" content="0; url={fm["moved_to"]}">\n'
+               if fm.get("moved_to") else "")
+
+
+    return relativise(f"""<!doctype html>
+<html lang="en" data-root="{prefix}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{html.escape(fm['title'])} &mdash; {html.escape(SITE['title'])}</title>
+<meta name="description" content="{html.escape(fm.get('description', ''))}">
+<meta name="robots" content="{fm.get('robots') or 'index,follow'}">
+<link rel="canonical" href="{SITE['base']}{fm.get('canonical') or url}">
+{refresh}<link rel="alternate" type="text/markdown" href="index.md" title="This page as markdown">
+<link rel="stylesheet" href="/assets/next.css">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<script src="/assets/next.js" defer></script>
+</head>
+<body>
+<a class="n-skip" href="#main">Skip to content</a>
+
+{n_chrome_top(url)}
 <main id="main">
 {body}
 </main>
 
-<footer class="n-footer">
+{n_footer()}
+<script type="application/json" id="next-model">{json.dumps(model, ensure_ascii=False)}</script>
+</body>
+</html>
+""", prefix)
+
+
+def n_footer():
+    return f"""<footer class="n-footer">
   <div class="n-footer__cols">
     <div>
       <a class="n-mark" href="{NEXT_ROOT}"><b>sgit</b><span>/ store</span></a>
@@ -5807,26 +5955,22 @@ def next_html(url, fm, body, model):
       <a href="/admin/reviews/">Reviews, dated and kept</a>
       <a href="/boundary/">Who owns what</a>
     </div>
-    <div><b>This design</b>
-      <a href="/admin/next/">What /next/ is</a>
-      <a href="/admin/concepts/">How the direction was chosen</a>
+    <div><b>This site</b>
+      <a href="/how-it-works/">How buying works</a>
+      <a href="/what-is-in-one/">What is actually in one</a>
+      <a href="{V1_ROOT}">The previous design</a>
       <a href="/versions/">Release history</a>
+      <a href="/admin/">The console</a>
     </div>
     <p class="n-footer__note">
-      <b>This is a design round, not the shop.</b> The store that sells today is at
-      <a href="/">store.sgit.ai</a>. Artwork on these pages represents digital
-      deliverables and is illustrative. Product names are the ones ruled on
-      16 September. Prices are in GBP and are read from the same file the live store
-      is built from. Nothing sold here is a compliance assessment or a mark of
-      conformity, and outputs are model generated and marked as such.
+      Artwork on these pages represents digital deliverables and is illustrative.
+      Prices are in GBP and every one of them is read from a single file. Nothing
+      sold here is a compliance assessment or a mark of conformity, and outputs are
+      model generated and marked as such. The design this store used until
+      v0.3.15 is kept at <a href="{V1_ROOT}">the previous design</a>.
     </p>
   </div>
-</footer>
-
-<script type="application/json" id="next-model">{json.dumps(model, ensure_ascii=False)}</script>
-</body>
-</html>
-""", prefix)
+</footer>"""
 
 
 def _next_emit(out_dir, url, fm, body, model, md):
@@ -5839,6 +5983,17 @@ def _next_emit(out_dir, url, fm, body, model, md):
 
 def _next_home(out_dir, ctx_shared, levels, auds, model):
     lead = next(l for l in levels if l["id"] == NEXT_LEAD)
+
+    works = EVIDENCE["works"]
+    works_html = ""
+    for w in works:
+        ctx_shared["external_links"].add(w["url"])
+        works_html += (
+            f'<a class="n-work" href="{w["url"]}" rel="nofollow">'
+            f'<b>{html.escape(w["title"])}</b>'
+            f'<span class="n-work__why">{html.escape(w["why"])}</span>'
+            f'<span class="n-work__meta">{html.escape(w["size"])} '
+            f'&middot; published {html.escape(w["published"])} {_OUT}</span></a>')
 
     # ---- the four facts under the hero. Every one is a LINK to the claim that
     # evidences it: the concept version had four ticks and no links, and the one
@@ -5975,11 +6130,31 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
         'describes and it does not judge, so it carries no score.</p></div>'
         f'<p class="n-head__aside"><a href="/what-is-in-one/">Look inside one {_OUT}</a></p>'
         '</div>'
-        f'<div class="n-grid n-grid--4">{objects}</div></section>')
+        f'<div class="n-grid n-grid--4">{objects}</div></section>'
+
+        # ---- THE EVIDENCE BAND. Six vaults of exactly this work, published and
+        # open to read without paying anything. The design round dropped this and
+        # a build check caught it on the day the round became the store: evidence
+        # nobody is shown is evidence nobody has, and the panel of readers said
+        # the same thing in their own words about the concepts that dropped it.
+        '<section class="n-sect n-sect--deep" id="evidence">'
+        '<div class="n-head"><div class="n-head__text">'
+        '<p class="n-eyebrow">What has been built</p>'
+        f'<h2>{len(works)} vaults of this work, open to read now.</h2>'
+        '<p>Not screenshots and not a deck. Published vaults of the same kind of '
+        'document this store sells, each with its own read key on its own page, '
+        f'and {html.escape(str(EVIDENCE["total_published"]))} published in total. '
+        'The method here is a <b>licence to operate</b> for one agent in one '
+        'deployment: what it can do, what you authorised, and the gap.</p>'
+        f'<p class="n-mt">{_next_claim_chip("the-work-has-been-done", ctx_shared, NEXT_ROOT)}'
+        '</p></div>'
+        f'<p class="n-head__aside"><a href="{EVIDENCE["source"]}" rel="nofollow">'
+        f'The whole catalogue {_OUT}</a></p>'
+        '</div>'
+        f'<div class="n-works">{works_html}</div></section>')
 
     md = [
-        "# The next store — 01 / ABP first\n",
-        f"*A design round, not the shop. The store that sells today is at {SITE['base']}/*\n",
+        "# Agent Behaviour Policies for the agents you already run\n",
         "Agent Behaviour Policies: what your agent can do, what you authorised, and the gap "
         "between them — for one agent, in one deployment.\n",
         "\n## The four levels\n",
@@ -6202,15 +6377,55 @@ def _next_admin(out_dir, ctx_shared, levels):
         for l in levels)
 
     body = (
-        '<p class="lead">/next/ is the v3 design direction <b>01 / ABP first</b>, built '
-        'here. It runs beside the store that sells today rather than replacing it: the '
-        'current store keeps working while this one is finished, and they swap over when '
-        'the buying flow is wired end to end.</p>'
+        '<p class="lead">The design direction <b>01 / ABP first</b>, built here across '
+        'three rounds at <code>/next/</code> and, from v0.3.16, the store. The design it '
+        f'replaced is kept at <a href="{V1_ROOT}">the previous design</a> — nine pages, '
+        'noindex, each saying above the fold that it is not the live one.</p>'
 
-        '<div class="cx-verdict"><b>Nothing on /next/ can be bought.</b>'
+        '<div class="cx-verdict"><b>Nothing here can be bought yet.</b>'
         '<p>No payment link has been issued on any level, so every buying action renders as '
-        'a disabled control carrying its own reason. That is the same state the live store '
-        'is in; it is not a property of the new design.</p></div>'
+        'a disabled control carrying its own reason. That was true of the design this '
+        'replaced too; it is a property of the till, not of the design.</p></div>'
+
+        '<h2 id="swap">What moved, and what did not</h2>'
+        '<p><b>Nine pages existed in both designs</b>, so the new one took the address and '
+        'the old one was archived one directory down: the front page, the picker, the '
+        'comparison, the audiences, the ledger, the order, the checkout, the page after '
+        'paying and the reviewer register. Their links to each other are rewritten to stay '
+        'inside the archive; their links to pages that never moved go where they always '
+        'went, because those pages still exist and are still right.</p>'
+        '<p><b>Every other page kept its address and was re-drawn in this chrome.</b> There '
+        'was no second version of them to choose between. They load <code>site.css</code> '
+        'and then <code>next.css</code>: the chrome and the base type come from the new '
+        'file, and the block components — the tables, the tiles, the specification rows '
+        '— keep the rules that already draw them. Fourteen rules in the old stylesheet '
+        'were scoped to the old chrome’s own element and are replaced by the reading '
+        'column in the new one; the other four hundred and sixty-seven are not scoped to '
+        'anything and were untouched.</p>'
+        '<p class="small dim"><b>That layering is a transitional state and is on the '
+        'board.</b> The argument against it still holds where it applied — a new page '
+        'with no old blocks in it should not carry 26KB of a design it is replacing, and '
+        'those pages still do not. These pages are made almost entirely of those blocks, '
+        'and porting them is real work with no reader-visible result on the day it lands.</p>'
+        '<p><b>The console and the release archive were not part of the round.</b> '
+        '<a href="/admin/">/admin/</a> has its own interface for a different reader and '
+        '<a href="/versions/">/versions/</a> is a record rather than a shop.</p>'
+        '<p><b>Every address the round used still resolves.</b> The ten <code>/next/</code> '
+        'pages are still there, each one saying where its page went, carrying the canonical '
+        'link to it and refreshing there.</p>'
+
+        '<h2 id="codes">The printed cards still work</h2>'
+        '<p>A code is never typed — there is no field on this domain — so it '
+        'arrives in the address off a printed card or a QR, and the cards in circulation '
+        'point at the front page. That page is the new design now and the old engine is not '
+        'on it, so the capture, the expiry and the per-level arithmetic were ported into '
+        '<code>assets/next.js</code>, which shares the storage key and the record shape with '
+        '<code>assets/shop.js</code>. Both hash a code with the same sha256 and a build '
+        'check holds the two copies identical: a card that works on half a site is worse '
+        'than one that works on none of it. A code landing on a page drawn by the old engine '
+        'is handed to the order page rather than dropped, and every page carries somewhere '
+        'to say a code was applied or refused — a code that changes nothing and says '
+        'nothing reads exactly like a code that worked.</p>'
 
         '<h2 id="not-built">One section of the design is not built</h2>'
         '<p>The v3 pages carry a mission line under the heading <em>why RiskMandate '
@@ -6365,7 +6580,7 @@ def _next_admin(out_dir, ctx_shared, levels):
         '<p>The two add-ons attach to a level and have no page in this design. The '
         'admin console is untouched by the round: it is a different job for a different '
         'reader and its design is not this one’s to spend on.</p>'
-        f'<p><b><a href="{NEXT_ROOT}">Open the next store &rarr;</a></b> &middot; '
+        f'<p><b><a href="{NEXT_ROOT}">Open the store &rarr;</a></b> &middot; '
         f'<a href="{NEXT_PICKER}">the picker</a> &middot; '
         f'<a href="{NEXT_ROOT}product/">the product page</a> &middot; '
         f'<a href="{NEXT_COMPARE}">the comparison</a> &middot; '
@@ -6411,13 +6626,13 @@ def _next_admin(out_dir, ctx_shared, levels):
 
     return {NEXT_ADMIN: _console_page(
         out_dir, ctx_shared, NEXT_ADMIN,
-        {"title": "The next store",
+        {"title": "The design, and the swap",
          "description": ("What /next/ is: the v3 design direction 01 / ABP first built "
                          "here, what it was built from and hashed against, the product "
                          "names ruled on 16 September, and the one section of the design "
                          "that is not built and why."),
-         "blurb": ("<b>The v3 direction, built here.</b> Beside the store that sells today, "
-                   "not instead of it — and nothing on it can be bought.")},
+         "blurb": ("<b>The design this store now uses, and how it got here.</b> Four rounds, "
+                   "what was taken from each, and what the swap moved.")},
         ' / <a href="/admin/">admin</a> / next', body, "\n".join(md))}
 
 
@@ -6934,6 +7149,13 @@ def _next_paid(out_dir, ctx_shared, levels, model):
         f'<div class="n-switch">{switch}</div>'
         f'<div class="n-mt">{panels}</div>'
 
+        '<p class="n-note n-mt-lg"><b>A vault key is never on this page.</b> A key is never '
+        'published and never committed, and every page here is a committed file, so the page '
+        'says how a key reaches you and never carries one. <b>Done is a commit</b> at every '
+        'level that ships a vault: the licence file with your name on it, the corrected '
+        'mandate, the recomputed delta and the sign-off are things in your own history that '
+        'you can go and look at.</p>'
+
         '<p class="n-note n-note--hold n-mt-lg"><b>The reference has never been through a '
         'real sale.</b> It is generated in the browser, it is the same shape the store '
         'that sells today generates, and no order carrying one has been placed &mdash; so '
@@ -7026,7 +7248,7 @@ def _next_compare(out_dir, ctx_shared, levels, model):
         raise SystemExit("next: no brochure in data/downloads.json \u2014 "
                          "run node tools/make_pdfs.mjs")
     stale = dl["version"] != SITE["version"]
-    paper = ('<p class="n-note n-mt-lg"><b>The same table on paper.</b> '
+    paper = ('<p class="n-note n-mt-lg" id="the-brochure"><b>The same table on paper.</b> '
              f'<a href="/assets/downloads/{dl["file"]}" download>'
              f'{html.escape(dl["title"])} \u2014 PDF</a>. '
              f'{dl["columns"] - 1} columns, {dl["rows"]} rows, {dl["bytes"] // 1024}KB, '
@@ -7366,6 +7588,60 @@ def _next_who(out_dir, ctx_shared, levels, model):
     }, body, model, "\n".join(md))
 
 
+# ---------------------------------------------------------------------------
+# WHERE /next/ WENT. The design was built at /next/ across three rounds and those
+# addresses were shared — with the design team, in the write-up, and on the board.
+# They are not deleted: each one is a page that says where its page went, carries
+# the canonical link to it, and refreshes there for anybody who did not want to
+# read a sentence about a URL.
+NEXT_WAS = {
+    "/next/": NEXT_ROOT,
+    "/next/product/": NEXT_ROOT + "product/",
+    "/next/policies/": NEXT_PICKER,
+    "/next/cart/": NEXT_CART,
+    "/next/pay/": NEXT_PAY,
+    "/next/paid/": NEXT_PAID,
+    "/next/compare/": NEXT_COMPARE,
+    "/next/audiences/": NEXT_AUDIENCE,
+    "/next/ledger/": NEXT_LEDGER,
+    "/next/who/": NEXT_WHO,
+}
+
+
+def _next_moved(out_dir, ctx_shared, model):
+    """One page per address the design round used, pointing at what it became."""
+    made = {}
+    for was, now in NEXT_WAS.items():
+        title = NEXT_TITLES.get(now, "the store")
+        body = (
+            '<section class="n-sect">'
+            '<div class="n-narrow">'
+            '<p class="n-eyebrow">This page moved</p>'
+            f'<h1>{html.escape(title)}</h1>'
+            f'<p class="n-lede n-mt">The design that was built here across three rounds is '
+            f'the store now, so this page lives at <a href="{now}"><code>{html.escape(now)}'
+            f'</code></a>. You should be there already; if not, that link is it.</p>'
+            f'<p class="n-mt"><a class="n-btn" href="{now}">Go there {_ARROW}</a></p>'
+            '<p class="n-fine n-dim n-mt-lg">The design this replaced is kept at '
+            f'<a href="{V1_ROOT}">the previous store</a>, and how the direction was chosen '
+            f'and built is at <a href="{NEXT_ADMIN}">what this design is</a>.</p>'
+            '</div></section>')
+        md = (f"# This page moved\n\n`{was}` is now `{now}`. The design built at /next/ "
+              f"across three rounds is the store; the design it replaced is kept at "
+              f"`{V1_ROOT}`.\n")
+        made[was] = _next_emit(out_dir, was, {
+            "title": f"{title} \u2014 moved",
+            "description": f"This page is now at {now}.",
+            "robots": "noindex,follow",
+            "canonical": now,
+            "moved_to": now,
+        }, body, model, md)
+    return made
+
+
+NEXT_TITLES = {}
+
+
 def next_pages(out_dir, ctx_shared, built=None):
     levels = _next_offers()
     auds = _next_audiences()
@@ -7374,6 +7650,15 @@ def next_pages(out_dir, ctx_shared, built=None):
              "order": _next_order_model(),
              "picker_url": NEXT_PICKER, "checkout_url": NEXT_PAY,
              "ledger_url": NEXT_LEDGER,
+             # The CODE is not here and is not anywhere in docs/. What ships is
+             # sha256 of it, keyed on the record's stable id; data/discounts.yml
+             # says at length why, and a check greps the whole built tree for
+             # every code so that stays a fact.
+             "codes": [{"id": d["id"], "hash": d["hash"], "pct": int(d["pct"]),
+                        "label": d["label"], "levels": d.get("levels", "all"),
+                        "until": str(d["until"])}
+                       for d in DISCOUNTS],
+             "code_storage": "sgit.store.code.v1",
              "default_level": NEXT_LEAD, "default_audience": auds[0]["id"]}
     pages = {}
     pages[NEXT_ROOT] = _next_home(out_dir, ctx_shared, levels, auds, model)
@@ -7390,6 +7675,8 @@ def next_pages(out_dir, ctx_shared, built=None):
     pages[NEXT_LEDGER] = _next_ledger(out_dir, ctx_shared, model,
                                       dict(built or {}, **pages))
     pages.update(_next_admin(out_dir, ctx_shared, levels))
+    NEXT_TITLES.update(pages)
+    pages.update(_next_moved(out_dir, ctx_shared, model))
     return pages
 
 
@@ -7525,8 +7812,17 @@ def build(out_dir):
     # A page that is noindex is out of the sitemap, whatever its address. This used
     # to be a path prefix, which was right while /admin/ was the only unadvertised
     # thing and wrong the moment a redirect stub outside it needed the same treatment.
-    noindexed = {u for u, (pg, _c, _b) in rendered.items()
-                 if "noindex" in (pg["fm"].get("robots") or "")}
+    # READ OFF THE BUILT FILE, NOT OFF THE FRONT-MATTER. The front-matter answer
+    # is only available for the markdown pages, so a generated page could be
+    # noindex and still be advertised — which is exactly what happened when the
+    # archive and the ten moved-page stubs arrived: nineteen noindex pages in the
+    # sitemap, every one of them telling a crawler not to index the page the
+    # sitemap had just asked it to come and look at. The file on disk knows.
+    noindexed = set()
+    for u in sorted(set(rendered) | set(extra)):
+        f = out_dir / u.strip("/") / "index.html"
+        if f.exists() and 'content="noindex' in f.read_text()[:2000]:
+            noindexed.add(u)
     noindexed |= {u for u in extra if u.startswith("/admin/")}
     urls = "".join(f"<url><loc>{SITE['base']}{u}</loc></url>"
                    for u in sorted(set(rendered) | set(extra)) if u not in noindexed)

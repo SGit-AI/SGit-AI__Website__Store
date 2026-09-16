@@ -1,24 +1,8 @@
 {
- "version": "v0.3.15",
+ "version": "v0.3.16",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
-  {
-   "url": "/",
-   "title": "Every agent needs a licence to operate",
-   "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack at \u00a310, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
-   "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy puts both on one page for one agent in one deployment: what it can do, what you authorised, and the gap between them. Fifteen applications, four levels, \u00a310 to \u00a31,500.",
-   "headings": [
-    "Who are you?",
-    "The four things for sale",
-    "Which agent do you run?",
-    "Six of these, open right now",
-    "What the templates cost, and what they do not",
-    "Paying, in three lines",
-    "What this site will not tell you"
-   ],
-   "kind": "page"
-  },
   {
    "url": "/admin/",
    "title": "The console",
@@ -61,21 +45,6 @@
    "kind": "page"
   },
   {
-   "url": "/audiences/",
-   "title": "The three buyers, and what each one buys",
-   "description": "Three buyers, ordered by opportunity rather than presented as three equal doors: a team running agents they already granted credentials to, an investor backing a company, and a startup about to meet diligence. Which of the six offers each one is shown, which were actually built for them, and \u2014 for one of the three \u2014 that none were.",
-   "lead": "Order matters here, and the page reflects it. Three buyers, and they are not equally served by what is on this site. One has a market above it and nothing underneath. One has nothing at any price. One has two funded incumbents and a free tier already sitting under it, and is here only as a reverse sale. The grouping below adds no offer and no price: it is a second index over the same six, and the third group has nothing built pointing at it at all.",
-   "headings": [
-    "The routing, in one table",
-    "1. You run agents today",
-    "2. You are backing a company, and want somebody to look",
-    "3. You are a startup, and only as the reverse sale",
-    "Why the groups are a view and not a range",
-    "What none of the three is buying"
-   ],
-   "kind": "page"
-  },
-  {
    "url": "/booking/",
    "title": "Booking a person",
    "description": "Two of the four tiers are a booking rather than a download: a person reviewing your situation, and an assessment by a team. What a booking commits, what it does not, and why a signature is a separate thing you cannot buy yet.",
@@ -112,16 +81,6 @@
     "The eight",
     "And two surfaces, neither of which is this site",
     "Why this page exists at all"
-   ],
-   "kind": "page"
-  },
-  {
-   "url": "/compare/",
-   "title": "What each level actually gets you",
-   "description": "Every level side by side, including the free one: what you get, whose work it is, what you may do with it, and when it arrives. Fourteen rows, five columns, and every cell read off the offer data rather than written as copy.",
-   "lead": "Start with the free column. The templates are published with read keys and anybody can take one \u2014 so what each paid step adds is only legible next to a column that does not have it. The licence row on its own explains the first step.",
-   "headings": [
-    "How to read it"
    ],
    "kind": "page"
   },
@@ -183,18 +142,6 @@
    "kind": "page"
   },
   {
-   "url": "/ledger/",
-   "title": "Every claim on this site, with its state",
-   "description": "One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first.",
-   "lead": "Every factual claim this site makes lives here once, with the state it earned and the date it earned it. Pages cite a claim rather than restating it, so the same fact cannot be strong on one page and hedged on another. The rightmost column is joined at build time: it shows where each claim is actually said, and it is not editable by hand.",
-   "headings": [
-    "The ledger",
-    "What the states mean",
-    "Why a store publishes one of these"
-   ],
-   "kind": "page"
-  },
-  {
    "url": "/offers/",
    "title": "All six, side by side",
    "description": "The four tiers and the two add-ons in one table: the question each answers, its price, what is true of the thing behind it today, how it is paid, and the stable offer identifier a printed code redirects to.",
@@ -232,7 +179,70 @@
    "kind": "page"
   },
   {
-   "url": "/policies/",
+   "url": "/review/",
+   "title": "The review moved",
+   "description": "The partner review that was published here in v0.1.15 now lives in the review register at /admin/reviews/, with every other review, dated and sorted.",
+   "lead": "",
+   "headings": [
+    "It is at /admin/reviews/ now"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/v1/",
+   "title": "Every agent needs a licence to operate",
+   "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack at \u00a310, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
+   "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy puts both on one page for one agent in one deployment: what it can do, what you authorised, and the gap between them. Fifteen applications, four levels, \u00a310 to \u00a31,500.",
+   "headings": [
+    "Who are you?",
+    "The four things for sale",
+    "Which agent do you run?",
+    "Six of these, open right now",
+    "What the templates cost, and what they do not",
+    "Paying, in three lines",
+    "What this site will not tell you"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/v1/audiences/",
+   "title": "The three buyers, and what each one buys",
+   "description": "Three buyers, ordered by opportunity rather than presented as three equal doors: a team running agents they already granted credentials to, an investor backing a company, and a startup about to meet diligence. Which of the six offers each one is shown, which were actually built for them, and \u2014 for one of the three \u2014 that none were.",
+   "lead": "Order matters here, and the page reflects it. Three buyers, and they are not equally served by what is on this site. One has a market above it and nothing underneath. One has nothing at any price. One has two funded incumbents and a free tier already sitting under it, and is here only as a reverse sale. The grouping below adds no offer and no price: it is a second index over the same six, and the third group has nothing built pointing at it at all.",
+   "headings": [
+    "The routing, in one table",
+    "1. You run agents today",
+    "2. You are backing a company, and want somebody to look",
+    "3. You are a startup, and only as the reverse sale",
+    "Why the groups are a view and not a range",
+    "What none of the three is buying"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/v1/compare/",
+   "title": "What each level actually gets you",
+   "description": "Every level side by side, including the free one: what you get, whose work it is, what you may do with it, and when it arrives. Fourteen rows, five columns, and every cell read off the offer data rather than written as copy.",
+   "lead": "Start with the free column. The templates are published with read keys and anybody can take one \u2014 so what each paid step adds is only legible next to a column that does not have it. The licence row on its own explains the first step.",
+   "headings": [
+    "How to read it"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/v1/ledger/",
+   "title": "Every claim on this site, with its state",
+   "description": "One row per factual claim: what it says, the state it earned, how we know, and every page that says it. A claim cannot appear on a page here without appearing in this table first.",
+   "lead": "Every factual claim this site makes lives here once, with the state it earned and the date it earned it. Pages cite a claim rather than restating it, so the same fact cannot be strong on one page and hedged on another. The rightmost column is joined at build time: it shows where each claim is actually said, and it is not editable by hand.",
+   "headings": [
+    "The ledger",
+    "What the states mean",
+    "Why a store publishes one of these"
+   ],
+   "kind": "page"
+  },
+  {
+   "url": "/v1/policies/",
    "title": "Which agent do you run?",
    "description": "Fifteen Agent Behaviour Policies, one per application, at four levels: the pack downloaded at \u00a35, a working vault you hold the keys to at \u00a350, corrected against your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
    "lead": "Pick the application closest to yours. Each one is an Agent Behaviour Policy: everything that agent can do, what you authorised it to do, the gap between them, and what actually stands in the way. The templates are free and public on riskmandate.ai, with published read keys \u2014 go and read one. What is priced here is that template with the mandate corrected, a name on the licence and no public key, and at the upper two levels the correction done with you rather than by you.",
@@ -241,16 +251,6 @@
     "The four levels",
     "What the counts on a tile mean",
     "Where the list comes from"
-   ],
-   "kind": "page"
-  },
-  {
-   "url": "/review/",
-   "title": "The review moved",
-   "description": "The partner review that was published here in v0.1.15 now lives in the review register at /admin/reviews/, with every other review, dated and sorted.",
-   "lead": "",
-   "headings": [
-    "It is at /admin/reviews/ now"
    ],
    "kind": "page"
   },

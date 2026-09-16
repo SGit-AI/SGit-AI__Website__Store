@@ -1,55 +1,37 @@
----
-title: Which agent do you run?
-description: "Fifteen Agent Behaviour Policies, one per application, at four levels: the pack downloaded at £5, a working vault you hold the keys to at £50, corrected against your situation at £500, and two sessions with a security professional signing it at £1,500."
-lead: "**Pick the application closest to yours.** Each one is an Agent Behaviour Policy: everything that agent can do, what you authorised it to do, the gap between them, and what actually stands in the way. **The templates are free and public** on riskmandate.ai, with published read keys — go and read one. **What is priced here is that template with the mandate corrected, a name on the licence and no public key**, and at the upper two levels the correction done with you rather than by you."
-order: 2
-toc: true
-wide: true
-head_css: /assets/shop.css
----
+# Which agent do you run?
 
-## The catalogue
+15 published policy shapes, promoted from https://riskmandate.ai/abp-vaults.html on 2026-09-15.
 
-{{catalogue}}
+| Shape | Kind | Evidence | Can do | Wanted | Not asked | Unbounded | Open |
+|---|---|---|---|---|---|---|---|
+| Claude Code on the web | Coding agents | measured | 15 | 6 | 9 | 7 | 0 |
+| Claude Code on your machine | Coding agents | read, not run | 16 | 5 | 12 | 12 | 0 |
+| Claude Code, confirmations off | Coding agents | read, not run | 16 | 5 | 12 | 12 | 0 |
+| Claude Desktop | Desktop apps | read, not run | 10 | 3 | 8 | 8 | 0 |
+| Claude in the browser, connectors on | Chat assistants | read, not run | 5 | 3 | 2 | 0 | 0 |
+| ChatGPT in the browser | Chat assistants | read, not run | 1 | 1 | 0 | 0 | 0 |
+| A browser extension | Browser extensions | read, not run | 3 | 1 | 2 | 2 | 0 |
+| GitHub Actions | Pipelines and runners | measured | 8 | 5 | 4 | 3 | 0 |
+| A scheduled job | Services and scheduled jobs | read, not run | 7 | 4 | 4 | 4 | 0 |
+| Google Workspace MCP servers | Google Workspace | read, not run | 6 | 2 | 4 | 1 | 4 |
+| Gmail, read-only scope | Mail | read, not run | 4 | 1 | 3 | 2 | 3 |
+| Google Drive, read-only scope | File stores | read, not run | 3 | 1 | 2 | 1 | 3 |
+| Microsoft 365 connector (Claude) | Microsoft 365 | read, not run | 5 | 2 | 3 | 1 | 4 |
+| Dropbox MCP server | File stores | read, not run | 5 | 1 | 4 | 0 | 4 |
+| n8n, owner API key | Services and scheduled jobs | measured | 8 | 4 | 4 | 4 | 4 |
 
-## The four levels
+## What this page cannot filter on
 
-Every level is the same document. **What changes is the form it arrives in and who
-does the correcting.**
+The capability vocabulary has 23 named behaviours and every shape above carries a count of how many it was granted, but the join between the two — which behaviours are in a particular grant — is not published. The behaviour filter says so and narrows nothing rather than returning a confident wrong answer.
 
-{{levels-table}}
+## What it costs
 
-**Something not on the list?** An agent, a connector or a deployment nobody has
-profiled yet starts at the third level, not below it — the first two deliver an
-existing template and for yours there is not one. The grant gets measured, or read
-from the vendor's own pages and dated, before anything is built.
-[That one is here](/p/your-own/).
-
-## What the counts on a tile mean
-
-Four numbers, and **not one of them is a score.**
-
-- **It can do** — every capability the credential behind that deployment actually permits. Almost never enumerated anywhere, and reliably larger than whoever deployed it expected.
-- **You wanted** — what it is authorised and expected to do. Usually clear, whether or not anybody wrote it down.
-- **Not wanted** — the gap. Permitted, and nobody asked for it.
-- **Nothing in the way** — how many of those sit behind something that is not a control. **This is the only number a control moves**, and the gap between the last two columns is the business case for putting one in.
-
-**There is no rating here and there will not be one.** The same policy is dangerous
-in one deployment and harmless in another, and nothing about the document changed:
-risk depends on the assets, the consequences and the date. A policy cannot be
-dangerous; a deployment can.
-
-## Where the list comes from
-
-**riskmandate.ai publishes these shapes and this store promotes them.** The
-catalogue on this page carries the source URL, the time it was retrieved and a
-hash of the page it was read from, because **no page on this site that sells
-anything opens a network connection** — that is a build check rather than an intention, so the list is taken
-at build time rather than fetched while you read.
-
-A shape added upstream is on this page at the next build. One that arrives without
-a code here **stops the build** rather than rendering a tile whose buttons produce
-a product code nobody can fill.
+| Level | Price | Deposit | Arrives |
+|---|---|---|---|
+| ABP Pack | £10 | — | Immediately from your payment |
+| ABP Vault | £50 | — | 1 to 2 days from your payment |
+| ABP Tailored | £500 | £100 now · £400 on delivery | 1 to 3 days from your reply |
+| ABP Reviewed | £1,500 | £300 now · £1,200 on delivery | 1 to 5 days from your reply |
 
 ---
 

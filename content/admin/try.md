@@ -129,7 +129,7 @@ Press **Place the order**.
 
 ### 6. Read what happens now
 
-You land on **[what happens now](/order/)** — a different page from the one you
+You land on **[what happens now](/paid/)** — a different page from the one you
 read before buying, which is the point of it.
 
 <figure class="walkshot"><img src="/assets/shots/05-order.png" alt="The post-sale page showing the order reference, nothing to pay, and a card per line saying what arrives and when."><figcaption><b>What to check.</b> The same reference you saw in the cart. One card per line. Five rows each: what arrives and when, what you do next, how the key reaches you, what done means, and how you check it. <b>No key is ever on this page</b>, and a build check refuses the release if anything key-shaped lands here.</figcaption></figure>

@@ -1402,12 +1402,12 @@
      "id": "TK-7",
      "title": "A short name and a precise subtitle, in the same card",
      "status": "done",
-     "description": "<b>Ruled on 16 September, by the project lead, out of the v3 design round.</b> Pack, Vault, Tailored, Reviewed — a short name at heading size with the precise line underneath, which is the anatomy the design brief proposed rather than a choice between the two.<br><br>They live in <code>data/offers.yml</code> as <code>short_name</code> and <code>short_sub</code> beside the price, and check_next_is_the_offer_data holds both /next/ pages to them: a name that drifts from that file fails the release, which is the point of a name a buyer repeats to their board.",
+     "description": "<b>Ruled on 16 September, by the project lead, out of the v3 design round.</b> Pack, Vault, Tailored, Reviewed — a short name at heading size with the precise line underneath, which is the anatomy the design brief proposed rather than a choice between the two.<br><br>They live in <code>data/offers.yml</code> as <code>short_name</code> and <code>short_sub</code> beside the price, and check_next_is_the_offer_data holds both / pages to them: a name that drifts from that file fails the release, which is the point of a name a buyer repeats to their board.",
      "shipped": {
       "version": "v0.3.13",
       "urls": [
-       "/next/#levels",
-       "/next/product/",
+       "/product/",
+       "/product/",
        "/admin/next/#names"
       ]
      }
@@ -1438,24 +1438,24 @@
      "title": "Rule on the mission line the v3 design carries",
      "status": "next",
      "owner": "lead",
-     "description": "<b>The one section of the chosen design that is not built.</b> The v3 pages carry a mission line under the heading <em>why RiskMandate exists</em> that uses a word this site bars absolutely, on every page, with no allowlist and no carve-out for a quotation — because a positioning phrase is a claim, but a priced checkout is an offer, and every page here carries a price.<br><br><b>Their own notes page records that the project lead asked for that line.</b> So this is a collision between two things somebody is right about, and it is not the builder's to settle. Three ways out: the line stays off store.sgit.ai and lives on riskmandate.ai instead; or it is rewritten to say the same thing in words a priced page may use; or the rule is changed, which is a bigger decision than one section.<br><br>Recorded at <a href=\"/admin/next/#not-built\">/admin/next/</a> rather than silently dropped."
+     "description": "<b>The one section of the chosen design that is not built.</b> The v3 pages carry a mission line under the heading <em>why RiskMandate exists</em> that uses a word this site bars absolutely, on every page, with no allowlist and no carve-out for a quotation — because a positioning phrase is a claim, but a priced checkout is an offer, and every page here carries a price.<br><br><b>Their own notes page records that the project lead asked for that line.</b> So this is a collision between two things somebody is right about, and it is not the builder's to settle. Three ways out: the line stays off store.sgit.ai and lives on riskmandate.ai instead; or it is rewritten to say the same thing in words a priced page may use; or the rule is changed, which is a bigger decision than one section.<br><br>Recorded at <a href=\"/admin/next/#not-built\">/admin/</a> rather than silently dropped."
     },
     {
      "id": "TK-12",
      "title": "Build the rest of the next store, and wire the flow",
      "status": "done",
-     "description": "<b>The next store is a whole store.</b> Ten pages at /next/, all rendered from the files the current store is already built from: the homepage, the product page, <a href=\"/next/policies/\">the policy picker</a>, <a href=\"/next/cart/\">your order</a>, <a href=\"/next/pay/\">checkout</a>, <a href=\"/next/paid/\">what lands afterwards</a>, <a href=\"/next/compare/\">what arrives at every level</a>, <a href=\"/next/audiences/\">who this is for</a>, <a href=\"/next/ledger/\">the claim ledger</a> and <a href=\"/next/who/\">who does the work</a>.<br><br>The order is <em>the live store's order</em>: same local-storage key, same schema, same line shape, same reference alphabet, same SKUs, so an order built in this round is still there on the store that sells today, and back. Two build checks hold that and hold every page to the file it renders from.<br><br>The one screen from the pack deliberately not built is the generic template. It is a reading column already exercised by the ledger and the reviewer page; re-rendering an existing content page at a second URL to demonstrate it would put the same paragraphs in two places. Recorded at <a href=\"/admin/next/#generic\">/admin/next/</a>.",
+     "description": "<b>The next store is a whole store.</b> Ten pages at /, all rendered from the files the current store is already built from: the homepage, the product page, <a href=\"/policies/\">the policy picker</a>, <a href=\"/cart/\">your order</a>, <a href=\"/pay/\">checkout</a>, <a href=\"/paid/\">what lands afterwards</a>, <a href=\"/compare/\">what arrives at every level</a>, <a href=\"/audiences/\">who this is for</a>, <a href=\"/ledger/\">the claim ledger</a> and <a href=\"/who/\">who does the work</a>.<br><br>The order is <em>the live store's order</em>: same local-storage key, same schema, same line shape, same reference alphabet, same SKUs, so an order built in this round is still there on the store that sells today, and back. Two build checks hold that and hold every page to the file it renders from.<br><br>The one screen from the pack deliberately not built is the generic template. It is a reading column already exercised by the ledger and the reviewer page; re-rendering an existing content page at a second URL to demonstrate it would put the same paragraphs in two places. Recorded at <a href=\"/admin/next/#generic\">/admin/</a>.",
      "shipped": {
       "version": "v0.3.15",
       "urls": [
-       "/next/policies/",
-       "/next/cart/",
-       "/next/pay/",
-       "/next/paid/",
-       "/next/compare/",
-       "/next/audiences/",
-       "/next/ledger/",
-       "/next/who/"
+       "/policies/",
+       "/cart/",
+       "/pay/",
+       "/paid/",
+       "/compare/",
+       "/audiences/",
+       "/ledger/",
+       "/who/"
       ]
      }
     },
@@ -1464,14 +1464,14 @@
      "title": "Ask upstream which five grants do not add up",
      "status": "next",
      "owner": "lead",
-     "description": "<b>Five of the fifteen published shapes overshoot their own grant by exactly one.</b> Each shape publishes four totals: the size of the grant, how much of it was wanted, how much was not asked for, and how much has nothing real in the way of it. For ten shapes wanted + not-asked is exactly the grant. For <code>claude-code-cli</code>, <code>claude-code-cli-confirmations-off</code>, <code>claude-desktop</code>, <code>github-actions</code> and <code>scheduled-job</code> it is the grant plus one, every time.<br><br>Off by one on five shapes and exact on ten is a convention, not noise — most likely one capability counted on both sides of a split somewhere upstream. The picker says so on those five rather than smoothing it over, and a check refuses a note on a shape that does add up. What it cannot do is say <em>why</em>, and only riskmandate.ai can.<br><br>Found building <a href=\"/next/policies/\">the policy picker</a>: the panel's capability strip was being painted green for wanted and amber for unbounded, which for these five drew a partition of a grant that is not one."
+     "description": "<b>Five of the fifteen published shapes overshoot their own grant by exactly one.</b> Each shape publishes four totals: the size of the grant, how much of it was wanted, how much was not asked for, and how much has nothing real in the way of it. For ten shapes wanted + not-asked is exactly the grant. For <code>claude-code-cli</code>, <code>claude-code-cli-confirmations-off</code>, <code>claude-desktop</code>, <code>github-actions</code> and <code>scheduled-job</code> it is the grant plus one, every time.<br><br>Off by one on five shapes and exact on ten is a convention, not noise — most likely one capability counted on both sides of a split somewhere upstream. The picker says so on those five rather than smoothing it over, and a check refuses a note on a shape that does add up. What it cannot do is say <em>why</em>, and only riskmandate.ai can.<br><br>Found building <a href=\"/policies/\">the policy picker</a>: the panel's capability strip was being painted green for wanted and amber for unbounded, which for these five drew a partition of a grant that is not one."
     },
     {
      "id": "TK-14",
      "title": "Publish which behaviours are in which grant",
      "status": "next",
      "owner": "lead",
-     "description": "<b>The picker offers a filter it cannot run.</b> The capability vocabulary is promoted into this repository — 23 named behaviours, <code>verb.object.reach</code> — and every shape publishes how many of them its grant contains. The join between the two is not published: nothing says which behaviours are in a particular grant.<br><br>So <em>By behaviour</em> on <a href=\"/next/policies/\">the picker</a> lists all 23, and choosing one narrows nothing and says why. That is the same answer the design team reached independently on the same gap. It is the honest answer and it is not a good one: the reader who filters by <code>read.credential.host</code> is exactly the reader worth having.<br><br>One field per shape upstream — the list of capability ids in its grant — turns the filter on, colours the capability strip in the panel, and makes the fifteen shapes comparable on something other than a total."
+     "description": "<b>The picker offers a filter it cannot run.</b> The capability vocabulary is promoted into this repository — 23 named behaviours, <code>verb.object.reach</code> — and every shape publishes how many of them its grant contains. The join between the two is not published: nothing says which behaviours are in a particular grant.<br><br>So <em>By behaviour</em> on <a href=\"/policies/\">the picker</a> lists all 23, and choosing one narrows nothing and says why. That is the same answer the design team reached independently on the same gap. It is the honest answer and it is not a good one: the reader who filters by <code>read.credential.host</code> is exactly the reader worth having.<br><br>One field per shape upstream — the list of capability ids in its grant — turns the filter on, colours the capability strip in the panel, and makes the fifteen shapes comparable on something other than a total."
     }
    ]
   }

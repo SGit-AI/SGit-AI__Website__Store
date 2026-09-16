@@ -103,8 +103,12 @@ def yml_records(name, *fields):
 def shop_model_island():
     """The cart's model as it SHIPS, read out of a built page. The island is the
     artefact a browser gets, so it is the thing worth checking."""
-    for p in (OUT / "cart" / "index.html", OUT / "pay" / "index.html",
-              OUT / "order" / "index.html"):
+    # THE CART ENGINE SHIPS ON THE ARCHIVE NOW. The design that sells carries its
+    # own model on its own pages; shop.js and its island moved to /v1/ with the
+    # pages it draws. Both are still checked — this one, and the new one in
+    # check_the_next_journey_is_one_order, which holds the two to one record.
+    for p in (OUT / "v1" / "cart" / "index.html", OUT / "v1" / "pay" / "index.html",
+              OUT / "v1" / "order" / "index.html"):
         if not p.exists():
             continue
         m = re.search(r'<script type="application/json" id="shop-model">(.*?)</script>',
@@ -1442,9 +1446,12 @@ def check_payment_split():
 def check_post_sale_page():
     """The page a buyer lands on after paying: it exists, it says how a key
     arrives, and it carries no key."""
-    page = OUT / "order" / "index.html"
+    # THE ADDRESS MOVED WITH THE DESIGN. The page a payment returns to is /paid/
+    # from v0.3.16; the one it replaced is kept at /v1/order/ and is still built,
+    # still checked and still linked from the archive.
+    page = OUT / "paid" / "index.html"
     if not page.exists():
-        fail("there is no post-sale page at /order/ — a payment's success address would land on "
+        fail("there is no post-sale page at /paid/ — a payment's success address would land on "
              "the page the buyer already read before paying, which is the wrong page at the "
              "wrong moment")
         return
@@ -2900,10 +2907,9 @@ def check_the_brochure_has_not_drifted():
 # a level name in the served HTML. The journey pages render their money from the
 # order this browser is holding, so there is nothing on them to compare with the
 # offer file — the model island they carry is what gets checked instead.
-NEXT_PAGES = ("next/index.html", "next/product/index.html", "next/policies/index.html",
-              "next/cart/index.html", "next/pay/index.html", "next/paid/index.html")
-NEXT_PRICED_PAGES = ("next/index.html", "next/product/index.html",
-                     "next/policies/index.html")
+NEXT_PAGES = ("index.html", "product/index.html", "policies/index.html",
+              "cart/index.html", "pay/index.html", "paid/index.html")
+NEXT_PRICED_PAGES = ("index.html", "product/index.html", "policies/index.html")
 
 
 def check_next_is_the_offer_data():
@@ -2923,7 +2929,7 @@ def check_next_is_the_offer_data():
 
     missing = [p for p in NEXT_PAGES if not (OUT / p).exists()]
     if missing:
-        fail(f"/next/: {missing} not in the build")
+        fail(f"/: {missing} not in the build")
         return
     bodies = {p: (OUT / p).read_text() for p in NEXT_PRICED_PAGES}
     text = "\n".join((OUT / p).read_text() for p in NEXT_PAGES)
@@ -2943,16 +2949,16 @@ def check_next_is_the_offer_data():
                     fail(f"{p}: does not carry {tid}'s {field} {o[field]!r} from "
                          "data/offers.yml — the only file a price or a name exists in")
         if o.get("short_sub") and o["short_sub"] not in text:
-            fail(f"/next/: does not carry {tid}'s short_sub {o['short_sub']!r}")
+            fail(f"the store: does not carry {tid}'s short_sub {o['short_sub']!r}")
 
     # the four names appear as a set, in order, on the levels row
-    home = (OUT / "next" / "index.html").read_text()
+    home = (OUT / "index.html").read_text()
     order = [offers[t].get("short_name", "") for t in ("t1", "t2", "t3", "t4")]
     at = [home.find("ABP " + n) for n in order]
     if -1 in at:
-        fail("/next/: the four level names are not all on the homepage")
+        fail("the store: the four level names are not all on the homepage")
     elif at != sorted(at):
-        fail(f"/next/: the levels are out of order on the homepage — {order} render "
+        fail(f"the store: the levels are out of order on the homepage — {order} render "
              f"at {at}")
 
     # nothing is buyable while no checkout link exists, and the page says so
@@ -2972,15 +2978,31 @@ def check_next_is_the_offer_data():
             if 'aria-disabled="true"' not in body:
                 fail(f"{p}: has no disabled buying action while no checkout link exists")
 
-    # it is marked as a design round rather than as the shop
+    # THE RULE THAT TURNED ROUND WHEN THE DESIGN SHIPPED.
+    #
+    # While this was a design round these pages had to SAY they were one, above
+    # the fold, on every page: a store-shaped thing that is not a store is the
+    # most misleading page a site can serve. From v0.3.16 they are the store, so
+    # the same sentence would now be the lie. What the rule holds instead is the
+    # other half of the same idea — the design that was replaced is still on the
+    # domain, and every page of it has to admit that it is not the live one.
     for p in NEXT_PAGES:
         body = (OUT / p).read_text()
-        if "DESIGN ROUND" not in body:
-            fail(f"{p}: is not marked as a design round. It looks like a shop and is "
-                 "not one")
+        if "DESIGN ROUND" in body or "not the live store" in body:
+            fail(f"{p}: still carries the design-round marking. It is the store now, and a "
+                 "page that tells a buyer it is a mockup is worse than one that told a "
+                 "reader of a mockup it was a shop")
+    for f in sorted((OUT / "v1").rglob("index.html")):
+        rel = str(f.relative_to(OUT)).replace(os.sep, "/")
+        body = f.read_text()
         head = body[:body.find("<main")] if "<main" in body else body
-        if "not the live store" not in head:
-            fail(f"{p}: does not say the live store is elsewhere, above the fold")
+        if "THE PREVIOUS DESIGN" not in head:
+            fail(f"{rel}: is the previous design and does not say so above the fold. An "
+                 "archived page a reader takes for the live one is the whole risk of "
+                 "keeping it")
+        if 'content="noindex' not in head:
+            fail(f"{rel}: is the previous design and is not noindex. Two versions of one "
+                 "page competing in a search result is the archive winning")
 
     # the artwork is the re-encode
     art = json.loads((ROOT / "data" / "next" / "artwork.json").read_text())
@@ -2996,7 +3018,7 @@ def check_next_is_the_offer_data():
             fail(f"assets/next/art/{a['file']}: the re-encode is not smaller than the "
                  f"{a['source_bytes'] // 1024}KB original it came from")
     if "data/next/mirror" in text:
-        fail("/next/: points at the mirrored originals rather than the re-encoded art")
+        fail("the store: points at the mirrored originals rather than the re-encoded art")
 
 
 def _next_model(page):
@@ -3037,7 +3059,7 @@ def check_the_next_journey_is_one_order():
     if shop is None:
         shop = json.loads(re.search(
             r'<script type="application/json" id="shop-model">(.*?)</script>',
-            (OUT / "cart" / "index.html").read_text(), re.S).group(1))
+            (OUT / "v1" / "cart" / "index.html").read_text(), re.S).group(1))
 
     models = {}
     for page in NEXT_PAGES:
@@ -3086,14 +3108,14 @@ def check_the_next_journey_is_one_order():
                      f"the live store charges {got['price']} for the same thing")
 
     # ---- the picker shows the promoted catalogue, and all of it
-    picker = models.get("next/policies/index.html")
+    picker = models.get("policies/index.html")
     if picker:
         cat = json.loads((ROOT / "data" / "abp-catalogue.json").read_text())
         upstream = {s["slug"] for s in cat["shapes"]}
-        body = (OUT / "next" / "policies" / "index.html").read_text()
+        body = (OUT / "policies" / "index.html").read_text()
         shown = set(re.findall(r'data-policy="([a-z0-9-]+)"', body))
         if shown != upstream:
-            fail(f"next/policies/: shows {sorted(shown)} and the promoted catalogue is "
+            fail(f"/policies/: shows {sorted(shown)} and the promoted catalogue is "
                  f"{sorted(upstream)}. A picker that quietly drops a shape is a picker "
                  "that sells the ones somebody remembered to list")
 
@@ -3101,15 +3123,15 @@ def check_the_next_journey_is_one_order():
         for s in cat["shapes"]:
             mine = by_slug.get(s["slug"])
             if not mine:
-                fail(f"next/policies/: {s['slug']} is in the catalogue and not in the model")
+                fail(f"/policies/: {s['slug']} is in the catalogue and not in the model")
                 continue
             for ours, theirs in [("can", "grant"), ("wanted", "wanted"),
                                  ("unasked", "excess"), ("unbounded", "unbounded")]:
                 if mine.get(ours) != s["counts"][theirs]:
-                    fail(f"next/policies/: {s['slug']} renders {ours}={mine.get(ours)} and "
+                    fail(f"/policies/: {s['slug']} renders {ours}={mine.get(ours)} and "
                          f"the catalogue says {theirs}={s['counts'][theirs]}")
             if mine.get("open") != s["open_questions"]:
-                fail(f"next/policies/: {s['slug']} renders {mine.get('open')} open "
+                fail(f"/policies/: {s['slug']} renders {mine.get('open')} open "
                      f"questions and the catalogue says {s['open_questions']}")
             # THE NOTE THAT HAS TO BE THERE EXACTLY WHEN IT IS TRUE. For five of
             # the fifteen, wanted + not-asked overshoots the grant by one, so the
@@ -3118,10 +3140,10 @@ def check_the_next_journey_is_one_order():
             # where they do add up.
             adds_up = s["counts"]["wanted"] + s["counts"]["excess"] == s["counts"]["grant"]
             if adds_up and mine.get("sum_note"):
-                fail(f"next/policies/: {s['slug']}'s totals add up and the page carries a "
+                fail(f"/policies/: {s['slug']}'s totals add up and the page carries a "
                      "note saying they do not")
             if not adds_up and not mine.get("sum_note"):
-                fail(f"next/policies/: {s['slug']} publishes "
+                fail(f"/policies/: {s['slug']} publishes "
                      f"{s['counts']['wanted']} wanted and {s['counts']['excess']} not "
                      f"asked against a grant of {s['counts']['grant']}, which do not "
                      "partition it, and the page says nothing about that")
@@ -3135,7 +3157,7 @@ def check_the_next_journey_is_one_order():
             if not mine.get("pickable"):
                 continue
             if written.get(slug) != mine.get("evidence"):
-                fail(f"next/policies/: {slug} renders evidence "
+                fail(f"/policies/: {slug} renders evidence "
                      f"{mine.get('evidence')!r} and data/products.yml says "
                      f"{written.get(slug)!r}")
 
@@ -3145,22 +3167,22 @@ def check_the_next_journey_is_one_order():
         got = set(re.findall(r'data-filter="behaviour" data-value="([a-z0-9.\-]+)"', body))
         got.discard("all")
         if got != want:
-            fail(f"next/policies/: the behaviour menu offers {len(got)} primitives and the "
+            fail(f"/policies/: the behaviour menu offers {len(got)} primitives and the "
                  f"promoted vocabulary has {len(want)}; the difference is "
                  f"{sorted(got ^ want)}. Inventing a 24th behaviour is how a vocabulary "
                  "stops being somebody else's")
         # and it says, in words, that it cannot filter on them
         if "picker-behaviour-note" not in body:
-            fail("next/policies/: offers a filter by behaviour and carries no note saying "
+            fail("/policies/: offers a filter by behaviour and carries no note saying "
                  "the per-shape join is not published. A filter that silently returns "
                  "everything reads as a filter that found everything")
 
     # ---- each journey page carries the region its script renders into
     for page, region, what in [
-        ("next/cart/index.html", 'id="order"', "the order"),
-        ("next/pay/index.html", 'id="checkout"', "what is due"),
-        ("next/paid/index.html", 'id="receipt"', "the receipt"),
-        ("next/policies/index.html", 'id="panel"', "the selected policy"),
+        ("cart/index.html", 'id="order"', "the order"),
+        ("pay/index.html", 'id="checkout"', "what is due"),
+        ("paid/index.html", 'id="receipt"', "the receipt"),
+        ("policies/index.html", 'id="panel"', "the selected policy"),
     ]:
         body = (OUT / page).read_text()
         if region not in body:
@@ -3179,13 +3201,13 @@ def check_the_next_supporting_pages_are_the_same_data():
     ledger missing a claim, an audience view that quietly drops a level or a
     reviewer page that grows a sentence nobody published are all pages that still
     look right. So each one is counted and compared against its source."""
-    compare = OUT / "next" / "compare" / "index.html"
-    aud = OUT / "next" / "audiences" / "index.html"
-    ledger = OUT / "next" / "ledger" / "index.html"
-    who = OUT / "next" / "who" / "index.html"
+    compare = OUT / "compare" / "index.html"
+    aud = OUT / "audiences" / "index.html"
+    ledger = OUT / "ledger" / "index.html"
+    who = OUT / "who" / "index.html"
     for f in (compare, aud, ledger, who):
         if not f.exists():
-            fail(f"/next/: {f.relative_to(OUT)} is not in the build")
+            fail(f"the store: {f.relative_to(OUT)} is not in the build")
             return
 
     # ---- the comparison carries every row, every column and every cell
@@ -3194,19 +3216,19 @@ def check_the_next_supporting_pages_are_the_same_data():
     body = compare.read_text()
     missing = [l for l in labels if html.escape(l.strip().strip('"')) not in body]
     if missing:
-        fail(f"next/compare/: {len(missing)} row(s) of data/comparison.yml are not on the "
+        fail(f"/compare/: {len(missing)} row(s) of data/comparison.yml are not on the "
              f"page, starting with {missing[0]!r}. A comparison with a row missing is a "
              "comparison somebody would act on")
     groups = re.findall(r"^  - name: (.+)$", src, re.M)
     for g in groups:
         if html.escape(g.strip().strip('"')) not in body:
-            fail(f"next/compare/: the row group {g!r} is not on the page")
+            fail(f"/compare/: the row group {g!r} is not on the page")
     # free is the first column and stays there
     heads = re.findall(r'<th scope="col">.*?</th>', body, re.S)
     if len(heads) != 5:
-        fail(f"next/compare/: renders {len(heads)} columns and the table has five")
+        fail(f"/compare/: renders {len(heads)} columns and the table has five")
     elif "£0" not in heads[0]:
-        fail("next/compare/: the free column is not first. It leads on purpose — what a "
+        fail("/compare/: the free column is not first. It leads on purpose — what a "
              "paid step adds only means anything next to a column that does not have it")
 
     # ---- every audience is on the page, and no level is hidden from any of them
@@ -3215,15 +3237,15 @@ def check_the_next_supporting_pages_are_the_same_data():
     abody = aud.read_text()
     for aid in aids:
         if f'data-step="aud-{aid}"' not in abody:
-            fail(f"next/audiences/: {aid} has no lens on the page")
+            fail(f"/audiences/: {aid} has no lens on the page")
         if f'data-step-panel="aud-{aid}"' not in abody:
-            fail(f"next/audiences/: {aid} has a lens and no panel behind it")
+            fail(f"/audiences/: {aid} has a lens and no panel behind it")
     offers = {m.group(1) for m in re.finditer(r"^- id: (t\d)$",
                                               (ROOT / "data" / "offers.yml").read_text(), re.M)}
     for panel in re.findall(r'<div data-step-panel="aud-[a-z]+" hidden>.*?(?=<div data-step-panel|</div></section>)',
                             abody, re.S):
         if "display:none" in panel.replace(" ", "") or "visibility:hidden" in panel.replace(" ", ""):
-            fail("next/audiences/: a lens hides something. A door changes the sentence and "
+            fail("/audiences/: a lens hides something. A door changes the sentence and "
                  "what is recommended first; it has never been allowed to change what a "
                  "reader is permitted to see")
 
@@ -3234,14 +3256,14 @@ def check_the_next_supporting_pages_are_the_same_data():
     if shown != set(claims):
         missing = sorted(set(claims) - shown)
         extra = sorted(shown - set(claims))
-        fail(f"next/ledger/: shows {len(shown)} of {len(claims)} claims"
+        fail(f"/ledger/: shows {len(shown)} of {len(claims)} claims"
              + (f"; missing {missing[:4]}" if missing else "")
              + (f"; invented {extra[:4]}" if extra else "")
              + ". A ledger that is a selection is a brochure")
     # and every chip on a /next/ page lands on a row that is there
-    for page in NEXT_PAGES + ("next/compare/index.html", "next/audiences/index.html",
-                              "next/who/index.html", "next/ledger/index.html"):
-        for cid in re.findall(r'next/ledger/index\.html#claim-([a-z0-9-]+)',
+    for page in NEXT_PAGES + ("compare/index.html", "audiences/index.html",
+                              "who/index.html", "ledger/index.html"):
+        for cid in re.findall(r'ledger/index\.html#claim-([a-z0-9-]+)',
                               (OUT / page).read_text()):
             if cid not in shown:
                 fail(f"{page}: a claim chip points at #claim-{cid}, which the ledger in "
@@ -3252,16 +3274,116 @@ def check_the_next_supporting_pages_are_the_same_data():
     wbody = who.read_text()
     for url in re.findall(r'url: "(\S+)"', rsrc):
         if url not in wbody:
-            fail(f"next/who/: does not carry the source {url}. Every line of the record is "
+            fail(f"/who/: does not carry the source {url}. Every line of the record is "
                  "read off a published page and the page has to be on it")
     for name in re.findall(r"^    name: (.+)$", rsrc, re.M):
         if html.escape(name.strip()) not in wbody:
-            fail(f"next/who/: {name!r} is in data/reviewers.yml and not on the page")
+            fail(f"/who/: {name!r} is in data/reviewers.yml and not on the page")
     # the number this store deliberately does not publish
     if re.search(r"\b(twenty|20)\+?\s*years\b", wbody, re.I):
-        fail("next/who/: carries a count of years. What is published is a record starting "
+        fail("/who/: carries a count of years. What is published is a record starting "
              "in 2008 that a reader can check; a round number nobody can verify is weaker "
              "than a date that anybody can, and data/reviewers.yml says so at length")
+def _sha256_source(js):
+    """The sha256 function out of a script, brace-matched rather than sliced by
+    line count, so reformatting one copy does not silently pass."""
+    lines = js.split("\n")
+    try:
+        start = next(i for i, l in enumerate(lines)
+                     if l.strip().startswith("function sha256(str)"))
+    except StopIteration:
+        return None
+    depth = 0
+    for i in range(start, len(lines)):
+        depth += lines[i].count("{") - lines[i].count("}")
+        if depth == 0 and i > start:
+            return "\n".join(lines[start:i + 1])
+    return None
+
+
+def check_the_two_engines_hash_a_code_the_same_way():
+    """One algorithm, two files, held identical.
+
+    A printed card carries a code and an address. The address is read by whichever
+    engine is on the page it lands on: shop.js on the previous design and on the
+    pages made of its blocks, next.js on the store. Both compare sha256 of what
+    they were handed against the hashes the build ships, and if the two ever
+    disagree about what a code hashes to then a card printed today works on one
+    half of the site and silently fails on the other — for the one person holding
+    it, with no error anywhere.
+
+    crypto.subtle would remove the duplication. It is async and it is absent from
+    a non-secure context, and this site is built to work from a local directory,
+    so what is here instead is two copies and a rule."""
+    shop = (OUT / "assets" / "shop.js")
+    nxt = (OUT / "assets" / "next.js")
+    for f in (shop, nxt):
+        if not f.exists():
+            fail(f"assets/{f.name}: not in the build, and the discount codes need it")
+            return
+    a, b = _sha256_source(shop.read_text()), _sha256_source(nxt.read_text())
+    if a is None or b is None:
+        fail("the sha256 used to check a discount code is missing from "
+             f"{'shop.js' if a is None else 'next.js'}. A code arriving in an address is "
+             "then compared against nothing")
+        return
+    if a != b:
+        fail("assets/shop.js and assets/next.js carry different sha256 implementations. "
+             "They have to agree on what a code hashes to: a printed card is read by "
+             "whichever engine is on the page it lands on, and a card that works on half "
+             "a site is worse than one that works on none of it")
+
+    # the stray-code hand-off goes somewhere that can actually read a code
+    shop_src = shop.read_text()
+    m = re.search(r"window\.location\.replace\('([^']+)\?code=", shop_src)
+    if not m:
+        fail("assets/shop.js: no longer hands a stray code anywhere. A code landing on a "
+             "page with no catalogue would be dropped in silence")
+        return
+    target = m.group(1)
+    landing = OUT / target.lstrip("/")
+    if not landing.exists():
+        fail(f"assets/shop.js: hands a stray code to {target}, which is not in the build")
+        return
+    if 'id="next-model"' not in landing.read_text():
+        fail(f"assets/shop.js: hands a stray code to {target}, and that page carries neither "
+             "engine's model, so nothing there can check it. Worse, if that page also loads "
+             "shop.js it hands the code to itself, forever")
+
+    # every page the store serves can acknowledge one
+    for p in NEXT_PAGES:
+        if "data-code-bar" not in (OUT / p).read_text():
+            fail(f"{p}: has nowhere to say a code was applied or refused. A printed card "
+                 "points at the front page, and a code that changes nothing and says "
+                 "nothing reads exactly like a code that worked")
+
+def check_the_sitemap_advertises_nothing_it_hides():
+    """A sitemap is an invitation. A noindex page is a refusal. A page that is
+    both is telling a crawler to come and look at something it must not index,
+    and it is the kind of contradiction nobody notices because both halves are
+    individually correct. Nineteen pages were in that state for the length of one
+    build: the archive of the previous design, and the ten addresses the design
+    round used."""
+    sm = OUT / "sitemap.xml"
+    if not sm.exists():
+        fail("there is no sitemap.xml")
+        return
+    listed = re.findall(r"<loc>([^<]*)</loc>", sm.read_text())
+    if not listed:
+        fail("sitemap.xml lists no pages at all")
+        return
+    base = listed[0].split("//", 1)[1].split("/", 1)[0]
+    for loc in listed:
+        rel = loc.split(base, 1)[1].strip("/")
+        f = OUT / rel / "index.html" if rel else OUT / "index.html"
+        if not f.exists():
+            fail(f"sitemap.xml lists {loc}, which is not in the build")
+            continue
+        head = f.read_text()[:2000]
+        if 'content="noindex' in head:
+            fail(f"sitemap.xml lists {loc} and that page is noindex. The sitemap is an "
+                 "invitation and noindex is a refusal; a page cannot be both")
+
 
 def main():
     if not OUT.exists():
@@ -3306,6 +3428,8 @@ def main():
         check_the_design_brief_points_at_pages_that_exist,
         check_the_brochure_has_not_drifted,
         check_next_is_the_offer_data, check_the_next_journey_is_one_order,
+        check_the_two_engines_hash_a_code_the_same_way,
+        check_the_sitemap_advertises_nothing_it_hides,
         check_the_next_supporting_pages_are_the_same_data,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,

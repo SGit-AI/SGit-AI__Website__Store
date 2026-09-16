@@ -1,88 +1,36 @@
----
-title: Every agent needs a licence to operate
-description: "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels — the pack at £10, a vault you hold the keys to at £50, corrected for your situation at £500, and two sessions with a security professional signing it at £1,500."
-lead: "**You know what you asked for. You do not know what it can do.** An Agent Behaviour Policy puts both on one page for one agent in one deployment: what it can do, what you authorised, and the gap between them. **Fifteen applications, four levels, £10 to £1,500.**"
-order: 1
-toc: false
----
+# Agent Behaviour Policies for the agents you already run
 
-## Who are you?
+Agent Behaviour Policies: what your agent can do, what you authorised, and the gap between them — for one agent, in one deployment.
 
-{{who-are-you}}
 
-## The four things for sale
+## The four levels
 
-{{buy-cards}}
+| Level | Name | Price | Arrives | State |
+|---|---|---|---|---|
+| 01 | ABP Pack — The material, downloaded. | £10 | Immediately from your payment | exists and runs |
+| 02 | ABP Vault — The material, in a working vault. | £50 | 1 to 2 days from your payment | exists and runs |
+| 03 | ABP Tailored — Your deployment, reflected in the mandate. | £500 | 1 to 3 days from your reply | delivered by a person |
+| 04 | ABP Reviewed — Two sessions and a custom vault. | £1,500 | 1 to 5 days from your reply | delivered by a person |
 
-**Every level is the same document.** What changes is the form it arrives in and
-who does the correcting — and the line between the third and the fourth is the
-line between a thing agents do and a thing a person signs.
-[What is actually inside one →](/what-is-in-one/)
+Every price is read from data/offers.yml, the only file a price exists in.
 
-**The first two arrive automatically. The top two are somebody's work.** That is
-the line that matters when you are choosing: the pack and the vault are produced
-the moment you pay, and the corrected mandate and the two sessions are done by a
-named security professional and signed off. The method behind all four has been
-done many times — six vaults of it are open to read right now, linked below.
-{{claim:the-work-has-been-done}} {{claim:abp-templates-exist}}
-{{claim:abp-correction-by-a-person}} {{claim:abp-sessions-by-a-person}}
 
-## Which agent do you run?
+## Who are you
 
-**Pick the application closest to yours and the level you want it at.**
-[The whole catalogue is here](/policies/) — Claude Code on a machine and in CI,
-Claude Desktop, ChatGPT in the browser, a browser extension, GitHub Actions, a
-scheduled job, Gmail and Drive at read-only scope, the Microsoft 365 connector,
-Dropbox, n8n, and the rest. **Something not on the list starts at the third
-level**, because the first two deliver an existing template and for yours there is
-not one yet.
+- **You are a founder** — Shipping with agents, and somebody is going to ask. (https://store.sgit.ai/are/founder/)
+- **You are backing a company** — Backing a company, and need somebody to look. (https://store.sgit.ai/are/investor/)
+- **You have to answer for it** — Have to answer for it, to a board. (https://store.sgit.ai/are/exec/)
+- **You do this for a living** — Do this for a living, and want the method. (https://store.sgit.ai/are/security/)
+- **You own the register** — Own the register, and need the mapping. (https://store.sgit.ai/are/governance/)
 
-## Six of these, open right now
+## What an ABP is
 
-**This work has been done, repeatedly, and it is published.** Not a testimonial and
-not a case study — the vaults themselves, each opened by a read key published on
-its own page. Go and open one before you buy anything here.
+Grant, mandate, delta and barrier, for one deployment. It describes and does not judge, so it carries no score.
 
-{{evidence}}
 
-## What the templates cost, and what they do not
+## What this page is not
 
-**The templates are free and public**, with published read keys, at
-riskmandate.ai. That is not a generosity and it is not a funnel: a policy nobody
-can check is a policy asking to be trusted, and the whole point of this document
-type is that it can be checked. **What is priced here is an instance** — the same
-template with the mandate corrected, your name on the licence and no public key on
-it. [The whole argument, at length →](/what-is-in-one/) {{claim:abp-catalogue-promoted}}
-
-## Paying, in three lines
-
-**You build an order in your own browser and pay on the provider's own page.** No
-account, no cookie, and **no form, input or field anywhere on this site** — a build
-check holds that line, so filtering is buttons, quantity is buttons, and your card
-is somebody else's business. What reaches the payment provider is the amount and an
-order reference carrying the codes for what you bought.
-**Neither payment link has been created yet** — [your order](/cart/) says so on the
-button rather than showing something that looks live.
-[The three steps](/how-it-works/) · [Both rails](/paying/)
-{{claim:checkout-links-not-issued}}
-
-## What this site will not tell you
-
-Nothing here is a compliance assessment, and nothing here is a mark of conformity
-to a standard. Neither describes this, and that language appears on no deliverable
-and on no page. **The company issues every opinion**, with an express
-non-assumption of personal responsibility on its face, and **the person who sells
-is never the person who signs.**
-
-Outputs are model generated and marked as such {{claim:transparency-article}}.
-Findings are triaged, never raw: recall-optimised agents run at 0.388 precision,
-which is about three findings in five wrong, so **every finding that reaches you
-has been reproduced rather than reviewed** {{claim:precision-0388}}.
-
-And one sentence that a reader might expect on a page like this **is not here on
-purpose**: we do not tell you what we can and cannot read, because six questions
-about what leaks have not been answered yet. [The disclosures page says which
-six](/disclosures/). {{claim:cannot-read-unanswered}}
+It is not the shop. Nothing here can be bought — no payment link has been issued on any level, so every buying action is a disabled control that says so. See https://store.sgit.ai/admin/next/.
 
 ---
 

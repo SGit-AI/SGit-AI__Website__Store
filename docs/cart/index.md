@@ -1,13 +1,19 @@
 # Your order
 
-Your order lives in your own browser. The payment provider takes your name, your contact and your card on its own pages; what this site hands it is the amount and an order reference carrying the codes for what you picked.
+The order is held in this browser under one local-storage key and is not sent anywhere. There is no account and no field to type into.
 
-## The levels
+## What can be ordered
 
-- `P` — £10 — The pack, downloaded
-- `V` — £50 — A working vault
-- `C` — £500 — Corrected for your situation
-- `S` — £1,500 — Two sessions and a custom vault
+| Level | SKU | Price | Deposit | Arrives |
+|---|---|---|---|---|
+| ABP Pack | `ABP-&lt;shape&gt;-P` | £10 | — | Immediately from your payment |
+| ABP Vault | `ABP-&lt;shape&gt;-V` | £50 | — | 1 to 2 days from your payment |
+| ABP Tailored | `ABP-&lt;shape&gt;-C` | £500 | £100 now · £400 on delivery | 1 to 3 days from your reply |
+| ABP Reviewed | `ABP-&lt;shape&gt;-S` | £1,500 | £300 now · £1,200 on delivery | 1 to 5 days from your reply |
+
+## What leaves the page
+
+The amount and the order reference, when a payment link exists. No payment link has been issued on any level.
 
 ---
 

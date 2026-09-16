@@ -1,45 +1,27 @@
----
-title: What each level actually gets you
-description: "Every level side by side, including the free one: what you get, whose work it is, what you may do with it, and when it arrives. Fourteen rows, five columns, and every cell read off the offer data rather than written as copy."
-lead: "**Start with the free column.** The templates are published with read keys and anybody can take one — so what each paid step adds is only legible next to a column that does not have it. The licence row on its own explains the first step."
-order: 3
-toc: false
-wide: true
----
+# What arrives, at every level
 
-{{comparison}}
+Free first. The fifteen templates are published with read keys; what each paid step adds is only legible next to a column that does not have it.
 
-{{brochure}}
-
-## How to read it
-
-**Every cell is read off something.** A price comes from `data/offers.yml`, a
-capability from what that level's page says it gets, a licence from a ruling. A
-row whose five cells would be a *promise* rather than a *description* is not on
-this table — what is still being specified is on [the board](/admin/work/) rather
-than in a column, because a table is the place where an unproven claim is hardest
-to notice and easiest to believe.
-
-**The free column is not a teaser.** [Fifteen template shapes are published](/policies/)
-with read keys, at riskmandate.ai. Go and open one before you buy anything here.
-That is not generosity and it is not a funnel: a policy nobody can check is a
-policy asking to be trusted, and the whole point of this document type is that it
-can be checked. {{claim:abp-templates-exist}}
-
-**The licence is the first step, and it is the one worth understanding.** What is
-published is Creative Commons Attribution, which obliges anybody using it to credit
-the source wherever it ends up — in a client report, inside a product, in a
-document that goes to a regulator. The paid levels replace that with a commercial
-licence to you over the same material. That is grantable because the copyright in
-the pack is ours: everything in it was written here. **The wording is not drafted
-yet**, and the ledger says so rather than this page implying otherwise.
-{{claim:entry-level-dual-licence}}
-
-**The line that matters most is between the second and third rows of the middle
-group.** Below it, the mandate is the starting one — written to be corrected, and
-correcting it is yours to do. At and above it, a named security professional does
-that correction against the industry, the use case and the details you send.
-{{claim:abp-correction-by-a-person}} {{claim:abp-sessions-by-a-person}}
+|  | Free | The pack | A working vault | Corrected for you | Two sessions |
+|---|---|---|---|---|---|
+| **What you get** | | | | | |
+| The behaviour policy, the grant, the mandate and the delta | yes | yes | yes | yes | yes |
+| Packaged as a download | Take it yourself | yes | yes | yes | yes |
+| A vault you hold the keys to | no | no | yes | yes | yes |
+| Your own history, and a read key you can hand on | no | no | yes | yes | yes |
+| The public key taken off it | no | no | yes | yes | yes |
+| **Whose work it is** | | | | | |
+| The mandate corrected against your situation | no | no | no | yes | yes |
+| A named security professional does the work | no | no | no | yes | yes |
+| Reviewed and signed off by that professional | no | no | no | no | yes |
+| Time with them, on a call | no | no | no | no | Two half hours |
+| **What you may do with it** | | | | | |
+| Licence | CC BY — you must attribute | Commercial, to you | Commercial, to you | Commercial, to you | Commercial, to you |
+| Use it in client work without crediting us | no | yes | yes | yes | yes |
+| Your name on the licence | no | no | yes | yes | yes |
+| **When it arrives** | | | | | |
+| Delivery | Now | Immediately | 1 to 2 days | 1 to 3 days from your reply | 1 to 5 days from your reply |
+| Paid in full up front | Nothing to pay | yes | yes | A fifth now | A fifth now |
 
 ---
 

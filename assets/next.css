@@ -501,6 +501,60 @@ code { font-family: var(--n-mono); font-size: .88em; }
 [hidden]   { display: none !important; }
 
 /* ============================================================================
+ * 5b. THE READING COLUMN
+ *
+ * The pages made of prose rather than of offer data: what is inside one, how
+ * buying works, who owns what, the disclosures. site.css draws their blocks —
+ * the tables, the tiles, the specification rows — and fourteen of its rules were
+ * scoped to `main.doc`, which was the old chrome's own element. Those fourteen
+ * are the ones this replaces: the column, the crumb, the headings, the lead and
+ * the spacing between paragraphs. The other four hundred and sixty-seven are not
+ * scoped to anything and keep working untouched.
+ *
+ * The reset above zeroes every margin, which is right for a page built out of
+ * components and wrong for a page built out of sentences.
+ * ========================================================================== */
+.n-doc { max-width: var(--n-measure); margin-inline: auto; }
+.n-doc.is-wide { max-width: 1180px; }
+
+.n-doc .crumb { font-size: var(--n-fine); color: var(--n-dim-2); margin-bottom: 14px; }
+.n-doc .crumb a { color: var(--n-dim); }
+
+/* The hero size is for a hero. A page of prose gets a heading, not a banner. */
+.n-doc h1 { font-size: clamp(32px, 3.4vw, 46px); margin-bottom: 18px; }
+.n-doc h2 { font-size: 30px; margin: 46px 0 14px; scroll-margin-top: 24px; }
+.n-doc h3 { font-size: 21px; margin: 32px 0 10px; scroll-margin-top: 24px; }
+.n-doc h4 { font-size: 17px; font-weight: 650; margin: 24px 0 8px; }
+
+.n-doc .lead { font-size: var(--n-lede); line-height: 1.65; color: var(--n-fg);
+               margin-bottom: 26px; }
+.n-doc p { margin: 0 0 18px; }
+.n-doc ul, .n-doc ol { margin: 0 0 18px; padding-left: 22px; }
+.n-doc li { margin-bottom: 8px; }
+.n-doc ul { list-style: disc; }
+.n-doc ol { list-style: decimal; }
+.n-doc blockquote { margin: 22px 0; padding-left: 18px;
+                    border-left: 3px solid var(--n-cta); color: var(--n-dim); }
+.n-doc hr { border: 0; border-top: 1px solid var(--n-line); margin: 36px 0; }
+.n-doc a { text-decoration: underline; text-underline-offset: 3px;
+           text-decoration-color: var(--n-line-2); }
+.n-doc a:hover { text-decoration-color: currentColor; }
+
+/* The table of contents the prose pages carry. */
+.n-doc .toc { background: var(--n-tint); border: 1px solid var(--n-line);
+              border-radius: var(--n-r-card); padding: 16px 20px; margin: 0 0 30px;
+              display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; }
+.n-doc .toc b { width: 100%; font: 700 var(--n-eyebrow)/1 var(--n-sans);
+                letter-spacing: .1em; text-transform: uppercase; color: var(--n-dim);
+                margin-bottom: 4px; }
+.n-doc .toc a { font-size: var(--n-small); text-decoration: none; }
+
+/* The three links at the foot of every prose page. */
+.n-doc .pagenav { display: flex; flex-wrap: wrap; gap: 8px 24px;
+                  margin-top: 46px; padding-top: 22px;
+                  border-top: 1px solid var(--n-line); font-size: var(--n-small); }
+
+/* ============================================================================
  * 6. RESPONSIVE — one place, not scattered through the file
  * ========================================================================== */
 @media (max-width: 1080px) {
@@ -595,6 +649,28 @@ code { font-family: var(--n-mono); font-size: .88em; }
  * The real values live in the token block at the top of this file; the pack's
  * own file is kept at data/next/v4/tokens.css to check against.
  * ========================================================================== */
+
+/* -------------------------------------------------------------- evidence -- */
+/* Six published vaults, on the dark band, because it is the strongest thing this
+   store has and the version of the homepage that left it out failed its own
+   gate. */
+.n-sect--deep { background: var(--n-deep); color: #fff; }
+.n-sect--deep .n-head p, .n-sect--deep .n-eyebrow { color: #c8d7e2; }
+.n-sect--deep .n-head p b { color: #fff; }
+/* The chip keeps its meaning on the dark band and loses its light ground: the
+   ten states stay distinct by ink and border, which is what carries them. */
+.n-sect--deep .n-claim { background: rgba(255, 255, 255, .10); color: #fff;
+                         border-color: rgba(255, 255, 255, .45); }
+.n-works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.n-work { display: flex; flex-direction: column; gap: 8px; padding: 20px;
+          background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .16);
+          border-radius: var(--n-r-card); color: #fff; }
+.n-work:hover { background: rgba(255, 255, 255, .11); border-color: rgba(255, 255, 255, .34);
+                text-decoration: none; }
+.n-work b { font-size: 16.5px; letter-spacing: -.02em; }
+.n-work__why { font-size: var(--n-fine); line-height: 1.5; color: #c8d7e2; }
+.n-work__meta { margin-top: auto; padding-top: 8px; font: 11px/1.4 var(--n-mono);
+                color: #9fb3c4; }
 
 /* ---------------------------------------------------------------- picker -- */
 /* Filter bar. No form controls anywhere: search is a button that opens a
@@ -718,6 +794,24 @@ code { font-family: var(--n-mono); font-size: .88em; }
                                                border-color: var(--n-deep); }
 .n-panel__empty { padding: 40px 22px; text-align: center; color: var(--n-dim);
                   font-size: var(--n-small); }
+
+/* ------------------------------------------------------------------ code -- */
+/* What discount is being held, where the reader can see it and take it off. */
+.n-codeslot:empty { display: none; }
+.n-codeslot { padding: 16px var(--n-pad-x) 0; }
+.n-code { display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+          border-radius: var(--n-r-card); padding: 14px 18px; margin-bottom: 22px;
+          border: 1px solid var(--n-line); background: var(--n-tint); }
+.n-code--on  { border-color: var(--n-st-measured); background: var(--n-st-measured-bg); }
+.n-code--off { border-color: var(--n-st-absent);   background: var(--n-st-absent-bg); }
+.n-code b { display: block; font-size: 15px; }
+.n-code span { font-size: var(--n-fine); color: var(--n-dim); }
+.n-code button { margin-left: auto; border: 1px solid var(--n-line-2);
+                 background: var(--n-panel); border-radius: var(--n-r-sm);
+                 padding: 8px 14px; font: 600 var(--n-fine)/1 var(--n-sans);
+                 cursor: pointer; }
+.n-code button:hover { border-color: var(--n-fg); }
+.n-line__was { text-decoration: line-through; opacity: .6; }
 
 /* ----------------------------------------------------------------- order -- */
 .n-line { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto;
@@ -862,11 +956,13 @@ code { font-family: var(--n-mono); font-size: .88em; }
   .n-picker { grid-template-columns: 1fr; }
   .n-panel { position: static; max-height: none; }
   .n-aud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .n-works { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 760px) {
   .n-picker__grid { grid-template-columns: 1fr; }
   .n-aud { grid-template-columns: 1fr 1fr; }
+  .n-works { grid-template-columns: 1fr; }
   .n-handoff, .n-receipt, .n-reviewer { grid-template-columns: 1fr; gap: 20px; }
   .n-panel__stats { grid-template-columns: repeat(2, 1fr); }
 

@@ -31,7 +31,12 @@
     var stray = /[?&#]code=([A-Za-z0-9]{1,32})/.exec(
       window.location.search + ' ' + window.location.hash);
     if (stray) {
-      window.location.replace('/policies/index.html?code=' + stray[1]);
+      /* THE STORE'S OWN ORDER PAGE, NOT THE PICKER. Until v0.3.16 this went to
+         /policies/, which carried the catalogue and so could check a code. That
+         page is the new design's picker now and this engine is not on it; the
+         cart is where the new engine reads a code, and it is also the page a
+         reader who followed a discount actually wants. */
+      window.location.replace('/cart/index.html?code=' + stray[1]);
       return;
     }
     try {
@@ -198,6 +203,12 @@
   }
 
   function paintBadge(n, label) {
+    /* The new chrome's badge. Every page outside /v1/ is served in it, and on a
+       page that carries no next-model this engine is the only one that knows the
+       count. Same record, two renderers. */
+    Array.prototype.forEach.call(document.querySelectorAll('[data-order-count]'), function (e) {
+      e.textContent = n ? ' (' + n + ')' : '';
+    });
     Array.prototype.forEach.call(document.querySelectorAll('[data-cart-count]'), function (e) {
       e.textContent = n ? String(n) : '';
       e.hidden = !n;

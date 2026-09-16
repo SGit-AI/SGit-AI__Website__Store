@@ -30,7 +30,7 @@ Also: `img { max-width: 100% }` in the reset silently won the cascade against
 artwork pushed off it.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `7c11b81d47957a3d68357157c5382d93c4ccc747`
 - Reconstructed: no
 
 ---

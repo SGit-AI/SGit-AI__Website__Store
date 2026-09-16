@@ -1,107 +1,42 @@
----
-title: The three buyers, and what each one buys
-description: "Three buyers, ordered by opportunity rather than presented as three equal doors: a team running agents they already granted credentials to, an investor backing a company, and a startup about to meet diligence. Which of the six offers each one is shown, which were actually built for them, and — for one of the three — that none were."
-lead: "**Order matters here, and the page reflects it.** Three buyers, and they are not equally served by what is on this site. One has a market above it and nothing underneath. One has nothing at any price. One has two funded incumbents and a free tier already sitting under it, and is here only as a **reverse sale**. The grouping below adds no offer and no price: it is a second index over the same six, and **the third group has nothing built pointing at it at all.**"
-order: 3
-toc: true
-wide: true
----
+# Who is this for?
 
-## The routing, in one table
+Five doors onto the same four products. A door changes the sentence and which level is recommended first. It never changes a price, never removes a level from the page, and a build check refuses a page that hides one.
 
-{{offers-by-buyer}}
 
-Each row has a page of its own. The offers on it are the same records the
-[offer page](/offers/) renders — the same prices, the same states, the same
-delivery pages — sorted by whose question they were built to answer instead of by
-what they cost.
+## You are a founder
 
-## 1. You run agents today
+We are shipping with agents and somebody is going to ask what they can reach.
 
-**The market anchors between eight and one hundred and fifty thousand dollars, and
-nothing sits underneath it.** {{claim:agent-market-gap}}
+- **What changes:** Speed and evidence, in that order. A founder needs the document to exist before the conversation that needs it, and needs it to survive being read by somebody more senior than them.
+- **Pointed first at:** ABP Vault, £50. A vault you hold the keys to is the level that turns a question into an artefact you own. The pack below it is the same material if you would rather not run anything; the correction above it is for when the template's assumptions are not yours.
 
-That gap is the whole opportunity. Somebody running an agent today, who wants to
-know what they actually granted it, has a choice between a five-figure engagement
-and nothing. [Tier 1](/d/t1/) is ten pounds and answers the smaller version of the
-question; [tier 2](/d/t2/) is the version with the regulation attached.
+## You are backing a company
 
-**What they are buying is the delta**: the union of what a credential permits,
-against what the holder is authorised and expected to do, and the excess authority
-between the two. **That delta is computed and never stored.** It is not a thing we
-keep about you.
+I need somebody to look at what this company's agents can actually do, and I need it to be somebody's work.
 
-[Everything this buyer is shown &rarr;](/for/agents/)
+- **What changes:** Independence, and repeatability across a portfolio. The point is not that a document exists — it is that somebody who is not the founder wrote it and will stand behind it.
+- **Pointed first at:** ABP Reviewed, £1,500. The two upper levels are the ones where a person does the work and signs it. The levels below are the same document produced without anybody looking at your situation, which is fine for a founder and is not what a review is.
 
-## 2. You are backing a company, and want somebody to look
+## You have to answer for it
 
-**No productised, affordable, signed investor review exists at any price
-— and every component of one is already written.** {{claim:investor-review-absent}}
+Can I have this in a form my board can read?
 
-That is the emptiest quadrant on this page, and the one the top two tiers point
-at. [Tier 3](/d/t3/) is a person reading a situation. [Tier 4](/d/t4/) is a team.
+- **What changes:** Who the document is written for. The material is the same; what an executive needs is the version that survives a board pack, and the store is explicit that this is being built rather than already sitting there.
+- **Pointed first at:** ABP Tailored, £500. Corrected for your situation is the first level where the assumptions are yours rather than a template's, which is the difference between a document you can put in front of a board and one you have to explain first.
 
-**It is also where the constraint bites hardest.** Selling buyers the question,
-selling suppliers the answer, and selling an opinion that vouches for the
-suppliers is the combination two industries have already regulated. So:
+## You do this for a living
 
-- **The company issues every opinion**, with an express non-assumption of personal responsibility on its face. A product sold on a named individual's judgement runs at the test for assumed personal responsibility.
-- **The people who sell do not sign.** That constrains this site's own layout: the signature block and the checkout must not name the same person, and on this site neither names anyone at all.
-- The **signed opinion is a separate add-on with separate wording**, and that wording does not exist yet. {{claim:opinion-wording-absent}}
+I can write the policy. What I want is the structure and the vocabulary, and I want to see how you compute the delta.
 
-[Everything this buyer is shown &rarr;](/for/investors/)
+- **What changes:** Nothing is explained that you already know. What is worth your time here is the method and the fifteen published templates — and, if you run reviews, the list of people who run the upper two levels.
+- **Pointed first at:** ABP Pack, £10. The pack is every file, downloaded, under a commercial licence — which is the level that makes sense when you are going to do the work yourself and put it in front of a client.
 
-## 3. You are a startup, and only as the reverse sale
+## You own the register
 
-**Two funded incumbents, a free tier beneath them, and both already publish the
-answer.** Selling a founder a security posture document is selling into a
-commoditised tier. {{claim:founder-tier-commoditised}}
+Where does this sit against the frameworks we already report on?
 
-**The unoccupied offer is the reverse one: telling a founder what diligence will
-find, before it runs.** Same components, opposite direction, and it is the only
-version of this that is not already free somewhere.
-
-**And it is not on the price list.** The startup page is assembled entirely out of
-tiers built for the other two buyers — you buy [tier 3](/d/t3/) or
-[tier 4](/d/t4/) and say which direction you want it run in. There is no seventh
-product behind that sentence, the page says so above its offers rather than below
-them, and this row is why the grouping is called an index rather than a range.
-{{claim:startup-offer-is-reverse-only}}
-
-[Everything this buyer is shown &rarr;](/for/startups/)
-
-## Why the groups are a view and not a range
-
-**Because the alternative is how an offer list grows without anybody deciding to
-grow it.** Three audiences, three pages, and within a month each page has a thing
-of its own on it that nobody priced, nobody specified, and nobody can say the
-state of.
-
-So the grouping is mechanical. `data/buyers.yml` names offer ids and nothing else;
-the build joins them to `data/offers.yml`; and the gate fails the release if a
-group names an offer that does not exist, if an offer belongs to no group, or if
-the set of groups changes. **A buyer page cannot contain a product**, in the same
-way [the eight further offers](/catalogue/) cannot quietly widen the four that are
-for sale.
-
-## What none of the three is buying
-
-**Raw findings.** Recall-optimised agents run at 0.388 precision — about three
-findings in five are wrong {{claim:precision-0388}}. A list of findings at that
-precision is not a product, it is a homework assignment with a bill attached.
-**What is sold is triage**: every finding that reaches a buyer has been reproduced
-first, not reviewed.
-
-**A verdict about a third party.** Where this estate names a competitor, a vendor,
-a standards body or a platform, it publishes the record — facts, dates, sources —
-and never the verdict, with no evaluative adjective attached to anybody's name.
-That rule holds on the pages you can read and it is [the reason the documents area
-is still closed](/dev-packs/).
-
-**A mark of conformity to a standard.** Nothing here is one, nothing here claims to
-be one, and the language of conformity marking is kept off this site entirely —
-it raises the standard of care beyond ordinary negligence for no benefit to a
-buyer.
+- **What changes:** The mapping, and what the store refuses to claim about it. Nothing here is a compliance assessment and nothing claims conformity to any standard — what exists is a document that can be cited a row of.
+- **Pointed first at:** ABP Tailored, £500. A corrected mandate is the version that can go on a register, because the assumptions in it are yours and the delta is computed against them rather than against a starting guess.
 
 ---
 

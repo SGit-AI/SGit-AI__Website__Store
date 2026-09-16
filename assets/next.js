@@ -307,6 +307,161 @@
         maximumFractionDigits: pence % 100 ? 2 : 0 });
   }
 
+  /* ------------------------------------------------------------------ codes */
+  /* A CODE IS NEVER TYPED. There is no text field on this domain and the gate
+     refuses one, so a code arrives in the address — ?code=... or #code=... —
+     which is what a printed card or a QR at a stand hands somebody anyway. What
+     ships is sha256 of the code; the browser hashes what it was handed and
+     compares. What is kept afterwards is the RECORD'S id, never the code, so
+     nothing in this browser's storage carries one either.
+   *
+   * THE HASH BELOW IS A SECOND COPY OF THE ONE IN shop.js, DELIBERATELY, AND A
+   * BUILD CHECK HOLDS THE TWO IDENTICAL. Both engines have to agree on what a
+   * code hashes to or a card printed today stops working on one half of the
+   * site. crypto.subtle would avoid the duplication and is async and absent from
+   * a non-secure context, and this site is built to work from a local directory
+   * too. One algorithm in two files, pinned, beats one algorithm that is
+   * sometimes there.
+   *
+   * THIS WHOLE BLOCK IS ON ITS WAY OUT. TM-8 on the board retires the
+   * browser-side arithmetic the day the codes exist as promotion codes at the
+   * payment provider, which is where a discount belongs. Until then a printed
+   * card has to work, and this is what makes it work. */
+
+  function sha256(str) {
+    var K = [
+      0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
+      0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+      0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786,
+      0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+      0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
+      0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+      0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b,
+      0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+      0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a,
+      0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+      0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2];
+    var H = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+             0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+
+    /* utf-8, three bytes at most: a code is letters and digits, and the build
+       refuses one that is not, so a surrogate pair cannot reach here. */
+    var b = [], i, c;
+    for (i = 0; i < str.length; i++) {
+      c = str.charCodeAt(i);
+      if (c < 0x80) { b.push(c); }
+      else if (c < 0x800) { b.push(0xc0 | (c >> 6), 0x80 | (c & 63)); }
+      else { b.push(0xe0 | (c >> 12), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63)); }
+    }
+    var bits = b.length * 8;
+    b.push(0x80);
+    while (b.length % 64 !== 56) b.push(0);
+    b.push(0, 0, 0, 0,
+           (bits >>> 24) & 255, (bits >>> 16) & 255, (bits >>> 8) & 255, bits & 255);
+
+    function rr(x, n) { return (x >>> n) | (x << (32 - n)); }
+    var w = new Array(64);
+    for (var off = 0; off < b.length; off += 64) {
+      for (i = 0; i < 16; i++) {
+        w[i] = (b[off + i * 4] << 24) | (b[off + i * 4 + 1] << 16) |
+               (b[off + i * 4 + 2] << 8) | b[off + i * 4 + 3];
+      }
+      for (i = 16; i < 64; i++) {
+        var s0 = rr(w[i - 15], 7) ^ rr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+        var s1 = rr(w[i - 2], 17) ^ rr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+      }
+      var a = H[0], bb = H[1], cc = H[2], d = H[3],
+          e = H[4], f = H[5], g = H[6], h = H[7];
+      for (i = 0; i < 64; i++) {
+        var S1 = rr(e, 6) ^ rr(e, 11) ^ rr(e, 25);
+        var ch = (e & f) ^ (~e & g);
+        var t1 = (h + S1 + ch + K[i] + w[i]) | 0;
+        var S0 = rr(a, 2) ^ rr(a, 13) ^ rr(a, 22);
+        var mj = (a & bb) ^ (a & cc) ^ (bb & cc);
+        var t2 = (S0 + mj) | 0;
+        h = g; g = f; f = e; e = (d + t1) | 0;
+        d = cc; cc = bb; bb = a; a = (t1 + t2) | 0;
+      }
+      H[0] = (H[0] + a) | 0; H[1] = (H[1] + bb) | 0;
+      H[2] = (H[2] + cc) | 0; H[3] = (H[3] + d) | 0;
+      H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0;
+      H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
+    }
+    return H.map(function (x) { return ('00000000' + (x >>> 0).toString(16)).slice(-8); }).join('');
+  }
+
+  function ymd(d) {
+    function two(n) { return (n < 10 ? '0' : '') + n; }
+    return d.getFullYear() + '-' + two(d.getMonth() + 1) + '-' + two(d.getDate());
+  }
+
+  var CODES = {};
+  (MODEL.codes || []).forEach(function (c) { CODES[c.id] = c; });
+  var CKEY = MODEL.code_storage || 'sgit.store.code.v1';
+  var CODE_NOTE = null;
+
+  function held() {
+    var id;
+    try { id = window.localStorage.getItem(CKEY); } catch (e) { return null; }
+    if (!id) return null;
+    var c = CODES[id];
+    if (!c) return { rec: null, ok: false, why: 'That code is not on the store any more.' };
+    if (ymd(new Date()) > c.until) {
+      return { rec: c, ok: false, why: 'That code ran out on ' + c.until + '.' };
+    }
+    return { rec: c, ok: true, why: '' };
+  }
+
+  function discount() { var h = held(); return h && h.ok ? h.rec : null; }
+
+  function dropCode() {
+    try { window.localStorage.removeItem(CKEY); } catch (e) { /* as above */ }
+    CODE_NOTE = null;
+    render();
+  }
+
+  /* Recognise what was in the address, keep the id, and take the code back out of
+     the address bar — a screenshot of an order should not carry one, and a code
+     that was NOT recognised should not sit there looking as though it was. */
+  function takeCodeFromAddress() {
+    var m = /[?&#]code=([A-Za-z0-9]{1,32})/.exec(
+      window.location.search + ' ' + window.location.hash);
+    if (!m) return;
+    var h = sha256(m[1].toUpperCase()), hit = null;
+    (MODEL.codes || []).forEach(function (c) { if (c.hash === h) hit = c; });
+    if (!hit) {
+      CODE_NOTE = { ok: false, text: 'That code is not one of ours. Nothing has changed.' };
+    } else if (ymd(new Date()) > hit.until) {
+      CODE_NOTE = { ok: false, text: hit.label + ' ran out on ' + hit.until + '.' };
+    } else {
+      try { window.localStorage.setItem(CKEY, hit.id); } catch (e) { /* as above */ }
+      CODE_NOTE = { ok: true, text: hit.pct + '% off, applied to your order.' };
+    }
+    if (window.history && window.history.replaceState) {
+      var q = window.location.search.replace(/^\?/, '').split('&').filter(function (kv) {
+        return kv && kv.slice(0, 5).toLowerCase() !== 'code=';
+      }).join('&');
+      var hash = /^#code=/i.test(window.location.hash) ? '' : window.location.hash;
+      window.history.replaceState(null, '',
+        window.location.pathname + (q ? '?' + q : '') + hash);
+    }
+  }
+
+  function pctFor(level) {
+    var d = discount();
+    if (!d) return 0;
+    if (d.levels !== 'all' && d.levels.indexOf(level) < 0) return 0;
+    return d.pct;
+  }
+
+  /* What a line costs after the code. The deposit split is then taken on what is
+     left and never moves, which is the same order shop.js applies them in. */
+  function unitOf(lvl) {
+    var pct = pctFor(lvl.cart_id);
+    return pct ? Math.round(lvl.pence * (100 - pct) / 100) : lvl.pence;
+  }
+
   /* ------------------------------------------------------------------ lines */
   function lines() {
     return Object.keys(S.items).filter(function (k) {
@@ -318,11 +473,14 @@
       return LEVELS[p[1]] && SHAPES[p[0]] && S.items[k] > 0;
     }).map(function (k) {
       var p = k.split('|'), lvl = LEVELS[p[1]], qty = S.items[k];
-      var now = Math.round(lvl.pence * lvl.pay_now_pct / 100) * qty;
+      var unit = unitOf(lvl);
+      var now = Math.round(unit * lvl.pay_now_pct / 100) * qty;
       return { key: k, slug: p[0], level: p[1], qty: qty,
                shape: SHAPES[p[0]], lvl: lvl,
                sku: O.sku_prefix + '-' + SHAPES[p[0]].code + '-' + lvl.cart_code,
-               sum: lvl.pence * qty, now: now, later: lvl.pence * qty - now };
+               unit: unit, list: lvl.pence,
+               off: (lvl.pence - unit) * qty,
+               sum: unit * qty, now: now, later: unit * qty - now };
     }).sort(function (a, b) {
       return a.lvl.n.localeCompare(b.lvl.n) || a.slug.localeCompare(b.slug);
     });
@@ -386,6 +544,10 @@
 
     var money$ = el('div', 'n-line__money');
     money$.appendChild(el('b', null, money(l.sum)));
+    if (l.off) {
+      var was = el('span', 'n-line__was', money(l.list * l.qty));
+      money$.appendChild(was);
+    }
     if (l.later) {
       money$.appendChild(el('span', null, money(l.now) + ' now'));
       money$.appendChild(el('span', null, money(l.later) + ' on delivery'));
@@ -394,6 +556,36 @@
     }
     row.appendChild(money$);
     return row;
+  }
+
+  /* What the reader is holding, where they can see it and drop it. A discount
+     that only shows up in the arithmetic is a discount nobody can check. */
+  function renderCodeBar(host) {
+    var h = held();
+    if (!h && !CODE_NOTE) return;
+    var bar = el('div', 'n-code' + ((h && h.ok) || (CODE_NOTE && CODE_NOTE.ok)
+      ? ' n-code--on' : ' n-code--off'));
+    var said = el('div');
+    if (h && h.ok) {
+      said.appendChild(el('b', null, h.rec.label));
+      said.appendChild(el('span', null, h.rec.pct + '% off'
+        + (h.rec.levels === 'all' ? ' every level' : ' some levels')
+        + ', until ' + h.rec.until + '.'));
+    } else if (h) {
+      said.appendChild(el('b', null, 'No discount is held'));
+      said.appendChild(el('span', null, h.why));
+    } else {
+      said.appendChild(el('b', null, CODE_NOTE.ok ? 'Code applied' : 'Code not applied'));
+      said.appendChild(el('span', null, CODE_NOTE.text));
+    }
+    bar.appendChild(said);
+    if (h) {
+      var drop = el('button', null, 'Remove it');
+      drop.type = 'button';
+      drop.addEventListener('click', dropCode);
+      bar.appendChild(drop);
+    }
+    host.appendChild(bar);
   }
 
   function renderOrder(host) {
@@ -422,6 +614,8 @@
       d.appendChild(el('b', null, value));
       return d;
     }
+    var off = ls.reduce(function (s, l) { return s + l.off; }, 0);
+    if (off) totals.appendChild(row('Taken off by your code', '\u2212' + money(off)));
     totals.appendChild(row('Due now', money(dueNow())));
     if (dueLater()) totals.appendChild(row('Due on delivery', money(dueLater())));
     totals.appendChild(row('Total', money(dueTotal()), 'is-total'));
@@ -778,6 +972,12 @@
   });
 
   function render() {
+    // The slot is in the chrome, so a code is acknowledged on whatever page it
+    // landed on. A printed card points at the front page; before this, a code
+    // that was not ours changed nothing and said nothing, which reads exactly
+    // like a code that worked.
+    Array.prototype.forEach.call(document.querySelectorAll('[data-code-bar]'),
+      function (slot) { slot.replaceChildren(); renderCodeBar(slot); });
     var o = document.getElementById('order');
     if (o) renderOrder(o);
     var c = document.getElementById('checkout');
@@ -788,6 +988,7 @@
   }
 
   load();
+  takeCodeFromAddress();
   render();
   document.addEventListener('keydown', onKey);
   if (document.querySelector('[data-step]')) {
