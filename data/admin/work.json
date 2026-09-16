@@ -62,9 +62,9 @@
         },
         {
           "id": "TM-3",
-          "title": "Create three coupons and seven promotion codes over them",
-          "status": "queued",
-          "description": "25, 50 and 100 per cent. The seven strings are the ones data/discounts.yml already holds, so a code printed on a PDF at v0.1.11 still works. Every promotion code gets a redemption cap and an expiry.",
+          "title": "Create the promotion codes over the three coupons",
+          "status": "next",
+          "description": "<b>The coupons are done</b> — 25, 50 and 100 per cent, created 16 September, all <code>once</code>, all reconciling against the percentages this store honours. <b>Zero promotion codes exist, and that is the gap.</b> A coupon carries the percentage; a promotion code is the string a person is handed and the thing a link can carry pre-applied. The seven strings in <code>data/discounts.yml</code> map onto these three — five at a hundred per cent, kept separate so an order record says which one produced it.",
           "owner": "lead",
           "source": "lead",
           "memo": "2026-09-16-stripe-end-to-end"
@@ -149,6 +149,15 @@
           "description": "The split makes a new thing possible that no page describes: somebody buying the delivery line without ever having bought the deposit. Either the pages say what that is, or the link only ever offers the pair.",
           "owner": "lead",
           "source": "lead",
+          "memo": "2026-09-16-stripe-end-to-end"
+        },
+        {
+          "id": "TM-14",
+          "title": "Cap the hundred-per-cent coupon before anything is printed",
+          "status": "next",
+          "description": "No redemption cap and no expiry. Harmless while nothing can redeem it; an open tab the moment a promotion code and a link exist. A code at a hundred per cent cannot be recalled once it is on a card — the cap is what makes printing it survivable. The gate notes it today and fails the release that turns a rail on with it still missing.",
+          "owner": "lead",
+          "source": "self",
           "memo": "2026-09-16-stripe-end-to-end"
         }
       ],

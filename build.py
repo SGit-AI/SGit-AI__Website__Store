@@ -3496,6 +3496,49 @@ def stripe_catalogue():
             "version": SITE["version"], "currency": "gbp", "prices": rows}
 
 
+def money_label(pence):
+    """Pence as a price. The chip these sit in is uppercased by its own CSS, which
+    turned `5000p` into `5000P` \u2014 a unit nobody uses, on the one number a reader
+    is most likely to be checking against a dashboard."""
+    return f"\u00a3{pence // 100:,}" + ("" if pence % 100 == 0 else f".{pence % 100:02d}")
+
+
+def _coupon_rank(c):
+    if not c["coupon"]:
+        return 1
+    if c["capped"]:
+        return 4
+    return 1 if c["pct"] == 100 else 2
+
+
+def coupon_reconciliation():
+    """The three coupons, against the seven codes this store honours.
+
+    THE SHAPE IS THREE-TO-SEVEN AND THAT IS CORRECT. A coupon carries a
+    percentage; a promotion code is the string a person is handed and is a
+    separate object attached to one. Five of this store's seven codes are at a
+    hundred per cent, and they exist as five rather than one so that an order
+    record says WHICH of them produced it — a beta tester, an agent driving a
+    script, somebody at a stand. That distinction lives in the promotion code, not
+    in the coupon, which is why three coupons is the right number and why zero
+    promotion codes is the thing still missing."""
+    live = {c["pct"]: c for c in STRIPE_PRODUCTS.get("coupons", [])}
+    rows = []
+    for pct in sorted({d["pct"] for d in DISCOUNTS}, reverse=True):
+        codes = [d for d in DISCOUNTS if d["pct"] == pct]
+        got = live.get(pct)
+        rows.append({
+            "pct": pct,
+            "codes": len(codes),
+            "printable": sum(1 for d in codes if d["printable"]),
+            "coupon": got["name"] if got else None,
+            "capped": bool(got and got["max_redemptions"]) if got else None,
+            "expires": (got["expires"] if got else None),
+            "redeemed": got["times_redeemed"] if got else None,
+        })
+    return rows
+
+
 def rails_pages(out_dir, ctx_shared):
     """One page per payment rail, plus the index that compares them."""
     made = {}
@@ -3572,11 +3615,51 @@ def rails_pages(out_dir, ctx_shared):
                        if q.get("stripe_name") else "")
                     + "</p></div>"
                     f'<span class="st st--{4 if q.get("agrees") else 1}">'
-                    f'{q["unit_amount"]}p{"" if q.get("agrees") else " ✗"}</span></div>'
+                    f'{money_label(q["unit_amount"])}'
+                    f'{"" if q.get("agrees") else " ✗"}</span></div>'
                     for q in stripe_catalogue()["prices"]) + "</div>"
                 '<p class="small">The account carries one more product that is not listed and is '
                 'not reconciled: it belongs to a different part of the estate and this store '
-                'neither sells it nor tracks it.</p>')
+                'neither sells it nor tracks it.</p>'
+                '<h2 id="the-coupons">The coupons, and the codes that are still missing</h2>'
+                '<p><b>Three coupons exist. Zero promotion codes do, and that is the whole gap.</b> '
+                'A coupon carries a percentage. A promotion code is the string a person is actually '
+                'handed, it is a separate object attached to a coupon, and it is what a link can '
+                'carry pre-applied. Until one exists there is nothing to give anybody.</p>'
+                '<p>Three onto seven is the right shape, not a shortfall. Five of this store\'s '
+                'seven codes are at a hundred per cent, and they exist as five so that an order '
+                'record says <em>which</em> one produced it \u2014 a beta tester, an agent driving '
+                'a script, somebody at a stand. That lives in the promotion code, not in the '
+                'coupon.</p><div class="rows">'
+                + "".join(
+                    f'<div class="row2"><div><b>{c["pct"]}% off</b>'
+                    f'<p>{c["codes"]} code{"" if c["codes"] == 1 else "s"} in '
+                    '<code>data/discounts.yml</code> at this percentage'
+                    + (f', {c["printable"]} of them printable' if c["printable"] else "")
+                    + (f' \u00b7 coupon <b>{html.escape(c["coupon"])}</b>, once, '
+                       f'{c["redeemed"]} redemptions'
+                       if c["coupon"] else " \u00b7 <b>no coupon exists at this percentage</b>")
+                    + (' \u00b7 <b>no cap and no expiry</b>' if c["coupon"] and not c["capped"]
+                       else "")
+                    + "</p></div>"
+                    # A green chip reading UNCAPPED is a chip arguing with itself.
+                    # Rank follows what the state COSTS: red where an uncapped
+                    # hundred-per-cent code cannot be recalled, amber where a cap is
+                    # merely missing, green where one exists.
+                    + f'<span class="st st--{_coupon_rank(c)}">'
+                    + ("capped" if c["capped"] else
+                       "no cap" if c["coupon"] else "missing") + "</span></div>"
+                    for c in coupon_reconciliation())
+                + "</div>"
+                '<div class="panel r1"><h3>The hundred-per-cent coupon has no cap and no '
+                'expiry</h3><p>Which is fine today, because no promotion code exists over it and no '
+                'payment link exists to use one on \u2014 so there is nothing to redeem and nothing '
+                'to leak. <b>It stops being fine the moment either of those is true.</b> A code at a '
+                'hundred per cent, printed on a card or on a page, cannot be recalled; the cap is '
+                'the thing that makes printing it survivable, and it belongs on the coupon before '
+                'the first promotion code is created rather than after the first one gets '
+                'screenshotted. <code>check_a_hundred_per_cent_coupon_is_capped</code> fails the '
+                'release the moment a rail goes live and a cap is still missing.</p></div>')
                if r["id"] == "stripe" else "")
             + f'<p><a href="{RAIL_ROOT}">← both rails</a></p>')
         md = [f"# {r['name']}\n", f"**{r['state']}** — {r['one_line']}\n", "## Why\n"]

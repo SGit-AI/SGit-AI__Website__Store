@@ -1,5 +1,5 @@
 {
-  "_what_this_is": "What is ACTUALLY in the Stripe dashboard, as of the date below. It is not a plan and it is not generated from data/offers.yml — it is the other side of the reconciliation, so the two can be compared and a drift can be caught. The build emits what the offers imply; this file says what exists; a check puts them next to each other.",
+  "_what_this_is": "What is ACTUALLY in the Stripe dashboard, as of the dates below: the products, their prices, and the coupons. It is not a plan and it is not generated from this repository's data — it is the other side of a reconciliation, so the two can be compared and a drift can be caught. The build emits what the offers imply; this file says what exists; a check puts them side by side.",
   "_provenance": "Product ids, names and descriptions from the dashboard's own CSV export, committed verbatim at data/admin/stripe-products.csv. The amounts are not in that export and were read off the product list in the dashboard on the same day. That is a weaker source than the CSV and it is said here rather than blurred — the amounts are the half a person typed.",
   "_the_split_is_theirs_and_it_is_better": "The two upper levels are two products each, DEPOSIT and DELIVERY, summing to the full price — rather than one product plus a separate deposit price. A buyer who wants to pay in full adds both lines; a buyer who wants to start adds the deposit. The store had always said a fifth now and the rest on delivery, and this is that sentence as two rows rather than as a rule somebody has to apply.",
   "captured": "2026-09-16",
@@ -57,5 +57,40 @@
   "_not_ours": "One more product exists on the account and is deliberately not listed here: SG/Send Credits — Starter Pack, £5. It is a different product from a different part of the estate and this store neither sells it nor reconciles it.",
   "_renamed": "Level four is called 'Two sessions, and a professional signs it' in data/offers.yml and 'ABP - Two sessions and a custom vault' in Stripe. The Stripe name is the later decision and it is the better one — it says what the buyer ends up holding rather than what happens to it. The store has not been renamed to match yet and that is a unit of work, not an oversight.",
   "_the_key_is_a_description_not_a_lookup_key": "Every price carries its code in the Stripe PRICE DESCRIPTION field — ABP-T1, ABP-T3-DEPOSIT and so on — because the dashboard's product view does not surface a lookup key and the description is what was available. It works for a person reading the dashboard. It is NOT the same thing as Price.lookup_key, which exists on the API and is the field a webhook would query a line item back to an offer by. That difference is a real one and it is written down here rather than found later by a handler that cannot tell which level was bought.",
-  "_prefix": "ABP-, not the SG- this plan first proposed. The project lead's choice and the better one: the prefix names the product rather than the company."
+  "_prefix": "ABP-, not the SG- this plan first proposed. The project lead's choice and the better one: the prefix names the product rather than the company.",
+  "coupons_captured": "2026-09-16",
+  "_coupon_ids_are_not_printed_on_the_site": "The ids below are in this repository because the reconciliation has to be able to point at a specific row. They are NOT rendered on any page. A coupon id is not the thing a buyer applies — what a buyer applies, or a link carries in prefilled_promo_code, is a PROMOTION CODE, and none of those exists yet. So publishing the id would most likely be harmless, and not publishing it costs nothing, and this store does not spend a maybe on a convenience. Confirm the promotion-code-versus-coupon-id behaviour against the dashboard before the first link goes out.",
+  "coupons": [
+    {
+      "id": "HC1EJshb",
+      "name": "ABP-Sep-100pc",
+      "pct": 100,
+      "duration": "once",
+      "max_redemptions": null,
+      "expires": null,
+      "times_redeemed": 0,
+      "valid": true
+    },
+    {
+      "id": "867CjHvr",
+      "name": "ABP-Sep-50pc",
+      "pct": 50,
+      "duration": "once",
+      "max_redemptions": null,
+      "expires": null,
+      "times_redeemed": 0,
+      "valid": true
+    },
+    {
+      "id": "4F5VAoOu",
+      "name": "ABP-Sep-25pc",
+      "pct": 25,
+      "duration": "once",
+      "max_redemptions": null,
+      "expires": null,
+      "times_redeemed": 0,
+      "valid": true
+    }
+  ],
+  "_the_gap_between_a_coupon_and_a_code": "A coupon carries the percentage. A promotion code is the string a person is handed and is a separate object attached to a coupon. Three coupons exist; zero promotion codes do. The seven strings in data/discounts.yml are the promotion codes to create, and they map onto these three coupons rather than needing seven of their own."
 }

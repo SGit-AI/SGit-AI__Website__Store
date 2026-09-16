@@ -17,7 +17,7 @@ AND ONE CHECK WAS PROVED DEAD AND REWRITTEN. The split-adds-up assertion compare
 Also fixed: .buy was already the buy-button class, so every card on the new shop front inherited font-weight 700 from it. Same shape of bug as the embed width three releases ago. The cards are .sku now.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `85660404d9d1ca5d91aa1ffa9b3c627c84f7120b`
 - Reconstructed: no
 
 ---

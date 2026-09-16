@@ -1751,6 +1751,69 @@ def check_the_stripe_catalogue_is_the_offers():
             fail(f"the Stripe catalogue carries {bad!r}. It is a price list; a key is never in one")
 
 
+def check_a_hundred_per_cent_coupon_is_capped():
+    """A code that takes the whole price off cannot be recalled once it is printed.
+
+    THE RULE IS THE SAME ONE check_printable_codes_need_a_dead_rail ALREADY MAKES,
+    moved to the provider's side. That check refuses a printable hundred-per-cent
+    code while any rail is live; this one refuses an UNCAPPED hundred-per-cent
+    COUPON in the same circumstance, because once a promotion code exists over it
+    and a link exists to use it on, an uncapped coupon is an open tab.
+
+    It does not fail today and says so in its own message. No rail is live, no
+    promotion code exists, so there is nothing to redeem. It fires on the release
+    that changes that, which is the release where somebody will be thinking about
+    twelve other things."""
+    live = json.loads((ROOT / "data" / "admin" / "stripe-products.json").read_text())
+    coupons = live.get("coupons", [])
+    if not coupons:
+        return
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    rail_is_live = any((o.get("checkout_url") or "") for o in index["offers"])
+    for c in coupons:
+        if c["pct"] != 100:
+            continue
+        if not c.get("max_redemptions"):
+            if rail_is_live:
+                fail(f"coupon {c['name']!r} takes the whole price off, has no redemption cap, and "
+                     "a payment rail is now live. A code at a hundred per cent cannot be recalled "
+                     "once it is printed — the cap is what makes printing it survivable")
+            else:
+                note(f"coupon {c['name']!r} is 100% off with no cap and no expiry. Harmless while "
+                     "no rail is live and no promotion code exists over it; this check fails the "
+                     "release that changes either")
+        if c.get("times_redeemed"):
+            note(f"coupon {c['name']!r} has been redeemed {c['times_redeemed']} time(s). The "
+                 "dashboard export is dated — re-export before reading anything into that")
+
+
+def check_the_coupons_cover_every_discount():
+    """Every percentage this store honours has a coupon, and no coupon exists at a
+    percentage the store does not use.
+
+    THREE COUPONS ONTO SEVEN CODES IS CORRECT AND IS NOT A SHORTFALL. Five of the
+    seven are at a hundred per cent and exist as five so that an order record says
+    which one produced it. That distinction lives in the promotion code, which is
+    a different object; the coupon only ever needs to carry the percentage."""
+    src = (ROOT / "data" / "admin" / "stripe-products.json")
+    live = json.loads(src.read_text())
+    coupons = live.get("coupons", [])
+    if not coupons:
+        return
+    have = {c["pct"] for c in coupons}
+    want = {pct for pct, _printable in EXPECTED_DISCOUNTS.values()}
+    for pct in sorted(want - have):
+        fail(f"this store honours a {pct}% code and no coupon exists at that percentage. A code "
+             "recognised in the browser and unknown to the rail is a code that works until the "
+             "moment it is worth money")
+    for pct in sorted(have - want):
+        fail(f"a {pct}% coupon exists on the account and no code on this store is at that "
+             "percentage. Either a code was removed here and not there, or a discount exists that "
+             "nothing on this site can explain")
+    if len(coupons) != len({c["id"] for c in coupons}):
+        fail("two coupons in the dashboard export share an id")
+
+
 def check_a_withheld_term_is_declared():
     """Hard rule 12 has no allowlist, so a memo quoting a barred word renders a
     marker in its place. A marker without the sentence that explains it would be
@@ -1885,6 +1948,7 @@ def main():
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,
+        check_a_hundred_per_cent_coupon_is_capped, check_the_coupons_cover_every_discount,
     ]:
         fn()
     if failures:
