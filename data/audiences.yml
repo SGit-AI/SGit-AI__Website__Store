@@ -1,0 +1,88 @@
+# THE FIVE AUDIENCES, AND WHY THIS FILE EXISTS BESIDE data/buyers.yml RATHER
+# THAN INSTEAD OF IT.
+#
+# The store already had three buyer groups, cut by SITUATION — you run agents
+# today, you are backing a company, you are a startup. The project lead asked on
+# 16 September for five, cut by ROLE: founder, investor, C-level executive,
+# cybersecurity professional, risk and governance. Those are different axes over
+# the same six offers rather than the same axis drawn twice, so this is an extra
+# index and not a replacement.
+#
+# WHETHER THE OLD THREE RETIRE IS A QUESTION AND IT IS OPEN. They have pages, a
+# place in the nav, entries in the sitemap and claims citing them, and deleting
+# them would be a bigger change than adding five. It is written down at
+# /admin/work/qualify-the-buyer/ rather than decided here.
+#
+# THIS FILE ADDS NO OFFERS AND NO PRICES. Like buyers.yml, it is an index over
+# the six records in data/offers.yml. A grouping that invented a seventh thing to
+# sell is the exact failure the ledger exists to catch.
+#
+# SHOWN DIFFERENTLY, NOT HIDDEN — and that is a decision worth naming. The memo
+# said an investor is not going to be sold a ten-pound licence. The tempting
+# reading is to hide the cheap levels from them; the honest one is to lead with
+# what fits and keep everything reachable, because a site that shows different
+# people different catalogues has to say so out loud, and this one would rather
+# not have to. `leads_with` sets what the view opens on. `quiet` names the levels
+# that are present and not argued for. Nothing is removed.
+#
+# One line per value: the YAML subset in build.py drops wrapped continuation lines.
+
+- id: founder
+  order: 1
+  short: A founder
+  name: You are a founder
+  arrives_with: "We are shipping with agents and somebody is going to ask what they can reach."
+  what_changes: "Speed and evidence, in that order. A founder needs the document to exist before the conversation that needs it, and needs it to survive being read by somebody more senior than them."
+  leads_with: t2
+  quiet: [t4]
+  why: "A vault you hold the keys to is the level that turns a question into an artefact you own. The pack below it is the same material if you would rather not run anything; the correction above it is for when the template's assumptions are not yours."
+  evidence: licence-to-operate
+  evidence_why: "One agent, its grant, its mandate and the delta between them, run end to end. It is the shape of the thing you would be holding."
+
+- id: investor
+  order: 2
+  short: An investor
+  name: You are backing a company
+  arrives_with: "I need somebody to look at what this company's agents can actually do, and I need it to be somebody's work."
+  what_changes: "Independence, and repeatability across a portfolio. The point is not that a document exists — it is that somebody who is not the founder wrote it and will stand behind it."
+  leads_with: t4
+  quiet: [t1]
+  why: "The two upper levels are the ones where a person does the work and signs it. The levels below are the same document produced without anybody looking at your situation, which is fine for a founder and is not what a review is."
+  evidence: riskmandate-file-security
+  evidence_why: "An eleven-step risk-acceptance walk over one evolving register — a worked example of the thing at the top of this ladder, published rather than described."
+
+- id: exec
+  order: 3
+  short: A C-level exec
+  name: You have to answer for it
+  arrives_with: "Can I have this in a form my board can read?"
+  what_changes: "Who the document is written for. The material is the same; what an executive needs is the version that survives a board pack, and the store is explicit that this is being built rather than already sitting there."
+  leads_with: t3
+  quiet: [t1]
+  why: "Corrected for your situation is the first level where the assumptions are yours rather than a template's, which is the difference between a document you can put in front of a board and one you have to explain first."
+  evidence: aiuc-1-conformance
+  evidence_why: "A standard turned into rows a position can be measured against, with what is attested kept permanently apart from what is evidenced. That separation is the thing a board actually needs."
+
+- id: security
+  order: 4
+  short: A security professional
+  name: You do this for a living
+  arrives_with: "I can write the policy. What I want is the structure and the vocabulary, and I want to see how you compute the delta."
+  what_changes: "Nothing is explained that you already know. What is worth your time here is the method and the fifteen published templates — and, if you run reviews, the list of people who run the upper two levels."
+  leads_with: t1
+  quiet: []
+  why: "The pack is every file, downloaded, under a commercial licence — which is the level that makes sense when you are going to do the work yourself and put it in front of a client."
+  evidence: risk-graph-explorer
+  evidence_why: "The estate, the role risk map, the risk chains, the register and the acceptance gate. If the method is wrong, this is the page where you will see it."
+
+- id: governance
+  order: 5
+  short: Risk and governance
+  name: You own the register
+  arrives_with: "Where does this sit against the frameworks we already report on?"
+  what_changes: "The mapping, and what the store refuses to claim about it. Nothing here is a compliance assessment and nothing claims conformity to any standard — what exists is a document that can be cited a row of."
+  leads_with: t3
+  quiet: [t1]
+  why: "A corrected mandate is the version that can go on a register, because the assumptions in it are yours and the delta is computed against them rather than against a starting guess."
+  evidence: regulation-graph
+  evidence_why: "A regulation parsed into a graph you can cite a row of, hash-verified to the official source bytes. What a mapping looks like when it is done properly."

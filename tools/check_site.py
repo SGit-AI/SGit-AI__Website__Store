@@ -1052,10 +1052,17 @@ def check_lab_is_marked():
         if LAB_WARNING not in flat:
             fail(f"{rel}: does not say {LAB_WARNING!r} — a page that looks like a checkout and "
                  "takes no money has to say which of the two it is before anybody reads on")
-        if "has never run" not in flat:
-            fail(f"{rel}: does not say the team behind this work has never run. The prototype "
-                 "configures consulting that people do, and the state of that team is the "
-                 "first thing a buyer is owed")
+        # REWORDED 16 SEPTEMBER, AND THE DISTINCTION IS THE WHOLE POINT. This used
+        # to require the words "has never run", which read as "nobody has ever done
+        # this work" — false, and ruled off the site. What is actually true, and is
+        # what a reader of a prototype is owed, is that the SEVEN-ROLE TEAM these
+        # pages describe is a specification rather than something staffed. The work
+        # itself is done, today, by a named person.
+        if "specification rather than something staffed" not in flat:
+            fail(f"{rel}: does not say the seven-role team it describes is a specification rather "
+                 "than something staffed. The prototype configures work that a person does, and "
+                 "the difference between a described team and a staffed one is the first thing a "
+                 "reader is owed")
         for m in re.finditer(r'href="(https?://[^"]*stripe[^"]*)"', p.read_text(), re.I):
             fail(f"{rel}: carries a payment destination {m.group(1)!r}. Nothing in the lab is "
                  "buyable, so nothing in it may link to a checkout")
@@ -1286,10 +1293,20 @@ def check_payment_split():
             continue
         if not (0 < pct <= 100):
             fail(f"offer {oid}: pay_now_pct is {pct}, which is not a share of a price")
-        if pct < 100 and o.get("state") not in ("unrun", "spec", "unlocated", "absent", "booking"):
-            fail(f"offer {oid}: takes a deposit but its state is {o.get('state')!r}. A deposit is "
-                 "how a thing that has not run yet is sold honestly; a thing that runs takes its "
-                 "price")
+        # WHAT A DEPOSIT IS FOR, RESTATED 16 SEPTEMBER. This used to allow a deposit
+        # only on something that had not run yet, which read the split as a hedge
+        # against an unproven thing. That was never the main reason and it is not a
+        # reason at all now: a deposit is how SCHEDULED PROFESSIONAL WORK is sold,
+        # everywhere, because the thing being reserved is somebody's calendar and
+        # the balance falls due when the work is in the buyer's hands.
+        #
+        # What stays barred is the case the rule was really written for: a thing
+        # that is produced the moment you pay, taking a deposit. That is a store
+        # holding money for no reason, and it is still refused.
+        if pct < 100 and o.get("state") not in ("person", "spec", "unlocated", "absent", "booking"):
+            fail(f"offer {oid}: takes a deposit but its state is {o.get('state')!r}. A deposit "
+                 "reserves somebody's time, or holds a place for something not yet built; a thing "
+                 "produced the moment you pay takes its price")
 
 
 def check_post_sale_page():
@@ -1912,6 +1929,47 @@ def check_the_evidence_is_real():
              "sentence is the correction of 16 September and it is not optional furniture")
 
 
+# The states a chip can render. Kept here rather than imported, because a check
+# that reads the thing it is checking proves nothing — if build.py renames a state
+# and this list is not updated, that IS the finding.
+CHIP_STATES = {"exists", "measured", "docs", "projected", "spec", "person", "unlocated",
+               "booking", "partial", "absent"}
+
+
+def check_every_claim_state_is_real():
+    """Every claim carries a state this site can draw.
+
+    THIS EXISTS BECAUSE THE FALLBACK WAS SILENT. A state was renamed on 16
+    September and two claims kept pointing at the old name. Nothing failed: the
+    ledger rendered them as `unknown` with an empty tooltip, in production, on the
+    page whose entire job is saying how true each sentence is. The build now
+    raises on an unknown state; this catches it one step earlier, in the data,
+    where the fix is one line."""
+    src = (ROOT / "data" / "claims.yml").read_text()
+    seen = {}
+    cid = None
+    for line in src.splitlines():
+        if line.startswith("- id: "):
+            cid = line[6:].strip()
+        elif line.startswith("  state: ") and cid:
+            seen[cid] = line[9:].strip()
+    if not seen:
+        fail("data/claims.yml: no claim states could be read at all")
+        return
+    for c, st in sorted(seen.items()):
+        if st not in CHIP_STATES:
+            fail(f"claim {c!r} has state {st!r}, which is not one this site can draw. It would "
+                 f"render as 'unknown' with no tooltip on the ledger. The states are: "
+                 f"{', '.join(sorted(CHIP_STATES))}")
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    for o in index["offers"]:
+        if o["state"] not in CHIP_STATES:
+            fail(f"offer {o['id']!r} has state {o['state']!r}, which is not one this site can draw")
+    out = (OUT / "ledger" / "index.html")
+    if out.exists() and 'class="chip st-u" title=""' in out.read_text():
+        fail("ledger/index.html: a chip rendered with the unknown fallback and an empty tooltip")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -1942,6 +2000,7 @@ def main():
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,
         check_delivery_estimates,
+        check_every_claim_state_is_real,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

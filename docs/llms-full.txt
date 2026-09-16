@@ -1,5 +1,5 @@
 # store.sgit.ai — the whole site as markdown
-site v0.2.4 · every claim's verification state is at /ledger/
+site v0.2.5 · every claim's verification state is at /ledger/
 
 Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.
 
@@ -32,14 +32,13 @@ who does the correcting — and the line between the third and the fourth is the
 line between a thing agents do and a thing a person signs.
 [What is actually inside one →](/what-is-in-one/)
 
-**All four exist. Two of them have never been bought here.** That is a smaller
-sentence than it used to be, and a more accurate one: the work behind every level
-has been done many times and published — six vaults of it are open to read right
-now, linked below — and what has not happened is a sale through this checkout,
-because no payment rail is live yet. The pages say which is which on their own
-rows, because a store that edits its gaps out is a marketing page wearing a lab
-coat. {{claim:the-work-has-been-done}} {{claim:abp-templates-exist}}
-{{claim:abp-correction-unrun}} {{claim:abp-sessions-unrun}}
+**The first two arrive automatically. The top two are somebody's work.** That is
+the line that matters when you are choosing: the pack and the vault are produced
+the moment you pay, and the corrected mandate and the two sessions are done by a
+named security professional and signed off. The method behind all four has been
+done many times — six vaults of it are open to read right now, linked below.
+{{claim:the-work-has-been-done}} {{claim:abp-templates-exist}}
+{{claim:abp-correction-by-a-person}} {{claim:abp-sessions-by-a-person}}
 
 ## Which agent do you run?
 
@@ -228,7 +227,7 @@ because it is the one whose cost is somebody's time.
 
 That line — between a thing agents do and a thing a person sits down for — is the
 line between the third level and the fourth, and it is the only reason the price
-moves as far as it does. {{claim:abp-correction-unrun}}
+moves as far as it does. {{claim:abp-correction-by-a-person}}
 
 ## What the two sessions are
 
@@ -239,7 +238,7 @@ came back.
 
 **Between them, the work.** The mandate is built from the interview rather than
 from a form, the delta is recomputed against it, and **a security professional
-reviews and signs off** what is delivered. {{claim:abp-sessions-unrun}}
+reviews and signs off** what is delivered. {{claim:abp-sessions-by-a-person}}
 
 **Two sessions is what is sold.** More is a separate conversation, and saying so
 before you buy is cheaper than discovering it afterwards.
@@ -651,9 +650,10 @@ and nothing anybody wrote down would need it.
 described, one policy per gap, each naming the grant it constrains. Not a template
 with a company name substituted in.
 
-**A team does this work.** Nothing in it runs by itself today, the team specified
-for it has never run, and which parts of it could later be done without people is
-a decision nobody has taken. {{claim:lab-fulfilment-is-people}} So what these
+**A named security professional does this work.** Nothing in it runs by itself
+today, the seven-role team these prototypes describe is a specification rather
+than something staffed, and which parts of it could later be done without people
+is a decision nobody has taken. {{claim:lab-fulfilment-is-people}} So what these
 pages produce is **the brief that team starts from** — the thing a first call
 would otherwise be spent assembling.
 
@@ -751,7 +751,7 @@ point rather than an embarrassment.
 | **read, not run** | Read from a published source on this date. Never executed by us |
 | **projected** | Arithmetic, not an invoice. The workings are shown |
 | **specified, not built** | A specification. The thing it specifies does not exist |
-| **never bought here** | **Never sold through this store.** Whether the underlying work has been done is a separate question and a different answer &mdash; it has, repeatedly, and the offer's own row says where to go and read it |
+| **delivered by a person** | A named security professional does this work and signs it off. It is somebody's time rather than a pipeline, which is why its delivery estimate depends on a calendar |
 | **built, not located** | It was built. It has not been found since, and nothing here promises it until it is |
 | **a booking, not a download** | What is bought is a person's time, not a file |
 | **part exists** | One half runs. The half carrying the guarantee does not |
@@ -1054,8 +1054,8 @@ stands is the one committed to in public.
 - **At £500 the files come back by email.** A write-only vault to drop them into is the intended route and does not exist. {{claim:level3-return-by-email}}
 - **Who owns the follow-up mailbox past the first orders is settled on neither site.** This store names nobody and links to the page that carries the address, so a change is one change and not two. {{claim:follow-up-owner-unnamed}}
 - **How long the £500 level takes after you reply is committed to nowhere.** The follow-up is
-  24 hours; the delivery is not measured, because it has never run. The page says so rather
-  than carrying a number nobody has earned. {{claim:t3-delivery-time-absent}}
+  24 hours; the delivery estimate is one to three days from your reply. The page says so rather
+  and labels it an estimate rather than a measurement. {{claim:t3-delivery-time-estimated}}
 - **The opinion add-on is listed here and has no page there** — theirs will be built in the same shape as the four once it is asked for. {{claim:opinion-add-on-has-no-page-there}}
 
 ## What this site does with a payment

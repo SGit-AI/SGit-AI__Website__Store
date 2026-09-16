@@ -2,7 +2,7 @@
 
 Everything on one page, in order, with the ticket pinned beside it.
 
-**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by people, and the team specified for it has never run.
+**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by a named security professional today; the seven-role team these prototypes describe is a specification rather than something staffed.
 
 - What it is testing: Whether seeing the whole thing at once beats being walked through it. Closest to an ordinary cart, and the cheapest to be wrong about.
 - What is wrong with it: It looks like a form, and a long page of choices is a page people skim to the bottom of and price without reading.

@@ -15,7 +15,7 @@ because it is the one whose cost is somebody's time.
 
 That line — between a thing agents do and a thing a person sits down for — is the
 line between the third level and the fourth, and it is the only reason the price
-moves as far as it does. {{claim:abp-correction-unrun}}
+moves as far as it does. {{claim:abp-correction-by-a-person}}
 
 ## What the two sessions are
 
@@ -26,7 +26,7 @@ came back.
 
 **Between them, the work.** The mandate is built from the interview rather than
 from a form, the delta is recomputed against it, and **a security professional
-reviews and signs off** what is delivered. {{claim:abp-sessions-unrun}}
+reviews and signs off** what is delivered. {{claim:abp-sessions-by-a-person}}
 
 **Two sessions is what is sold.** More is a separate conversation, and saying so
 before you buy is cheaper than discovering it afterwards.

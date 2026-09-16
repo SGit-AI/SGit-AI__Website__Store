@@ -2,7 +2,7 @@
 
 Start from the shape that looks most like you, then correct it.
 
-**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by people, and the team specified for it has never run.
+**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by a named security professional today; the seven-role team these prototypes describe is a specification rather than something staffed.
 
 - What it is testing: Whether starting from a guess beats starting from nothing. The corrections are the signal: what somebody removes from a prefilled estate says more than what they add to an empty one.
 - What is wrong with it: A scenario that is nearly right gets accepted whole. The brief records which one it started from for exactly that reason, and it is still a risk.

@@ -2,7 +2,7 @@
 
 Permitted on the left, expected on the right, and the gap filling itself in between.
 
-**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by people, and the team specified for it has never run.
+**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by a named security professional today; the seven-role team these prototypes describe is a specification rather than something staffed.
 
 - What it is testing: Whether the product explains itself. The middle column is the thing being sold, computed live from two lists the buyer ticks, so nobody has to be told what excess authority means.
 - What is wrong with it: It asks for both halves before it shows anything, and the honest answer to the right-hand column is often that nothing is written down.

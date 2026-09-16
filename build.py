@@ -585,14 +585,22 @@ STATES = {
     "docs": ("read, not run", "st-d", "Read from a published source on this date. Never executed by us."),
     "projected": ("projected", "st-p", "Arithmetic, not an invoice. The workings are shown."),
     "spec": ("specified, not built", "st-s", "A specification. The thing it specifies does not exist yet."),
-    # RELABELLED 16 SEPTEMBER. It read "specified, never run" with the tooltip
-    # "never been executed once", which was true of the SALE and false of the work,
-    # and a reader had no way to tell which one a chip on an offer meant. It now
-    # says the thing that is actually unrun, and the offer's own row says where to
-    # go and read the work that is not.
-    "unrun": ("never bought here", "st-u",
-              "Never sold through this store. The work behind it has been done many times and is "
-              "published \u2014 what has not happened is a purchase through this checkout."),
+    # THE BADGE THAT WAS DOING TWO JOBS AND IS NOW DOING ONE.
+    #
+    # It read "specified, never run" and then "never bought here", and both of
+    # those described the SALE while sitting on a card about the PRODUCT. A reader
+    # took it to mean the work had never been done, which is false — it has been
+    # done many times and six vaults of it are published. Ruled on 16 September:
+    # the sentence comes off the site rather than being narrowed again.
+    #
+    # What replaces it is the thing that is actually true and actually useful: at
+    # the two upper levels a named person does the work. That is a property worth
+    # a chip, because it is the difference between these levels and the two below
+    # them, and it is the reason the delivery estimate depends on a calendar.
+    "person": ("delivered by a person", "st-n",
+               "A named security professional does this work and signs it off. It is somebody's "
+               "time rather than a pipeline, which is why its delivery estimate depends on "
+               "availability."),
     "unlocated": ("built, not located", "st-u", "It was built. It has not been found since, and until it is, nothing here promises it."),
     "booking": ("a booking, not a download", "st-b", "What is bought is a person's time, not a file."),
     "partial": ("part exists", "st-s", "One half of it runs. The half that carries the guarantee does not."),
@@ -601,7 +609,20 @@ STATES = {
 
 
 def chip(state, date=None, claim_id=None, label=None):
-    text, cls, why = STATES.get(state, ("unknown", "st-u", ""))
+    """A state as a chip.
+
+    IT USED TO FALL BACK TO "unknown" AND THAT WAS A SILENT FAILURE. Renaming a
+    state on 16 September left two claims pointing at one that no longer existed,
+    and the build said nothing: the ledger simply rendered `unknown` with an empty
+    tooltip, on two rows, in production. A fallback that produces a plausible-
+    looking page is worse than one that stops, so this raises — and
+    check_every_claim_state_is_real catches the same thing in the data before the
+    build gets here, which is where a reader would rather it were caught."""
+    if state not in STATES:
+        raise KeyError(
+            f"claim state {state!r} is not one this site has. It would have rendered as "
+            f"'unknown' with no tooltip. The states are: {', '.join(sorted(STATES))}")
+    text, cls, why = STATES[state]
     body = label or text
     if date:
         body += f" {date}"
@@ -1190,7 +1211,7 @@ def delivery_pages(out_dir, ctx_shared):
                + _money(o["price_min"] - o["price_min"] * o["pay_now_pct"] // 100)
                + ', invoiced when the work is in your hands</td></tr>'
                "</tbody></table></div>"
-               '<p class="small dim">This level has never run for a paying buyer, and a deposit is '
+               '<p class="small dim">This level is a person\u2019s time rather than a file, and a deposit is '
                'how that is sold honestly from a card: neither side carries the whole amount before '
                'anybody has done anything. <b>The split belongs to the offer and not to the rail</b> '
                '&mdash; a card tapped at the stand takes the same deposit as a link on a phone.</p>')
@@ -1217,11 +1238,12 @@ def delivery_pages(out_dir, ctx_shared):
                '<tr><th>5</th><td>The corrected vault comes back, with a written note of what '
                'changed and why.</td></tr>'
                "</tbody></table></div>"
-               '<p class="small dim"><b>How long step 5 takes is not committed to anywhere on this '
-               'site, and that is a gap rather than a policy.</b> The 24 hours is riskmandate.ai\u2019s '
-               'commitment and is kept on their pages. The time from your reply to the corrected '
-               'vault has never run for a paying buyer, so there is no measurement to quote and '
-               'nothing is invented here in place of one.</p>'
+               '<p class="small dim"><b>Step 5 is estimated at one to three days from your '
+               'reply</b> \u2014 from your reply rather than from your payment, because until the '
+               'details arrive there is nothing to correct against. It is an estimate rather than a '
+               'measurement, and it is labelled as one; the constraint behind it is one '
+               'person\u2019s calendar. The 24 hours is riskmandate.ai\u2019s commitment to follow '
+               'up and is kept on their pages.</p>'
                '<p class="small dim">The result is computed on your own machine and sent back in '
                'bands rather than as raw counts, because a connector list on its own is '
                'identifying. <b>The prompt reads and prints; it does not act</b>, and its last line '
@@ -2386,12 +2408,13 @@ def lab_model(prefix):
 PAY_NOTE = (
     '<h2 id="the-deposit-is-the-offer">Why two of the four take a deposit</h2>'
     '<p><b>Two of the four levels are produced without anybody being scheduled</b>, so they take '
-    'the whole price. The other two are somebody\u2019s work, and neither has run for a paying '
-    'buyer yet \u2014 so they take <b>a fifth on the order and the rest when the work is in your '
+    'the whole price. The other two are a named security professional\u2019s time \u2014 so '
+    'they take <b>a fifth on the order and the rest when the work is in your '
     'hands</b>. £100 of £500; £300 of £1,500.</p>'
     '<p><b>The split belongs to the offer and not to the rail.</b> A card tapped on a terminal at '
     'the stand takes the same deposit as a link opened on a phone, because what is being split is '
-    'the risk on a thing that has never run, and that does not change with how the card is read.</p>'
+    'the risk on work that is scheduled rather than produced, and that does not change with how '
+    'the card is read.</p>'
     '<h2 id="a-discount-code">A discount code, and why there is nowhere to type one</h2>'
     '<p><b>A code arrives in the address, not in a field.</b> There is no text input anywhere in '
     'this site\u2019s output and the gate refuses one, so a code is handed over the way a printed '
@@ -2463,9 +2486,10 @@ def lab_note():
         f'<p><b>{LAB_WARNING}.</b> This is a prototype of a purchase flow, not a purchase '
         'flow. No brief reaches us, no payment link is behind anything here, and which of '
         'the five (if any) becomes the real one is not decided. {{claim:lab-is-a-prototype}}</p>'
-        '<p>The work it configures is done by <b>people</b>, and the team specified for it '
-        'has never run. Which parts of it could later be done without them is a decision '
-        'nobody has taken. {{claim:lab-fulfilment-is-people}}</p>'
+        '<p>The work it configures is done by <b>a named security professional</b> today. The '
+        'seven-role team these prototypes describe is a specification rather than something '
+        'staffed, and which parts of it could later be done without people is a decision nobody '
+        'has taken. {{claim:lab-fulfilment-is-people}}</p>'
         "</div>"
     )
 
@@ -2513,8 +2537,9 @@ def lab_pages(out_dir, ctx_shared):
             "src_md": (
                 f"# {v['name']}\n\n{v['one_line']}\n\n"
                 f"**{LAB_WARNING}.** This is a prototype of a purchase flow, not a purchase "
-                "flow. The work it configures is done by people, and the team specified for it "
-                "has never run.\n\n"
+                "flow. The work it configures is done by a named security professional today; the "
+                "seven-role team these prototypes describe is a specification rather than "
+                "something staffed.\n\n"
                 f"- What it is testing: {v['tests']}\n- What is wrong with it: {v['risk']}\n"
                 "- What it produces: one JSON brief, identical across all five prototypes\n\n"
                 "## The model behind all five\n\n"

@@ -62,7 +62,7 @@
 # that are produced without anybody being scheduled, and 20 for the two that are
 # somebody's work — £100 of £500, £300 of £1,500. A deposit is how you sell an
 # hour of a person from a card without either side carrying the whole risk of a
-# thing that has never run for a paying buyer, and it works the same whether the
+# thing a person does rather than a pipeline, and it works the same whether the
 # card is tapped in a room or opened on a phone: the split is a property of the
 # offer, not of the rail.
 #
@@ -186,9 +186,9 @@
   price_max: 50000
   price_why: "You send the industry, the use case and the details; the mandate is corrected against them and the delta recomputed. It is the first level where somebody other than you does the work that makes the document yours"
   gets: "The vault, with the mandate corrected against your situation rather than against a starting assumption, and a written note of what changed."
-  state_badge: unrun
-  state: "The correction has been done many times and the results are published — six vaults of this work are open to read at sgit.ai, including an eleven-step risk-acceptance walk over one evolving register. **What has not run is a sale of it through this store**, because no payment rail is live: you would be the first through this checkout, not the first to have it done."
-  claim: abp-correction-unrun
+  state_badge: person
+  state: "**Done by a named security professional**, and done many times: six vaults of this work are published and open to read, including an eleven-step risk-acceptance walk over one evolving register. What you buy at this level is that person's time turned on your situation rather than a template's."
+  claim: abp-correction-by-a-person
   rail: link
   buyer: startups
   also_for: [agents, investors]
@@ -222,9 +222,9 @@
   price_max: 150000
   price_why: "Two half-hour sessions — one to interview the team, one to deliver — plus the work between them and a security professional's review. It is the only level whose cost is somebody's time, and it is a fixed price rather than a band because two sessions is what is sold"
   gets: "Two half-hour sessions with your team, the behaviour policy built from the interview, and a security professional's review and sign-off."
-  state_badge: unrun
-  state: "The review work is published and open to read — an agent's grant, its mandate and the delta between them, and eleven linked threat models presented at a conference. **What has not happened is the two sessions, with a paying buyer, through this store**: no rail is live, and that part of it would be a first."
-  claim: abp-sessions-unrun
+  state_badge: person
+  state: "**Two sessions with a named security professional**, who reviews the work and signs it off. The method is published and open to read — an agent's grant, its mandate and the delta between them, and eleven linked threat models presented at a conference in Barcelona."
+  claim: abp-sessions-by-a-person
   rail: link
   buyer: investors
   also_for: [agents, startups]

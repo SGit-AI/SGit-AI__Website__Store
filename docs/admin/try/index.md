@@ -40,7 +40,7 @@ is the part most worth testing: it is the seam between two sites.
 - **Not built:** the payment rails. Every checkout URL in this repository is empty and the buttons say so rather than looking live.
 
 **So nothing you do here costs anybody anything**, and you cannot break a real
-order, because there are not any yet. You would be the first.
+order, because this store has not taken one yet.
 
 ## The codes
 
@@ -277,7 +277,7 @@ this way.
 ## What this walkthrough cannot show you
 
 - **A real payment.** No rail is live; the only checkout that completes is a wallet that charges nothing.
-- **What actually arrives at £50, £500 and £1,500.** Those levels have never been sold to anybody. The site says so on their own rows rather than in a footnote. {{claim:abp-correction-unrun}}
+- **What actually arrives at £50, £500 and £1,500.** The walkthrough stops at the page after payment; what lands after that at the two upper levels is a person's work, on a calendar. {{claim:abp-correction-by-a-person}}
 - **The follow-up.** Their pages promise a person within 24 hours, and nothing yet carries a sale from this store to that person — which is the one thing standing between here and a first real order. {{claim:sale-notification-absent}}
 
 ---

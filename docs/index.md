@@ -15,14 +15,13 @@ who does the correcting — and the line between the third and the fourth is the
 line between a thing agents do and a thing a person signs.
 [What is actually inside one →](/what-is-in-one/)
 
-**All four exist. Two of them have never been bought here.** That is a smaller
-sentence than it used to be, and a more accurate one: the work behind every level
-has been done many times and published — six vaults of it are open to read right
-now, linked below — and what has not happened is a sale through this checkout,
-because no payment rail is live yet. The pages say which is which on their own
-rows, because a store that edits its gaps out is a marketing page wearing a lab
-coat. {{claim:the-work-has-been-done}} {{claim:abp-templates-exist}}
-{{claim:abp-correction-unrun}} {{claim:abp-sessions-unrun}}
+**The first two arrive automatically. The top two are somebody's work.** That is
+the line that matters when you are choosing: the pack and the vault are produced
+the moment you pay, and the corrected mandate and the two sessions are done by a
+named security professional and signed off. The method behind all four has been
+done many times — six vaults of it are open to read right now, linked below.
+{{claim:the-work-has-been-done}} {{claim:abp-templates-exist}}
+{{claim:abp-correction-by-a-person}} {{claim:abp-sessions-by-a-person}}
 
 ## Which agent do you run?
 

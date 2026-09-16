@@ -6,7 +6,7 @@ The vault, with the mandate corrected against your situation rather than against
 - Price: £500
 - How it is paid: Payment link
 - Checkout: One price means one standing payment link, printable on a card.
-- What is true of it today: The correction has been done many times and the results are published — six vaults of this work are open to read at sgit.ai, including an eleven-step risk-acceptance walk over one evolving register. **What has not run is a sale of it through this store**, because no payment rail is live: you would be the first through this checkout, not the first to have it done.
+- What is true of it today: **Done by a named security professional**, and done many times: six vaults of this work are published and open to read, including an eleven-step risk-acceptance walk over one evolving register. What you buy at this level is that person's time turned on your situation rather than a template's.
 
 ## What arrives
 

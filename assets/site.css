@@ -789,3 +789,9 @@ figure.walkshot figcaption code{font-size:.9em}
    what it came off is a discount nobody can check. */
 .sku-was{font-size:.8rem;color:var(--dim)}
 .sku-was s{opacity:.75}
+/* Delivered by a person. Reads as a fact about the product rather than a warning
+   about it, because that is what it is: the two upper levels are somebody's time,
+   which is why their delivery estimate depends on a calendar. */
+/* st-p was already `projected`. This is `person`. A second meaning on one class
+   is how a chip quietly starts lying about a different claim. */
+.st-n{color:#1d4ed8;background:rgba(29,78,216,.10);border-color:rgba(29,78,216,.32)}

@@ -2,7 +2,7 @@
 
 One card per surface, each carrying what it permits and what it is expected to do.
 
-**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by people, and the team specified for it has never run.
+**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by a named security professional today; the seven-role team these prototypes describe is a specification rather than something staffed.
 
 - What it is testing: Whether the map is the sale. This is the only view where the deliverable and the configurator are the same object, so the buyer is already holding a rough version of what they would be buying.
 - What is wrong with it: It is the most work to fill in, and an empty board is a worse first screen than an empty list.

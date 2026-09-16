@@ -21,9 +21,10 @@ and nothing anybody wrote down would need it.
 described, one policy per gap, each naming the grant it constrains. Not a template
 with a company name substituted in.
 
-**A team does this work.** Nothing in it runs by itself today, the team specified
-for it has never run, and which parts of it could later be done without people is
-a decision nobody has taken. {{claim:lab-fulfilment-is-people}} So what these
+**A named security professional does this work.** Nothing in it runs by itself
+today, the seven-role team these prototypes describe is a specification rather
+than something staffed, and which parts of it could later be done without people
+is a decision nobody has taken. {{claim:lab-fulfilment-is-people}} So what these
 pages produce is **the brief that team starts from** — the thing a first call
 would otherwise be spent assembling.
 

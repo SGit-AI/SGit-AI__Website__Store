@@ -6,7 +6,7 @@ Two half-hour sessions with your team, the behaviour policy built from the inter
 - Price: £1,500
 - How it is paid: Payment link
 - Checkout: One price means one standing payment link, printable on a card.
-- What is true of it today: The review work is published and open to read — an agent's grant, its mandate and the delta between them, and eleven linked threat models presented at a conference. **What has not happened is the two sessions, with a paying buyer, through this store**: no rail is live, and that part of it would be a first.
+- What is true of it today: **Two sessions with a named security professional**, who reviews the work and signs it off. The method is published and open to read — an agent's grant, its mandate and the delta between them, and eleven linked threat models presented at a conference in Barcelona.
 
 ## What arrives
 

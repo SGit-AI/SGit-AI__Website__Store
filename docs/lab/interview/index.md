@@ -2,7 +2,7 @@
 
 One question per screen, in the order somebody would ask them out loud.
 
-**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by people, and the team specified for it has never run.
+**Nothing on this page can be bought.** This is a prototype of a purchase flow, not a purchase flow. The work it configures is done by a named security professional today; the seven-role team these prototypes describe is a specification rather than something staffed.
 
 - What it is testing: Whether the story carries. The estate is described in the order a person would actually describe it, and the price moves while they talk.
 - What is wrong with it: Five screens is five chances to leave. It hides how much is left, and a buyer who cannot see the whole shape cannot tell whether it is worth starting.

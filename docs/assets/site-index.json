@@ -1,5 +1,5 @@
 {
- "version": "v0.2.4",
+ "version": "v0.2.5",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -303,7 +303,7 @@
    "question": "Can you correct it for my situation?",
    "price": "\u00a3500",
    "rail": "link",
-   "state": "unrun",
+   "state": "person",
    "eta": "1 to 3 days",
    "eta_from": "from your reply, not from your payment",
    "eta_why": "The clock starts when you send the industry, the use case and the details, because until then there is nothing to correct against. It is said this way round because it is the way round that is true.",
@@ -324,7 +324,7 @@
    "question": "Can somebody go through it with my team?",
    "price": "\u00a31,500",
    "rail": "link",
-   "state": "unrun",
+   "state": "person",
    "eta": "1 to 5 days",
    "eta_from": "from your reply, not from your payment",
    "eta_why": "Depends on load. The constraint is one person's calendar rather than a warehouse, and saying so is more use to you than a word borrowed from a shop that holds stock.",
@@ -449,16 +449,16 @@
    "claim": "A template shape is built into a vault by one command. The \u00a350 level is that build, licensed to you, with the public key off it \u2014 a vault you hold the keys to, with its own app, its own history and a read key you can hand to anybody who asks how you govern the agent. Built, and it runs today."
   },
   {
-   "id": "abp-correction-unrun",
-   "state": "unrun",
+   "id": "abp-correction-by-a-person",
+   "state": "person",
    "date": "15 Sep 2026",
-   "claim": "The \u00a3500 level has never been sold once. The generator and the correction exist and the vaults are built from them; this level as a product has not run for a paying buyer, so a first buyer would be the first run, and the page says so before the checkout rather than after it."
+   "claim": "The \u00a3500 level is a named security professional's work, and that work has been done many times. The generator and the correction exist, the vaults are built from them, and six vaults of exactly this are published with read keys anybody can open. What is bought at this level is that person's time turned on your situation rather than a template's \u2014 which is why its delivery estimate is one to three days from your reply and depends on a calendar rather than on a queue."
   },
   {
-   "id": "abp-sessions-unrun",
-   "state": "unrun",
+   "id": "abp-sessions-by-a-person",
+   "state": "person",
    "date": "15 Sep 2026",
-   "claim": "The \u00a31,500 level has never been sold once, and the two sessions have not been held with anybody. A security professional reviewing and signing off the work is not the company issuing a signed opinion as a formal instrument \u2014 that wording still does not exist \u2014 and the delivery page keeps the two apart."
+   "claim": "The \u00a31,500 level is two sessions with a named security professional, who reviews the work and signs it off. That is not the company issuing a signed opinion as a formal instrument \u2014 that wording does not exist on this site \u2014 and the delivery page keeps the two apart, because the difference is the whole of what a buyer is and is not getting."
   },
   {
    "id": "abp-catalogue-promoted",
@@ -485,10 +485,10 @@
    "claim": "Tier 3 is a booking, and it overlaps the signed-opinion add-on. The overlap is recorded and unresolved, so the two are sold separately and neither page implies the other."
   },
   {
-   "id": "t4-team-never-run",
-   "state": "unrun",
+   "id": "t4-is-a-booking-with-a-person",
+   "state": "booking",
    "date": "10 Sep 2026",
-   "claim": "Tier 4 is a booking with a deposit. The seven-role team is specified and has never run. A first buyer would be the first run, and the page says so before the conversation, not after it."
+   "claim": "Tier 4 is a booking with a deposit: two sessions with a named security professional, whose time the deposit reserves. The seven-role team described in the pack is a specification rather than something staffed \u2014 what is delivered is one person's work, and the page says which before the conversation rather than after it."
   },
   {
    "id": "fact-diff-absent",
@@ -534,9 +534,9 @@
   },
   {
    "id": "lab-fulfilment-is-people",
-   "state": "unrun",
+   "state": "person",
    "date": "11 Sep 2026",
-   "claim": "The mapping and policy work these briefs configure is done by people. Nothing in it is automated today, the team specified for it has never run, and which parts could later be done without them is a decision nobody has taken. A brief is the thing a team would otherwise spend a first call assembling \u2014 it is not a delivery."
+   "claim": "The mapping and policy work these briefs configure is done by a named security professional. Nothing in it is automated today, the seven-role team these prototypes describe is a specification rather than something staffed, and which parts could later be done without people is a decision nobody has taken. A brief is the thing a first call would otherwise be spent assembling \u2014 it is not a delivery."
   },
   {
    "id": "lab-price-is-a-band",
@@ -725,10 +725,10 @@
    "claim": "A discount code is recognised by the page, not by a rail. What ships is sha256 of the code and never the code, checked on every release against every byte of the built site \u2014 but a short code can be ground out of a hash, and that is said rather than dressed up. The thing that stops a stranger paying nothing is that a browser does not take money: a code changes the amount a payment link is issued for, and the rail decides what is charged. No rail exists yet, so today a code at a hundred per cent is how the whole flow gets walked without money."
   },
   {
-   "id": "t3-delivery-time-absent",
-   "state": "absent",
+   "id": "t3-delivery-time-estimated",
+   "state": "docs",
    "date": "15 Sep 2026",
-   "claim": "How long the corrected vault takes after the buyer replies is committed to nowhere on this site. The 24 hours is riskmandate.ai's commitment to follow up and is theirs to keep. The time from a buyer's reply to a delivered vault has never run for a paying buyer, so there is no measurement to quote \u2014 and the delivery page now says that rather than carrying an invented number. It was found by walking the store as a founder with six weeks to a term sheet, who left without buying and named the missing date as the reason."
+   "claim": "The corrected vault is estimated at one to three days from the buyer's reply \u2014 from the reply rather than from the payment, because until the details arrive there is nothing to correct against. It is an estimate rather than a measurement and is labelled as one; the constraint behind it is one person's calendar. The 24 hours is riskmandate.ai's commitment to follow up and is theirs to keep. The gap this closes was found by walking the store as a founder with six weeks to a term sheet, who left without buying and named the missing date as the reason."
   },
   {
    "id": "review-is-the-one-typing-surface",

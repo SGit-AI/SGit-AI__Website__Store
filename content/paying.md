@@ -184,8 +184,8 @@ stands is the one committed to in public.
 - **At £500 the files come back by email.** A write-only vault to drop them into is the intended route and does not exist. {{claim:level3-return-by-email}}
 - **Who owns the follow-up mailbox past the first orders is settled on neither site.** This store names nobody and links to the page that carries the address, so a change is one change and not two. {{claim:follow-up-owner-unnamed}}
 - **How long the £500 level takes after you reply is committed to nowhere.** The follow-up is
-  24 hours; the delivery is not measured, because it has never run. The page says so rather
-  than carrying a number nobody has earned. {{claim:t3-delivery-time-absent}}
+  24 hours; the delivery estimate is one to three days from your reply. The page says so rather
+  and labels it an estimate rather than a measurement. {{claim:t3-delivery-time-estimated}}
 - **The opinion add-on is listed here and has no page there** — theirs will be built in the same shape as the four once it is asked for. {{claim:opinion-add-on-has-no-page-there}}
 
 ## What this site does with a payment

@@ -7,7 +7,7 @@ So check_a_hundred_per_cent_coupon_is_capped reports the state on every release 
 Level four is now Two sessions and a custom vault, following the rename the project lead made in Stripe. It is the better name: it says what the buyer ends up holding rather than what happens to it. The professional signing it has not been dropped — it is on the level's own page, where it is a property of the thing rather than the name of it.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `e92148b8a9d5baa3d55eae4a4a5aa6267a93a912`
 - Reconstructed: no
 
 ---
