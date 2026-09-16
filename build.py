@@ -3584,6 +3584,49 @@ def block_console_dash(ctx):
 
 BLOCKS["console-dash"] = block_console_dash
 
+
+# ----------------------------------------------- what has actually been done ----
+# THE CORRECTION OF 16 SEPTEMBER, AND WHY IT NEEDED ONE.
+#
+# This store's claims said the £500 and £1,500 levels had never run for a paying
+# buyer. Every word of that was true. What a reader took from it was that nobody
+# had ever done this work at all — and that is false, and it was costing sales to
+# a site whose whole argument is that it does not print false things.
+#
+# The evidence was never missing. It was published on a different domain and never
+# linked from here. So: the evidence leads, the disclosure narrows to the thing
+# that is genuinely undone — a sale through this checkout — and nothing true gets
+# deleted.
+#
+# NO READ KEY IS PRINTED BY THIS BLOCK. Every vault below publishes its own on its
+# own page, which is where a reader gets it. That keeps this store's key surface at
+# exactly one vault, and check_read_keys_are_only_for_published_vaults holds it.
+EVIDENCE = yaml_load((DATA / "evidence.yml").read_text())
+
+
+def block_evidence(ctx):
+    ctx["external_links"].update(w["url"] for w in EVIDENCE["works"])
+    rows = "".join(
+        f'<div class="ev"><div class="ev-h">'
+        f'<a href="{w["url"]}"><b>{html.escape(w["title"])}</b></a>'
+        f'<span class="ev-m"><code>{html.escape(w["vault"])}</code> · '
+        f'{html.escape(w["size"])} · {html.escape(w["published"])}</span></div>'
+        f'<p class="ev-q">&ldquo;{html.escape(w["quoted"])}&rdquo;</p>'
+        f'<p class="ev-w">{inline(w["why"], ctx)}</p></div>'
+        for w in EVIDENCE["works"])
+    return (
+        f'<p class="lead">{inline(EVIDENCE["note"], ctx)} Each one opens with a read key '
+        'published on its own page — no account, nothing to install, and nothing asked of you '
+        'for looking.</p>'
+        f'<div class="ev-grid">{rows}</div>'
+        f'<p class="small dim">Quoted from <a href="{EVIDENCE["source"]}">the published '
+        f'catalogue</a>, retrieved {html.escape(EVIDENCE["retrieved"])}. It is generated at '
+        'sgit.ai from the same file that site\'s own table is built from, so the descriptions '
+        'above are that catalogue\'s words rather than this store\'s.</p>')
+
+
+BLOCKS["evidence"] = block_evidence
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():

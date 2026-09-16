@@ -187,7 +187,7 @@
   price_why: "You send the industry, the use case and the details; the mandate is corrected against them and the delta recomputed. It is the first level where somebody other than you does the work that makes the document yours"
   gets: "The vault, with the mandate corrected against your situation rather than against a starting assumption, and a written note of what changed."
   state_badge: unrun
-  state: "Specified, and never run for a paying buyer. The generator and the correction exist; this level as a product has not been sold once, and you would be the first."
+  state: "The correction has been done many times and the results are published — six vaults of this work are open to read at sgit.ai, including an eleven-step risk-acceptance walk over one evolving register. **What has not run is a sale of it through this store**, because no payment rail is live: you would be the first through this checkout, not the first to have it done."
   claim: abp-correction-unrun
   rail: link
   buyer: startups
@@ -223,7 +223,7 @@
   price_why: "Two half-hour sessions — one to interview the team, one to deliver — plus the work between them and a security professional's review. It is the only level whose cost is somebody's time, and it is a fixed price rather than a band because two sessions is what is sold"
   gets: "Two half-hour sessions with your team, the behaviour policy built from the interview, and a security professional's review and sign-off."
   state_badge: unrun
-  state: "Specified, and never run for a paying buyer. The sessions have not been held with anybody, and a first buyer would be the first run."
+  state: "The review work is published and open to read — an agent's grant, its mandate and the delta between them, and eleven linked threat models presented at a conference. **What has not happened is the two sessions, with a paying buyer, through this store**: no rail is live, and that part of it would be a first."
   claim: abp-sessions-unrun
   rail: link
   buyer: investors

@@ -11,7 +11,7 @@ This closes a finding that cost a sale: a founder persona with six weeks to a te
 check_delivery_estimates freezes both halves and fails the release if a level page stops printing its own date. Two deliberate breaks were run against it.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `60993ad04dde8917fc45277a4314412ad87af918`
 - Reconstructed: no
 
 ---

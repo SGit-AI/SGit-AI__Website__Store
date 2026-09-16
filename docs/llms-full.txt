@@ -1,5 +1,5 @@
 # store.sgit.ai — the whole site as markdown
-site v0.2.0 · every claim's verification state is at /ledger/
+site v0.2.1 · every claim's verification state is at /ledger/
 
 Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.
 
@@ -35,10 +35,18 @@ not one yet.
 
 {{levels-table}}
 
-**Two of those four run today and two have never been sold once.** The pages say
-which is which on their own rows, because a store that edits its gaps out is a
-marketing page wearing a lab coat. {{claim:abp-templates-exist}}
+**All four exist. Two of them have never been bought here.** That is a smaller
+sentence than it used to be, and a more accurate one: the work behind every level
+has been done many times and published — six vaults of it are open to read right
+now, linked below — and what has not happened is a sale through this checkout,
+because no payment rail is live yet. The pages say which is which on their own
+rows, because a store that edits its gaps out is a marketing page wearing a lab
+coat. {{claim:the-work-has-been-done}} {{claim:abp-templates-exist}}
 {{claim:abp-correction-unrun}} {{claim:abp-sessions-unrun}}
+
+## Six of these, open right now
+
+{{evidence}}
 
 ## What is actually in one
 
@@ -762,7 +770,7 @@ point rather than an embarrassment.
 | **read, not run** | Read from a published source on this date. Never executed by us |
 | **projected** | Arithmetic, not an invoice. The workings are shown |
 | **specified, not built** | A specification. The thing it specifies does not exist |
-| **specified, never run** | Specified in full, and never executed once |
+| **specified, never run** | **Never sold through this store.** Whether the underlying work has been done is a separate question and a different answer &mdash; it has, repeatedly, and the offer's own row says where to go and read it |
 | **built, not located** | It was built. It has not been found since, and nothing here promises it until it is |
 | **a booking, not a download** | What is bought is a person's time, not a file |
 | **part exists** | One half runs. The half carrying the guarantee does not |

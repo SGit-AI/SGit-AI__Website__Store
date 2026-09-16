@@ -1750,6 +1750,52 @@ def check_delivery_estimates():
             fail(f"d/{oid}: the delivery page does not say when it arrives")
 
 
+# ------------------------------------ the evidence that this work has been done ---
+# THE CLAIM THIS CHECK PROTECTS IS THE MOST LOAD-BEARING ONE ON THE SITE. Until 16
+# September the store said the upper levels had never run for a paying buyer and
+# said nothing about the work behind them, so a reader concluded nobody had ever
+# done it. data/evidence.yml is the correction: six published vaults, quoted from
+# the catalogue that generates them, linked rather than described.
+#
+# Three things have to stay true or the correction becomes a worse problem than the
+# thing it fixed:
+#   · every entry points at a real published page, on the domain that publishes it;
+#   · no read key is printed here, because that surface stays at one vault;
+#   · the home page actually prints them. Evidence in a data file nobody renders is
+#     evidence nobody has been shown.
+EVIDENCE_HOST = "https://sgit.ai/demos/vaults/"
+
+
+def check_the_evidence_is_real():
+    src = (ROOT / "data" / "evidence.yml").read_text()
+    urls = re.findall(r'^\s+url: "([^"]+)"', src, re.M)
+    if len(urls) < 4:
+        fail(f"data/evidence.yml carries {len(urls)} works. The claim it backs says six")
+    for u in urls:
+        if not u.startswith(EVIDENCE_HOST):
+            fail(f"evidence {u!r} is not on {EVIDENCE_HOST} — the evidence for this work is the "
+                 "published vault, not a page about it somewhere else")
+    # Read keys AND write keys. The catalogue this file is quoted from prints a read
+    # key beside every entry, so the bare <64 hex>:<vault id> form is the exact thing
+    # most likely to arrive here by a careless copy — which is why it is named
+    # rather than left to the generic shapes, none of which match it.
+    BARE_READ = re.compile(r"\b[0-9a-f]{64}:[a-z0-9]{4,12}\b")
+    for rx, what in list(KEY_SHAPES) + [(READ_KEY, "an sgit read key"),
+                                        (BARE_READ, "a bare read key and vault id")]:
+        if rx.search(src):
+            fail(f"data/evidence.yml carries {what}. Every vault there publishes its own read key "
+                 "on its own page, which is where a reader gets it — keeping them off this domain "
+                 "keeps this store's key surface at one vault")
+    home = (OUT / "index.html").read_text()
+    missing = [u for u in urls if u not in home]
+    if missing:
+        fail(f"the home page does not link {len(missing)} of the {len(urls)} published works. "
+             "Evidence nobody is shown is evidence nobody has")
+    if "the-work-has-been-done" not in home:
+        fail("index.html: the home page does not cite the claim that this work has been done. That "
+             "sentence is the correction of 16 September and it is not optional furniture")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -1780,6 +1826,7 @@ def main():
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,
         check_delivery_estimates,
+        check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,
     ]:

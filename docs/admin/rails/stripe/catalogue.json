@@ -1,7 +1,7 @@
 {
   "_what_this_is": "The Stripe catalogue, generated from data/offers.yml at build time. Create these in the dashboard and copy from here rather than by eye. A price on this store does not vary by shape, which is why this is a short file.",
   "_never_here": "No key of any kind, and no shape. The fifteen shapes are a selection carried in the order reference and resolved on this side.",
-  "version": "v0.2.0",
+  "version": "v0.2.1",
   "currency": "gbp",
   "prices": [
     {

@@ -2,7 +2,7 @@
 
 The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.
 
-**16 workstreams · 86 units of work · 80 not done.**
+**16 workstreams · 86 units of work · 72 not done.**
 
 
 ## Take money at all — next
@@ -25,8 +25,8 @@ No payment rail is live. Every checkout_url in data/checkout.yml is empty, so th
 
 Two reviewers independently said the entry level reads as a commodity at £5 — one human partner and one invented buyer who had never met them. The answer ruled on 16 September is not a larger number for the same thing: the level goes to £10 and gains a commercial licence, which is a different product rather than a dearer one.
 
-- **PL-1 · Move the entry level from £5 to £10** — `next` — Ruled by the project lead on 16 September. The floor was £10 on 10 September, £5 on 15 September and £10 again now; the ledger keeps all three and the reason each time, because a price that moves quietly is a price nobody can argue with. Touches data/offers.yml, the frozen price table, the home page range and the walkthrough.
-- **PL-2 · Dual-licence the pack: CC BY public, commercial to the buyer** — `next` — What anybody can download is CC BY and carries an attribution obligation. What the buyer gets is a commercial licence to use that vault however they want. This is grantable because the copyright in the pack is ours — and it is the answer to the commodity reading, because the free templates and the paid pack stop being the same artefact at a different price.
+- **PL-1 · Move the entry level from £5 to £10** — `done` — Shipped in v0.2.0. £10, with all three moves of the price kept on the page.
+- **PL-2 · Dual-licence the pack: CC BY public, commercial to the buyer** — `done` — Shipped in v0.2.0. The public files stay CC BY; the buyer gets a commercial licence over the same material. The wording is not drafted and the ledger says so.
 - **PL-3 · Research the cleanest way to grant it** — `next` — The licence is to the buyer and does not name them, which is the interesting part: a grant to an unnamed holder has to be worded so it is clearly a grant and not a public re-licence of the same bytes. Open questions: does it travel with the file or with the order reference, what happens on resale, and does it survive the buyer's company changing name.
 - **PL-4 · Put the licence text where the buyer reads it before paying** — `queued` — Not in the pack, not in a footer. The difference between the free version and the paid one is now the main thing the entry level sells, so it belongs on the card and on the level page above the fold. _Blocked on: PL-2._
 - **PL-5 · Record the price arc as one claim, not three** — `queued` — The ledger already carries £10 → £5 with the card-fee arithmetic. Adding £5 → £10 as a separate claim would leave a reader assembling the story from three entries. One claim, three dates, all the reasoning kept. _Blocked on: PL-1._
@@ -154,24 +154,24 @@ Features down the left, five columns across — free, £10, £50, £500, £1,500
 - **PP-6 · Make the page switchable by audience** — `queued` — Framed in the memo as editions of one product rather than separate paths — the same switch the five-audience memo asked for, arriving from the other side. One mechanism serves both. _Blocked on: PP-1, QB-2._
 
 
-## What has actually been done — in-progress
+## What has actually been done — next
 
 The store says the upper levels have never run for a paying buyer. True, and it reads as “nobody has ever done this”, which is false. The work has been done many times and published; what has not happened is a sale through this checkout. Lead with the first, keep the second, stop letting one stand for the other.
 
-- **WH-1 · Re-read every claim against “the work has been done”** — `in-progress` — Fifty claims, one at a time. Some are wrong as written; some are exactly right and were being misread. Not a search-and-replace — the ledger is the one artefact here that must not be edited carelessly, and it is also the thing two reviewers praised.
-- **WH-2 · Link the published evidence** — `next` — sgit.ai publishes vault after vault of exactly this work, each with a read key anybody can open. That evidence existed the whole time on another domain and was never linked from here. “Here are twenty of these, open one” beats both a disclaimer and a testimonial.
-- **WH-3 · Narrow the disclosure to what is genuinely undone** — `next` — A first buyer really is the first through this checkout, and that is worth them knowing. It stops being the headline. _Blocked on: WH-1._
+- **WH-1 · Re-read every claim against “the work has been done”** — `done` — Fifty-two claims re-read one at a time in v0.2.1. The offer states, the ledger's own legend for specified-never-run and the home page's headline sentence were wrong as written; the rest were precise and were being misread.
+- **WH-2 · Link the published evidence** — `done` — Shipped in v0.2.1. data/evidence.yml carries six published vaults, quoted from the catalogue that generates them, on the home page. Every URL returns 200 and a check holds them to the domain that publishes them.
+- **WH-3 · Narrow the disclosure to what is genuinely undone** — `done` — Shipped in v0.2.1. The disclosure now says what is true: a first buyer is the first through this checkout, not the first to have the work done.
 - **WH-4 · Put a name and a track record on the delivery** — `next` — Twenty years of cybersecurity, in the project lead's voice with a source rather than asserted in the shop's. Same page as the reviewer work. _Blocked on: WD-2._
 - **WH-5 · Decide what to do about testimonials** — `queued` — Asked for, and there are none. The review pages are critiques, which is a different object. A placeholder saying it is empty is the house style; an invented one would undo the rest of this workstream.
 
 
-## Say when it arrives — in-progress
+## Say when it arrives — queued
 
 Every level gets an estimated delivery, because a shop that will not say when something arrives is a shop people leave. The numbers were given: immediate, one to two days, one to three days from receiving the customisation, one to five days.
 
-- **DT-1 · Put a delivery estimate on every level** — `in-progress` — £10 immediately · £50 in one to two days · £500 in one to three days from receiving the customisation · £1,500 in one to five days. The £500 clock starting at the buyer's reply rather than at the payment is the part that has to be stated, because it is the part that is true.
-- **DT-2 · Replace the it-has-never-run non-answer about timing** — `next` — A claim currently says the time to a delivered vault has never run so there is no measurement to quote. It was found by a founder persona who left without buying and named the missing date as the reason. There is now an estimate, and an estimate labelled as one is an answer. _Blocked on: DT-1._
-- **DT-3 · Say what the constraint really is** — `next` — “Depending on inventory” is good copy and needs a true referent. The constraint is one person's calendar, which is worth saying in those words rather than borrowing a warehouse metaphor that would be the only false sentence on the page.
+- **DT-1 · Put a delivery estimate on every level** — `done` — Shipped in v0.2.0, frozen in the gate beside the prices.
+- **DT-2 · Replace the it-has-never-run non-answer about timing** — `done` — Shipped in v0.2.0. The claim that said there was no measurement to quote now carries an estimate labelled as one.
+- **DT-3 · Say what the constraint really is** — `done` — Shipped in v0.2.0. The constraint is named as one person's calendar.
 - **DT-4 · Start measuring the moment there is something to measure** — `queued` — An estimate becomes a record the first time an order runs. The ledger is built for exactly this. _Blocked on: TM-7._
 
 

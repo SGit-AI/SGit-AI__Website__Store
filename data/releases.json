@@ -1,10 +1,27 @@
 {
-  "current": "v0.2.0",
+  "current": "v0.2.1",
   "releases": [
+    {
+      "version": "v0.2.1",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the work has been done, and the site finally says where to go and look",
+      "summary": "The store's claims said the \u00a3500 and \u00a31,500 levels had never run for a paying buyer. Every word of that was true, and what a reader took from it was that nobody had ever done this work at all \u2014 which is false, and it was costing sales on a site whose whole argument is that it does not print false things.\n\nThe evidence was never missing. It was published on another domain and never linked from here. Twenty-eight encrypted vaults are published at sgit.ai, each opened by a read key that site publishes on the vault's own page; six of them are this work, and they are now on the home page: an agent's grant, its mandate and the eight-capability delta between them simulated end to end; an eleven-step risk-acceptance walk over one evolving register; a fact-to-risk graph explorer; a standard turned into 53 conformance rows where unevidenced is the default; eleven linked threat models presented at a conference in Barcelona; and the EU AI Act parsed into a graph you can cite a row of. Every URL was checked and returns 200.\n\nSo the evidence leads and the disclosure narrows to what is genuinely undone. The home page now says all four exist and two have never been bought here. The \u00a3500 and \u00a31,500 rows say the work has been done many times and what has not run is a sale through this checkout \u2014 you would be the first through it, not the first to have it done. And the ledger's own legend for specified, never run was quietly wrong: it read never executed once, which is not what it has meant since today.\n\nNO READ KEY CROSSES ONTO THIS DOMAIN. Each vault publishes its own on its own page, which is where a reader gets it, so this store's key surface stays at exactly one vault \u2014 the one its own review embeds.\n\nTWO QUOTATIONS WERE SWAPPED FOR DIFFERENT PUBLISHED ONES, AND THE FILE SAYS WHY. The catalogue's one-line descriptions of two vaults contain a word hard rule 1 bars from this site absolutely, because the site carries prices. Nothing was paraphrased: sgit.ai publishes a longer description of each and those are quoted instead, with the substitution recorded above each entry rather than made silently.\n\ncheck_the_evidence_is_real holds every entry to the domain that publishes it, the home page to linking all of them and to citing the claim, and the file to carrying no key of any shape \u2014 including the bare hex-and-vault-id form the catalogue prints, which none of the existing key patterns matched and which is the exact thing a careless copy would bring across. Four deliberate breaks were run against it.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.2.0",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "60993ad04dde8917fc45277a4314412ad87af918",
       "site": "store.sgit.ai",
       "title": "the entry level becomes a licence at \u00a310, and every level says when it arrives",
       "summary": "Two reviewers, one human and one invented, independently said \u00a35 read as a commodity price for something sophisticated. The answer ruled on 16 September is not a larger number for the same thing. The entry level goes to \u00a310 and what it sells changes: the same files stay published free under CC BY, which obliges anybody using them to attribute, and what the buyer gets is a commercial licence to them over the same material \u2014 client work, inside a product, a document that goes to a regulator, without our name travelling with it. It is grantable because the copyright in the pack is ours, which is now also a constraint on what may go into a pack. The wording is not drafted, and the ledger says so rather than the page implying otherwise.\n\nThe price has now moved three times and all three are on the page: \u00a310 on 10 September because the fixed card fee is about four per cent of a fiver, \u00a35 on 15 September by ruling with the arithmetic unchanged, \u00a310 again today because of what the level carries rather than what it costs to take the money. A price that moves quietly is a price nobody can argue with.\n\nEvery level says when it arrives. \u00a310 immediately, \u00a350 in one to two days, \u00a3500 in one to three days and \u00a31,500 in one to five \u2014 and at the two upper levels the clock starts at the buyer's reply, not at their payment, because until they send the details there is nothing to work on. That distinction is the whole honesty of the number, so it is a field of its own rather than a clause somebody might drop, and it is frozen in the gate beside the prices. The constraint is named as one person's calendar rather than borrowed from a shop that holds stock, which would have been the only false sentence on the page.\n\nThis closes a finding that cost a sale: a founder persona with six weeks to a term sheet walked the store, found no date anywhere on it, and named the missing date as the reason they left without buying. The claim that answered it said the time had never been measured so there was nothing to quote. There is now an estimate, and an estimate labelled as one is an answer.\n\ncheck_delivery_estimates freezes both halves and fails the release if a level page stops printing its own date. Two deliberate breaks were run against it.",

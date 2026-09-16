@@ -18,10 +18,18 @@ not one yet.
 
 {{levels-table}}
 
-**Two of those four run today and two have never been sold once.** The pages say
-which is which on their own rows, because a store that edits its gaps out is a
-marketing page wearing a lab coat. {{claim:abp-templates-exist}}
+**All four exist. Two of them have never been bought here.** That is a smaller
+sentence than it used to be, and a more accurate one: the work behind every level
+has been done many times and published — six vaults of it are open to read right
+now, linked below — and what has not happened is a sale through this checkout,
+because no payment rail is live yet. The pages say which is which on their own
+rows, because a store that edits its gaps out is a marketing page wearing a lab
+coat. {{claim:the-work-has-been-done}} {{claim:abp-templates-exist}}
 {{claim:abp-correction-unrun}} {{claim:abp-sessions-unrun}}
+
+## Six of these, open right now
+
+{{evidence}}
 
 ## What is actually in one
 

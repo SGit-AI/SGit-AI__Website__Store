@@ -392,3 +392,10 @@
   group: How paying works, and why it works that way
   claim: "**The entry level is a licence, not a download.** The same files are published free under CC BY, which obliges anybody using them to attribute; **what £10 buys is a commercial licence to the buyer over the same material**, so it can go into client work, into a product or into a document for a regulator without carrying our name into it. It is grantable for one reason — **the copyright in the pack is ours**, because everything in it was written here — and that makes it a constraint on what may go into a pack from now on. **The wording is not drafted.** A grant to an unnamed holder has to read as a grant and not as a public re-licence of the same bytes, and until that is written this claim says what is intended rather than what is signed."
   source: "The project lead, 16 September 2026, and data/offers.yml"
+
+- id: the-work-has-been-done
+  state: exists
+  date: 16 Sep 2026
+  group: What is true of what is sold here
+  claim: "**This work has been done, repeatedly, and it is published.** Twenty-eight encrypted vaults are published at sgit.ai, each opened by a read key that site publishes on the vault's own page; **six of them are this work** — an agent's grant, its mandate and the delta between them, simulated end to end; an eleven-step risk-acceptance walk over one evolving register; a fact-to-risk graph explorer; a standard turned into something a position can be measured against; eleven linked threat models presented at a conference in Barcelona; and a regulation parsed into a graph you can cite a row of. **What has not happened is a sale through this store.** Those are two different sentences, and until this date this site printed only the second one and let a reader draw the first."
+  source: "sgit.ai/demos/vaults/llms.txt, retrieved 16 September 2026, and data/evidence.yml"

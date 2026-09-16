@@ -733,3 +733,16 @@ figure.walkshot figcaption code{font-size:.9em}
   font-size:.92rem}
 .offer-eta b{color:var(--ink)}
 .offer-eta span{color:var(--dim);font-size:.85rem}
+
+/* What has actually been done. Six published vaults of this work, quoted from the
+   catalogue that generates them, linked rather than described. */
+.ev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;
+  margin:1.25rem 0 1.5rem}
+.ev{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:1rem 1.15rem}
+.ev-h a{text-decoration:none}
+.ev-h b{font-size:1.02rem;color:var(--ink)}
+.ev-h a:hover b{text-decoration:underline}
+.ev-m{display:block;margin-top:3px;font-size:.78rem;color:var(--dim)}
+.ev-m code{font-size:.78rem}
+.ev-q{margin:.6rem 0 .4rem;font-size:.9rem;color:var(--dim);font-style:italic}
+.ev-w{margin:0;font-size:.9rem;line-height:1.55}

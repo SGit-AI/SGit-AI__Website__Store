@@ -6,7 +6,7 @@ The vault, with the mandate corrected against your situation rather than against
 - Price: £500
 - How it is paid: Payment link
 - Checkout: One price means one standing payment link, printable on a card.
-- What is true of it today: Specified, and never run for a paying buyer. The generator and the correction exist; this level as a product has not been sold once, and you would be the first.
+- What is true of it today: The correction has been done many times and the results are published — six vaults of this work are open to read at sgit.ai, including an eleven-step risk-acceptance walk over one evolving register. **What has not run is a sale of it through this store**, because no payment rail is live: you would be the first through this checkout, not the first to have it done.
 
 ## What arrives
 
