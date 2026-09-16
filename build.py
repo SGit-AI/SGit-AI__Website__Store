@@ -4257,6 +4257,103 @@ def reviewer_pages(out_dir, ctx_shared):
         "", idx_body, "\n".join(idx_md))
     return made
 
+
+# --------------------------------------------------- where a buyer lands ----
+# THEY LAND HERE NOW, AND THAT REVERSED ON 16 SEPTEMBER.
+#
+# Until today the success address was riskmandate.ai's page for the level, and
+# the reasoning was good: their level-one page IS the download, with the zip, its
+# size, its sha256 and a hash check that runs in the buyer's browser — and copying
+# a size and a hash over here would mean two of each, one of which goes stale the
+# first time a template changes.
+#
+# What that reasoning missed is what it costs. A synthetic buyer said it plainly:
+# they did a whole shopping experience on one site and were dropped onto another,
+# with a different interface and a different voice, at the exact moment they had
+# just paid. It was logged as a confusion and treated as a copy problem. It was an
+# architecture problem.
+#
+# SO THE BUYER LANDS ON THIS SITE, IN THIS SITE'S CHROME, AND THE ONE REMAINING
+# HOP IS NAMED RATHER THAN HIDDEN. At level one the artefact genuinely lives on
+# the other domain and the page says so, in one sentence, with the reason. That
+# hop closes when the store reads their manifest over CORS — which is possible
+# (their pages answer `access-control-allow-origin: *`, verified 16 September) and
+# is a narrowing of this site's hardest rule, so it is its own piece of work
+# rather than a thing smuggled in here.
+PAID_ROOT = "/paid/"
+
+
+def paid_pages(out_dir, ctx_shared):
+    made = {}
+    for l in LEVELS:
+        o = OFFERS_BY_ID[l["offer"]]
+        url = f"{PAID_ROOT}{o['id']}/"
+        ctx = dict(ctx_shared)
+        ctx.update({"page": f"paid/{o['id']}", "page_url": url, "fm": {}, "toc": []})
+        people = REVIEWER_BY_OFFER.get(o["id"], [])
+        upstream = o["post_upstream"]
+        ctx["external_links"].add(upstream)
+        body = (
+            shop_island(rel_prefix(url))
+            # Filled by shop.js from the order this browser just placed. Static and
+            # correct with no script: a buyer whose browser blocked it still gets
+            # the page that tells them what happens next.
+            + '<div id="paid-order" class="paid-ref"><b>Your order reference</b>'
+            '<span>It is on the page you came from and on your receipt. If you are reading this '
+            'in a different browser from the one you ordered in, it will not be here.</span></div>'
+            f'<div class="paid-what"><div><b>You bought</b><span>{html.escape(l["name"])} '
+            f'&mdash; {html.escape(o["price_label"])}</span></div>'
+            f'<div><b>It arrives</b><span>{html.escape(o["eta"])}, '
+            f'{html.escape(o["eta_from"])}</span></div>'
+            + (f'<div><b>Who does it</b><span>{html.escape(people[0]["name"])}</span></div>'
+               if people else "") + "</div>"
+            + '<h2 id="what-happens-now">What happens now</h2>'
+            f'<p class="lead">{inline(o["post_when"], ctx)}</p>'
+            f'<p>{inline(o["post_does"], ctx)}</p>'
+            + (f'<h2 id="the-file-itself">The file itself</h2>'
+               f'<p><b>One hop, and here is why it exists.</b> The zip, its size and its sha256 '
+               f'live on <a href="{upstream}">riskmandate.ai\'s page for this level</a>, where the '
+               'hash check runs in your own browser against a manifest their build stamps. '
+               '<b>Copying a size and a hash over here would mean two of each, and one of them '
+               'would be wrong the first time a template changed.</b> The store will read theirs '
+               'directly rather than send you there — that is built and is not shipped, and it '
+               'is <a href="/admin/work/one-site-one-flow/">on the board</a> rather than in a '
+               'promise.</p>' if o["id"] == "t1" else
+               f'<h2 id="the-deeper-material">Where the deeper material is</h2>'
+               f'<p><a href="{upstream}">riskmandate.ai\'s page for this level</a> carries the '
+               'longer form of what is below. You do not need it to get what you bought.</p>')
+            + '<h2 id="what-done-looks-like">What done looks like</h2>'
+            f'<p>{inline(o["post_done"], ctx)}</p>'
+            f'<p class="small dim"><b>How you check it.</b> {inline(o["post_check"], ctx)}</p>'
+            + (f'<h2 id="about-keys">About keys</h2><p>{inline(o["post_key"], ctx)}</p>'
+               if o.get("post_key") else "")
+            + (('<h2 id="who-does-it">Who does it</h2>' + block_who_runs_it(ctx))
+               if people else "")
+            + '<p class="paid-back"><a href="/">Back to the shop</a> · '
+            f'<a href="/d/{o["id"]}/">what this level is</a> · '
+            '<a href="/compare/">all four, side by side</a></p>')
+        md = [f"# You bought: {l['name']}\n",
+              f"**{o['price_label']} · {o['eta']}, {o['eta_from']}.**\n",
+              "## What happens now\n", _strip(o["post_when"]), "", _strip(o["post_does"]), "",
+              "## What done looks like\n", _strip(o["post_done"]), "",
+              f"How you check it: {_strip(o['post_check'])}\n"]
+        if people:
+            md += [f"Who does it: {people[0]['name']} — "
+                   f"{SITE['base']}{REVIEWER_ROOT}{people[0]['id']}/\n"]
+        md += [f"The page on riskmandate.ai for this level: {upstream}"]
+        made[url] = _selling_page(out_dir, ctx_shared, url,
+            {"title": f"You bought: {l['name']}",
+             "description": (f"What happens now that you have bought {l['name'].lower()} at "
+                             f"{o['price_label']}: when it arrives, what done looks like, and how "
+                             "you check it."),
+             "lead": f"**{html.escape(o['price_label'])}, arriving {html.escape(o['eta']).lower()} "
+                     f"{html.escape(o['eta_from'])}.** Nothing else is needed from you"
+                     + (" — it is already below." if o["id"] == "t1" else "."),
+             "robots": "noindex,follow"},
+            f' / <a href="/d/{o["id"]}/">{html.escape(l["name"])}</a> / paid',
+            body, "\n".join(md))
+    return made
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -4342,6 +4439,7 @@ def build(out_dir):
     extra.update(memo_pages(out_dir, ctx_shared))
     extra.update(audience_pages(out_dir, ctx_shared))
     extra.update(reviewer_pages(out_dir, ctx_shared))
+    extra.update(paid_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The
     # documents are held; the hashes are not, so a reader holding the pack can

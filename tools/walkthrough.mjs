@@ -77,10 +77,13 @@ await p.waitForURL('**/order/**',{timeout:6000}); await p.waitForTimeout(250);
 A('.oh-ref equals the cart reference', (await p.locator('.oh-ref').innerText()).trim()===ref);
 A('.aftercard length === 2', await p.locator('.aftercard').count()===2);
 const hrefs = await p.locator('.ac-go a').evaluateAll(a=>a.map(x=>x.getAttribute('href')));
-const RX = /^https:\/\/riskmandate\.ai\/paid-t[1-4]\.html\?order=SG-[A-Z0-9]{6}(&shape=[a-z0-9-]+)?$/;
+// The buyer lands on THIS site since 16 September. The two parameters are
+// unchanged, because they are still the right two and a printed link cannot
+// be recalled; what moved is the origin.
+const RX = /^https:\/\/store\.sgit\.ai\/paid\/t[1-4]\/\?order=SG-[A-Z0-9]{6}(&shape=[a-z0-9-]+)?$/;
 A('every handover href matches the contract', hrefs.length===2 && hrefs.every(h=>RX.test(h)), hrefs);
-A('the level-1 link carries &shape=gmail-readonly', hrefs.some(h=>h.includes('paid-t1')&&h.includes('&shape=gmail-readonly')), hrefs);
-A('the level-3 link carries no shape', hrefs.some(h=>h.includes('paid-t3')&&!h.includes('shape=')), hrefs);
+A('the level-1 link carries &shape=gmail-readonly', hrefs.some(h=>h.includes('/paid/t1/')&&h.includes('&shape=gmail-readonly')), hrefs);
+A('the level-3 link carries no shape', hrefs.some(h=>h.includes('/paid/t3/')&&!h.includes('shape=')), hrefs);
 const body = await p.evaluate(()=>document.documentElement.outerHTML);
 A('no sgit_private_ string on the page', !/sgit_private_(vault|write|read)_/.test(body));
 
@@ -104,7 +107,7 @@ const model = JSON.parse(cartHtml.match(/<script type="application\/json" id="sh
 A('every rail url is empty', model.rails.every(r=>!r.url), model.rails.map(r=>r.url));
 A('exactly one rail is simulated', model.rails.filter(r=>r.simulated).length===1);
 A("codes carry a 64-hex hash and no 'code'", model.codes.every(c=>/^[0-9a-f]{64}$/.test(c.hash) && !('code' in c)));
-A('every level has post_url paid-t<n>', model.levels.every((l,i)=>l.post_url==='https://riskmandate.ai/paid-t'+(i+1)+'.html'), model.levels.map(l=>l.post_url));
+A('every level has post_url on this site', model.levels.every((l,i)=>l.post_url==='https://store.sgit.ai/paid/t'+(i+1)+'/'), model.levels.map(l=>l.post_url));
 A("post_carries is ['order'] plus 'shape' at level one", JSON.stringify(model.levels.map(l=>l.post_carries))===JSON.stringify([['order','shape'],['order'],['order'],['order']]), model.levels.map(l=>l.post_carries));
 A('the model has 16 shapes', model.shapes.length===16, model.shapes.length);
 

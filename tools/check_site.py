@@ -1556,11 +1556,28 @@ def check_the_shape_count_agrees_with_itself():
 
 
 def check_handover_contract():
-    """riskmandate.ai publishes one page per level and its level-one page IS the
-    download. The contract it published is two optional plain-text parameters —
-    `order` everywhere, `shape` at level one — and this holds the store to it,
-    because a success address that carries the wrong thing lands a paying buyer on
-    a page that cannot tell them what they bought."""
+    """WHERE A BUYER LANDS AFTER PAYING, AND WHY IT MOVED.
+
+    Until 16 September the success address was riskmandate.ai's page for the
+    level, and this check held the store to the contract they published — two
+    optional plain-text parameters, `order` everywhere and `shape` at level one.
+    That contract was kept honestly and the reasoning for it was good: their
+    level-one page IS the download, and copying a size and a sha256 over here
+    would mean two of each.
+
+    It moved because of what it cost. A synthetic buyer did a whole purchase on
+    this site and was dropped onto another one, in a different interface, at the
+    moment they had just paid. So the buyer lands here now.
+
+    WHAT STAYS ABSOLUTE. The parameters are unchanged, because they are still the
+    right two and because a printed link cannot be recalled. What is new is that
+    the destination must be ON THIS SITE and must be a page this build actually
+    emits — a success address pointing at a 404 is the single worst dead link a
+    store can have, and it is the one nobody clicks until a stranger has paid.
+
+    And the old destination is not deleted: every level keeps `post_upstream`, so
+    the page that holds the artefact stays one named link away rather than
+    becoming a thing somebody has to go and find in git history."""
     index = json.loads((OUT / "assets" / "site-index.json").read_text())
     offers = {o["id"]: o for o in index["offers"]}
     expect = {"t1": "[order, shape]", "t2": "[order]", "t3": "[order]", "t4": "[order]"}
@@ -1568,25 +1585,33 @@ def check_handover_contract():
         b = offer_block(oid)
         m = re.search(r'(?m)^  post_url: "(.*?)"$', b)
         url = m.group(1) if m else ""
-        want = f"https://riskmandate.ai/paid-{oid}.html"
+        want = f"https://{DOMAIN}/paid/{oid}/"
         if url != want:
-            fail(f"offer {oid}: hands the buyer over to {url!r}, and the page riskmandate.ai "
-                 f"publishes for that level is {want}")
+            fail(f"offer {oid}: hands the buyer over to {url!r}. Since 16 September a buyer lands "
+                 f"on this site, and the page for this level is {want}")
+        elif not (OUT / "paid" / oid / "index.html").exists():
+            fail(f"offer {oid}: its success address is {url!r} and this build emits no page there. "
+                 "A success address pointing at a 404 is the one dead link nobody clicks until a "
+                 "stranger has paid")
+        up = re.search(r'(?m)^  post_upstream: "(.*?)"$', b)
+        want_up = f"https://riskmandate.ai/paid-{oid}.html"
+        if not up or up.group(1) != want_up:
+            fail(f"offer {oid}: has no post_upstream, or it is not {want_up}. The page that holds "
+                 "the artefact stays one named link away rather than disappearing into git history")
         m = re.search(r"(?m)^  post_carries: (.*)$", b)
         if not m or m.group(1).strip() != carries:
             fail(f"offer {oid}: the handover carries "
                  f"{m.group(1).strip() if m else 'nothing'}; the contract is {carries}, and "
                  "nothing else is read at the other end")
-    model = shop_model_island()
-    for lv in model.get("levels", []):
-        if not lv.get("post_url"):
-            fail(f"level {lv['id']}: the shipped model has no page to hand the buyer to, so the "
-                 "flow stops at this store and the buyer never reaches the download")
-    js = (OUT / "assets" / "shop.js").read_text()
-    for needed in ("post_carries", "order=", "shape="):
-        if needed not in js:
-            fail(f"assets/shop.js: does not build {needed!r} into the handover")
-
+        page = OUT / "paid" / oid / "index.html"
+        if page.exists():
+            flat = strip_tags(page.read_text())
+            if offers[oid]["eta"] not in flat:
+                fail(f"paid/{oid}: does not say when it arrives. That is the one thing somebody "
+                     "who has just paid is looking for")
+            if "noindex" not in page.read_text():
+                fail(f"paid/{oid}: is not noindex. A page that says 'you bought' has no business "
+                     "in a search result")
 
 def check_follow_up_is_twenty_four_hours():
     """Two sites promising different things about the same follow-up is the drift

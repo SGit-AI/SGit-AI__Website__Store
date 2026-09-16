@@ -1,10 +1,26 @@
 {
-  "current": "v0.2.9",
+  "current": "v0.3.0",
   "releases": [
+    {
+      "version": "v0.3.0",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the buyer lands on this site",
+      "summary": "Until today the success address was riskmandate.ai's page for the level, and the reasoning for that was good: their level-one page IS the download, with the zip, its size, its sha256 and a hash check that runs in the buyer's own browser \u2014 and copying a size and a hash over here would mean two of each, one of which goes stale the first time a template changes.\n\nWhat that reasoning missed is what it cost. A synthetic buyer said it plainly: they did a whole shopping experience on one site and were dropped onto another, with a different interface and a different voice, at the exact moment they had just paid. It was logged as a confusion and treated as a copy problem. It was an architecture problem.\n\nSo /paid/t1/ to /paid/t4/ are on this site, in this site's chrome. Each one carries the order reference \u2014 filled from the browser that placed it, never invented, and saying plainly when it does not have yours \u2014 what was bought, when it arrives, who does it at the two upper levels, what done looks like and how you check it. They are noindex, because a page that says you bought has no business in a search result, and every one of them is correct with no script at all: a browser that blocked it still reads the part that matters.\n\nTHE ONE REMAINING HOP IS NAMED RATHER THAN HIDDEN. At level one the artefact genuinely lives on the other domain, and the page says so in one sentence with the reason. Closing it means the store reading their manifest over CORS \u2014 which is possible rather than hoped for: their pages answer access-control-allow-origin star, verified today \u2014 and that means opening a connection on a selling page, which is this site's hardest rule. So it is its own piece of work with the rule narrowing in front of it, rather than something smuggled in here.\n\nWHAT STAYS ABSOLUTE IN THE CONTRACT. The two parameters are unchanged \u2014 order everywhere, shape at level one \u2014 because they are still the right two and a printed link cannot be recalled. What is new in the check is that the destination must be on this site AND must be a page this build actually emits: a success address pointing at a 404 is the one dead link nobody clicks until a stranger has paid. And the old destination is not deleted \u2014 every level keeps post_upstream, so the page holding the artefact stays one named link away rather than disappearing into git history.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.2.9",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "93af071d6518b4e72b9c2e3df56a2a8e63de858e",
       "site": "store.sgit.ai",
       "title": "the two upper levels say whose work they are",
       "summary": "Until today this store asked for \u00a31,500 for a security review from nobody in particular, which is a worse problem than any price on it. /who/ names the person who does the \u00a3500 correction and the \u00a31,500 sessions, and both level pages carry it above what arrives rather than three clicks away.\n\nNOTHING ON THAT PAGE WAS WRITTEN FROM WHAT ANYBODY TOLD US, and that is the point of it. Every row of the record is read off open-source.sgit.ai's published author page, which is CC BY 4.0, and the delivered work is read off the published vault catalogue. Both are named on the page with the date they were read, above the record rather than under it. A biography this store composed would be the worst thing on the domain to stand next to a price \u2014 this site's whole argument is that its sentences can be checked, and that is worth nothing if it stops applying the moment a sentence is flattering.\n\nIT CARRIES NO COUNT OF YEARS, ON PURPOSE. Twenty years of cybersecurity is almost certainly right and it is not what is published. What is published is a record starting in 2008 \u2014 the OWASP Summits, the O2 Platform in 2010 \u2014 and a reader can do that arithmetic themselves and check every step of it. A round number nobody can verify is weaker than a date anybody can, and the check fails the release if a year count appears on a reviewer page.\n\nBUILT FOR A LIST ON THE DAY IT HAD ONE NAME ON IT. The project lead is approaching other security professionals and negotiating rates so they can take some of this work. Adding the second is adding a record to data/reviewers.yml; the page, the markdown twin, the register entry and the links from the level pages are all generated. The frozen list in the gate moves with it deliberately, so a reviewer cannot appear by accident.\n\ncheck_every_reviewer_line_is_sourced holds every page to naming its sources with dates, to carrying the sentence that says nothing on it came from hearsay, to linking the levels that person runs, and to having no year count. And every level delivered by a person has to carry a section naming one.\n\nThat last assertion was vacuous when first written \u2014 it searched for /who/, which the nav links from every page on the site, so it was true of a page with nothing on it and a deliberate break walked straight through. It is anchored to the section id now. Four breaks run in total.",

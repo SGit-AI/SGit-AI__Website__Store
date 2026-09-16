@@ -430,6 +430,27 @@
   //
   // The list price stays on screen, struck through. A discount that hides what it
   // came off is a discount nobody can check.
+  // THE PAGE A BUYER LANDS ON AFTER PAYING, FILLED IN FROM THIS BROWSER.
+  //
+  // It is a static page and it is correct with no script at all — somebody whose
+  // browser blocked this still reads what happens next, which is the part that
+  // matters. What the script adds is the reference, and only if this is the same
+  // browser that placed the order. It never invents one: a page that shows a made
+  // up reference to somebody who has just paid is worse than a page that says it
+  // does not have theirs.
+  function renderPaidRef() {
+    var box = document.getElementById('paid-order');
+    if (!box) return;
+    var o = lastOrder();
+    if (!o || !o.ref) return;
+    box.textContent = '';
+    box.appendChild(el('b', null, 'Your order reference'));
+    box.appendChild(el('code', 'paid-code', String(o.ref)));
+    box.appendChild(el('span', null,
+      'It is on your receipt too. Quote it in any message about this order.'));
+    box.className = 'paid-ref paid-ref-has';
+  }
+
   function renderSkuPrices() {
     var cards = document.querySelectorAll('.sku[id^="sku-"]');
     if (!cards.length) return;
@@ -1008,6 +1029,7 @@
     if (ord) renderOrder(ord);
     renderCodeBar();
     renderSkuPrices();
+    renderPaidRef();
     renderBadge();
   }
 

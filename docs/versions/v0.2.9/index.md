@@ -13,7 +13,7 @@ check_every_reviewer_line_is_sourced holds every page to naming its sources with
 That last assertion was vacuous when first written — it searched for /who/, which the nav links from every page on the site, so it was true of a page with nothing on it and a deliberate break walked straight through. It is anchored to the section id now. Four breaks run in total.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `93af071d6518b4e72b9c2e3df56a2a8e63de858e`
 - Reconstructed: no
 
 ---

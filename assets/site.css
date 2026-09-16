@@ -882,3 +882,21 @@ a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
 .rv-person b a{text-decoration:none;color:var(--ink)}
 .rv-person b a:hover{text-decoration:underline}
 .rv-person p{margin:.5rem 0 0;font-size:.9rem;line-height:1.55}
+
+/* The page after paying. The reference is the one thing somebody looks for, so
+   it is the first block and it says plainly when it does not have theirs. */
+.paid-ref{display:flex;flex-direction:column;gap:.35rem;background:var(--panel2);
+  border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;margin:1.4rem 0}
+.paid-ref b{font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim2,var(--dim))}
+.paid-ref span{font-size:.85rem;line-height:1.5;color:var(--dim)}
+.paid-ref-has{border-color:var(--accent)}
+.paid-code{font-family:var(--mono);font-size:1.6rem;letter-spacing:.06em;color:var(--ink);
+  background:none;padding:0}
+.paid-what{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;
+  margin:1.2rem 0 1.6rem;padding:1rem 0;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)}
+.paid-what b{display:block;font-size:.7rem;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--dim2,var(--dim));margin-bottom:.25rem}
+.paid-what span{font-size:1rem;line-height:1.4;color:var(--ink)}
+.paid-back{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.9rem}

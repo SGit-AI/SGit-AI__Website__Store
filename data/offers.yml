@@ -130,7 +130,8 @@
   post_does: "Download the zip and check the hash. The page does the hashing in your own browser, against the hash it publishes."
   post_done: "You hold the zip, and the hash computed in your browser matches the hash that shape publishes."
   post_check: "The check runs on the page. Nothing is uploaded and nothing is asked for."
-  post_url: "https://riskmandate.ai/paid-t1.html"
+  post_url: "https://store.sgit.ai/paid/t1/"
+  post_upstream: "https://riskmandate.ai/paid-t1.html"
   post_carries: [order, shape]
   post_key: "Not applicable. There is no vault at this level and so there is no key."
   delivery_says:
@@ -165,7 +166,8 @@
   eta_why: "A shape is built into a vault by one command; what takes the day is doing it for you, with your licence on it and the public key off it."
   post_when: "A person follows up within 24 hours of the payment landing. The vault key comes by a separate message."
   post_does: "Nothing until the follow-up. Then clone the vault with the key."
-  post_url: "https://riskmandate.ai/paid-t2.html"
+  post_url: "https://store.sgit.ai/paid/t2/"
+  post_upstream: "https://riskmandate.ai/paid-t2.html"
   post_carries: [order]
   post_done: "A vault exists, the licence file in it carries your name, the public key is off it, and you have opened it with your key."
   post_check: "Your first clone. The licence file is in the tree."
@@ -200,7 +202,8 @@
   eta_why: "The clock starts when you send the industry, the use case and the details, because until then there is nothing to correct against. It is said this way round because it is the way round that is true."
   post_when: "A person follows up within 24 hours. The corrected vault follows what the prompt produced."
   post_does: "Run MAP-A-GRANT.md where the agent runs — it ships in every template zip and in every vault, so you have it before and after paying — and send back the two files it writes, grant.json and mandate.json, and the session record, with no secret in them and your order reference on the message."
-  post_url: "https://riskmandate.ai/paid-t3.html"
+  post_url: "https://store.sgit.ai/paid/t3/"
+  post_upstream: "https://riskmandate.ai/paid-t3.html"
   post_carries: [order]
   post_done: "The corrected mandate and the recomputed delta are committed, with the note of what changed and why committed beside them."
   post_check: "The commit is in your history and the note names every changed row."
@@ -236,7 +239,8 @@
   eta_why: "Depends on load. The constraint is one person's calendar rather than a warehouse, and saying so is more use to you than a word borrowed from a shop that holds stock."
   post_when: "A person follows up within 24 hours to book the first session. The vault follows the second."
   post_does: "Reply with two or three slots and who will be in the room."
-  post_url: "https://riskmandate.ai/paid-t4.html"
+  post_url: "https://store.sgit.ai/paid/t4/"
+  post_upstream: "https://riskmandate.ai/paid-t4.html"
   post_carries: [order]
   post_done: "Both sessions have been held, the record of what was asked and answered is committed, and the sign-off file is committed with the professional's name and the date."
   post_check: "Three files in the tree, and the sessions dated in the record."
