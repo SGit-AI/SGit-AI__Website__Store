@@ -61,6 +61,11 @@ The live homepage is 10,710px tall on a phone — thirteen and a half screens �
 Standard, and the last round got it right; it is here so it stays right.
 
 
+### HARD RULE: Anything that will live inside a vault sets every image, stylesheet and script from JavaScript, never as markup.
+
+A vault app is served from a blob: URL and the browser resolves declarative resources against an opaque origin before the vault bridge exists. An image tag carrying a src in markup — including markup assembled in a string and handed to innerHTML — is a broken image for every reader, and it looks perfect when the same folder is served over HTTP, so a local check will not catch it. Two of this store's products are vaults and one of its prototypes produces them, so this is not an edge case here.
+
+
 ## Already settled, and not up for redesign
 
 - The price sits at 42px on a card, not 28px inline with the delivery estimate. Every reader used the prices when they were set large and two reported seeing none when they were set at 12px in a caption colour.
@@ -209,7 +214,7 @@ Eyebrow, heading, one line of subheading, optional action. Used on every screen 
 
 States: loading, open, an example, labelled, failed
 
-An iframe opened with a read key. The labelled-example state is the one that matters — see the after-the-sale screen.
+An iframe opened with a read key. The labelled-example state is the one that matters — see the after-the-sale screen.<br><br><b>If you are drawing anything that will live INSIDE a vault rather than beside one</b>, the authoring contract is not the web's. A vault app runs in an iframe loaded from a <code>blob:</code> URL, so the browser fetches anything declarative before the vault bridge installs: no stylesheet link, no script src, and no <code>&lt;img&gt;</code> written as markup, including markup you build in a string and assign to <code>innerHTML</code>. Create the element and assign <code>.src</code> as a property instead. This store shipped a vault on 16 September that broke exactly that rule and rendered ten broken images to every reader, while the same files served over plain HTTP were perfect — which is why it survived a local check.
 
 
 ### Reviews, empty (`review-empty`)

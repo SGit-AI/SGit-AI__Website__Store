@@ -17,7 +17,7 @@ One thing recorded rather than fixed: two claim states share a CSS class, so 'sp
 Stating the barred-word rule broke it. The first draft named the two roots to tell a designer not to use them, and the gate refused the page — which is exactly the absoluteness the rule claims, and the same reason /disclosures/ does not print them either.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `1d799aac679c87e6ca3a01f155c236ee0f0ec785`
 - Reconstructed: no
 
 ---

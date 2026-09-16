@@ -56,6 +56,12 @@
       "id": "one-action",
       "rule": "One primary action per screen, repeated down it. Not three competing buttons.",
       "why": "Standard, and the last round got it right; it is here so it stays right."
+    },
+    {
+      "id": "vault-apps",
+      "rule": "Anything that will live inside a vault sets every image, stylesheet and script from JavaScript, never as markup.",
+      "why": "A vault app is served from a blob: URL and the browser resolves declarative resources against an opaque origin before the vault bridge exists. An image tag carrying a src in markup — including markup assembled in a string and handed to innerHTML — is a broken image for every reader, and it looks perfect when the same folder is served over HTTP, so a local check will not catch it. Two of this store's products are vaults and one of its prototypes produces them, so this is not an edge case here.",
+      "hard": true
     }
   ],
   "already_settled": [
@@ -335,7 +341,7 @@
         "an example, labelled",
         "failed"
       ],
-      "notes": "An iframe opened with a read key. The labelled-example state is the one that matters — see the after-the-sale screen."
+      "notes": "An iframe opened with a read key. The labelled-example state is the one that matters — see the after-the-sale screen.<br><br><b>If you are drawing anything that will live INSIDE a vault rather than beside one</b>, the authoring contract is not the web's. A vault app runs in an iframe loaded from a <code>blob:</code> URL, so the browser fetches anything declarative before the vault bridge installs: no stylesheet link, no script src, and no <code>&lt;img&gt;</code> written as markup, including markup you build in a string and assign to <code>innerHTML</code>. Create the element and assign <code>.src</code> as a property instead. This store shipped a vault on 16 September that broke exactly that rule and rendered ten broken images to every reader, while the same files served over plain HTTP were perfect — which is why it survived a local check."
     },
     {
       "id": "review-empty",

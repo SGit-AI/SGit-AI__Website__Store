@@ -5388,7 +5388,7 @@ def design_brief_page(out_dir, ctx_shared):
                   f'{inline(v, ctx_shared)}</p>' for k, v in b["context"].items())
 
         + '<h2 id="rules">The constraints</h2>'
-        '<p>Eight. Five are hard rules with build checks behind them &mdash; a mock that '
+        f'<p>{len(b["constraints"])}. The hard rules are marked, and a mock that '
         'breaks one produces a page that cannot ship, so they are stated before anything '
         'else.</p>'
         + "".join(cons(c) for c in b["constraints"])

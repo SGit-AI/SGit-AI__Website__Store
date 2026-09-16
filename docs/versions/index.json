@@ -1,10 +1,24 @@
 {
-  "current": "v0.3.10",
+  "current": "v0.3.11",
   "releases": [
+    {
+      "version": "v0.3.11",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the vault contract, learned the hard way",
+      "summary": "The synthetic-panel vault shipped yesterday rendered every one of its ten screenshots as a broken image, and the same files served over plain HTTP were perfect \u2014 which is exactly why a local check passed it and only opening the vault itself showed the fault.\n\nA vault app runs inside an iframe loaded from a blob: URL, so the browser fetches anything declarative before the vault bridge can install. The app built its figures as innerHTML strings carrying an image tag with a src attribute, which the parser treats as markup: the fetch resolved against the frame's opaque origin and found nothing.\n\nThe vault is fixed and re-pushed. One helper now creates the element and assigns .src as a property, after the bridge is up, and the app posts sg-app-ready, which it never did. The read key is unchanged, so the review page needs nothing.\n\nThe vault written on 15 September got this right and carried a comment saying so. The knowledge was in that vault and not in this repository, so it is now a ninth constraint in the design brief and a note on the vault-embed component. Two of this store's four products are vaults and one prototype produces them, so it is not an edge case here.",
+      "changes": [
+        "build.py",
+        "data"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.10",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "1d799aac679c87e6ca3a01f155c236ee0f0ec785",
       "site": "store.sgit.ai",
       "title": "a brief somebody can work from",
       "summary": "The last round came back as three finished homepages and this store could use the structure of two of them and none of the execution, because they were pages rather than a system. Three palettes arrived, none of them ours, and nothing could be dropped into a build without being redrawn.\n\nSo this is the brief for the next round, at /admin/design-brief/, and it asks for the components first and the screens second. Eighteen components with every state named, nine screens in priority order, eight constraints with the five that have build checks behind them marked as hard rules.\n\nThe tokens are read out of assets/site.css at build time rather than typed, because a brief that prints a hex value somebody has to trust is wrong the first time the stylesheet moves. A check asserts the page prints what the stylesheet says.\n\nThe markdown twin is the deliverable. Every page here emits one; for this page that twin is the thing handed over \u2014 23KB carrying every constraint, token, component and screen, pasteable whole into a session that has never seen the site.\n\ncheck_the_design_brief_points_at_pages_that_exist holds four things: every URL the brief hands over is a page this build emits, the tokens on the page are the tokens in the stylesheet, the twin still carries every component, screen and constraint, and at least one constraint is marked hard. Five deliberate breaks, all fired.\n\nTwo bugs it found on the way. The brief said twelve claim states and there are ten, in a document whose entire value is being accurate about a codebase the reader cannot open \u2014 the page counts them now and a check refuses a hand-typed count in the prose. And the chip classes live in site.css, which console pages do not load, so the chip table rendered as ten lines of plain text; the rules are restated where the console can see them, same shape as the .tablewrap bug two releases ago.\n\nOne thing recorded rather than fixed: two claim states share a CSS class, so 'specified, not built' and 'part exists' are indistinguishable on a card. They mean different things and one is worse news. It is in the brief as something for the chip component to solve.\n\nStating the barred-word rule broke it. The first draft named the two roots to tell a designer not to use them, and the gate refused the page \u2014 which is exactly the absoluteness the rule claims, and the same reason /disclosures/ does not print them either.",
