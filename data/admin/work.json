@@ -428,17 +428,16 @@
         {
           "id": "QB-2",
           "title": "Write the five audiences down as data",
-          "status": "next",
-          "description": "One record each: who they are, what they arrive worried about, which offers they see, and the words that change. The store's existing buyer groups are already data — this is the same file shape with visibility added, which is the field the catalogue has no concept of today.",
-          "blocked": "QB-1.",
+          "status": "done",
+          "description": "Shipped in v0.2.7 as data/audiences.yml. One record per audience: who they are, what they arrive asking, which level the view leads with, which are quieted, and the one published vault that speaks to them.",
           "source": "lead",
           "memo": "2026-09-16-five-audiences"
         },
         {
           "id": "QB-3",
-          "title": "Answer: hidden, or shown differently?",
-          "status": "next",
-          "description": "An offer absent from an audience's view and an offer present with different words are very different promises, and one of them means this site shows a different catalogue to different readers. That needs saying out loud on the disclosures page before it is built, not after.",
+          "title": "Hidden, or shown differently — answered",
+          "status": "done",
+          "description": "<b>Shown differently. Nothing is hidden from anybody.</b> Each view leads with the level that usually fits the question somebody arrived with and quiets the ones that usually do not; every level stays present, reachable and priced on every view. The alternative would have meant this site showing different catalogues to different readers, which is a thing that has to be said out loud before it is built. <code>check_the_five_audiences_hide_nothing</code> is what stops <em>quiet</em> quietly becoming <em>absent</em> — that change is one CSS rule away and would look like a tidy-up in a diff.",
           "owner": "lead",
           "source": "self",
           "memo": "2026-09-16-five-audiences"
@@ -446,9 +445,8 @@
         {
           "id": "QB-4",
           "title": "Build the five paths",
-          "status": "queued",
-          "description": "A path, not a page: the entry, the offers that audience sees, the language, and where it hands over. Generated from QB-2 so a sixth audience is a file.",
-          "blocked": "QB-2, QB-3, and the component work in decouple-the-views.",
+          "status": "done",
+          "description": "Shipped in v0.2.7. Five paths at /are/, generated — a sixth audience is a file.",
           "source": "lead",
           "memo": "2026-09-16-five-audiences"
         },
@@ -920,9 +918,8 @@
         {
           "id": "SF-3",
           "title": "Build the who-are-you entry",
-          "status": "next",
-          "description": "The actual design brief: laptop turned round, somebody says “founder”, two taps to a checkout. Big targets, works on a tablet, no dead ends. The top menu keeps the full catalogue and the individual audiences for everyone else.",
-          "blocked": "QB-2.",
+          "status": "done",
+          "description": "Shipped in v0.2.7. Five doors on the home page and at /are/, five across on a laptop, two on a tablet, one on a phone. One tap to a view that opens on the level that fits.",
           "source": "lead",
           "memo": "2026-09-16-the-homepage-sells"
         },

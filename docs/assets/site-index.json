@@ -1,5 +1,5 @@
 {
- "version": "v0.2.6",
+ "version": "v0.2.7",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -9,6 +9,7 @@
    "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack at \u00a310, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
    "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy puts both on one page for one agent in one deployment: what it can do, what you authorised, and the gap between them. Fifteen applications, four levels, \u00a310 to \u00a31,500.",
    "headings": [
+    "Who are you?",
     "The four things for sale",
     "Which agent do you run?",
     "Six of these, open right now",

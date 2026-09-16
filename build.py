@@ -103,7 +103,13 @@ NAV = [
         ("What a session is", "/booking/"),
         ("What happens after you pay", "/order/"),
     ]),
-    ("Who it is for", "/audiences/", [
+    ("Who it is for", "/are/", [
+        ("Who you are", "/are/"),
+        ("You are a founder", "/are/founder/"),
+        ("You are backing a company", "/are/investor/"),
+        ("You have to answer for it", "/are/exec/"),
+        ("You do this for a living", "/are/security/"),
+        ("You own the register", "/are/governance/"),
         ("The three buyers", "/audiences/"),
         ("You run agents today", "/for/agents/"),
         ("You are backing a company", "/for/investors/"),
@@ -3213,6 +3219,21 @@ MEMO_ROOT = "/admin/memos/"
 RAIL_ROOT = "/admin/rails/"
 
 
+def _selling_page(out_dir, ctx_shared, url, fm, crumb, body, src_md):
+    """Emit one generated page on the SELLING side and its markdown twin. The same
+    shape as _console_page, through page_html rather than console_html — these
+    pages are indexed, they carry the shop's nav and its disclosure strip, and they
+    are the front door rather than an operations surface."""
+    ctx = dict(ctx_shared)
+    ctx.update({"page": url, "page_url": url, "fm": fm, "toc": []})
+    page = {"fm": fm, "url": url, "crumb": crumb, "nav_match": "/audiences/", "src_md": src_md}
+    target = out_dir / url.strip("/") / "index.html"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(page_html(page, ctx, shortcodes_inline(body, ctx)))
+    (target.parent / "index.md").write_text(src_md.rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
+    return fm["title"]
+
+
 def _console_page(out_dir, ctx_shared, url, fm, crumb, body, src_md):
     """Emit one console page and its markdown twin. Every generated admin page
     goes through here, so none of them can quietly miss a twin — an agent reads
@@ -3882,6 +3903,151 @@ def block_code_links(ctx):
 
 BLOCKS["code-links"] = block_code_links
 
+
+# ------------------------------------------------------------- five audiences ----
+# ASKED FOR ON 16 SEPTEMBER, AND THE DESIGN BRIEF FOR IT IS PHYSICAL.
+#
+#   "Laptop open, somebody comes along — who are you? A founder. Boom. And you
+#    want to buy this. Boom. Click, click, navigate, select, touch, go."
+#
+# That is a counter at an event operated by a person standing next to the buyer,
+# not a web page somebody browses. It sets the whole shape: five large targets,
+# one tap to a view that leads with what fits them, everything still reachable.
+#
+# THIS DOES NOT REPLACE data/buyers.yml AND THAT IS AN OPEN QUESTION, NOT A
+# DECISION. The store's three buyer groups are cut by situation; these five are
+# cut by role. Both are indexes over the same six offers. Whether the three retire
+# is written down at /admin/work/qualify-the-buyer/ rather than settled here.
+#
+# SHOWN DIFFERENTLY, NOT HIDDEN. The memo said an investor is not going to be sold
+# a ten-pound licence. The tempting reading is to hide the cheap levels from them.
+# The honest one is to lead with what fits and keep everything reachable — because
+# a site that shows different people different catalogues has to say so out loud,
+# and this one would rather not have to.
+AUDIENCES = yaml_load((DATA / "audiences.yml").read_text())
+AUDIENCE_ROOT = "/are/"
+for _a in AUDIENCES:
+    if _a["leads_with"] not in OFFERS_BY_ID:
+        raise KeyError(f"audience {_a['id']}: leads with {_a['leads_with']!r}, which is not an offer")
+    for _q in _a["quiet"]:
+        if _q not in OFFERS_BY_ID:
+            raise KeyError(f"audience {_a['id']}: quiets {_q!r}, which is not an offer")
+    if not any(w["id"] == _a["evidence"] for w in EVIDENCE["works"]):
+        raise KeyError(f"audience {_a['id']}: cites evidence {_a['evidence']!r}, which is not published")
+
+
+def block_who_are_you(ctx):
+    """The five doors. Deliberately the only thing on the page that looks like this."""
+    cards = "".join(
+        f'<a class="who" href="{AUDIENCE_ROOT}{a["id"]}/">'
+        f'<b>{html.escape(a["short"])}</b>'
+        f'<span>{html.escape(a["door"])}</span></a>' for a in AUDIENCES)
+    return (f'<div class="whos">{cards}</div>'
+            '<p class="small dim">Every level is reachable from every one of these. What changes '
+            'is which one a view opens on and what is said about it — not what is for sale. '
+            f'<a href="/offers/">All six, side by side</a>.</p>')
+
+
+BLOCKS["who-are-you"] = block_who_are_you
+
+
+def audience_pages(out_dir, ctx_shared):
+    """One page per audience: the level that fits, then the rest, then the one
+    published vault that speaks to them."""
+    made = {}
+    ladder = [l for l in LEVELS]
+    for a in AUDIENCES:
+        url = f"{AUDIENCE_ROOT}{a['id']}/"
+        ctx = dict(ctx_shared)
+        ctx.update({"page": f"are/{a['id']}", "page_url": url, "fm": {}, "toc": []})
+        lead_offer = OFFERS_BY_ID[a["leads_with"]]
+        lead_level = next(l for l in ladder if l["offer"] == a["leads_with"])
+        rest = [l for l in ladder if l["offer"] != a["leads_with"]]
+        ev = next(w for w in EVIDENCE["works"] if w["id"] == a["evidence"])
+        ctx["external_links"].add(ev["url"])
+
+        def card(l, quiet=False):
+            o = OFFERS_BY_ID[l["offer"]]
+            return (f'<div class="sku{" sku-quiet" if quiet else ""}" id="sku-{l["id"]}">'
+                    f'<div class="sku-n">{l["n"]}</div>'
+                    f'<h3 class="sku-name">{html.escape(l["name"])}</h3>'
+                    f'<p class="sku-who">{html.escape(l["who"])}</p>'
+                    f'<div class="sku-price"><b>{html.escape(l["price_label"])}</b>'
+                    f'<span>{html.escape(o["eta"])}</span></div>'
+                    f'<p class="sku-lede">{inline(l["lede"], ctx)}</p>'
+                    f'<p class="sku-state">{chip(o["state_badge"], claim_id=o["claim"])}</p>'
+                    f'<p class="sku-go">{checkout_html(o, ctx)}'
+                    f'<a class="sku-more" href="/d/{o["id"]}/">What arrives, and what does not '
+                    '&rarr;</a></p></div>')
+
+        body = (
+            shop_island(rel_prefix(url))
+            + f'<div class="a-ask"><b>You arrive asking</b><q>{html.escape(a["arrives_with"])}</q>'
+            f'</div>'
+            f'<h2 id="the-one-that-fits">The one that fits</h2>'
+            f'<div class="skus skus-one">{card(lead_level)}</div>'
+            f'<p>{inline(a["why"], ctx)}</p>'
+            f'<h2 id="what-changes">What changes for you</h2>'
+            f'<p>{inline(a["what_changes"], ctx)}</p>'
+            f'<h2 id="the-rest">The rest of the ladder</h2>'
+            '<p><b>Nothing is hidden from anybody.</b> These are the same four levels every reader '
+            'of this store sees; what the page above does is open on the one that usually fits the '
+            'question you arrived with. If it is the wrong one, it is right here.</p>'
+            f'<div class="skus">{"".join(card(l, l["offer"] in a["quiet"]) for l in rest)}</div>'
+            f'<h2 id="go-and-look">Go and look at one first</h2>'
+            f'<p>{inline(a["evidence_why"], ctx)}</p>'
+            f'<div class="ev-grid"><div class="ev"><div class="ev-h">'
+            f'<a href="{ev["url"]}"><b>{html.escape(ev["title"])}</b></a>'
+            f'<span class="ev-m"><code>{html.escape(ev["vault"])}</code> · '
+            f'{html.escape(ev["size"])} · {html.escape(ev["published"])}</span></div>'
+            f'<p class="ev-q">&ldquo;{html.escape(ev["quoted"])}&rdquo;</p>'
+            f'<p class="ev-w">{inline(ev["why"], ctx)}</p></div></div>'
+            '<p class="small dim">It opens with a read key published on its own page — no '
+            'account, nothing to install, and nothing asked of you for looking. '
+            f'<a href="/">Five more like it</a> · <a href="{AUDIENCE_ROOT}">the other four '
+            'ways in</a>.</p>')
+
+        md = [f"# {a['name']}\n", f"**You arrive asking:** {a['arrives_with']}\n",
+              f"## The one that fits\n\n**{lead_level['name']} — "
+              f"{lead_level['price_label']}**, {lead_offer['eta'].lower()} "
+              f"{lead_offer['eta_from']}. {_strip(a['why'])}\n",
+              f"## What changes for you\n\n{_strip(a['what_changes'])}\n",
+              "## The rest of the ladder\n"]
+        md += [f"- **{l['name']}** — {l['price_label']} — {_strip(l['lede'])}"
+               for l in rest]
+        md += ["", f"## Go and look at one first\n\n{_strip(a['evidence_why'])}\n",
+               f"- **{ev['title']}** — {ev['url']}"]
+        made[url] = _selling_page(out_dir, ctx_shared, url,
+            {"title": a["name"],
+             "description": f"{a['arrives_with']} {_strip(a['what_changes'])}"[:300],
+             "lead": inline(a["what_changes"], ctx)},
+            f" / <a href=\"{AUDIENCE_ROOT}\">who you are</a> / {html.escape(a['short'])}",
+            body, "\n".join(md))
+
+    # the index: the five doors, and nothing else
+    idx_body = (
+        '<p class="lead">Five ways in, over the same four things. <b>Nothing is hidden from '
+        'anybody</b> — what changes is which level a view opens on and what is said about it, '
+        'because the question somebody arrives with is usually the best guess at which one they '
+        'want.</p>'
+        + block_who_are_you(dict(ctx_shared, page_url=AUDIENCE_ROOT))
+        + '<h2 id="why-five">Why these five</h2>'
+        '<p>They are cut by <b>role</b> — what you do, and therefore what you are on the hook '
+        'for. This store also has three groups cut by <b>situation</b>, which is a different axis '
+        'over the same six offers and is still <a href="/audiences/">where it was</a>.</p>')
+    idx_md = ["# Who you are\n", "Five ways in, over the same four things. Nothing is hidden from "
+              "anybody; what changes is which level a view opens on.\n"]
+    idx_md += [f"- **{a['name']}** — {a['arrives_with']} — "
+               f"{SITE['base']}{AUDIENCE_ROOT}{a['id']}/" for a in AUDIENCES]
+    made[AUDIENCE_ROOT] = _selling_page(out_dir, ctx_shared, AUDIENCE_ROOT,
+        {"title": "Who you are",
+         "description": ("Five ways into the same four things: founder, investor, C-level "
+                         "executive, security professional, risk and governance. Nothing is "
+                         "hidden from anybody — what changes is which level a view opens on."),
+         "lead": "**Five ways in, over the same four things.**"},
+        "", idx_body, "\n".join(idx_md))
+    return made
+
 def build(out_dir):
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -3965,6 +4131,7 @@ def build(out_dir):
     extra.update(rails_pages(out_dir, ctx_shared))
     extra.update(work_pages(out_dir, ctx_shared))
     extra.update(memo_pages(out_dir, ctx_shared))
+    extra.update(audience_pages(out_dir, ctx_shared))
 
     # The pack manifest, machine-readable, beside the page that renders it. The
     # documents are held; the hashes are not, so a reader holding the pack can

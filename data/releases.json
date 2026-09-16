@@ -1,10 +1,27 @@
 {
-  "current": "v0.2.6",
+  "current": "v0.2.7",
   "releases": [
+    {
+      "version": "v0.2.7",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "five audiences, five doors, and nothing hidden from anybody",
+      "summary": "Asked for on 16 September, and the design brief for it is physical rather than visual: a laptop turned round at a stand, somebody says what they are, one tap, and the view opens on the level that fits. So /are/ is five large targets \u2014 founder, investor, C-level executive, security professional, risk and governance \u2014 five across on a laptop, two on a tablet, one on a phone, and they are on the home page above the four things for sale.\n\nEach view leads with one level, says what changes for that reader, then shows the rest of the ladder, then points at the one published vault that speaks to them: an investor gets the eleven-step risk-acceptance walk, an executive gets the standard turned into conformance rows, a security professional gets the risk graph explorer.\n\nSHOWN DIFFERENTLY, NOT HIDDEN, AND THAT WAS THE DECISION. The ask was that not every product is shown to every audience \u2014 an investor is not sold a ten-pound licence. The tempting implementation is to drop the cheap levels out of their view. That would make this site show different catalogues to different readers, which is a thing that has to be said out loud before it is built and nobody has said it. So: lead with what fits, quiet the rest at 72% opacity, hide nothing. check_the_five_audiences_hide_nothing holds every level reachable from every view and refuses display:none anywhere on one, because quiet becoming absent is one CSS rule away and would look like a tidy-up in a diff. Both breaks were run.\n\nTHIS DOES NOT REPLACE THE THREE BUYER GROUPS AND THAT IS OPEN, NOT DECIDED. The existing three are cut by situation; these five are cut by role. Both are indexes over the same six offers, neither invents a seventh thing to sell, and whether the three retire is on the board rather than settled in a commit.",
+      "changes": [
+        "assets",
+        "build.py",
+        "content",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.2.6",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "abbf7a67cea6c3b47ea475520565b5794e91d708",
       "site": "store.sgit.ai",
       "title": "SumUp comes off the store for the first end-to-end MVP, and the plan for it is parked rather than deleted",
       "summary": "Stripe works: six products priced, three coupons, and a reconciliation running on every release. A second rail that is half set up is a second thing to explain on a selling page and a second thing to keep true, and the first end-to-end store needs neither. So SumUp is off data/checkout.yml, off /paying/, off /how-it-works/ and out of the cart.\n\nNothing is deleted. /admin/rails/sumup/ keeps the whole plan behind a banner that says it is parked and why, because the argument for running two rails is a good one and it will be worth reading again the day the first rail has taken money \u2014 which is exactly when it stops being hypothetical. That is queued rather than forgotten.\n\nThe finding that came out of writing the SumUp plan up \u2014 that check_checkout_links pinned every destination to Stripe's hosts and would have refused a SumUp URL with a message about Stripe \u2014 is now moot rather than fixed, and stays written down because it will be true again the day the rail comes back.\n\nOne walkthrough caption corrected rather than restaged. The screenshot at step four is from v0.1.11 and shows four rails including SumUp. The caption now says so and the picture is left as it was taken, because a walkthrough whose images are quietly re-shot is a walkthrough nobody can date.\n\nAnd one comment in data/checkout.yml that had gone stale is now true: it still said no product catalogue goes inside the providers, sixty-two SKUs maintained twice is sixty-two SKUs that will disagree. That reversed on 16 September and the file now says so \u2014 the objection was sized wrong, because a price here does not vary by shape, so Stripe needs six products rather than sixty-two, and what the catalogue buys is a buyer who becomes a customer with an email rather than an anonymous card charge.",

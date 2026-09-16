@@ -11,7 +11,7 @@ One walkthrough caption corrected rather than restaged. The screenshot at step f
 And one comment in data/checkout.yml that had gone stale is now true: it still said no product catalogue goes inside the providers, sixty-two SKUs maintained twice is sixty-two SKUs that will disagree. That reversed on 16 September and the file now says so — the objection was sized wrong, because a price here does not vary by shape, so Stripe needs six products rather than sixty-two, and what the catalogue buys is a buyer who becomes a customer with an email rather than an anonymous card charge.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `abbf7a67cea6c3b47ea475520565b5794e91d708`
 - Reconstructed: no
 
 ---

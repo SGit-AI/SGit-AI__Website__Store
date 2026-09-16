@@ -31,6 +31,7 @@
   order: 1
   short: A founder
   name: You are a founder
+  door: "Shipping with agents, and somebody is going to ask."
   arrives_with: "We are shipping with agents and somebody is going to ask what they can reach."
   what_changes: "Speed and evidence, in that order. A founder needs the document to exist before the conversation that needs it, and needs it to survive being read by somebody more senior than them."
   leads_with: t2
@@ -43,6 +44,7 @@
   order: 2
   short: An investor
   name: You are backing a company
+  door: "Backing a company, and need somebody to look."
   arrives_with: "I need somebody to look at what this company's agents can actually do, and I need it to be somebody's work."
   what_changes: "Independence, and repeatability across a portfolio. The point is not that a document exists — it is that somebody who is not the founder wrote it and will stand behind it."
   leads_with: t4
@@ -55,6 +57,7 @@
   order: 3
   short: A C-level exec
   name: You have to answer for it
+  door: "Have to answer for it, to a board."
   arrives_with: "Can I have this in a form my board can read?"
   what_changes: "Who the document is written for. The material is the same; what an executive needs is the version that survives a board pack, and the store is explicit that this is being built rather than already sitting there."
   leads_with: t3
@@ -67,6 +70,7 @@
   order: 4
   short: A security professional
   name: You do this for a living
+  door: "Do this for a living, and want the method."
   arrives_with: "I can write the policy. What I want is the structure and the vocabulary, and I want to see how you compute the delta."
   what_changes: "Nothing is explained that you already know. What is worth your time here is the method and the fifteen published templates — and, if you run reviews, the list of people who run the upper two levels."
   leads_with: t1
@@ -79,6 +83,7 @@
   order: 5
   short: Risk and governance
   name: You own the register
+  door: "Own the register, and need the mapping."
   arrives_with: "Where does this sit against the frameworks we already report on?"
   what_changes: "The mapping, and what the store refuses to claim about it. Nothing here is a compliance assessment and nothing claims conformity to any standard — what exists is a document that can be cited a row of."
   leads_with: t3

@@ -795,3 +795,38 @@ figure.walkshot figcaption code{font-size:.9em}
 /* st-p was already `projected`. This is `person`. A second meaning on one class
    is how a chip quietly starts lying about a different claim. */
 .st-n{color:#1d4ed8;background:rgba(29,78,216,.10);border-color:rgba(29,78,216,.32)}
+
+/* --------------------------------------------------------- the five doors ----
+   The counter. A laptop or a tablet turned round: somebody says what they are,
+   one tap, and the view opens on the level that usually fits. So these are the
+   largest targets on the site and there are five of them, which is the most a
+   person can choose between while talking to somebody. */
+/* Five across, or one. Never four-and-one: a fifth door on its own line reads as
+   an afterthought, and at a counter the whole point is that they are five equal
+   things somebody picks between in one glance. */
+.whos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.7rem;
+  margin:1.5rem 0 1rem}
+@media (max-width:900px){.whos{grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}}
+@media (max-width:480px){.whos{grid-template-columns:minmax(0,1fr)}}
+a.who{display:flex;flex-direction:column;gap:.45rem;background:var(--panel);
+  border:1px solid var(--line);border-radius:10px;padding:1rem 1rem;color:inherit;
+  min-height:126px}
+a.who:hover{text-decoration:none;border-color:var(--accent);box-shadow:var(--shadow)}
+a.who b{font-family:var(--serif);font-size:1.05rem;line-height:1.2;color:var(--ink)}
+a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
+@media (hover:none){a.who{min-height:132px}}
+
+/* One card on its own is the answer, not a grid of one. */
+.skus-one{grid-template-columns:minmax(0,min(420px,100%))}
+/* Present, reachable, and not argued for. Never display:none — a site that shows
+   different people different catalogues has to say so out loud, and this one
+   would rather not have to. */
+.sku-quiet{opacity:.72}
+.sku-quiet:hover{opacity:1}
+.a-ask{display:flex;flex-direction:column;gap:.3rem;border-left:3px solid var(--accent);
+  padding:.7rem 0 .7rem 1rem;margin:1.4rem 0}
+.a-ask b{font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim2,var(--dim))}
+.a-ask q{font-family:var(--serif);font-size:1.22rem;line-height:1.4;color:var(--ink);quotes:'“' '”'}
+/* One card has nothing to align against, so the reservation is just a gap. */
+.skus-one .sku-name,.skus-one .sku-who{min-height:0}

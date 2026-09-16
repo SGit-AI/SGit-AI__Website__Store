@@ -1970,6 +1970,58 @@ def check_every_claim_state_is_real():
         fail("ledger/index.html: a chip rendered with the unknown fallback and an empty tooltip")
 
 
+EXPECTED_AUDIENCES = {
+    # id            leads with   quieted
+    "founder":     ("t2", {"t4"}),
+    "investor":    ("t4", {"t1"}),
+    "exec":        ("t3", {"t1"}),
+    "security":    ("t1", set()),
+    "governance":  ("t3", {"t1"}),
+}
+
+
+def check_the_five_audiences_hide_nothing():
+    """Five views over the same four levels, and every level reachable from each.
+
+    THIS IS THE CHECK THAT KEEPS AN HONEST ANSWER HONEST. The ask was that not
+    every product is shown to every audience — an investor is not sold a
+    ten-pound licence. The tempting implementation is to drop the cheap levels
+    out of their view. That would make this site show different catalogues to
+    different readers, which is a thing that has to be said out loud before it is
+    built, and nobody has said it.
+
+    So the implementation is: lead with what fits, quiet the rest, hide nothing.
+    This check is what stops `quiet` quietly becoming `absent` — because that
+    change is one CSS rule away and would look like a tidy-up in a diff."""
+    src = (ROOT / "data" / "audiences.yml").read_text()
+    ids = re.findall(r"^- id: (\S+)", src, re.M)
+    if set(ids) != set(EXPECTED_AUDIENCES):
+        fail(f"the audience set changed: expected {sorted(EXPECTED_AUDIENCES)}, built {sorted(ids)}")
+        return
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    levels = [o["id"] for o in index["offers"] if o["id"].startswith("t")]
+    for aid, (leads, quiet) in EXPECTED_AUDIENCES.items():
+        f = OUT / "are" / aid / "index.html"
+        if not f.exists():
+            fail(f"are/{aid}: the audience page was not built")
+            continue
+        page = f.read_text()
+        for lvl in levels:
+            if f'href="../../d/{lvl}/index.html"' not in page and f'/d/{lvl}/' not in page:
+                fail(f"are/{aid}: level {lvl} is not reachable from this view. Leading with what "
+                     "fits is a view; removing a level is a different catalogue, and this site "
+                     "does not show different people different catalogues")
+        if "display:none" in page:
+            fail(f"are/{aid}: something on this page is display:none. A quieted level is present "
+                 "and reachable; a hidden one is a claim nobody made")
+        if f'<div class="skus skus-one"><div class="sku" id="sku-' not in page:
+            fail(f"are/{aid}: does not lead with a single level. The whole point of the view is "
+                 "that it opens on one")
+        md = OUT / "are" / aid / "index.md"
+        if not md.exists():
+            fail(f"are/{aid}: has no markdown twin")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2001,6 +2053,7 @@ def main():
         check_pack_area_is_honest,
         check_delivery_estimates,
         check_every_claim_state_is_real,
+        check_the_five_audiences_hide_nothing,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,
