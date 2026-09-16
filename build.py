@@ -767,6 +767,8 @@ def offer_card(o, ctx, link=True, anchor_prefix=""):
         f'<p class="offer-gets">{inline(o["gets"], ctx)}</p>'
         f'<p class="offer-state">{chip(o["state_badge"], claim_id=o["claim"])} '
         f'{inline(o["state"], ctx)}</p>'
+        f'<p class="offer-eta"><b>{html.escape(o["eta"])}</b>'
+        f'<span>{html.escape(o["eta_from"])}</span></p>'
         f'<p class="offer-rail"><b>{html.escape(rail_name)}.</b> {html.escape(rail_why)}</p>'
         + (f'<p class="offer-deposit"><b>{html.escape(o["deposit_label"])} deposit</b> '
            f'{html.escape(o["deposit_why"])}.</p>' if o.get("deposit_label") else "")
@@ -797,13 +799,15 @@ def block_offer_table(ctx):
         rows.append(
             f'<tr><td><b>{tier}</b></td><td>{name}</td>'
             f'<td class="num">{html.escape(o["price_label"])}</td>'
+            f'<td class="small">{html.escape(o["eta"])}</td>'
             f'<td>{chip(o["state_badge"], claim_id=o["claim"])}</td>'
             f'<td class="small">{html.escape(RAILS[o["rail"]][0])}</td>'
             f'<td class="small"><code>{html.escape(o["id"])}</code></td></tr>'
         )
     return (
         '<div class="tablewrap"><table><thead><tr><th></th><th>The question it answers</th>'
-        '<th class="num">Price</th><th>What is true of it today</th><th>How it is paid</th>'
+        '<th class="num">Price</th><th>When it arrives</th>'
+        '<th>What is true of it today</th><th>How it is paid</th>'
         '<th>Offer id</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>"
         '<p class="small dim">The offer id is the stable part. A payment link redirects to '
         '<code>/d/&lt;id&gt;/</code>, so this site can move host without reprinting a card '
@@ -1143,6 +1147,8 @@ def delivery_pages(out_dir, ctx_shared):
             '<div class="tablewrap"><table><tbody>'
             f'<tr><th>Offer</th><td>{tier} &mdash; <code>{html.escape(o["id"])}</code></td></tr>'
             f'<tr><th>Price</th><td>{html.escape(o["price_label"])}</td></tr>'
+            f'<tr><th>When it arrives</th><td><b>{html.escape(o["eta"])}</b>, '
+            f'{html.escape(o["eta_from"])}. {html.escape(o["eta_why"])}</td></tr>'
             f'<tr><th>How it is paid</th><td>{html.escape(rail_name)}. {html.escape(rail_why)}</td></tr>'
             f'<tr><th>What is true of it today</th><td>{chip(o["state_badge"], claim_id=o["claim"])} '
             f'{inline(o["state"], ctx)}</td></tr>'
@@ -3721,6 +3727,10 @@ def site_index(rendered, claims):
         "offers": [
             {"id": o["id"], "tier": o["tier"], "question": o["question"],
              "price": o["price_label"], "rail": o["rail"], "state": o["state_badge"],
+             # The delivery estimate and the clock it starts on. Both, always: an
+             # estimate without its start is the half a consumer of this index
+             # would print and the half that would make it a lie.
+             "eta": o["eta"], "eta_from": o["eta_from"], "eta_why": o["eta_why"],
              "buyer": o["buyer"], "also_for": o["also_for"],
              "checkout_mode": o["checkout_mode"],
              # the share taken when the order is placed; the rest is due on delivery

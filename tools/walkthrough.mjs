@@ -47,7 +47,7 @@ console.log('2 the shape page');
 await p.goto(B+'/p/gmail-readonly/'); await p.waitForTimeout(200);
 A('.lvl length === 4', await p.locator('.lvl').count()===4);
 const prices = await p.locator('.lvl-price').allInnerTexts();
-A("prices are ['£5','£50','£500','£1,500']", JSON.stringify(prices)===JSON.stringify(['£5','£50','£500','£1,500']), prices);
+A("prices are ['£10','£50','£500','£1,500']", JSON.stringify(prices)===JSON.stringify(['£10','£50','£500','£1,500']), prices);
 const skus = await p.locator('.lvl-sku').allInnerTexts();
 A('every sku matches /^ABP-[A-Z0-9]{3}-[PVCS]$/', skus.every(s=>/^ABP-[A-Z0-9]{3}-[PVCS]$/.test(s)), skus);
 
@@ -97,7 +97,7 @@ A('NO NETWORK — nothing left the origin', offsite.length===0, offsite);
 console.log('mode 2 — fetch-only checks');
 const idx = await (await fetch(B+'/assets/site-index.json')).json();
 const byId = Object.fromEntries(idx.offers.map(o=>[o.id,o]));
-A('site-index prices', ['£5','£50','£500','£1,500'].every((v,i)=>byId['t'+(i+1)].price===v), [1,2,3,4].map(i=>byId['t'+i].price));
+A('site-index prices', ['£10','£50','£500','£1,500'].every((v,i)=>byId['t'+(i+1)].price===v), [1,2,3,4].map(i=>byId['t'+i].price));
 A('site-index split 100/100/20/20', [100,100,20,20].every((v,i)=>byId['t'+(i+1)].pay_now_pct===v), [1,2,3,4].map(i=>byId['t'+i].pay_now_pct));
 const cartHtml = await (await fetch(B+'/cart/')).text();
 const model = JSON.parse(cartHtml.match(/<script type="application\/json" id="shop-model">(.*?)<\/script>/s)[1]);

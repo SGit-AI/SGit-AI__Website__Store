@@ -1,5 +1,5 @@
 {
- "version": "v0.1.18",
+ "version": "v0.2.0",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -7,7 +7,7 @@
    "url": "/",
    "title": "Every agent needs a licence to operate",
    "description": "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels \u2014 the pack downloaded at \u00a35, a vault you hold the keys to at \u00a350, corrected for your situation at \u00a3500, and two sessions with a security professional signing it at \u00a31,500.",
-   "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy is the document that puts both on one page, for one agent in one deployment: what it can do, what you authorised, the gap between them, and what actually stands in the way. Fifteen applications, four levels, from \u00a35 to \u00a31,500. The templates are free and public \u2014 what is priced here is yours, with the mandate corrected and your name on the licence.",
+   "lead": "You know what you asked for. You do not know what it can do. An Agent Behaviour Policy is the document that puts both on one page, for one agent in one deployment: what it can do, what you authorised, the gap between them, and what actually stands in the way. Fifteen applications, four levels, from \u00a310 to \u00a31,500. The templates are free and public \u2014 what is priced here is yours, with the mandate corrected and your name on the licence.",
    "headings": [
     "Which agent do you run?",
     "What is actually in one",
@@ -246,9 +246,12 @@
    "id": "t1",
    "tier": "1",
    "question": "Can I just have the pack?",
-   "price": "\u00a35",
+   "price": "\u00a310",
    "rail": "link",
    "state": "exists",
+   "eta": "Immediately",
+   "eta_from": "the moment the payment goes through",
+   "eta_why": "Nothing is made to order. The pack exists before you arrive and the page you land on is the download.",
    "buyer": "agents",
    "also_for": [
     "startups",
@@ -267,6 +270,9 @@
    "price": "\u00a350",
    "rail": "link",
    "state": "exists",
+   "eta": "1 to 2 days",
+   "eta_from": "from your payment",
+   "eta_why": "A shape is built into a vault by one command; what takes the day is doing it for you, with your licence on it and the public key off it.",
    "buyer": "agents",
    "also_for": [
     "startups",
@@ -285,6 +291,9 @@
    "price": "\u00a3500",
    "rail": "link",
    "state": "unrun",
+   "eta": "1 to 3 days",
+   "eta_from": "from your reply, not from your payment",
+   "eta_why": "The clock starts when you send the industry, the use case and the details, because until then there is nothing to correct against. It is said this way round because it is the way round that is true.",
    "buyer": "startups",
    "also_for": [
     "agents",
@@ -303,6 +312,9 @@
    "price": "\u00a31,500",
    "rail": "link",
    "state": "unrun",
+   "eta": "1 to 5 days",
+   "eta_from": "from your reply, not from your payment",
+   "eta_why": "Depends on load. The constraint is one person's calendar rather than a warehouse, and saying so is more use to you than a word borrowed from a shop that holds stock.",
    "buyer": "investors",
    "also_for": [
     "agents",
@@ -321,6 +333,9 @@
    "price": "By depth band",
    "rail": "link",
    "state": "partial",
+   "eta": "With the level it attaches to",
+   "eta_from": "same clock",
+   "eta_why": "An add-on is not shipped on its own and does not have a date of its own.",
    "buyer": "any",
    "also_for": [
     "agents",
@@ -340,6 +355,9 @@
    "price": "By depth band",
    "rail": "none",
    "state": "absent",
+   "eta": "With the level it attaches to",
+   "eta_from": "same clock",
+   "eta_why": "An add-on is not shipped on its own and does not have a date of its own.",
    "buyer": "investors",
    "also_for": [],
    "checkout_mode": "none",
@@ -409,7 +427,7 @@
    "id": "abp-templates-exist",
    "state": "exists",
    "date": "15 Sep 2026",
-   "claim": "Fifteen Agent Behaviour Policy template shapes are published, free and public, with published read keys, at riskmandate.ai. The pack for any of them is what the \u00a35 level sends: built, and it runs today. The templates being free is not a problem for this store \u2014 what is priced is the template with the mandate corrected, a name on the licence and no public key."
+   "claim": "Fifteen Agent Behaviour Policy template shapes are published, free and public, with published read keys, at riskmandate.ai. The pack for any of them is what the \u00a310 level sends: built, and it runs today. The templates being free is not a problem for this store \u2014 what is priced is the template with the mandate corrected, a name on the licence and no public key."
   },
   {
    "id": "abp-vault-build-exists",
@@ -535,7 +553,7 @@
    "id": "card-fee-floor",
    "state": "projected",
    "date": "10 Sep 2026",
-   "claim": "At \u00a35 the fixed card fee alone is about four per cent of the transaction. On 10 September that was the reason \u00a310 was the floor rather than \u00a35. On 15 September the project lead set the floor at \u00a35 anyway \u2014 the arithmetic did not change, the judgement did, and the old reasoning stays on the page rather than being quietly dropped. Four per cent of a fiver is now a known cost of the cheapest way in, not a reason there isn't one."
+   "claim": "The entry price has moved three times and every move is kept. \u00a310 on 10 September, because at \u00a35 the fixed card fee alone is about four per cent of the transaction. \u00a35 on 15 September, by ruling, with the arithmetic unchanged and the judgement changed. \u00a310 again on 16 September \u2014 and this time the number is not what moved. Two reviewers, one human and one invented, independently said \u00a35 read as a commodity price for something sophisticated; the answer ruled was not a larger number for the same thing but a commercial licence over material that is public under CC BY, which is a different product rather than a dearer one. Every step stays on the page, because a price that moves quietly is a price nobody can argue with."
   },
   {
    "id": "pricing-in-pounds",
@@ -704,6 +722,12 @@
    "state": "docs",
    "date": "15 Sep 2026",
    "claim": "There is no <form>, <input> or <select> anywhere in this site's output, and the reason boxes on [/review/](/review/) are the only place on this domain that can be typed into. The rule was absolute until v0.1.15 and moved by ruling, to make room for a page that answers a partner's review \u2014 asking somebody to answer a critique with no way to answer it would have been the joke version of this site's whole argument. What stayed absolute: no <form>, which is the element that submits; no <input> and no <select>, which is where a card number or an address gets typed; no network connection on any page, which is the check that makes all of it a fact rather than a sentence; and no name attribute on the boxes, because a name is what a field is called when it is submitted and these are never submitted. What a reader types stays in their browser until they copy it out."
+  },
+  {
+   "id": "entry-level-dual-licence",
+   "state": "docs",
+   "date": "16 Sep 2026",
+   "claim": "The entry level is a licence, not a download. The same files are published free under CC BY, which obliges anybody using them to attribute; what \u00a310 buys is a commercial licence to the buyer over the same material, so it can go into client work, into a product or into a document for a regulator without carrying our name into it. It is grantable for one reason \u2014 the copyright in the pack is ours, because everything in it was written here \u2014 and that makes it a constraint on what may go into a pack from now on. The wording is not drafted. A grant to an unnamed holder has to read as a grant and not as a public re-licence of the same bytes, and until that is written this claim says what is intended rather than what is signed."
   }
  ]
 }

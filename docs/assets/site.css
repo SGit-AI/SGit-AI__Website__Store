@@ -725,3 +725,11 @@ figure.walkshot figcaption{font-size:.82rem;line-height:1.6;color:var(--ink);
   border-left:3px solid var(--accent);padding-left:.8rem}
 figure.walkshot figcaption b{color:#101114}
 figure.walkshot figcaption code{font-size:.9em}
+
+/* When it arrives. Sits directly under what the level gets you, because a date is
+   part of the offer rather than a detail of the fulfilment — a founder walked this
+   store, found no date anywhere on it, and left without buying. */
+.offer-eta{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 0;
+  font-size:.92rem}
+.offer-eta b{color:var(--ink)}
+.offer-eta span{color:var(--dim);font-size:.85rem}

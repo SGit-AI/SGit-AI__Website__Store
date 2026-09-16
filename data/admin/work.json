@@ -353,6 +353,14 @@
           "description": "The register takes a file and a line. The interesting one to run next is a second synthetic pass after the rail is live, because every finding in the first one stopped at a checkout that did not exist.",
           "blocked": "TM-7.",
           "source": "self"
+        },
+        {
+          "id": "TR-7",
+          "title": "Execute the memos in sequence, pushing often",
+          "status": "in-progress",
+          "description": "Set as the working method: catalogue each memo exactly, plan, then execute bit by bit and keep pushing to production. Minor versions for most of it; a major version where a change is big enough to deserve one.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
         }
       ]
     },
@@ -744,6 +752,162 @@
           "blocked": "PP-1, QB-2.",
           "source": "lead",
           "memo": "2026-09-16-product-pages"
+        }
+      ]
+    },
+    {
+      "id": "what-has-been-done",
+      "title": "What has actually been done",
+      "color": "#166534",
+      "memo": "2026-09-16-the-homepage-sells",
+      "description": "The store says the upper levels have never run for a paying buyer. True, and it reads as “nobody has ever done this”, which is false. The work has been done many times and published; what has not happened is a sale through this checkout. Lead with the first, keep the second, stop letting one stand for the other.",
+      "tasks": [
+        {
+          "id": "WH-1",
+          "title": "Re-read every claim against “the work has been done”",
+          "status": "in-progress",
+          "description": "Fifty claims, one at a time. Some are wrong as written; some are exactly right and were being misread. <b>Not a search-and-replace</b> — the ledger is the one artefact here that must not be edited carelessly, and it is also the thing two reviewers praised.",
+          "source": "self",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "WH-2",
+          "title": "Link the published evidence",
+          "status": "next",
+          "description": "sgit.ai publishes vault after vault of exactly this work, each with a read key anybody can open. That evidence existed the whole time on another domain and was never linked from here. “Here are twenty of these, open one” beats both a disclaimer and a testimonial.",
+          "source": "self",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "WH-3",
+          "title": "Narrow the disclosure to what is genuinely undone",
+          "status": "next",
+          "description": "A first buyer really is the first through this checkout, and that is worth them knowing. It stops being the headline.",
+          "blocked": "WH-1.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "WH-4",
+          "title": "Put a name and a track record on the delivery",
+          "status": "next",
+          "description": "Twenty years of cybersecurity, in the project lead's voice with a source rather than asserted in the shop's. Same page as the reviewer work.",
+          "blocked": "WD-2.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "WH-5",
+          "title": "Decide what to do about testimonials",
+          "status": "queued",
+          "description": "Asked for, and there are none. The review pages are critiques, which is a different object. A placeholder saying it is empty is the house style; an invented one would undo the rest of this workstream.",
+          "owner": "lead",
+          "source": "self",
+          "memo": "2026-09-16-the-homepage-sells"
+        }
+      ]
+    },
+    {
+      "id": "delivery-times",
+      "title": "Say when it arrives",
+      "color": "#0891b2",
+      "memo": "2026-09-16-the-homepage-sells",
+      "description": "Every level gets an estimated delivery, because a shop that will not say when something arrives is a shop people leave. The numbers were given: immediate, one to two days, one to three days from receiving the customisation, one to five days.",
+      "tasks": [
+        {
+          "id": "DT-1",
+          "title": "Put a delivery estimate on every level",
+          "status": "in-progress",
+          "description": "£10 immediately · £50 in one to two days · £500 in one to three days <em>from receiving the customisation</em> · £1,500 in one to five days. The £500 clock starting at the buyer's reply rather than at the payment is the part that has to be stated, because it is the part that is true.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "DT-2",
+          "title": "Replace the it-has-never-run non-answer about timing",
+          "status": "next",
+          "description": "A claim currently says the time to a delivered vault has never run so there is no measurement to quote. It was found by a founder persona who left without buying and named the missing date as the reason. There is now an estimate, and an estimate labelled as one is an answer.",
+          "blocked": "DT-1.",
+          "source": "self",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "DT-3",
+          "title": "Say what the constraint really is",
+          "status": "next",
+          "description": "“Depending on inventory” is good copy and needs a true referent. The constraint is one person's calendar, which is worth saying in those words rather than borrowing a warehouse metaphor that would be the only false sentence on the page.",
+          "source": "self",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "DT-4",
+          "title": "Start measuring the moment there is something to measure",
+          "status": "queued",
+          "description": "An estimate becomes a record the first time an order runs. The ledger is built for exactly this.",
+          "blocked": "TM-7.",
+          "source": "self",
+          "memo": "2026-09-16-the-homepage-sells"
+        }
+      ]
+    },
+    {
+      "id": "the-shop-front",
+      "title": "The homepage sells",
+      "color": "#a16207",
+      "memo": "2026-09-16-the-homepage-sells",
+      "description": "A counter at an event, not an essay with a buy button. Laptop or tablet turned round: who are you, here is your thing, buy it. Products up front, big targets, few of them, and everything about the mechanism moved to the admin side.",
+      "tasks": [
+        {
+          "id": "SF-1",
+          "title": "Move the mechanism and the meta off the front page",
+          "status": "next",
+          "description": "The home page opens by explaining what an Agent Behaviour Policy is. A shop opens with what is for sale. The explanation does not get deleted — it moves.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "SF-2",
+          "title": "Put the four products up front, with prices and delivery",
+          "status": "next",
+          "description": "The thing being sold, visible without scrolling, with what it costs and when it arrives.",
+          "blocked": "DT-1.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "SF-3",
+          "title": "Build the who-are-you entry",
+          "status": "next",
+          "description": "The actual design brief: laptop turned round, somebody says “founder”, two taps to a checkout. Big targets, works on a tablet, no dead ends. The top menu keeps the full catalogue and the individual audiences for everyone else.",
+          "blocked": "QB-2.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "SF-4",
+          "title": "Make a discount code a link, never a thing to type",
+          "status": "next",
+          "description": "“Click a link, apply the discount code.” The store already reads a code off the address and strips it from history; what is missing is the links.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "SF-5",
+          "title": "Add the sections a shop front has",
+          "status": "queued",
+          "description": "Feature sets, articles, end-to-end flows, testimonials. Asked for by name. Testimonials are blocked on there being any.",
+          "blocked": "SF-1, WH-5.",
+          "source": "lead",
+          "memo": "2026-09-16-the-homepage-sells"
+        },
+        {
+          "id": "SF-6",
+          "title": "Test it the way it will be used",
+          "status": "queued",
+          "description": "On a tablet, held, by somebody standing next to a stranger. Not in a desktop browser at 1440px.",
+          "blocked": "SF-3.",
+          "source": "self",
+          "memo": "2026-09-16-the-homepage-sells"
         }
       ]
     }

@@ -18,7 +18,7 @@ n8n, and so on — and each one can be bought at any of four levels.
 
 | Level | Price | What changes | Who does the work |
 |---|---|---|---|
-| 1 · the pack, downloaded | **£5** | the files for that shape, as a zip | nobody — it is published |
+| 1 · the pack, downloaded | **£10** | the files for that shape, as a zip | nobody — it is published |
 | 2 · a working vault | **£50** | the same material as a vault you hold the keys to | a build, no conversation |
 | 3 · corrected for you | **£500** | the mandate corrected against your situation | somebody, from what you send |
 | 4 · two sessions | **£1,500** | built from an interview, reviewed and signed off | two half-hours with your team |
@@ -140,7 +140,7 @@ The £500 card also carries the prompt you would run, with a copy button.
 
 ### 7. Follow the handover
 
-Press **Download it now** on the £5 card. It leaves this site.
+Press **Download it now** on the £10 card. It leaves this site.
 
 <figure class="walkshot"><img src="/assets/shots/07-riskmandate-paid-t1.png" alt="The riskmandate.ai level one page, showing the order reference carried over, the shape that was bought, a download button and the zip's sha256 and byte count."><figcaption><b>What to check, and this is the important one.</b> riskmandate.ai shows <b>your order reference</b> and <b>the shape you bought</b>, with the right zip, its sha256 and its size. Two sites, one order, no account and nothing posted between them — the link carried a reference and a slug and that was all it needed. <em>Captured 15 September 2026; their page is theirs and moves on its own release schedule.</em></figcaption></figure>
 
@@ -182,7 +182,7 @@ the two produced it.
     ASSERT the four .lvl-price are ['£5','£50','£500','£1,500']
     ASSERT every .lvl-sku matches /^ABP-[A-Z0-9]{3}-[PVCS]$/
 
-3.  CLICK  .lvl:nth-of-type(1) button   (adds the £5 level)
+3.  CLICK  .lvl:nth-of-type(1) button   (adds the £10 level)
     CLICK  .lvl:nth-of-type(3) button   (adds the £500 level)
     ASSERT localStorage['sgit.store.order.v1'] parses, and .items has two keys
 

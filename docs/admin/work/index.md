@@ -2,7 +2,7 @@
 
 The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.
 
-**13 workstreams · 70 units of work · 64 not done.**
+**16 workstreams · 86 units of work · 80 not done.**
 
 
 ## Take money at all — next
@@ -72,6 +72,7 @@ The reviews, the ledger, the console and this board. The part of the store that 
 - **TR-6 · Build the memo queue** — `done` — Shipped in v0.1.18 at /admin/memos/. A memo is kept verbatim, read into a brief, broken into units of work, and the units appear on the board carrying the memo they came from. Set as the process by the memo it is generated from, and applied backwards to the two before it.
 - **TR-4 · Operationalise the review proposals** — `in-progress` — Eighteen proposals across two reviews, each with a stance. The ones marked do-now are units of work and were not tracked anywhere until this board existed. The generated proposals board is the join.
 - **TR-5 · Capture the next review** — `queued` — The register takes a file and a line. The interesting one to run next is a second synthetic pass after the rail is live, because every finding in the first one stopped at a checkout that did not exist. _Blocked on: TM-7._
+- **TR-7 · Execute the memos in sequence, pushing often** — `in-progress` — Set as the working method: catalogue each memo exactly, plan, then execute bit by bit and keep pushing to production. Minor versions for most of it; a major version where a change is big enough to deserve one.
 
 
 ## Qualify who is reading — next
@@ -151,6 +152,39 @@ Features down the left, five columns across — free, £10, £50, £500, £1,500
 - **PP-4 · Print the specs and the SKUs** — `queued` — The store has 62 and shows none. The same data the Stripe rail is about to need. _Blocked on: TM-1._
 - **PP-5 · Add the review section, and say it is empty** — `queued` — Reviews are coming, given away in exchange for comment. An empty section that says it is empty is this site's house style — it is what the two upper levels already do about never having been sold. No stars: a rating on a product nobody has bought is the one piece of furniture here that could not be honest. _Blocked on: PP-1._
 - **PP-6 · Make the page switchable by audience** — `queued` — Framed in the memo as editions of one product rather than separate paths — the same switch the five-audience memo asked for, arriving from the other side. One mechanism serves both. _Blocked on: PP-1, QB-2._
+
+
+## What has actually been done — in-progress
+
+The store says the upper levels have never run for a paying buyer. True, and it reads as “nobody has ever done this”, which is false. The work has been done many times and published; what has not happened is a sale through this checkout. Lead with the first, keep the second, stop letting one stand for the other.
+
+- **WH-1 · Re-read every claim against “the work has been done”** — `in-progress` — Fifty claims, one at a time. Some are wrong as written; some are exactly right and were being misread. Not a search-and-replace — the ledger is the one artefact here that must not be edited carelessly, and it is also the thing two reviewers praised.
+- **WH-2 · Link the published evidence** — `next` — sgit.ai publishes vault after vault of exactly this work, each with a read key anybody can open. That evidence existed the whole time on another domain and was never linked from here. “Here are twenty of these, open one” beats both a disclaimer and a testimonial.
+- **WH-3 · Narrow the disclosure to what is genuinely undone** — `next` — A first buyer really is the first through this checkout, and that is worth them knowing. It stops being the headline. _Blocked on: WH-1._
+- **WH-4 · Put a name and a track record on the delivery** — `next` — Twenty years of cybersecurity, in the project lead's voice with a source rather than asserted in the shop's. Same page as the reviewer work. _Blocked on: WD-2._
+- **WH-5 · Decide what to do about testimonials** — `queued` — Asked for, and there are none. The review pages are critiques, which is a different object. A placeholder saying it is empty is the house style; an invented one would undo the rest of this workstream.
+
+
+## Say when it arrives — in-progress
+
+Every level gets an estimated delivery, because a shop that will not say when something arrives is a shop people leave. The numbers were given: immediate, one to two days, one to three days from receiving the customisation, one to five days.
+
+- **DT-1 · Put a delivery estimate on every level** — `in-progress` — £10 immediately · £50 in one to two days · £500 in one to three days from receiving the customisation · £1,500 in one to five days. The £500 clock starting at the buyer's reply rather than at the payment is the part that has to be stated, because it is the part that is true.
+- **DT-2 · Replace the it-has-never-run non-answer about timing** — `next` — A claim currently says the time to a delivered vault has never run so there is no measurement to quote. It was found by a founder persona who left without buying and named the missing date as the reason. There is now an estimate, and an estimate labelled as one is an answer. _Blocked on: DT-1._
+- **DT-3 · Say what the constraint really is** — `next` — “Depending on inventory” is good copy and needs a true referent. The constraint is one person's calendar, which is worth saying in those words rather than borrowing a warehouse metaphor that would be the only false sentence on the page.
+- **DT-4 · Start measuring the moment there is something to measure** — `queued` — An estimate becomes a record the first time an order runs. The ledger is built for exactly this. _Blocked on: TM-7._
+
+
+## The homepage sells — next
+
+A counter at an event, not an essay with a buy button. Laptop or tablet turned round: who are you, here is your thing, buy it. Products up front, big targets, few of them, and everything about the mechanism moved to the admin side.
+
+- **SF-1 · Move the mechanism and the meta off the front page** — `next` — The home page opens by explaining what an Agent Behaviour Policy is. A shop opens with what is for sale. The explanation does not get deleted — it moves.
+- **SF-2 · Put the four products up front, with prices and delivery** — `next` — The thing being sold, visible without scrolling, with what it costs and when it arrives. _Blocked on: DT-1._
+- **SF-3 · Build the who-are-you entry** — `next` — The actual design brief: laptop turned round, somebody says “founder”, two taps to a checkout. Big targets, works on a tablet, no dead ends. The top menu keeps the full catalogue and the individual audiences for everyone else. _Blocked on: QB-2._
+- **SF-4 · Make a discount code a link, never a thing to type** — `next` — “Click a link, apply the discount code.” The store already reads a code off the address and strips it from history; what is missing is the links.
+- **SF-5 · Add the sections a shop front has** — `queued` — Feature sets, articles, end-to-end flows, testimonials. Asked for by name. Testimonials are blocked on there being any. _Blocked on: SF-1, WH-5._
+- **SF-6 · Test it the way it will be used** — `queued` — On a tablet, held, by somebody standing next to a stranger. Not in a desktop browser at 1440px. _Blocked on: SF-3._
 
 ---
 

@@ -15,7 +15,7 @@ The catalogue Stripe needs is eight prices across six products, not sixty-two, b
 **One check narrowed, and exactly how far.** The stray-checkout check matched any absolute URL with a provider's name in it, which was right until a page here had a provider's name in its own address. It now exempts one origin, this one, and the reason is a fact rather than a convenience: nothing on store.sgit.ai takes a payment. Four checks added — the board is whole, the rendered board agrees with its own arithmetic, the Stripe catalogue is the offers, and a withheld term is declared. Seven deliberate breaks were run against them before shipping.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `f70959171023c68bd72aa0a35a209a51cdeb40da`
 - Reconstructed: no
 
 ---

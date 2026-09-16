@@ -114,7 +114,7 @@ which is the whole reason the pack said to keep them stable: a repricing costs n
 reprinting, and a card already made still lands on the right page. Each redirects
 to a delivery page that says **what arrives and what does not**:
 
-- [`t1`](/d/t1/) — £5, the pack, downloaded on the page you land on
+- [`t1`](/d/t1/) — £10, the pack, downloaded on the page you land on, immediately
 - [`t2`](/d/t2/) — £50, a working vault you hold the keys to
 - [`t3`](/d/t3/) — £500, corrected for your situation
 - [`t4`](/d/t4/) — £1,500, two sessions and [a professional signs it](/booking/)

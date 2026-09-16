@@ -1,5 +1,5 @@
 # store.sgit.ai — the whole site as markdown
-site v0.1.18 · every claim's verification state is at /ledger/
+site v0.2.0 · every claim's verification state is at /ledger/
 
 Produced with model assistance. Every page on this site, and every document in the dev packs area, was drafted with a large language model and reviewed by a person before publication.
 
@@ -18,7 +18,7 @@ PAGE /  —  Every agent needs a licence to operate
 ---
 title: Every agent needs a licence to operate
 description: "Agent Behaviour Policies for the agents you already run: everything one can do, what you authorised it to do, and the gap between them. Fifteen applications, four levels — the pack downloaded at £5, a vault you hold the keys to at £50, corrected for your situation at £500, and two sessions with a security professional signing it at £1,500."
-lead: "**You know what you asked for. You do not know what it can do.** An Agent Behaviour Policy is the document that puts both on one page, for one agent in one deployment: what it can do, what you authorised, the gap between them, and what actually stands in the way. **Fifteen applications, four levels, from £5 to £1,500.** The templates are free and public — what is priced here is yours, with the mandate corrected and your name on the licence."
+lead: "**You know what you asked for. You do not know what it can do.** An Agent Behaviour Policy is the document that puts both on one page, for one agent in one deployment: what it can do, what you authorised, the gap between them, and what actually stands in the way. **Fifteen applications, four levels, from £10 to £1,500.** The templates are free and public — what is priced here is yours, with the mandate corrected and your name on the licence."
 order: 1
 toc: true
 ---
@@ -821,10 +821,20 @@ somewhere else.**
 **The floor moved, and the arithmetic that argued against it is still here.** At
 £5 the fixed card fee alone is about four per cent of the transaction, which on
 10 September was the reason the floor was £10 rather than £5. On 15 September the
-floor was set at £5 anyway. **The fee did not change, the judgement did** — and
-the old reasoning stays on the page rather than being quietly dropped, because a
+floor was set at £5 anyway, and on 16 September it went back to £10 — this time
+because of what the level carries rather than what it costs to take the money.
+**Every step stays on the page**, because a
 store that deletes the argument it lost is a store you cannot check.
 {{claim:card-fee-floor}}
+
+**The cheapest level is a licence, not a download.** The files it sends are
+published free under CC BY, and anybody using them that way has to attribute them.
+What £10 buys is a commercial licence to you over the same material — so it can go
+into client work, into a product, or into a document that goes to a regulator,
+without carrying our name into it. That is grantable because the copyright in the
+pack is ours: everything in it was written here. **The wording is not drafted
+yet**, and the ledger says so rather than the page implying otherwise.
+{{claim:entry-level-dual-licence}}
 
 **Prices are in pounds.** Pricing in euros while settling in pounds adds about two
 per cent, and that two per cent buys nothing. {{claim:pricing-in-pounds}}
@@ -985,7 +995,7 @@ which is the whole reason the pack said to keep them stable: a repricing costs n
 reprinting, and a card already made still lands on the right page. Each redirects
 to a delivery page that says **what arrives and what does not**:
 
-- [`t1`](/d/t1/) — £5, the pack, downloaded on the page you land on
+- [`t1`](/d/t1/) — £10, the pack, downloaded on the page you land on, immediately
 - [`t2`](/d/t2/) — £50, a working vault you hold the keys to
 - [`t3`](/d/t3/) — £500, corrected for your situation
 - [`t4`](/d/t4/) — £1,500, two sessions and [a professional signs it](/booking/)

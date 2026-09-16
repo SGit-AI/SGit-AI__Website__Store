@@ -289,7 +289,7 @@ def check_naming_collision():
 # numbers, in the commit that says so, which is exactly the mechanism this table
 # exists for. The previous table is in the history and in the ledger.
 EXPECTED_PRICES = {
-    "t1": ("£5", 500, 500),
+    "t1": ("£10", 1000, 1000),
     "t2": ("£50", 5000, 5000),
     "t3": ("£500", 50000, 50000),
     "t4": ("£1,500", 150000, 150000),
@@ -1709,6 +1709,47 @@ def check_a_withheld_term_is_declared():
                      "that has been altered says it has been altered")
 
 
+# --------------------------------------------------- when each level arrives ---
+# GIVEN BY THE PROJECT LEAD ON 16 SEPTEMBER, AND FROZEN HERE LIKE A PRICE. A
+# delivery estimate is a promise to a buyer, so it is not the builder's to soften,
+# round, or quietly drop when a page is rewritten.
+#
+# The second value is the one that matters and is the one most likely to be lost:
+# at £500 and £1,500 the clock starts when the buyer sends their details, not when
+# they pay, because until then there is nothing to work on. A page that says "1 to
+# 3 days" without saying from what has made a promise nobody can keep.
+EXPECTED_ETA = {
+    "t1": ("Immediately", "the moment the payment goes through"),
+    "t2": ("1 to 2 days", "from your payment"),
+    "t3": ("1 to 3 days", "from your reply, not from your payment"),
+    "t4": ("1 to 5 days", "from your reply, not from your payment"),
+    "add-formats": ("With the level it attaches to", "same clock"),
+    "add-opinion": ("With the level it attaches to", "same clock"),
+}
+
+
+def check_delivery_estimates():
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    got = {o["id"]: o for o in index["offers"]}
+    for oid, (eta, frm) in EXPECTED_ETA.items():
+        o = got.get(oid)
+        if not o:
+            fail(f"offer {oid}: missing from the built index")
+            continue
+        if o.get("eta") != eta:
+            fail(f"offer {oid}: delivery estimate is {o.get('eta')!r}, and the one given is "
+                 f"{eta!r} — a date promised to a buyer is not the builder's to change")
+        if o.get("eta_from") != frm:
+            fail(f"offer {oid}: the clock reads {o.get('eta_from')!r} and it starts {frm!r}. "
+                 "An estimate with no start is a promise nobody can keep")
+    # Every level page carries it. A number in a data file that no page prints is
+    # a number that was never given to anybody.
+    for oid in ("t1", "t2", "t3", "t4"):
+        f = OUT / "d" / oid / "index.html"
+        if f.exists() and EXPECTED_ETA[oid][0] not in f.read_text():
+            fail(f"d/{oid}: the delivery page does not say when it arrives")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -1738,6 +1779,7 @@ def main():
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_triage_not_raw_findings,
         check_pack_area_is_honest,
+        check_delivery_estimates,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,
     ]:
