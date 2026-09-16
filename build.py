@@ -2507,6 +2507,82 @@ def lab_note():
     )
 
 
+
+# -------------------------------------------- the product-page prototype ----
+# "WE GO THERE, WE DON'T KNOW WHAT WE'RE BUYING." A level page on this store
+# argues about what a policy is. A product page shows the thing. Those are
+# different documents and the store has only ever written the first.
+#
+# IT LIVES IN /lab/ BECAUSE THAT IS THE SURFACE THAT PROTECTS IT. A page that
+# looks like a shop and is not one is the most dangerous thing this site could
+# publish; /lab/ already states that on its own face and check_lab_is_marked
+# refuses any page there that stops saying it. An Amazon-style mock is the closest
+# anything here has come to that line, so it gets the protection that already
+# exists rather than a new one written for it.
+#
+# THE MEDIA SLOTS ARE HONEST ABOUT BEING EMPTY. The ask was "tons and tons of
+# screenshots"; seven exist. Every slot is a real file or a labelled empty frame
+# saying what belongs there. A carousel padded with decorative images would be the
+# one dishonest thing on a page whose entire job is showing what you actually get.
+PRODUCT_PAGE = yaml_load((DATA / "product-page.yml").read_text())
+
+
+def product_prototype(ctx):
+    pp = PRODUCT_PAGE
+    o = OFFERS_BY_ID[pp["subject"]]
+    lvl = next(l for l in LEVELS if l["offer"] == pp["subject"])
+    shots = "".join(
+        (f'<figure class="pp-shot"><img src="{m["file"]}" alt="{html.escape(m["caption"])}" '
+         f'loading="lazy"><figcaption>{html.escape(m["caption"])}</figcaption></figure>'
+         if m.get("file") else
+         f'<figure class="pp-shot pp-shot-empty"><div class="pp-empty">'
+         f'<b>Not taken yet</b><span>{html.escape(m["pending"])}</span></div>'
+         f'<figcaption>A slot, left visibly empty. A carousel padded with decoration would be '
+         f'the one dishonest thing on this page.</figcaption></figure>')
+        for m in pp["media"])
+    have = sum(1 for m in pp["media"] if m.get("file"))
+    specs = "".join(
+        f'<tr><th scope="row">{html.escape(s["what"])}</th>'
+        f'<td>{inline(s["value"], ctx)}</td></tr>' for s in pp["specs"])
+    editions = "".join(
+        f'<button type="button" class="pp-ed" data-ed="{a["id"]}"'
+        + (' aria-pressed="true"' if a["id"] == "founder" else ' aria-pressed="false"')
+        + f'>{html.escape(a["short"])}</button>' for a in AUDIENCES)
+    ed_notes = "".join(
+        f'<p class="pp-ednote" data-ed="{a["id"]}"'
+        + ("" if a["id"] == "founder" else " hidden")
+        + f'><b>For {html.escape(a["short"].lower())}:</b> {inline(a["what_changes"], ctx)}</p>'
+        for a in AUDIENCES)
+
+    return (
+        '<div class="pp">'
+        '<div class="pp-main">'
+        f'<h2 class="pp-title" id="the-product">{html.escape(pp["title"])}</h2>'
+        f'<p class="pp-tag">{inline(pp["tagline"], ctx)}</p>'
+        f'<div class="pp-eds"><span class="pp-edlab">Which edition?</span>{editions}</div>'
+        f'{ed_notes}'
+        f'<h3 id="what-it-looks-like">What it looks like</h3>'
+        f'<p class="small dim">{have} of {len(pp["media"])} slots have a picture in them today. '
+        'The rest say what belongs there.</p>'
+        f'<div class="pp-shots">{shots}</div>'
+        f'<h3 id="specs">Specifications</h3>'
+        f'<div class="tablewrap"><table class="pp-specs"><tbody>{specs}</tbody></table></div>'
+        f'<h3 id="reviews">Reviews</h3>'
+        f'<p>{inline(pp["reviews_note"], ctx)}</p>'
+        '<div class="pp-noreviews"><b>No reviews yet</b>'
+        '<span>And no star average, now or later.</span></div>'
+        "</div>"
+        '<aside class="pp-buy">'
+        f'<div class="pp-price">{html.escape(o["price_label"])}</div>'
+        f'<div class="pp-eta"><b>{html.escape(o["eta"])}</b>'
+        f'<span>{html.escape(o["eta_from"])}</span></div>'
+        f'<p class="pp-gets">{inline(lvl["lede"], ctx)}</p>'
+        '<button type="button" class="buy buy-off pp-cta" disabled>Add to order</button>'
+        f'<p class="pp-warn"><b>{LAB_WARNING}.</b> This button does nothing. It is here so the '
+        'shape can be judged, and it is disabled in the markup rather than by script.</p>'
+        f'<p class="small"><a href="/d/{o["id"]}/">The real page for this level &rarr;</a></p>'
+        "</aside></div>")
+
 def lab_pages(out_dir, ctx_shared):
     made = {}
 
@@ -2574,6 +2650,84 @@ def lab_pages(out_dir, ctx_shared):
             twin += f"\n---\n\n{LICENCE_STAMP}\n"
         (target.parent / "index.md").write_text(twin)
         made[url] = page["fm"]["title"]
+
+
+    # --- the product-page prototype, in the surface that already protects it
+    url = "/lab/product/"
+    ctx = dict(ctx_shared)
+    ctx.update({"page": "lab/product", "page_url": url, "fm": {}, "toc": []})
+    pp = PRODUCT_PAGE
+    o = OFFERS_BY_ID[pp["subject"]]
+    body = (
+        f'<div class="note"><p><b>{LAB_WARNING}.</b> This is a prototype of a product page, not '
+        'a product page. Nothing on it can be bought, the button is disabled in the markup rather '
+        'than by script, and whether this shape becomes the real one is not decided. '
+        '{{claim:lab-is-a-prototype}}</p></div>'
+        '<p class="lead"><b>A level page argues about what a policy is. A product page shows the '
+        'thing.</b> Those are different documents and this store has only ever written the first. '
+        'This is what the second would look like for '
+        f'<a href="/d/{o["id"]}/">{html.escape(o["question"])}</a>.</p>'
+        + product_prototype(ctx)
+        + '<h2 id="what-is-being-judged">What is being judged here</h2>'
+        '<p>Four things, and they are separable — any one of them could be right while the '
+        'others are wrong.</p>'
+        '<div class="rows">'
+        '<div class="row2"><div><b>The buy box on the right</b><p>Price, delivery and one action, '
+        'held beside the material rather than under it. This is the part that is closest to '
+        'settled, because it is what every shop does and the reason is the same everywhere: the '
+        'decision and the evidence should be visible at the same time.</p></div></div>'
+        '<div class="row2"><div><b>The media, and the empty slots</b><p>Seven slots, three with a '
+        'picture. <b>The empty ones are left visibly empty.</b> A carousel padded with decoration '
+        'would be the one dishonest thing on a page whose entire job is showing what you actually '
+        'get — and it would also hide how much of this is still to do.</p></div></div>'
+        '<div class="row2"><div><b>The specifications</b><p>The product code, the licence, what is '
+        'inside and what is not needed. A product has specs; this store has sixty-two product '
+        'codes and prints none of them anywhere a buyer looks.</p></div></div>'
+        '<div class="row2"><div><b>Editions</b><p>The five audiences as variants of one product '
+        'rather than five separate paths — the same switch as <a href="/are/">who you '
+        'are</a>, arriving from the product side. Today it changes one sentence. The open question '
+        'is whether it should change the pictures too, which is what would make it an edition '
+        'rather than a label.</p></div></div>'
+        "</div>"
+        '<h2 id="what-it-is-missing">What it is missing, on purpose</h2>'
+        '<p><b>Stars.</b> Not asked for, and a rating out of five on a product nobody has bought '
+        'would be the one piece of furniture here that could not be honest. The reviews section '
+        'says it is empty and says what will fill it.</p>'
+        '<p><b>Most of the pictures.</b> Named above rather than mocked up, because a slot that '
+        'says what belongs in it is a piece of work somebody can do, and a placeholder image is a '
+        'piece of work somebody will forget.</p>'
+        '<p><a href="/lab/">The other prototypes in the lab</a></p>')
+    page = {
+        "fm": {"title": "A product page, as a prototype",
+               "description": ("What a product page for this store would look like: the buy box, "
+                               "a gallery with its empty slots left visibly empty, specifications, "
+                               "editions by audience and a reviews section that says it is empty. "
+                               "Nothing on it can be bought."),
+               "lead": "**A prototype of a product page, not a product page.**",
+               "wide": True, "head_css": "/assets/lab.css",
+               # The edition switcher lives in lab.js. Without this the buttons
+               # render, look clickable and do nothing — which is worse on a page
+               # about whether an interface works than not having them at all.
+               "head_js": "/assets/lab.js"},
+        "url": url,
+        "crumb": ' / <a href="/lab/">lab</a> / product',
+        "nav_match": "/ledger/",
+        "src_md": (
+            f"# A product page, as a prototype\n\n**{LAB_WARNING}.** This is a prototype of a "
+            "product page, not a product page.\n\n"
+            "A level page argues about what a policy is. A product page shows the thing.\n\n"
+            f"- Subject: {o['question']} — {o['price_label']}, {o['eta']}\n"
+            f"- Media slots: {len(pp['media'])}, of which "
+            f"{sum(1 for m in pp['media'] if m.get('file'))} have a picture\n"
+            f"- Specifications: {len(pp['specs'])} rows\n"
+            "- Reviews: none, and no star average now or later\n"),
+    }
+    target = out_dir / url.strip("/") / "index.html"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(page_html(page, ctx, shortcodes_inline(body, ctx)))
+    (target.parent / "index.md").write_text(
+        page["src_md"].rstrip("\n") + f"\n\n---\n\n{LICENCE_STAMP}\n")
+    made[url] = page["fm"]["title"]
 
     return made
 

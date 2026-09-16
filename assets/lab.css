@@ -134,3 +134,56 @@ pre.json{max-height:26rem;overflow:auto;font-size:.72rem;line-height:1.55}
    showing two equally loud calls to action. */
 button.buy-alt{background:transparent;color:var(--accent-dk);border-color:var(--accent)}
 button.buy-alt:hover{background:rgba(15,118,110,.06)}
+
+/* ------------------------------------------- the product-page prototype ----
+   The buy box beside the material rather than under it, because the decision and
+   the evidence should be visible at the same time. Every other choice on this
+   page is up for argument; that one is what every shop does and the reason is
+   the same everywhere. */
+.pp{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:2rem;align-items:start;
+  margin:1.5rem 0 2rem}
+.pp-main{min-width:0}
+.pp-title{margin-top:0}
+.pp-tag{font-size:1.05rem;line-height:1.55;color:var(--dim)}
+.pp-eds{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin:1.2rem 0 .6rem;
+  padding:.7rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pp-edlab{font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim2,var(--dim));margin-right:.3rem}
+.pp-ed{font:inherit;font-size:.82rem;padding:.3rem .7rem;border:1px solid var(--line2);
+  border-radius:99px;background:var(--panel);color:var(--ink);cursor:pointer}
+.pp-ed[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.pp-ednote{font-size:.9rem;line-height:1.55;margin:.2rem 0 1.2rem;color:var(--dim)}
+.pp-ednote b{color:var(--ink)}
+.pp-shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;
+  margin:1rem 0 1.5rem}
+.pp-shot{margin:0}
+.pp-shot img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:8px}
+.pp-shot figcaption{font-size:.78rem;line-height:1.45;color:var(--dim);margin-top:.4rem}
+.pp-empty{display:flex;flex-direction:column;justify-content:center;gap:.4rem;min-height:150px;
+  border:1px dashed var(--line2);border-radius:8px;padding:1rem;background:var(--panel2)}
+.pp-empty b{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim2,var(--dim))}
+.pp-empty span{font-size:.82rem;line-height:1.5;color:var(--dim)}
+.pp-specs{width:100%;border-collapse:collapse;font-size:.9rem}
+.pp-specs th{background:none;text-transform:none;letter-spacing:normal;font-size:.9rem;
+  text-align:left;width:38%;color:var(--dim);font-weight:400;padding:.5rem .8rem .5rem 0;
+  border-bottom:1px solid var(--line);vertical-align:top}
+.pp-specs td{padding:.5rem 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.pp-noreviews{display:flex;flex-direction:column;gap:.2rem;border:1px dashed var(--line2);
+  border-radius:8px;padding:1rem 1.2rem;background:var(--panel2);margin:1rem 0}
+.pp-noreviews b{color:var(--ink)}
+.pp-noreviews span{font-size:.85rem;color:var(--dim)}
+.pp-buy{position:sticky;top:90px;background:var(--panel);border:1px solid var(--line);
+  border-radius:10px;padding:1.2rem}
+.pp-price{font-family:var(--serif);font-size:2.2rem;line-height:1;color:var(--ink);
+  letter-spacing:-.02em}
+.pp-eta{margin:.5rem 0 .9rem;font-size:.85rem}
+.pp-eta b{display:block;color:var(--ink);font-size:.95rem}
+.pp-eta span{color:var(--dim)}
+.pp-gets{font-size:.88rem;line-height:1.55;margin:0 0 1rem}
+.pp-cta{width:100%;text-align:center;cursor:not-allowed}
+.pp-warn{font-size:.78rem;line-height:1.5;color:var(--dim);margin:.7rem 0}
+@media (max-width:900px){
+  .pp{grid-template-columns:minmax(0,1fr)}
+  .pp-buy{position:static;order:-1}
+}

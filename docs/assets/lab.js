@@ -751,3 +751,23 @@
   load();
   render();
 })();
+
+/* The edition switcher on the product-page prototype. It changes one sentence,
+   which is the honest extent of what "editions" means today — the open question
+   on the page is whether it should change the pictures too, and pretending it
+   already did would have answered that question by mocking it up. */
+(function () {
+  var eds = document.querySelectorAll('.pp-ed');
+  if (!eds.length) return;
+  var notes = document.querySelectorAll('.pp-ednote');
+  Array.prototype.forEach.call(eds, function (b) {
+    b.addEventListener('click', function () {
+      Array.prototype.forEach.call(eds, function (x) {
+        x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+      });
+      Array.prototype.forEach.call(notes, function (n) {
+        n.hidden = n.getAttribute('data-ed') !== b.getAttribute('data-ed');
+      });
+    });
+  });
+})();

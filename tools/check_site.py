@@ -1075,7 +1075,15 @@ def check_buyer_groups():
 # priced would be inventing a price with extra steps, which is the first thing the
 # pack says may not be invented.
 LAB_WARNING = "Nothing on this page can be bought"
+# The five prototypes of the CONFIGURATOR. They all render one model and produce
+# one brief, which is what makes them an experiment rather than five drafts.
 EXPECTED_LAB_VIEWS = {"interview", "ladder", "board", "delta", "scenario"}
+# Other prototypes living in the same protected surface. They are not
+# configurators and the configurator assertions do not apply to them — but
+# LAB_WARNING does, absolutely, and that is the reason they are here at all: /lab/
+# is the one place on this site that already says "nothing here can be bought" on
+# its own face and has a check refusing any page that stops saying it.
+EXPECTED_LAB_OTHER = {"product"}
 
 
 def lab_pages_built():
@@ -1083,15 +1091,29 @@ def lab_pages_built():
 
 
 def check_lab_is_marked():
+    """THE WARNING IS ABSOLUTE AND APPLIES TO EVERY PAGE IN THE LAB. The rest of
+    these assertions are about the configurator, and stopped applying to every
+    page on 16 September when a prototype that is not one moved in."""
     built = {p.parent.name for p in lab_pages_built()}
-    if built != EXPECTED_LAB_VIEWS:
-        fail(f"the prototype set changed: expected {sorted(EXPECTED_LAB_VIEWS)}, built {sorted(built)}")
+    if built != EXPECTED_LAB_VIEWS | EXPECTED_LAB_OTHER:
+        fail(f"the prototype set changed: expected "
+             f"{sorted(EXPECTED_LAB_VIEWS | EXPECTED_LAB_OTHER)}, built {sorted(built)}")
     for p in lab_pages_built():
-        rel = f"lab/{p.parent.name}/index.html"
+        name = p.parent.name
+        rel = f"lab/{name}/index.html"
         flat = strip_tags(p.read_text())
+        # Every page in the lab, whatever kind it is. This is the rule the whole
+        # surface exists for and it does not take exceptions.
         if LAB_WARNING not in flat:
             fail(f"{rel}: does not say {LAB_WARNING!r} — a page that looks like a checkout and "
                  "takes no money has to say which of the two it is before anybody reads on")
+        for m in re.finditer(r'href="(https?://[^"]*stripe[^"]*)"', p.read_text(), re.I):
+            fail(f"{rel}: carries a payment destination {m.group(1)!r}. Nothing in the lab is "
+                 "buyable, so nothing in it may link to a checkout")
+        if not (p.parent / "index.md").exists():
+            fail(f"{rel}: no markdown twin")
+        if name not in EXPECTED_LAB_VIEWS:
+            continue
         # REWORDED 16 SEPTEMBER, AND THE DISTINCTION IS THE WHOLE POINT. This used
         # to require the words "has never run", which read as "nobody has ever done
         # this work" — false, and ruled off the site. What is actually true, and is
@@ -1103,11 +1125,6 @@ def check_lab_is_marked():
                  "than something staffed. The prototype configures work that a person does, and "
                  "the difference between a described team and a staffed one is the first thing a "
                  "reader is owed")
-        for m in re.finditer(r'href="(https?://[^"]*stripe[^"]*)"', p.read_text(), re.I):
-            fail(f"{rel}: carries a payment destination {m.group(1)!r}. Nothing in the lab is "
-                 "buyable, so nothing in it may link to a checkout")
-        if not (p.parent / "index.md").exists():
-            fail(f"{rel}: no markdown twin")
 
 
 def check_lab_bands():
@@ -1143,6 +1160,10 @@ def check_lab_model_is_shipped():
     offer_ids = {o["id"] for o in index["offers"]}
     prices = {o["id"]: o["price"] for o in index["offers"]}
     for p in lab_pages_built():
+        # The configurator prototypes only. A product-page prototype is not one and
+        # has no model to ship — see EXPECTED_LAB_OTHER.
+        if p.parent.name not in EXPECTED_LAB_VIEWS:
+            continue
         rel = f"lab/{p.parent.name}/index.html"
         text = p.read_text()
         m = re.search(r'<script type="application/json" id="lab-model">(.*?)</script>', text, re.S)

@@ -1,0 +1,62 @@
+# THE PRODUCT-PAGE PROTOTYPE, AND WHAT IT IS FOR.
+#
+# "We go there, we don't know what we're buying." A level page on this store
+# argues about what a policy is. A product page shows the thing. Those are
+# different documents and the store has only ever written the first.
+#
+# THIS IS A PROTOTYPE AND IT SITS IN /lab/ FOR ONE REASON: a page that looks like
+# a shop and is not one is the most dangerous thing this site could publish, and
+# /lab/ is the surface that already states that on its own face and has a build
+# check refusing any page there that stops saying it. An Amazon-style mock is the
+# closest anything here has come to that line.
+#
+# THE MEDIA SLOTS ARE HONEST ABOUT BEING EMPTY. The ask was "tons and tons of
+# screenshots", and seven exist. Every slot below is either a real file or is
+# marked `pending` and renders as a labelled empty frame saying what belongs
+# there. A carousel padded with decorative images would be the one dishonest
+# thing on a page whose whole job is showing what you actually get.
+#
+# One line per value: the YAML subset in build.py drops wrapped continuation lines.
+
+subject: t2
+title: "A working vault, for the shape you pick"
+tagline: "The same material as the pack, as the thing itself: versioned, with its own app, and a read key you can hand to anybody who asks how you govern the agent."
+
+media:
+  - id: catalogue
+    file: /assets/shots/01-catalogue.png
+    caption: "The catalogue: fifteen shapes, each with what the agent can do, what was wanted, and what has nothing in the way."
+  - id: levels
+    file: /assets/shots/02-levels.png
+    caption: "The four levels on one shape, with what each one adds."
+  - id: order
+    file: /assets/shots/05-order.png
+    caption: "The order, built in your own browser. No account, no cookie, nothing stored anywhere else."
+  - id: vault-app
+    pending: "The vault open in its own app — the grant, the mandate and the delta as the buyer sees them."
+  - id: grant-table
+    pending: "MAP-A-GRANT run against a live deployment, printing the table of what the credential actually permits."
+  - id: board-cut
+    pending: "The version written for a board: the same policy, re-cut for the people who have to sign it off."
+  - id: history
+    pending: "The vault's own history — every change dated, which is the property that does not survive an email."
+
+specs:
+  - what: Product code
+    value: "ABP-T2"
+  - what: What it is
+    value: "One encrypted vault, licensed to you"
+  - what: Shapes to choose from
+    value: "Fifteen published, plus a catch-all for anything not on the list"
+  - what: Delivered
+    value: "1 to 2 days from your payment"
+  - what: Licence
+    value: "Commercial, to you. The same files are public under CC BY"
+  - what: Public key
+    value: "Removed. Yours is not readable by anybody you have not handed a key to"
+  - what: Formats inside
+    value: "Markdown and JSON, plus the two files you hand the agent"
+  - what: Needs an account
+    value: "No. A vault is opened by its key and nothing else"
+
+reviews_note: "There are none. This store has not asked anybody for one yet, and the plan is to give the work away in exchange for comment rather than to collect ratings. When they exist they will be dated and attributable, and there will be no star average — a number out of five on a product with four reviews is a decoration, not a measurement."

@@ -738,24 +738,24 @@
         {
           "id": "PP-1",
           "title": "Prototype one product page in the lab",
-          "status": "next",
-          "description": "Asked for explicitly: prototypes on the side, reviewed, then wired up. <code>/lab/</code> is already that surface and every page on it states on its own face that nothing there can be bought — which an Amazon-style prototype needs more than anything else the lab has held.",
+          "status": "done",
+          "description": "Shipped in v0.3.4 at /lab/product/ — in the surface that already protects it, because a page that looks like a shop and is not one is the most dangerous thing this site could publish and /lab/ says so on its own face with a check behind it.",
           "source": "lead",
           "memo": "2026-09-16-product-pages"
         },
         {
           "id": "PP-2",
           "title": "Find out which screenshots exist and which have to be taken",
-          "status": "next",
-          "description": "The synthetic run alone produced 43, and the review pages embed a live vault. Before commissioning anything, count what is already here.",
+          "status": "done",
+          "description": "Counted: seven screenshots exist, of which three are of this store's own screens and usable. The prototype has seven slots and the four empty ones say what belongs in them.",
           "source": "self",
           "memo": "2026-09-16-product-pages"
         },
         {
           "id": "PP-3",
           "title": "Put a version on every piece of product media",
-          "status": "queued",
-          "description": "A product page is where a store goes stale first. The walkthrough PDFs already carry the version in the filename for exactly this reason.",
+          "status": "next",
+          "description": "A product page is where a store goes stale first. Four of the seven slots are empty and named; the three that are filled carry no version, and the walkthrough PDFs already put one in the filename for exactly this reason.",
           "blocked": "PP-2.",
           "source": "self",
           "memo": "2026-09-16-product-pages"
@@ -772,8 +772,8 @@
         {
           "id": "PP-5",
           "title": "Add the review section, and say it is empty",
-          "status": "queued",
-          "description": "Reviews are coming, given away in exchange for comment. An empty section that says it is empty is this site's house style — it is what the two upper levels already do about never having been sold. No stars: a rating on a product nobody has bought is the one piece of furniture here that could not be honest.",
+          "status": "done",
+          "description": "Done in the prototype: the section says there are none, says what will fill them, and says there will be <b>no star average, now or later</b> — a rating out of five on a product nobody has bought is the one piece of furniture on that page that could not be honest.",
           "blocked": "PP-1.",
           "source": "lead",
           "memo": "2026-09-16-product-pages"
@@ -781,9 +781,8 @@
         {
           "id": "PP-6",
           "title": "Make the page switchable by audience",
-          "status": "queued",
-          "description": "Framed in the memo as editions of one product rather than separate paths — the same switch the five-audience memo asked for, arriving from the other side. One mechanism serves both.",
-          "blocked": "PP-1, QB-2.",
+          "status": "done",
+          "description": "Shipped in v0.3.4 as a first cut: five edition buttons that change one sentence. <b>The open question is on the page</b> — whether an edition should change the pictures too, which is what would make it an edition rather than a label.",
           "source": "lead",
           "memo": "2026-09-16-product-pages"
         }
