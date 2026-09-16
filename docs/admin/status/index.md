@@ -1,6 +1,6 @@
 # What happened to each memo
 
-**50 units done · 63 open · 19 waiting on the project lead · 8 memos.**
+**50 units done · 65 open · 21 waiting on the project lead · 8 memos.**
 
 
 ## 2026-09-16 — Stripe end to end, with their SKUs — and a customer even at 100% off (14/27 done)

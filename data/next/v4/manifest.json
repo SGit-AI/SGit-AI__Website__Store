@@ -1,0 +1,2802 @@
+{
+  "brief_version": "2",
+  "direction": "01 Marketplace",
+  "returned_on": "2026-09-16",
+  "typeface_variation_chosen_for_sheet": "all three shown",
+  "tokens_file": "tokens.css",
+  "tokens_added_beyond_brief": [
+    {
+      "name": "--v4-margin-1",
+      "value": "0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-background-2",
+      "value": "#fff",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared background value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-3",
+      "value": "1.6",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-text-underline-offset-4",
+      "value": "4px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared text-underline-offset value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-5",
+      "value": "inherit",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-outline-6",
+      "value": "3px solid #1677e8",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared outline value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-7",
+      "value": "100%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-weight-8",
+      "value": "600",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-weight value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-9",
+      "value": "1.08",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-10",
+      "value": "-.04em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-11",
+      "value": "1000px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-12",
+      "value": "1.15",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-13",
+      "value": "-.035em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-14",
+      "value": "1.2",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-15",
+      "value": "-.025em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-family-16",
+      "value": "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-family value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-top-17",
+      "value": "-100px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared top value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-18",
+      "value": "100",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-19",
+      "value": "25px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-20",
+      "value": "94px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-weight-21",
+      "value": "700",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-weight value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-size-22",
+      "value": "31px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-size value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-23",
+      "value": "-.05em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-size-24",
+      "value": "21px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-size value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-weight-25",
+      "value": "400",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-weight value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-26",
+      "value": "-.03em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-gap-27",
+      "value": "28px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared gap value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-28",
+      "value": "1px solid #536573",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-29",
+      "value": "5px 9px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-30",
+      "value": "9px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-31",
+      "value": "1.5",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-bottom-32",
+      "value": "1px solid #d9e1e7",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-bottom value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-33",
+      "value": "1500px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-34",
+      "value": "0 auto",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-bottom-35",
+      "value": "32px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin-bottom value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-36",
+      "value": ".14em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-37",
+      "value": "760px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-top-38",
+      "value": "22px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin-top value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-39",
+      "value": "12px 18px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-40",
+      "value": "1.4",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-41",
+      "value": "44px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-42",
+      "value": "16px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-43",
+      "value": "22px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-44",
+      "value": "repeat(5,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-45",
+      "value": "15px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-46",
+      "value": "1fr 1fr",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-47",
+      "value": "50px 8%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-48",
+      "value": "510px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-bottom-49",
+      "value": "30px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin-bottom value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-50",
+      "value": "16px 24px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-height-51",
+      "value": "625px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-top-52",
+      "value": "25px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin-top value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-53",
+      "value": "repeat(4,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-gap-54",
+      "value": "20px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared gap value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-55",
+      "value": "24px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-top-56",
+      "value": "4px solid #e9a33a",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-top value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-top-57",
+      "value": "23px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding-top value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-58",
+      "value": "45px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-59",
+      "value": "1",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-60",
+      "value": "-.055em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-61",
+      "value": "24px 0 12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-62",
+      "value": "24px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-63",
+      "value": "4px 8px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-64",
+      "value": "600 12px/1.4 Arial,Helvetica,sans-serif",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-65",
+      "value": ".01em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-width-66",
+      "value": "2px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-bottom-width-67",
+      "value": "3px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-bottom-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-left-68",
+      "value": "5px solid #142c42",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-left value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-bottom-69",
+      "value": "3px solid #142c42",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-bottom value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-left-70",
+      "value": "5px solid #f5ae42",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-left value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-71",
+      "value": "repeat(3,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-72",
+      "value": "72px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-73",
+      "value": "0 4% 65px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-74",
+      "value": "52px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-75",
+      "value": "720px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-76",
+      "value": "8px 10px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-77",
+      "value": "2px solid #f5ae42",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-78",
+      "value": ".04em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-79",
+      "value": "12px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-80",
+      "value": "48px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-81",
+      "value": "1.5fr 1fr 1fr",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-left-82",
+      "value": "4px solid #142c42",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-left value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-83",
+      "value": "28px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-top-84",
+      "value": "4px solid #f5ae42",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border-top value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-85",
+      "value": "15px 12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-86",
+      "value": "2",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-width-87",
+      "value": "32%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-width-88",
+      "value": "220px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-width-89",
+      "value": "130px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-box-shadow-90",
+      "value": "1px 0 #d9e1e7",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared box-shadow value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-91",
+      "value": "3",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-92",
+      "value": "20px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-93",
+      "value": "6px 0 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-94",
+      "value": "8px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-95",
+      "value": "6",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-top-96",
+      "value": "40px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding-top value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-97",
+      "value": "8px 12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-98",
+      "value": "9px 14px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-99",
+      "value": "9",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-height-100",
+      "value": "390px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-width-101",
+      "value": "360px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-box-shadow-102",
+      "value": "0 12px 28px #142c4226",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared box-shadow value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-family-103",
+      "value": "ui-monospace,monospace",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-family value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-104",
+      "value": "minmax(0,1fr) 398px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-105",
+      "value": "repeat(2,minmax(0,1fr))",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-106",
+      "value": "1fr",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-column-107",
+      "value": "1/-1",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-column value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-108",
+      "value": "2px solid #e9a33a",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-109",
+      "value": "19px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-width-110",
+      "value": "38px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-height-111",
+      "value": "7px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-height-112",
+      "value": "calc(100vh - 32px)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-box-shadow-113",
+      "value": "0 8px 24px #142c4214",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared box-shadow value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-114",
+      "value": "16px 0 12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-115",
+      "value": "28px 0 12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-116",
+      "value": "10px 3px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-line-height-117",
+      "value": "1.1",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared line-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-118",
+      "value": "1px dashed #536573",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-119",
+      "value": "170px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-120",
+      "value": "500px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-121",
+      "value": "100px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-122",
+      "value": "14px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-123",
+      "value": "18px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-124",
+      "value": "10px 5px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-125",
+      "value": "4",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-126",
+      "value": "minmax(0,1fr) 320px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-gap-127",
+      "value": "48px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared gap value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-128",
+      "value": "26px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-size-129",
+      "value": "clamp(36px,4vw,56px)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-size value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-130",
+      "value": "700px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-131",
+      "value": "26px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-132",
+      "value": "20px 0 8px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-133",
+      "value": "32px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-height-134",
+      "value": "350px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-135",
+      "value": "1fr 2fr",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-136",
+      "value": "1050px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-137",
+      "value": "60px 24px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-138",
+      "value": "auto 1fr auto",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-letter-spacing-139",
+      "value": ".1em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared letter-spacing value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-140",
+      "value": "10px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-gap-141",
+      "value": "12px 32px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared gap value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-142",
+      "value": "12px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-143",
+      "value": "32px 4%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-gap-144",
+      "value": "8px 24px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared gap value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-145",
+      "value": "300px minmax(0,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-146",
+      "value": "4px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-147",
+      "value": "5px 10px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-148",
+      "value": "36px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-149",
+      "value": "16px 20px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-150",
+      "value": "15px 20px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-151",
+      "value": "210px minmax(0,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-152",
+      "value": "420px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-153",
+      "value": "10px 8px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-154",
+      "value": "25px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-155",
+      "value": "70vh",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-156",
+      "value": "32px auto",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-157",
+      "value": "800px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-158",
+      "value": "60px 28px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-159",
+      "value": "40px 0 18px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-160",
+      "value": "30px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-161",
+      "value": "1.4fr 1fr",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-162",
+      "value": "2px dashed #536573",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-163",
+      "value": "400px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-164",
+      "value": "40px 3%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-165",
+      "value": "6px 10px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-166",
+      "value": "40px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-167",
+      "value": "15px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-168",
+      "value": "300px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-169",
+      "value": "398px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-height-170",
+      "value": "920px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-171",
+      "value": "1.5fr 1fr",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-row-172",
+      "value": "2/4",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-row value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-family-173",
+      "value": "'Franklin Gothic Medium','Arial Narrow',system-ui,sans-serif",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-family value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-family-174",
+      "value": "Georgia,'Times New Roman',serif",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-family value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-left-175",
+      "value": "50%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared left value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-transform-176",
+      "value": "translateX(-50%)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared transform value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-177",
+      "value": "14px 22px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-border-178",
+      "value": "1px solid #c7d6e1",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared border value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-179",
+      "value": "50",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-180",
+      "value": "90vw",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-width-181",
+      "value": "calc(100% - 32px)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-height-182",
+      "value": "90vh",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-background-183",
+      "value": "#142c42b3",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared background value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-184",
+      "value": "70px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-185",
+      "value": "repeat(10,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-186",
+      "value": "8px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-height-187",
+      "value": "260px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-188",
+      "value": "repeat(2,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-189",
+      "value": "minmax(0,1fr) 370px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-190",
+      "value": "minmax(0,1fr) 290px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-191",
+      "value": "260px minmax(0,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-192",
+      "value": "160px minmax(0,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-193",
+      "value": "18px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-194",
+      "value": "9px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-195",
+      "value": "38px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-196",
+      "value": "16px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-197",
+      "value": "9px 12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-198",
+      "value": "1fr auto",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-199",
+      "value": "35px 6%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-height-200",
+      "value": "270px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-201",
+      "value": "20px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-min-height-202",
+      "value": "80px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared min-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-203",
+      "value": "30px 24px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-204",
+      "value": "0 5% 38px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-205",
+      "value": "32px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-width-206",
+      "value": "950px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-width-207",
+      "value": "155px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-208",
+      "value": "12px 10px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-width-209",
+      "value": "42%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-210",
+      "value": "12px 7px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-211",
+      "value": "25px 0 12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-212",
+      "value": "10px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-height-213",
+      "value": "100dvh",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-z-index-214",
+      "value": "30",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared z-index value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-bottom-215",
+      "value": "max(16px,env(safe-area-inset-bottom))",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding-bottom value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-order-216",
+      "value": "5",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared order value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-height-217",
+      "value": "230px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-grid-template-columns-218",
+      "value": "auto 1fr",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared grid-template-columns value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-219",
+      "value": "24px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-220",
+      "value": "0 -18px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-height-221",
+      "value": "1650px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared height value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-222",
+      "value": "30px 5%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-223",
+      "value": "6px 0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-size-224",
+      "value": "A4 landscape",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared size value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-225",
+      "value": "10mm",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-font-size-226",
+      "value": "9px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared font-size value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-227",
+      "value": "5px 7px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-margin-228",
+      "value": "10px auto",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared margin value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-padding-229",
+      "value": "2px 6px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared padding value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--v4-max-width-230",
+      "value": "190px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Shared max-width value required by the expanded Marketplace system."
+    },
+    {
+      "name": "--aud-band-pad",
+      "value": "24px 4% 28px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-band-bg",
+      "value": "#ffffff",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-heading-size",
+      "value": "22px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-heading-track",
+      "value": "-.025em",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-heading-line",
+      "value": "1.25",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-heading-margin",
+      "value": "0 0 18px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-columns",
+      "value": "repeat(5,minmax(0,1fr))",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-gap",
+      "value": "12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-zero",
+      "value": "0",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-border",
+      "value": "1px solid #d9e1e7",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-radius",
+      "value": "10px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-card-bg",
+      "value": "#f8fafc",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-card-columns",
+      "value": "64px minmax(0,1fr)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-card-gap",
+      "value": "12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-card-pad",
+      "value": "16px 14px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-card-height",
+      "value": "128px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-ink",
+      "value": "#142632",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-hover-bg",
+      "value": "#edf3f8",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-outline",
+      "value": "3px solid #1677e8",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-outline-offset",
+      "value": "3px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-current-border",
+      "value": "#e9a33a",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-art-size",
+      "value": "64px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-art-radius",
+      "value": "8px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-art-bg",
+      "value": "#edf3f8",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-strip-width",
+      "value": "500%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-img-top",
+      "value": "50%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-img-shift",
+      "value": "translateY(-50%)",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-offset-1",
+      "value": "-100%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-offset-2",
+      "value": "-200%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-offset-3",
+      "value": "-300%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-offset-4",
+      "value": "-400%",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-copy-gap",
+      "value": "6px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-label-size",
+      "value": "16px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-label-line",
+      "value": "1.2",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-label-weight",
+      "value": "600",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-muted",
+      "value": "#536573",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-desc-size",
+      "value": "12px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-desc-line",
+      "value": "1.4",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-arrow-offset",
+      "value": "8px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-arrow-ink",
+      "value": "#536573",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-arrow-size",
+      "value": "14px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-arrow-line",
+      "value": "1",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-columns-tablet",
+      "value": "repeat(3,minmax(0,1fr))",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-band-mobile-pad",
+      "value": "20px 5% 16px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-mobile-heading-gap",
+      "value": "14px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-scroll-pad",
+      "value": "8px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-scroll-colors",
+      "value": "#c7d6e1 #f8fafc",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-mobile-card-flex",
+      "value": "0 0 255px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    },
+    {
+      "name": "--aud-mobile-card-height",
+      "value": "112px",
+      "used_in": [
+        "assets/system.css"
+      ],
+      "why": "Illustrated audience navigation requested by the user."
+    }
+  ],
+  "components": [
+    {
+      "id": "button",
+      "states": [
+        "primary",
+        "secondary",
+        "disabled-with-reason"
+      ],
+      "sheet_anchor": "#button"
+    },
+    {
+      "id": "price",
+      "states": [
+        "single",
+        "deposit-split",
+        "free",
+        "from-n"
+      ],
+      "sheet_anchor": "#price"
+    },
+    {
+      "id": "offer-card",
+      "states": [
+        "level-01",
+        "level-02",
+        "level-03",
+        "level-04",
+        "free",
+        "leading",
+        "quieted",
+        "add-on"
+      ],
+      "sheet_anchor": "#offer-card"
+    },
+    {
+      "id": "claim-chip",
+      "states": [
+        "exists",
+        "measured",
+        "docs",
+        "projected",
+        "spec",
+        "person",
+        "unlocated",
+        "booking",
+        "partial",
+        "absent"
+      ],
+      "sheet_anchor": "#claim-chip"
+    },
+    {
+      "id": "persona-door",
+      "states": [
+        "founder",
+        "investor",
+        "exec",
+        "security",
+        "governance",
+        "current",
+        "phone"
+      ],
+      "sheet_anchor": "#persona-door"
+    },
+    {
+      "id": "app-chip",
+      "states": [
+        "one-of-fifteen",
+        "catch-all-from-500",
+        "selected"
+      ],
+      "sheet_anchor": "#app-chip"
+    },
+    {
+      "id": "trust-item",
+      "states": [
+        "linked",
+        "four-across",
+        "two-by-two-phone"
+      ],
+      "sheet_anchor": "#trust-item"
+    },
+    {
+      "id": "media-frame",
+      "states": [
+        "real-with-caption",
+        "empty-labelled",
+        "in-carousel",
+        "expanded"
+      ],
+      "sheet_anchor": "#media-frame"
+    },
+    {
+      "id": "spec-row",
+      "states": [
+        "plain",
+        "with-chip",
+        "phone"
+      ],
+      "sheet_anchor": "#spec-row"
+    },
+    {
+      "id": "disclosure",
+      "states": [
+        "desktop-two-lines",
+        "phone-one-line-rest-behind-link"
+      ],
+      "sheet_anchor": "#disclosure"
+    },
+    {
+      "id": "version-badge",
+      "states": [
+        "current"
+      ],
+      "sheet_anchor": "#version-badge"
+    },
+    {
+      "id": "section-head",
+      "states": [
+        "with-action",
+        "centred",
+        "phone"
+      ],
+      "sheet_anchor": "#section-head"
+    },
+    {
+      "id": "vault-frame",
+      "states": [
+        "loading",
+        "open",
+        "example-labelled",
+        "failed"
+      ],
+      "sheet_anchor": "#vault-frame"
+    },
+    {
+      "id": "reviews-empty",
+      "states": [
+        "none-yet",
+        "one",
+        "several"
+      ],
+      "sheet_anchor": "#reviews-empty"
+    },
+    {
+      "id": "edition-switch",
+      "states": [
+        "five",
+        "one-selected",
+        "phone"
+      ],
+      "sheet_anchor": "#edition-switch"
+    },
+    {
+      "id": "callout",
+      "states": [
+        "ruling",
+        "caveat",
+        "hold",
+        "example"
+      ],
+      "sheet_anchor": "#callout"
+    },
+    {
+      "id": "nav",
+      "states": [
+        "header-four-links",
+        "footer-evidence",
+        "phone-menu"
+      ],
+      "sheet_anchor": "#nav"
+    },
+    {
+      "id": "comparison-table",
+      "states": [
+        "five-columns",
+        "row-group",
+        "yes",
+        "no",
+        "qualified",
+        "phone"
+      ],
+      "sheet_anchor": "#comparison-table"
+    },
+    {
+      "id": "picker-filter-bar",
+      "states": [
+        "search",
+        "category-chips",
+        "state-chips",
+        "by-behaviour",
+        "grid-list-toggle",
+        "phone"
+      ],
+      "sheet_anchor": "#picker-filter-bar"
+    },
+    {
+      "id": "policy-card",
+      "states": [
+        "measured",
+        "derived",
+        "documented",
+        "with-open-count",
+        "selected",
+        "list-row"
+      ],
+      "sheet_anchor": "#policy-card"
+    },
+    {
+      "id": "policy-panel",
+      "states": [
+        "header",
+        "scenario-selector",
+        "scenario-tile",
+        "stat-tiles",
+        "capability-bar",
+        "side-effect-ladder",
+        "with-till",
+        "phone-sheet"
+      ],
+      "sheet_anchor": "#policy-panel"
+    },
+    {
+      "id": "cart-line",
+      "states": [
+        "single-price",
+        "deposit-split",
+        "with-code-applied",
+        "empty"
+      ],
+      "sheet_anchor": "#cart-line"
+    },
+    {
+      "id": "handoff-notice",
+      "states": [
+        "what-provider-asks",
+        "what-store-never-sees"
+      ],
+      "sheet_anchor": "#handoff-notice"
+    },
+    {
+      "id": "receipt",
+      "states": [
+        "level-01-download-with-hash",
+        "level-02-04-vault",
+        "deposit-balance-due"
+      ],
+      "sheet_anchor": "#receipt"
+    },
+    {
+      "id": "hero",
+      "states": [
+        "short-headline"
+      ],
+      "sheet_anchor": "#hero"
+    },
+    {
+      "id": "buy-rail",
+      "states": [
+        "level-02"
+      ],
+      "sheet_anchor": "#buy-rail"
+    },
+    {
+      "id": "describe-builder",
+      "states": [
+        "click-or-drag"
+      ],
+      "sheet_anchor": "#describe-builder"
+    },
+    {
+      "id": "reviewer-card",
+      "states": [
+        "one-entry",
+        "missing-identity"
+      ],
+      "sheet_anchor": "#reviewer-card"
+    },
+    {
+      "id": "ledger-entry",
+      "states": [
+        "source-link",
+        "return-link"
+      ],
+      "sheet_anchor": "#ledger-entry"
+    }
+  ],
+  "screens": [
+    {
+      "id": "pricing",
+      "variations": [
+        "A",
+        "B",
+        "C"
+      ],
+      "axis": "phone-width comparison",
+      "files": [
+        "screens/pricing/A.html",
+        "screens/pricing/B.html",
+        "screens/pricing/C.html"
+      ],
+      "note": "notes/pricing.md"
+    },
+    {
+      "id": "audiences",
+      "variations": [
+        "A",
+        "B",
+        "C"
+      ],
+      "axis": "mechanism",
+      "files": [
+        "screens/audiences/A.html",
+        "screens/audiences/B.html",
+        "screens/audiences/C.html"
+      ],
+      "note": "notes/audiences.md"
+    },
+    {
+      "id": "picker",
+      "variations": [
+        "A",
+        "B",
+        "C"
+      ],
+      "axis": "where the till sits",
+      "files": [
+        "screens/picker/A.html",
+        "screens/picker/B.html",
+        "screens/picker/C.html"
+      ],
+      "note": "notes/picker.md"
+    },
+    {
+      "id": "product",
+      "variations": [
+        "A"
+      ],
+      "axis": null,
+      "files": [
+        "screens/product/A.html"
+      ],
+      "note": "notes/product.md"
+    },
+    {
+      "id": "cart",
+      "variations": [
+        "A"
+      ],
+      "axis": null,
+      "files": [
+        "screens/cart/A.html"
+      ],
+      "note": "notes/cart.md"
+    },
+    {
+      "id": "checkout",
+      "variations": [
+        "A"
+      ],
+      "axis": null,
+      "files": [
+        "screens/checkout/A.html"
+      ],
+      "note": "notes/checkout.md"
+    },
+    {
+      "id": "post-purchase",
+      "variations": [
+        "A",
+        "B",
+        "C"
+      ],
+      "axis": "vault presence",
+      "files": [
+        "screens/post-purchase/A.html",
+        "screens/post-purchase/B.html",
+        "screens/post-purchase/C.html"
+      ],
+      "note": "notes/post-purchase.md"
+    },
+    {
+      "id": "generic",
+      "variations": [
+        "A"
+      ],
+      "axis": null,
+      "files": [
+        "screens/generic/A.html"
+      ],
+      "note": "notes/generic.md"
+    },
+    {
+      "id": "describe-your-agent",
+      "variations": [
+        "A",
+        "B"
+      ],
+      "axis": "interaction",
+      "files": [
+        "screens/describe-your-agent/A.html",
+        "screens/describe-your-agent/B.html"
+      ],
+      "note": "notes/describe-your-agent.md"
+    },
+    {
+      "id": "hero-headline",
+      "variations": [
+        "long",
+        "short"
+      ],
+      "axis": "headline",
+      "files": [
+        "screens/hero-headline/long.html",
+        "screens/hero-headline/short.html"
+      ],
+      "note": "notes/hero-headline.md"
+    },
+    {
+      "id": "reviewer",
+      "variations": [
+        "A"
+      ],
+      "axis": null,
+      "files": [
+        "screens/reviewer/A.html"
+      ],
+      "note": "notes/reviewer.md"
+    },
+    {
+      "id": "ledger",
+      "variations": [
+        "A"
+      ],
+      "axis": null,
+      "files": [
+        "screens/ledger/A.html"
+      ],
+      "note": "notes/ledger.md"
+    }
+  ],
+  "every_screen_carries": [
+    "disclosure strip above main",
+    "version badge",
+    "claim chip on every card",
+    "390px and 1200px in the same file"
+  ],
+  "data_used_only_from": [
+    "data/offers.json",
+    "data/comparison.json",
+    "data/audiences.json",
+    "data/policies.json",
+    "data/capabilities.json",
+    "data/product-specs.json",
+    "data/claim-states.json"
+  ],
+  "placeholders": [
+    {
+      "where": "screens/picker/*.html",
+      "what": "[PLACEHOLDER: per-policy capability mappings, scenario records, grant dates, shortfall and side-effect evidence]",
+      "what_belongs_there": "Source vault data, joined by exact policy slug; aggregate counts are supplied and unchanged."
+    },
+    {
+      "where": "screens/product/A.html",
+      "what": "Four labelled empty media slots",
+      "what_belongs_there": "The four missing images specified in product-specs.json."
+    },
+    {
+      "where": "screens/post-purchase/*.html",
+      "what": "Personal vault / pack / receipt / exact dates / reviewer identity",
+      "what_belongs_there": "Real order record, download bytes/hash and vault delivery details from the actual purchase flow."
+    },
+    {
+      "where": "components/examples/reviews-empty.html",
+      "what": "One and several review layout samples",
+      "what_belongs_there": "Real buyer reviews; no review text or ratings invented."
+    },
+    {
+      "where": "Every disclosure strip",
+      "what": "Human review approval",
+      "what_belongs_there": "A real person must review before claiming human approval."
+    }
+  ],
+  "disagreements": [
+    {
+      "screen": "picker",
+      "brief_said": "Search and by-behaviour dropdown, with no form fields anywhere",
+      "you_did": "Search dialog controlled by keyboard and letter buttons; behaviour menu uses details and buttons",
+      "why": "Keeps search usable by pointer, touch and keyboard without input, textarea, select or editable fields."
+    },
+    {
+      "screen": "picker",
+      "brief_said": "Fully populated scenarios and capability evidence",
+      "you_did": "Aggregate counts displayed exactly; unavailable lower-level evidence labelled as placeholders",
+      "why": "Policy-to-capability mapping and full scenario records are absent from data; no fabricated joins or counts."
+    },
+    {
+      "screen": "homepage",
+      "brief_said": "Two headline studies",
+      "you_did": "Both supplied headlines drawn separately; main homepage preserves Give your AI agent a clear mandate",
+      "why": "Honours the user’s explicitly preferred core headline while presenting the brief’s two studies."
+    },
+    {
+      "screen": "post-purchase",
+      "brief_said": "Embedded live example vault",
+      "you_did": "Local interactive vault shell showing supplied counts and source summary",
+      "why": "No external requests are permitted and the live vault data is explicitly missing. The shell is labelled as an example and missing file contents are explicit."
+    },
+    {
+      "screen": "component-sheet",
+      "brief_said": "Considered grotesk",
+      "you_did": "Franklin Gothic / system grotesk stack, alongside Arial and Georgia",
+      "why": "No font asset was supplied. System font study is honest about environment-dependent availability."
+    },
+    {
+      "screen": "tokens",
+      "brief_said": "Every size through custom properties",
+      "you_did": "All declarations tokenized; media conditions remain 700px and 1050px literals",
+      "why": "CSS custom properties do not resolve inside media query conditions. These two thresholds are named in the manifest; percentages on proportional bars and iframe heights are computed, not visual tokens."
+    },
+    {
+      "screen": "audiences",
+      "brief_said": "State chips on audience cards",
+      "you_did": "Removed read-not-run badges from audience navigation per the user’s explicit revision",
+      "why": "Audience choices are navigation, not evidence claims."
+    }
+  ],
+  "supporting_screens": [
+    "screens/post-purchase/receipt.html",
+    "screens/audiences/security.html",
+    "screens/audiences/founder.html",
+    "screens/audiences/investor.html",
+    "screens/audiences/governance.html",
+    "screens/audiences/exec.html",
+    "screens/pricing/print.html"
+  ],
+  "implementation_files": [
+    "assets/system.css",
+    "assets/app.js",
+    "assets/data.js"
+  ],
+  "responsive_breakpoints": {
+    "phone": "700px",
+    "intermediate": "1050px",
+    "review_widths": [
+      "390px",
+      "1200px"
+    ]
+  },
+  "validation": {
+    "local_html_files": 61,
+    "components": 29,
+    "source_datasets_unchanged": 7,
+    "form_elements": 0,
+    "broken_local_links": 0,
+    "barred_word_matches": 0,
+    "browser_visual_qa": "not performed",
+    "payment_integration": "preview only"
+  },
+  "artwork": {
+    "audience-strip": "Five AI-generated conceptual still lifes; decorative, not portraits or endorsements."
+  }
+}

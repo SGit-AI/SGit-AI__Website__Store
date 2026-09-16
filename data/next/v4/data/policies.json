@@ -1,0 +1,232 @@
+{
+  "_what_this_is": "The fifteen published Agent Behaviour Policy shapes, promoted from riskmandate.ai. These are what the policy picker picks between. counts are read from each vault.",
+  "source": "https://riskmandate.ai/abp-vaults.html",
+  "retrieved": "2026-09-15T10:55:22Z",
+  "shapes": [
+    {
+      "slug": "claude-code-web",
+      "title": "Claude Code on the web",
+      "summary": "A managed, ephemeral container with one repository attached and an egress proxy above it. The shape this site is maintained from; 13 of 20 rows measured on the thing itself.",
+      "glyph": "CC",
+      "family": "code",
+      "url": "https://riskmandate.ai/abp-vault-claude-code-web.html",
+      "counts": {
+        "grant": 15,
+        "wanted": 6,
+        "excess": 9,
+        "unbounded": 7
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "claude-code-cli",
+      "title": "Claude Code on your machine",
+      "summary": "The coding agent on a developer's own machine with confirmation prompts enabled. Read this one beside the confirmations-off shape: one setting moves one barrier and not one number changes.",
+      "glyph": "CC",
+      "family": "code",
+      "url": "https://riskmandate.ai/abp-vault-claude-code-cli.html",
+      "counts": {
+        "grant": 16,
+        "wanted": 5,
+        "excess": 12,
+        "unbounded": 12
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "claude-code-cli-confirmations-off",
+      "title": "Claude Code, confirmations off",
+      "summary": "The same agent, the same machine, the same account, with the confirmation prompt switched off. The prompt was the only thing between an authorised capability and the whole machine, and it was a switch the agent's account could flip.",
+      "glyph": "CC",
+      "family": "code",
+      "url": "https://riskmandate.ai/abp-vault-claude-code-cli-confirmations-off.html",
+      "counts": {
+        "grant": 16,
+        "wanted": 5,
+        "excess": 12,
+        "unbounded": 12
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "claude-desktop",
+      "title": "Claude Desktop",
+      "summary": "The desktop app with local tools on: files, processes and the network of the machine it sits on. Ten capabilities, three wanted, eight with nothing real in the way.",
+      "glyph": "CD",
+      "family": "desktop",
+      "url": "https://riskmandate.ai/abp-vault-claude-desktop.html",
+      "counts": {
+        "grant": 10,
+        "wanted": 3,
+        "excess": 8,
+        "unbounded": 8
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "claude-web-connectors",
+      "title": "Claude in the browser, connectors on",
+      "summary": "Chat with connectors enabled: the tenant's accounts are in reach through whatever was connected. The two excess rows here both sit behind a boundary, which is the exception in this directory.",
+      "glyph": "CW",
+      "family": "chat",
+      "url": "https://riskmandate.ai/abp-vault-claude-web-connectors.html",
+      "counts": {
+        "grant": 5,
+        "wanted": 3,
+        "excess": 2,
+        "unbounded": 0
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "chatgpt-web",
+      "title": "ChatGPT in the browser",
+      "summary": "The smallest grant in the set: one capability, one wanted, no excess. The baseline every other shape is measured against, and the proof that a template can be empty and still be right.",
+      "glyph": "GP",
+      "family": "chat",
+      "url": "https://riskmandate.ai/abp-vault-chatgpt-web.html",
+      "counts": {
+        "grant": 1,
+        "wanted": 1,
+        "excess": 0,
+        "unbounded": 0
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "browser-extension",
+      "title": "A browser extension",
+      "summary": "Other people's data, and the mandate nobody wrote down. Three capabilities, all three irreversible; the shortest policy in the directory and not the mildest.",
+      "glyph": "EX",
+      "family": "browser",
+      "url": "https://riskmandate.ai/abp-vault-browser-extension.html",
+      "counts": {
+        "grant": 3,
+        "wanted": 1,
+        "excess": 2,
+        "unbounded": 2
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "github-actions",
+      "title": "GitHub Actions",
+      "summary": "A hosted runner under a service account: persistence, and reach beyond the turn. Eight of eight rows measured, the only fully measured shape besides the web container.",
+      "glyph": "GA",
+      "family": "ci",
+      "url": "https://riskmandate.ai/abp-vault-github-actions.html",
+      "counts": {
+        "grant": 8,
+        "wanted": 5,
+        "excess": 4,
+        "unbounded": 3
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "scheduled-job",
+      "title": "A scheduled job",
+      "summary": "A job that outlives the person who made it, running as a service account nobody logs in as. Seven capabilities, four wanted, four with nothing in the way.",
+      "glyph": "SJ",
+      "family": "service",
+      "url": "https://riskmandate.ai/abp-vault-scheduled-job.html",
+      "counts": {
+        "grant": 7,
+        "wanted": 4,
+        "excess": 4,
+        "unbounded": 4
+      },
+      "open_questions": 0
+    },
+    {
+      "slug": "google-workspace-mcp",
+      "title": "Google Workspace MCP servers",
+      "summary": "Gmail, Drive, Docs, Sheets, Slides, Calendar and Chat, one server each. The page advertises drafting mail and scheduling meetings; the scopes it asks for send mail and cannot touch a calendar.",
+      "glyph": "G",
+      "family": "google",
+      "url": "https://riskmandate.ai/abp-vault-google-workspace-mcp.html",
+      "counts": {
+        "grant": 6,
+        "wanted": 2,
+        "excess": 4,
+        "unbounded": 1
+      },
+      "open_questions": 4
+    },
+    {
+      "slug": "gmail-readonly",
+      "title": "Gmail, read-only scope",
+      "summary": "The narrowest scope that reads one message reads every message. Lab 03 asked the model site for this shape first; here it is, read from Google's scope page.",
+      "glyph": "M",
+      "family": "mail",
+      "url": "https://riskmandate.ai/abp-vault-gmail-readonly.html",
+      "counts": {
+        "grant": 4,
+        "wanted": 1,
+        "excess": 3,
+        "unbounded": 2
+      },
+      "open_questions": 3
+    },
+    {
+      "slug": "google-drive-readonly",
+      "title": "Google Drive, read-only scope",
+      "summary": "The default corpus is \"files owned by or shared to the user\": everything anybody ever shared, on day one, without anyone choosing it.",
+      "glyph": "D",
+      "family": "files",
+      "url": "https://riskmandate.ai/abp-vault-google-drive-readonly.html",
+      "counts": {
+        "grant": 3,
+        "wanted": 1,
+        "excess": 2,
+        "unbounded": 1
+      },
+      "open_questions": 3
+    },
+    {
+      "slug": "claude-m365-connector",
+      "title": "Microsoft 365 connector (Claude)",
+      "summary": "Delegated permissions, consented once by a Global Administrator. Shared mailboxes are in scope; site-specific narrowing is unsupported because the search is tenant-wide; and the page that says \"read-only access\" also lists the tools that send mail as the user.",
+      "glyph": "MS",
+      "family": "microsoft",
+      "url": "https://riskmandate.ai/abp-vault-claude-m365-connector.html",
+      "counts": {
+        "grant": 5,
+        "wanted": 2,
+        "excess": 3,
+        "unbounded": 1
+      },
+      "open_questions": 4
+    },
+    {
+      "slug": "dropbox-mcp",
+      "title": "Dropbox MCP server",
+      "summary": "Eight scopes, two of them write and two of them sharing, and no folder-scoped variant. It reads, creates, moves, deletes and makes shared links; the page says files are not deleted permanently and that recovery depends on your plan.",
+      "glyph": "Db",
+      "family": "files",
+      "url": "https://riskmandate.ai/abp-vault-dropbox-mcp.html",
+      "counts": {
+        "grant": 5,
+        "wanted": 1,
+        "excess": 4,
+        "unbounded": 0
+      },
+      "open_questions": 4
+    },
+    {
+      "slug": "n8n-owner-api-key",
+      "title": "n8n, owner API key",
+      "summary": "The first grant here measured on a live instance, by an early beta user's agent: full control of every automation, an outbound node with no restriction on target, every account visible, and credential metadata open through one door and shut through another.",
+      "glyph": "n8n",
+      "family": "service",
+      "url": "https://riskmandate.ai/abp-vault-n8n-owner-api-key.html",
+      "counts": {
+        "grant": 8,
+        "wanted": 4,
+        "excess": 4,
+        "unbounded": 4
+      },
+      "open_questions": 4
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "_what_this_is": "The v4 implementation pack, as handed over. Twelve screens with their variations, twenty-nine component specimens, the notes explaining each screen and the seven-file data snapshot the designer worked from.",
+  "_why_it_is_here": "This is what /next/ is built from. Unlike v2 and v3 it did not come off a live host, so there is no --check to re-fetch it against: it arrived as a zip and the zip's hash is the whole provenance. Hashed anyway, because the question a month from now is the same one \u2014 did we build what was handed over, or did we drift.",
+  "_what_is_not_copied": "The pack's own stylesheet and scripts. Its tokens.css carries 230 mechanically generated custom properties (--v4-margin-1: 0, --v4-font-5: inherit) alongside about seventy real ones; taking the file would take both. The real values and every layout decision are implemented in assets/next.css, and tokens.css is kept here as the reference to check against.",
+  "arrived": "2026-09-16",
+  "zip_sha256": "58a9c4f13db839f7eea74764ca9a4bbe1941d7518161f39c55a68065d9e73d20",
+  "zip_bytes": 8635544,
+  "direction": "01 / ABP first, navy-and-amber Marketplace",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 2612,
+      "sha256": "de7d6ac242fca963d525922f9970a9e3c62a1ba4bf0915d8c6057e41c9ad611b"
+    },
+    {
+      "path": "IMPLEMENTATION-BRIEF.md",
+      "bytes": 11793,
+      "sha256": "4240ef05c3c742a8d5391ca8473d026ece8cc0950a647ac3ce68e9779f870b48"
+    },
+    {
+      "path": "data/audiences.json",
+      "bytes": 5321,
+      "sha256": "262b2dc4b90d3d88181d127ca9608aa61a0a247e2223138a7d728ca73d284eef"
+    },
+    {
+      "path": "data/capabilities.json",
+      "bytes": 8559,
+      "sha256": "f2d9a7049b5517eaf137a136067376139f9ddc13f965c5d1300e8fa776bf3ec6"
+    },
+    {
+      "path": "data/claim-states.json",
+      "bytes": 2135,
+      "sha256": "7b114dc3181952828a3809aae22598905e6aaf5f38fd21128e917211111c953e"
+    },
+    {
+      "path": "data/comparison.json",
+      "bytes": 6161,
+      "sha256": "48a7651703672e6b39a45c7a70f27d91a390d329921fc6a0e902369b7a274b51"
+    },
+    {
+      "path": "data/offers.json",
+      "bytes": 7537,
+      "sha256": "0a880948ce1c223e51206ab8bddbe42e7ca9c658dcbaa4d8a1ae6b109df017f8"
+    },
+    {
+      "path": "data/policies.json",
+      "bytes": 8663,
+      "sha256": "b046aad9ed0c30708f4c232cd14f389b6ea604077f1b329b20f419a71f993e24"
+    },
+    {
+      "path": "data/product-specs.json",
+      "bytes": 2175,
+      "sha256": "399792f652ca8022c460b2de780fc1cb5288be728f3381c2224b74aef59d0f35"
+    },
+    {
+      "path": "home.html",
+      "bytes": 19045,
+      "sha256": "cf95edf80de15865c25bc9c28c5f0b7352e51668bd8707e4bce530feba756340"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 72882,
+      "sha256": "02a4c58130477b1b04d7cfa19f85e4dd5d7739d712fce586ddab6b6be1a81f50"
+    },
+    {
+      "path": "notes/audiences.md",
+      "bytes": 1127,
+      "sha256": "2453a537deb4075a9512a8121df8f0c9738be27e0b2337303056b9b330e7aa4d"
+    },
+    {
+      "path": "notes/cart.md",
+      "bytes": 639,
+      "sha256": "1daa27eff773217ee0617909fbaa81a8d52c3590e48fb41aecc6f336805f6fc7"
+    },
+    {
+      "path": "notes/checkout.md",
+      "bytes": 564,
+      "sha256": "951e2ba25b2a53fc2403487c55bbf5c3f7e24854bf5ec0c6f1016aca331c2f80"
+    },
+    {
+      "path": "notes/describe-your-agent.md",
+      "bytes": 576,
+      "sha256": "2ef8dc833171b995eca4f6934254fdacda55252680b8efcb725b9f57bfd1c218"
+    },
+    {
+      "path": "notes/generic.md",
+      "bytes": 500,
+      "sha256": "a3fba206417dd31166ec61ecc5d3090f5d78a1f7f3d24bd6b9e1ebf12b48d8e5"
+    },
+    {
+      "path": "notes/hero-headline.md",
+      "bytes": 490,
+      "sha256": "0964ffa7ed516c2b6c673151a12e5543508ba7637e10fc05d8592853c7e128ca"
+    },
+    {
+      "path": "notes/ledger.md",
+      "bytes": 505,
+      "sha256": "f48d59a5454ebe46408dd9369d931155e98e1699bd2bba2edfdc9f502a31fc82"
+    },
+    {
+      "path": "notes/picker.md",
+      "bytes": 1087,
+      "sha256": "490bcfe7a928b8880527178da6144614481626d06e24c115985991ad2160502f"
+    },
+    {
+      "path": "notes/post-purchase.md",
+      "bytes": 820,
+      "sha256": "4f0cca0d04ae3e3da1eaadcf081218b9e5098b9a82c6690da6e07f4a7f6a4fce"
+    },
+    {
+      "path": "notes/pricing.md",
+      "bytes": 627,
+      "sha256": "3c286f86553532ac1393ea85dc058d233f6dd932cdd85868d6920dc5ac130610"
+    },
+    {
+      "path": "notes/product.md",
+      "bytes": 845,
+      "sha256": "d46373a9b0843efc92e5cdfcbf9f1b2e35c7bab6c693b915140d2c0494e248b3"
+    },
+    {
+      "path": "notes/reviewer.md",
+      "bytes": 445,
+      "sha256": "86024fa97dfec9fd18282b4ccc1e32597051d84c1706fdb8ba06699a56400f0d"
+    },
+    {
+      "path": "notes/validation.md",
+      "bytes": 637,
+      "sha256": "641844d3275fd6fa2e136f84447e519cf95acc1a281910ddfc41ae208b788756"
+    },
+    {
+      "path": "screens/audiences/A.html",
+      "bytes": 10279,
+      "sha256": "a93dfc669f9608bd4f9a1d7c0dac3fcd8ab7c1fb3b705a69ad15ae05564d16f3"
+    },
+    {
+      "path": "screens/audiences/B.html",
+      "bytes": 7523,
+      "sha256": "2b476dd99fcbe0673c5b52f6e91ff2c4d6995e20035fcb3fd8913b3582dbfb72"
+    },
+    {
+      "path": "screens/audiences/C.html",
+      "bytes": 8651,
+      "sha256": "7aeeb1827aebe341858dfb8be54c86f86749ce7eb8d8aa5adbc1c29ac10818f6"
+    },
+    {
+      "path": "screens/audiences/exec.html",
+      "bytes": 9631,
+      "sha256": "db4e9478f1918bd9d0d21debe4b60bf0a76e525efd161a88550fb34114afa49c"
+    },
+    {
+      "path": "screens/audiences/founder.html",
+      "bytes": 9650,
+      "sha256": "1a3ac9e1d73a80682eed2ab1c6a15e40b9332f84e4e524bf5394318b7d2d312f"
+    },
+    {
+      "path": "screens/audiences/governance.html",
+      "bytes": 9596,
+      "sha256": "fca7dae7810d1c13d08d1be3cb3b5d4c4e17d7d72366d8d03ec9cc6d3080882a"
+    },
+    {
+      "path": "screens/audiences/investor.html",
+      "bytes": 9674,
+      "sha256": "85799feedd1439c04920008b43d0b1cc197da73187f792f2f9278e54009bcb74"
+    },
+    {
+      "path": "screens/audiences/security.html",
+      "bytes": 9653,
+      "sha256": "3c7de2bb95973e87ec69f01dc1083755967fdd4444626d7a67936c70131ec8b8"
+    },
+    {
+      "path": "screens/cart/A.html",
+      "bytes": 3697,
+      "sha256": "d687a15ebeec499f00c63263d46dff6ab049310625ff37e810ffd555b7dd1b0c"
+    },
+    {
+      "path": "screens/checkout/A.html",
+      "bytes": 3943,
+      "sha256": "0de07a79d8036865bdfed457cbb7af95a05a13312a78bec549d48e22eb3e28a3"
+    },
+    {
+      "path": "screens/describe-your-agent/A.html",
+      "bytes": 9748,
+      "sha256": "9615a88b6298fe33812c57d991af1d83b1a60186ade6d1fb47f5a297d1906033"
+    },
+    {
+      "path": "screens/describe-your-agent/B.html",
+      "bytes": 4261,
+      "sha256": "96ad66fce195d51a0a49e6feaa980a11b54bd256de1e8c8546b5ab3c4e3b9b5b"
+    },
+    {
+      "path": "screens/generic/A.html",
+      "bytes": 4828,
+      "sha256": "c437c279d7f94f9ed5a9793e189a7195aa087edab6acba5bd1dc8a9f55184e96"
+    },
+    {
+      "path": "screens/hero-headline/long.html",
+      "bytes": 10031,
+      "sha256": "50d0d6d8d3f87d2d9a949f878354b462934379f9631f26bd4a4fab43703edbc5"
+    },
+    {
+      "path": "screens/hero-headline/short.html",
+      "bytes": 10027,
+      "sha256": "63b4206d56af6121b3737e73f30551b2f486f1011c00a898b87f6690eb2eb931"
+    },
+    {
+      "path": "screens/ledger/A.html",
+      "bytes": 28641,
+      "sha256": "582bf07730c341288d4ca87b17fe852ddd6488de7eda4d353f2bd2572ef8ef44"
+    },
+    {
+      "path": "screens/picker/A.html",
+      "bytes": 33878,
+      "sha256": "5661ab0454d9d8cc4d7d70468f69d519c20c6e2d56752c83ce83ad276797739d"
+    },
+    {
+      "path": "screens/picker/B.html",
+      "bytes": 31252,
+      "sha256": "c031744c1aa8bc2a7e51cca1731dddd7c1c993e67dd509c4e8073b71d88ce38b"
+    },
+    {
+      "path": "screens/picker/C.html",
+      "bytes": 31575,
+      "sha256": "591797ccb074d527fb19b82cfa16e38d1d215118e5a530fde6e0591543dbfc79"
+    },
+    {
+      "path": "screens/post-purchase/A.html",
+      "bytes": 6843,
+      "sha256": "5ade6a0ecb42f63b1a40ffa8feec0705f65c88e8601a2fc485802e2649befb6b"
+    },
+    {
+      "path": "screens/post-purchase/B.html",
+      "bytes": 6843,
+      "sha256": "f74511b4b938aaeb6789b6885e01f9326107a9702b3ede47bd82bdc3b9c3d1e7"
+    },
+    {
+      "path": "screens/post-purchase/C.html",
+      "bytes": 6843,
+      "sha256": "c1f88d1f7124d2279f26634dad7eb3bdfa02ff21a4ec924dacf33113a01e166f"
+    },
+    {
+      "path": "screens/post-purchase/receipt.html",
+      "bytes": 3928,
+      "sha256": "ac329b99b25b361a6fa9891e2c5f140379d8ddab4488227f11e1db3a68800d66"
+    },
+    {
+      "path": "screens/pricing/A.html",
+      "bytes": 20438,
+      "sha256": "647c197bab5112abab21388df0809077b518d747fca158c0eb3e1dadfefe7d66"
+    },
+    {
+      "path": "screens/pricing/B.html",
+      "bytes": 29784,
+      "sha256": "6ae1c3aaff92a8521635052a7c86704fc1ed276575e9c79b6b13e401592a78aa"
+    },
+    {
+      "path": "screens/pricing/C.html",
+      "bytes": 33207,
+      "sha256": "c8837603db4cf1906e9cd43fa47f23c5daa15db9e0f94b134d60e40c5b90064c"
+    },
+    {
+      "path": "screens/pricing/print.html",
+      "bytes": 15952,
+      "sha256": "c007d484b7fb088758af74dd2a00a6df501f488eedc566849a83e08090a482c5"
+    },
+    {
+      "path": "screens/product/A.html",
+      "bytes": 9393,
+      "sha256": "9d1026dba14b87e29575367f0c16f1e8643cb0650cdad4088e2d04ff3a132a19"
+    },
+    {
+      "path": "screens/reviewer/A.html",
+      "bytes": 6894,
+      "sha256": "e7c7a2bf1485136480d4adcf8c7d607972cff824eab0d6bb73aa0bf5f328b09e"
+    },
+    {
+      "path": "tokens.css",
+      "bytes": 9968,
+      "sha256": "5ead361bc0e8abfd5cf165affd51aeb36f01fd54a549a8856bc4e06a236cfb67"
+    }
+  ]
+}

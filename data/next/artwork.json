@@ -47,6 +47,17 @@
       "size": "720×480",
       "bytes": 25936,
       "quality": 0.82
+    },
+    {
+      "file": "audiences.jpg",
+      "label": "The five audiences, illustrated",
+      "from": "audience-strip.png (v4 pack)",
+      "source_sha256": "ca5e641c86a13a8300441f50e8fca78378ae2fb5a74caf2c21fb14043750dbb7",
+      "source_bytes": 1311503,
+      "source_size": "2172×724",
+      "size": "1400×467",
+      "bytes": 43166,
+      "quality": 0.82
     }
   ]
 }

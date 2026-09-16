@@ -237,10 +237,14 @@ code { font-family: var(--n-mono); font-size: .88em; }
                   gap: 40px; }
 .n-footer b { display: block; margin-bottom: 14px; font-size: var(--n-fine);
               letter-spacing: .06em; text-transform: uppercase; color: var(--n-dim); }
-.n-footer a { display: block; margin-bottom: 9px; }
+/* Column links stack; links inside a SENTENCE do not. The unscoped rule broke
+   the note below into "store.sgit.ai" on one line and ". Artwork on these pages"
+   on the next, full stop and all, on every page in this round. */
+.n-footer__cols > div a { display: block; margin-bottom: 9px; }
 .n-footer__note { grid-column: 1 / -1; border-top: 1px solid var(--n-line-2);
                   margin-top: 34px; padding-top: 22px;
                   color: var(--n-dim); font-size: var(--n-micro); max-width: 110ch; }
+.n-footer__note a { display: inline; }
 
 /* ============================================================================
  * 4. COMPONENTS — content
@@ -277,6 +281,9 @@ code { font-family: var(--n-mono); font-size: .88em; }
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
   padding: 3px 9px; border-radius: var(--n-r-pill); border: 1px solid;
+  /* A pill that wraps is not a pill. The chip is the site's most-read component
+     and the first place it went into a narrow column it broke its own shape. */
+  white-space: nowrap;
 }
 .n-claim:hover { text-decoration: none; filter: brightness(.95); }
 .n-claim--exists    { color: var(--n-st-exists);    background: var(--n-st-exists-bg);    border-color: rgba(15,118,110,.35); }
@@ -485,6 +492,8 @@ code { font-family: var(--n-mono); font-size: .88em; }
  * 5. UTILITIES — a short list, on purpose
  * ========================================================================== */
 .n-measure { max-width: var(--n-measure); }
+.n-narrow  { max-width: 760px; }
+.n-lede    { font-size: var(--n-lede); line-height: 1.65; color: var(--n-dim); }
 .n-dim     { color: var(--n-dim); }
 .n-fine    { font-size: var(--n-fine); }
 .n-mt      { margin-top: 20px; }
@@ -569,4 +578,310 @@ code { font-family: var(--n-mono); font-size: .88em; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important;
                            transition-duration: .001ms !important; }
+}
+
+/* ============================================================================
+ * 8. THE JOURNEY — added for the v4 pack
+ *
+ * The picker, the order, the hand-off and the receipt. These come from the v4
+ * implementation handback (data/next/v4/), which supplied twelve screens and a
+ * twenty-nine component sheet.
+ *
+ * WHAT WAS TAKEN AND WHAT WAS NOT. Every layout decision, spacing relationship
+ * and state below is theirs. Their tokens.css is NOT: it carries about seventy
+ * real design tokens and 230 mechanically generated ones beside them
+ * (--v4-margin-1: 0, --v4-font-5: inherit, --v4-line-height-3: 1.6), which
+ * satisfies "tokenize every declaration" and defeats what tokenizing is for.
+ * The real values live in the token block at the top of this file; the pack's
+ * own file is kept at data/next/v4/tokens.css to check against.
+ * ========================================================================== */
+
+/* ---------------------------------------------------------------- picker -- */
+/* Filter bar. No form controls anywhere: search is a button that opens a
+   keyboard-driven dialog, and the behaviour menu is a <details>. That is the
+   handback's own solution to this site's no-input rule and it is a good one. */
+.n-filters { background: var(--n-panel); border: 1px solid var(--n-line);
+             border-radius: var(--n-r-card); padding: 18px 20px;
+             display: flex; flex-direction: column; gap: 12px; }
+.n-filters__row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.n-filters__row--end { margin-left: auto; }
+
+.n-fchip { display: inline-flex; align-items: center; gap: 8px;
+           padding: 10px 16px; font: 500 var(--n-fine)/1.3 var(--n-sans);
+           background: var(--n-panel); color: var(--n-fg);
+           border: 1px solid var(--n-line); border-radius: var(--n-r);
+           cursor: pointer; white-space: nowrap; }
+.n-fchip:hover { border-color: var(--n-fg); }
+.n-fchip[aria-pressed="true"], .n-fchip[aria-expanded="true"] {
+  background: var(--n-deep); color: #fff; border-color: var(--n-deep); font-weight: 600; }
+.n-fchip kbd { font: 11px/1 var(--n-mono); border: 1px solid currentColor;
+               border-radius: 3px; padding: 2px 5px; opacity: .6; }
+.n-fchip__n { opacity: .6; font-variant-numeric: tabular-nums; }
+
+.n-behaviour { position: relative; }
+.n-behaviour > summary { list-style: none; }
+.n-behaviour > summary::-webkit-details-marker { display: none; }
+.n-behaviour__menu { position: absolute; z-index: 20; top: calc(100% + 6px); left: 0;
+                     min-width: 280px; max-height: 320px; overflow-y: auto;
+                     background: var(--n-panel); border: 1px solid var(--n-line-2);
+                     border-radius: var(--n-r-card); box-shadow: var(--n-shadow);
+                     padding: 8px; display: grid; gap: 2px; }
+.n-behaviour__menu button { text-align: left; padding: 8px 10px; border: 0;
+                            background: none; border-radius: var(--n-r-sm);
+                            font: 400 var(--n-fine)/1.4 var(--n-mono);
+                            color: var(--n-fg); cursor: pointer; }
+.n-behaviour__menu button:hover { background: var(--n-tint); }
+.n-behaviour__menu button[aria-pressed="true"] { background: var(--n-deep); color: #fff; }
+
+/* The picker itself: results left, a sticky panel right. */
+.n-picker { display: grid; grid-template-columns: minmax(0, 1fr) 400px;
+            gap: 28px; align-items: start; margin-top: 24px; }
+.n-picker__count { font-size: var(--n-fine); color: var(--n-dim); margin-bottom: 18px; }
+.n-group { margin-bottom: 30px; }
+.n-group__head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.n-group__head h3 { font-size: 20px; }
+.n-group__head span { font: 11px/1 var(--n-mono); color: var(--n-dim-2); }
+
+.n-picker__grid { display: grid; gap: 14px;
+                  grid-template-columns: repeat(auto-fill, minmax(238px, 1fr)); }
+
+/* The search dialog. It holds no field — see assets/next.js. What it shows is
+   the query echoed back, so the reader can see what the page is filtering on. */
+.n-search { position: sticky; top: 12px; z-index: 30; margin-top: 12px;
+            background: var(--n-deep); color: #fff; border-radius: var(--n-r-card);
+            padding: 16px 20px; display: grid; gap: 8px; box-shadow: var(--n-shadow); }
+.n-search__q { font: 600 22px/1.3 var(--n-mono); letter-spacing: -.02em;
+               min-height: 30px; border-bottom: 2px solid var(--n-cta);
+               padding-bottom: 6px; }
+.n-search__q[data-empty="true"]::after { content: "type to filter"; opacity: .45;
+                                         font-weight: 400; font-size: 16px; }
+.n-search p { font-size: var(--n-fine); color: #c8d7e2; line-height: 1.5; }
+.n-search kbd { font: 11px/1 var(--n-mono); border: 1px solid currentColor;
+                border-radius: 3px; padding: 2px 5px; }
+
+.n-policy { display: flex; flex-direction: column; text-align: left; gap: 8px;
+            background: var(--n-panel); border: 1px solid var(--n-line);
+            border-radius: var(--n-r-card); padding: 18px; cursor: pointer;
+            font: inherit; color: inherit; }
+.n-policy:hover { border-color: var(--n-fg); }
+.n-policy[aria-pressed="true"] { border-color: var(--n-cta);
+                                 box-shadow: inset 0 0 0 1px var(--n-cta); }
+.n-policy__top { display: flex; align-items: center; gap: 8px; }
+.n-policy__glyph { width: 30px; height: 30px; flex: none; border-radius: var(--n-r-sm);
+                   background: var(--n-deep); color: var(--n-cta);
+                   display: flex; align-items: center; justify-content: center;
+                   font: 700 10px/1 var(--n-mono); }
+.n-policy__open { margin-left: auto; font: 11px/1 var(--n-mono); color: var(--n-dim-2); }
+.n-policy h4 { margin: 0; font-size: 16.5px; font-weight: 650; letter-spacing: -.02em; }
+.n-policy p { font-size: var(--n-fine); color: var(--n-dim); line-height: 1.5;
+              display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+              overflow: hidden; }
+.n-policy__counts { display: flex; align-items: center; gap: 8px; margin-top: auto;
+                    padding-top: 10px; font: 11px/1 var(--n-mono); color: var(--n-dim);
+                    white-space: nowrap; }
+.n-policy__counts b { color: var(--n-fg); }
+.n-bar { flex: 1; height: 5px; border-radius: 99px; background: var(--n-line);
+         overflow: hidden; min-width: 40px; }
+.n-bar i { display: block; height: 100%; background: var(--n-cta-edge); }
+
+/* The panel. Evidence above, the till at the foot — variation C of the three,
+   because a panel that is mostly evidence should not bury the action inside it. */
+.n-panel { position: sticky; top: 20px; background: var(--n-panel);
+           border: 1px solid var(--n-line); border-radius: var(--n-r-card);
+           display: flex; flex-direction: column; max-height: calc(100vh - 40px); }
+.n-panel__body { overflow-y: auto; padding: 22px; }
+.n-panel__head { display: flex; gap: 12px; align-items: flex-start; }
+.n-panel h3 { font-size: 19px; line-height: 1.25; }
+.n-panel__slug { font: 11px/1.5 var(--n-mono); color: var(--n-dim); margin-top: 6px; }
+.n-panel__stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+                  margin: 18px 0; }
+.n-stat { border: 1px solid var(--n-line); border-radius: var(--n-r-sm);
+          padding: 10px 8px; text-align: center; }
+.n-stat b { display: block; font-size: 21px; font-weight: 650; letter-spacing: -.03em; }
+.n-stat span { font: 10px/1.3 var(--n-mono); color: var(--n-dim); }
+.n-cells { display: flex; gap: 2px; flex-wrap: wrap; margin: 14px 0 8px; }
+/* Every cell is the same colour, deliberately: see selectPolicy in next.js.
+   There were two more rules here that painted them green and amber, and they
+   were drawing a split the published data does not contain. */
+.n-cells i { width: 13px; height: 22px; border-radius: 2px; background: var(--n-line);
+             border: 1px solid var(--n-line-2); }
+.n-panel__foot { border-top: 1px solid var(--n-line); padding: 16px 22px;
+                 background: var(--n-tint-2); display: grid; gap: 10px;
+                 border-radius: 0 0 var(--n-r-card) var(--n-r-card); }
+.n-panel__ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.n-panel__ladder button { padding: 9px 4px; border: 1px solid var(--n-line);
+                          background: var(--n-panel); border-radius: var(--n-r-sm);
+                          font: 600 11px/1.3 var(--n-sans); cursor: pointer; }
+.n-panel__ladder button b { display: block; font-size: 14px; }
+.n-panel__ladder button:hover { border-color: var(--n-fg); }
+.n-panel__ladder button[aria-pressed="true"] { background: var(--n-deep); color: #fff;
+                                               border-color: var(--n-deep); }
+.n-panel__empty { padding: 40px 22px; text-align: center; color: var(--n-dim);
+                  font-size: var(--n-small); }
+
+/* ----------------------------------------------------------------- order -- */
+.n-line { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto;
+          gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--n-line);
+          align-items: start; }
+.n-line__glyph { width: 46px; height: 46px; border-radius: var(--n-r-sm);
+                 background: var(--n-deep); color: var(--n-cta);
+                 display: flex; align-items: center; justify-content: center;
+                 font: 700 12px/1 var(--n-mono); border: 2px solid var(--n-cta); }
+.n-line h3 { font-size: 20px; margin-bottom: 4px; }
+.n-line__lvl { font-size: var(--n-small); color: var(--n-fg); }
+.n-line__clock { font-size: var(--n-fine); color: var(--n-dim); margin-top: 4px; }
+.n-line__acts { display: flex; gap: 8px; margin-top: 14px; }
+.n-line__acts button { padding: 8px 14px; font: 600 var(--n-fine)/1 var(--n-sans);
+                       background: var(--n-panel); border: 1px solid var(--n-line);
+                       border-radius: var(--n-r); cursor: pointer; }
+.n-line__acts button:hover { border-color: var(--n-fg); }
+.n-line__money { text-align: right; white-space: nowrap; }
+.n-line__money b { display: block; font-size: 30px; font-weight: 650;
+                   letter-spacing: -.035em; line-height: 1.1; }
+.n-line__money span { display: block; font-size: var(--n-fine); color: var(--n-dim); }
+
+.n-totals { background: var(--n-tint); border-radius: var(--n-r-card);
+            padding: 22px 26px; margin-top: 26px; display: grid; gap: 12px; }
+.n-totals div { display: flex; justify-content: space-between; align-items: baseline;
+                gap: 20px; }
+.n-totals b { font-size: 22px; font-weight: 650; letter-spacing: -.03em; }
+.n-totals .is-total { border-top: 1px solid var(--n-line-2); padding-top: 12px;
+                      color: var(--n-dim); font-size: var(--n-small); }
+
+.n-empty { border: 1px solid var(--n-line); border-radius: var(--n-r-card);
+           background: var(--n-tint-2); padding: 56px 24px; text-align: center; }
+.n-empty h2 { font-size: 30px; margin-bottom: 10px; }
+.n-empty p { color: var(--n-dim); margin-bottom: 22px; }
+
+/* Two columns saying what leaves this browser and what does not. It is the
+   thing this store can say that most stores cannot, so it is a section. */
+.n-handoff { display: grid; grid-template-columns: 1fr 1fr; gap: 34px;
+             margin-top: 34px; }
+.n-handoff h3 { font-size: 19px; margin-bottom: 10px; }
+.n-handoff p { color: var(--n-dim); font-size: var(--n-small); line-height: 1.6; }
+
+.n-ref { display: inline-flex; align-items: center; gap: 10px;
+         font: 600 var(--n-fine)/1 var(--n-mono); color: var(--n-fg);
+         background: var(--n-tint); border: 1px solid var(--n-line-2);
+         border-radius: var(--n-r); padding: 9px 12px; }
+.n-ref button { border: 0; background: none; font: inherit; cursor: pointer;
+                color: var(--n-dim); text-decoration: underline; }
+
+/* --------------------------------------------------------------- receipt -- */
+/* An order has as many receipt blocks as it has lines, and stacked flush they
+   read as one block with four headings. */
+.n-receipt + .n-receipt { margin-top: 14px; }
+.n-receipt { display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+             background: var(--n-tint-2); border: 1px solid var(--n-line);
+             border-radius: var(--n-r-card); padding: 26px; }
+.n-receipt__label { font: 700 10.5px/1 var(--n-sans); letter-spacing: .1em;
+                    text-transform: uppercase; color: var(--n-dim);
+                    margin-bottom: 14px; }
+.n-receipt h2 { font-size: 24px; margin-bottom: 6px; }
+.n-receipt p { font-size: var(--n-small); margin-bottom: 8px; }
+.n-receipt .n-fine { color: var(--n-dim); }
+
+/* ------------------------------------------------------------ comparison -- */
+.n-cmpwrap { margin-top: 8px; }
+.n-cmp { width: 100%; border-collapse: collapse; font-size: var(--n-small); }
+.n-cmp th, .n-cmp td { text-align: left; vertical-align: top; padding: 15px 12px;
+                       border-bottom: 1px solid var(--n-line); }
+.n-cmp thead th { border-bottom: 2px solid var(--n-line-2); vertical-align: bottom; }
+.n-cmp thead th:not(:first-child) { text-align: center; }
+.n-cmp tbody td { text-align: center; }
+.n-cmp__name { font-weight: 650; font-size: 15px; display: block; }
+.n-cmp__price { display: block; font-size: 23px; font-weight: 650;
+                letter-spacing: -.03em; margin-top: 4px; }
+.n-cmp__sub { display: block; font: 11px/1.4 var(--n-mono); color: var(--n-dim);
+              margin-top: 3px; }
+.n-cmp__group th { background: var(--n-tint); font: 700 11px/1 var(--n-sans);
+                   letter-spacing: .08em; text-transform: uppercase;
+                   color: var(--n-dim); padding: 11px 12px; }
+.n-cmp__row { font-weight: 600; color: var(--n-fg); }
+.n-cmp__why { display: block; font-weight: 400; font-size: var(--n-fine);
+              color: var(--n-dim); line-height: 1.5; margin-top: 4px; }
+.n-yes { color: #1f7a4d; font-weight: 700; }
+.n-no  { color: var(--n-line-2); font-weight: 700; }
+.n-qual { font-size: var(--n-fine); color: var(--n-fg); }
+
+/* ------------------------------------------------------------- audiences -- */
+.n-aud { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.n-aud a { display: flex; flex-direction: column; background: var(--n-panel);
+           border: 1px solid var(--n-line); border-radius: var(--n-r-card);
+           overflow: hidden; }
+.n-aud a:hover { border-color: var(--n-fg); text-decoration: none; }
+.n-aud a[aria-current] { border-color: var(--n-cta);
+                         box-shadow: inset 0 0 0 1px var(--n-cta); }
+.n-aud__art { height: 116px; background: var(--n-tint); overflow: hidden; }
+.n-aud__art img { width: 500%; height: 100%; object-fit: cover; object-position: left top; }
+.n-aud__body { padding: 15px 16px 17px; display: flex; flex-direction: column; gap: 5px; }
+.n-aud b { font-size: 15.5px; }
+.n-aud span { font-size: var(--n-fine); color: var(--n-dim); line-height: 1.45; }
+
+/* ---------------------------------------------------------------- ledger -- */
+.n-ledger { display: grid; gap: 10px; }
+.n-claimrow { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto;
+              gap: 18px; align-items: start; padding: 16px 18px;
+              background: var(--n-panel); border: 1px solid var(--n-line);
+              border-radius: var(--n-r-card); }
+.n-claimrow p { font-size: var(--n-small); line-height: 1.55; }
+.n-claimrow__cites { font-size: var(--n-fine); color: var(--n-dim); margin-top: 8px; }
+.n-claimrow__date { font: 11px/1.4 var(--n-mono); color: var(--n-dim-2);
+                    white-space: nowrap; }
+
+/* -------------------------------------------------------------- reviewer -- */
+.n-reviewer { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 30px;
+              background: var(--n-panel); border: 1px solid var(--n-line);
+              border-radius: var(--n-r-card); padding: 28px; }
+.n-reviewer__face { aspect-ratio: 1; border-radius: var(--n-r-card);
+                    background: var(--n-tint); border: 1px dashed var(--n-line-2);
+                    display: flex; align-items: center; justify-content: center;
+                    text-align: center; padding: 18px; font-size: var(--n-fine);
+                    color: var(--n-dim); }
+.n-reviewer li { list-style: none; padding: 11px 0; font-size: var(--n-small);
+                 border-bottom: 1px solid var(--n-line); line-height: 1.55; }
+.n-reviewer li cite { display: block; font-style: normal; font-size: var(--n-fine);
+                      color: var(--n-dim); margin-top: 4px; }
+
+/* ================================================================ 9. RESPONSIVE
+ * for section 8. Same rule as the rest of the file: one place, not scattered.
+ * ========================================================================== */
+@media (max-width: 1080px) {
+  .n-picker { grid-template-columns: 1fr; }
+  .n-panel { position: static; max-height: none; }
+  .n-aud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .n-picker__grid { grid-template-columns: 1fr; }
+  .n-aud { grid-template-columns: 1fr 1fr; }
+  .n-handoff, .n-receipt, .n-reviewer { grid-template-columns: 1fr; gap: 20px; }
+  .n-panel__stats { grid-template-columns: repeat(2, 1fr); }
+
+  /* The order line stops being three columns: the money goes under the name
+     rather than squeezing a £1,500 into a 70px gutter. */
+  .n-line { grid-template-columns: 40px minmax(0, 1fr); }
+  .n-line__glyph { width: 40px; height: 40px; }
+  .n-line__money { grid-column: 2; text-align: left; margin-top: 10px; }
+  .n-line__money b { font-size: 26px; }
+
+  .n-claimrow { grid-template-columns: 1fr; gap: 10px; }
+
+  /* Five comparison columns cannot be read at 390px whatever is done to them.
+     The first column sticks and the rest scroll, so a reader keeps the row
+     label while moving across — the comparison survives, which is the point
+     of the page. */
+  .n-cmpwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .n-cmp { min-width: 660px; }
+  .n-cmp th:first-child, .n-cmp td:first-child {
+    position: sticky; left: 0; z-index: 2; background: var(--n-page);
+    box-shadow: 1px 0 0 var(--n-line); min-width: 210px; }
+  .n-cmp__group th:first-child { background: var(--n-tint); }
+}
+
+@media print {
+  .n-filters, .n-panel__foot, .n-line__acts, .n-ref button { display: none; }
+  .n-receipt, .n-claimrow, .n-line { break-inside: avoid; }
+  .n-cmp { font-size: 9pt; }
+  .n-cmp thead { display: table-header-group; }
 }

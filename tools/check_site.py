@@ -445,6 +445,42 @@ def check_version_agreement():
             fail(f"{p.relative_to(OUT)}: does not carry the version badge {ver}")
 
 
+def check_every_anchor_a_page_points_at_is_there():
+    """A link to a heading that no longer exists.
+
+    check_links holds the FILE half of every link and has since the beginning; it
+    has never looked at what comes after the #. Nothing was wrong with that until
+    a page started citing individual units on the board by id: the link resolves,
+    the page opens, and the reader lands at the top wondering which of fourteen
+    rows they were sent to. Renaming a heading does the same thing silently.
+
+    The site was clean when this was written, which is the only comfortable moment
+    to add a rule: it costs nothing today and refuses the next one."""
+    pages_by_path = {f.resolve(): f.read_text() for f in OUT.rglob("*.html")}
+    ids = {f: set(re.findall(r'\sid="([^"]+)"', body))
+              | set(re.findall(r'<a[^>]*\sname="([^"]+)"', body))
+           for f, body in pages_by_path.items()}
+    for f, body in pages_by_path.items():
+        rel = str(f.relative_to(OUT.resolve())).replace(os.sep, "/")
+        for href in re.findall(r'href="([^"]*#[^"]+)"', body):
+            if href.startswith(("http://", "https://", "mailto:", "//")):
+                continue
+            path, frag = href.split("#", 1)
+            target = f if not path else (f.parent / path)
+            if target.is_dir():
+                target = target / "index.html"
+            target = target.resolve()
+            # a link to a file that is not there is check_links's to report, and
+            # reporting it twice in two voices helps nobody
+            if target not in ids:
+                continue
+            if frag not in ids[target]:
+                fail(f"{rel}: links to #{frag} on "
+                     f"{str(target.relative_to(OUT.resolve())).replace(os.sep, '/')}, "
+                     "which has no element with that id. The link opens the page and "
+                     "drops the reader at the top of it")
+
+
 def check_links():
     have = set()
     for p in OUT.rglob("*"):
@@ -2859,7 +2895,14 @@ def check_the_brochure_has_not_drifted():
 # AND THE ARTWORK IS THE RE-ENCODE, NOT THE ORIGINAL. The four renders are 7.9MB
 # of PNG upstream and 126KB of JPEG here; a page pointing at the originals would
 # be a twenty-fold regression nobody would notice on a fast connection.
-NEXT_PAGES = ("next/index.html", "next/product/index.html")
+# Every page in the design round, and the subset of them that renders a price or
+# a level name in the served HTML. The journey pages render their money from the
+# order this browser is holding, so there is nothing on them to compare with the
+# offer file — the model island they carry is what gets checked instead.
+NEXT_PAGES = ("next/index.html", "next/product/index.html", "next/policies/index.html",
+              "next/cart/index.html", "next/pay/index.html", "next/paid/index.html")
+NEXT_PRICED_PAGES = ("next/index.html", "next/product/index.html",
+                     "next/policies/index.html")
 
 
 def check_next_is_the_offer_data():
@@ -2881,8 +2924,8 @@ def check_next_is_the_offer_data():
     if missing:
         fail(f"/next/: {missing} not in the build")
         return
-    bodies = {p: (OUT / p).read_text() for p in NEXT_PAGES}
-    text = "\n".join(bodies.values())
+    bodies = {p: (OUT / p).read_text() for p in NEXT_PRICED_PAGES}
+    text = "\n".join((OUT / p).read_text() for p in NEXT_PAGES)
 
     # PER PAGE, NOT OVER THE SET. The first version of this joined both pages and
     # asserted against the join, so a price edited on the homepage alone passed —
@@ -2955,6 +2998,177 @@ def check_next_is_the_offer_data():
         fail("/next/: points at the mirrored originals rather than the re-encoded art")
 
 
+def _next_model(page):
+    """The JSON island a /next/ page carries. Every switch, the picker and the
+    order engine read from this one object, so it is the thing to assert on."""
+    body = (OUT / page).read_text()
+    m = re.search(r'<script type="application/json" id="next-model">(.*?)</script>',
+                  body, re.S)
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return None
+
+
+def check_the_next_journey_is_one_order():
+    """The picker, the order, the hand-off and the page after it.
+
+    THE ONE THING THAT WOULD BE WORST TO GET WRONG is the order record. The store
+    that sells today keeps an order in the browser under one key; /next/ reads and
+    writes THE SAME record so that a buyer who starts on one and finishes on the
+    other has one order rather than two. That is four values — a schema number, a
+    key, and the two prefixes that build a reference and a SKU — and if any of
+    them drifts, the two sides of the round silently disagree about what somebody
+    bought, on the one machine belonging to the one person who used both.
+
+    Everything else below is the same idea applied to the picker: what it shows
+    has to be what the promoted catalogue says, down to the set of shapes."""
+    shop = None
+    for page in ("cart/index.html", "policies/index.html"):
+        body = (OUT / page).read_text()
+        m = re.search(r'<script type="application/json" id="shop-model">(.*?)</script>',
+                      body, re.S)
+        if m:
+            shop = json.loads(m.group(1))
+            break
+    if shop is None:
+        shop = json.loads(re.search(
+            r'<script type="application/json" id="shop-model">(.*?)</script>',
+            (OUT / "cart" / "index.html").read_text(), re.S).group(1))
+
+    models = {}
+    for page in NEXT_PAGES:
+        model = _next_model(page)
+        if model is None:
+            fail(f"{page}: carries no readable #next-model island. Every switch on these "
+                 "pages reads from it and without one the page is a shell")
+            continue
+        models[page] = model
+
+    # ---- one order, not two
+    for page, model in models.items():
+        order = model.get("order")
+        if not order:
+            fail(f"{page}: its model carries no order block, so assets/next.js cannot "
+                 "render a line, a total or a reference on it")
+            continue
+        for ours, theirs, what in [
+            ("key", "storage", "the local-storage key an order is kept under"),
+            ("schema", "schema", "the schema number a stored order is accepted at"),
+            ("sku_prefix", "sku_prefix", "the prefix every SKU is built from"),
+            ("order_prefix", "order_prefix", "the prefix every reference is built from"),
+        ]:
+            if order.get(ours) != shop.get(theirs):
+                fail(f"{page}: the design round uses {ours}={order.get(ours)!r} and the "
+                     f"store that sells today uses {theirs}={shop.get(theirs)!r}. That is "
+                     f"{what}, and two values means two carts: an order built on one side "
+                     "of this round disappears when the buyer crosses to the other")
+
+    # ---- every level names a level the live store has, by id and by code
+    live_levels = {l["id"]: l for l in shop["levels"]}
+    for page, model in models.items():
+        for lvl in model.get("levels", []):
+            got = live_levels.get(lvl.get("cart_id"))
+            if not got:
+                fail(f"{page}: level {lvl.get('id')} says its cart id is "
+                     f"{lvl.get('cart_id')!r}, which is not a level in data/products.yml. "
+                     "An order line keyed on it would be dropped as unreadable")
+                continue
+            if lvl.get("cart_code") != got["code"]:
+                fail(f"{page}: level {lvl.get('id')} builds SKUs with "
+                     f"{lvl.get('cart_code')!r} and the live store builds them with "
+                     f"{got['code']!r} — the same purchase would carry two SKUs")
+            if lvl.get("pence") != got["price"]:
+                fail(f"{page}: level {lvl.get('id')} totals at {lvl.get('pence')} pence and "
+                     f"the live store charges {got['price']} for the same thing")
+
+    # ---- the picker shows the promoted catalogue, and all of it
+    picker = models.get("next/policies/index.html")
+    if picker:
+        cat = json.loads((ROOT / "data" / "abp-catalogue.json").read_text())
+        upstream = {s["slug"] for s in cat["shapes"]}
+        body = (OUT / "next" / "policies" / "index.html").read_text()
+        shown = set(re.findall(r'data-policy="([a-z0-9-]+)"', body))
+        if shown != upstream:
+            fail(f"next/policies/: shows {sorted(shown)} and the promoted catalogue is "
+                 f"{sorted(upstream)}. A picker that quietly drops a shape is a picker "
+                 "that sells the ones somebody remembered to list")
+
+        by_slug = {s["slug"]: s for s in picker.get("shapes", [])}
+        for s in cat["shapes"]:
+            mine = by_slug.get(s["slug"])
+            if not mine:
+                fail(f"next/policies/: {s['slug']} is in the catalogue and not in the model")
+                continue
+            for ours, theirs in [("can", "grant"), ("wanted", "wanted"),
+                                 ("unasked", "excess"), ("unbounded", "unbounded")]:
+                if mine.get(ours) != s["counts"][theirs]:
+                    fail(f"next/policies/: {s['slug']} renders {ours}={mine.get(ours)} and "
+                         f"the catalogue says {theirs}={s['counts'][theirs]}")
+            if mine.get("open") != s["open_questions"]:
+                fail(f"next/policies/: {s['slug']} renders {mine.get('open')} open "
+                     f"questions and the catalogue says {s['open_questions']}")
+            # THE NOTE THAT HAS TO BE THERE EXACTLY WHEN IT IS TRUE. For five of
+            # the fifteen, wanted + not-asked overshoots the grant by one, so the
+            # tiles do not partition it. A reader adds those two numbers up; the
+            # page says which it is before they do, and says nothing on the ten
+            # where they do add up.
+            adds_up = s["counts"]["wanted"] + s["counts"]["excess"] == s["counts"]["grant"]
+            if adds_up and mine.get("sum_note"):
+                fail(f"next/policies/: {s['slug']}'s totals add up and the page carries a "
+                     "note saying they do not")
+            if not adds_up and not mine.get("sum_note"):
+                fail(f"next/policies/: {s['slug']} publishes "
+                     f"{s['counts']['wanted']} wanted and {s['counts']['excess']} not "
+                     f"asked against a grant of {s['counts']['grant']}, which do not "
+                     "partition it, and the page says nothing about that")
+
+        # the evidence state on every shape is one the site has a badge for, and
+        # is the one written down in data/products.yml rather than one derived
+        ev_src = (ROOT / "data" / "products.yml").read_text()
+        block = ev_src.split("shape_evidence:", 1)[1].split("\n\n", 1)[0]
+        written = dict(re.findall(r"^  ([a-z0-9-]+): ([a-z]+)\s*$", block, re.M))
+        for slug, mine in by_slug.items():
+            if not mine.get("pickable"):
+                continue
+            if written.get(slug) != mine.get("evidence"):
+                fail(f"next/policies/: {slug} renders evidence "
+                     f"{mine.get('evidence')!r} and data/products.yml says "
+                     f"{written.get(slug)!r}")
+
+        # the behaviour menu offers the published vocabulary and not one word more
+        caps = json.loads((ROOT / "data" / "capabilities.json").read_text())
+        want = {c["id"] for c in caps["capabilities"]}
+        got = set(re.findall(r'data-filter="behaviour" data-value="([a-z0-9.\-]+)"', body))
+        got.discard("all")
+        if got != want:
+            fail(f"next/policies/: the behaviour menu offers {len(got)} primitives and the "
+                 f"promoted vocabulary has {len(want)}; the difference is "
+                 f"{sorted(got ^ want)}. Inventing a 24th behaviour is how a vocabulary "
+                 "stops being somebody else's")
+        # and it says, in words, that it cannot filter on them
+        if "picker-behaviour-note" not in body:
+            fail("next/policies/: offers a filter by behaviour and carries no note saying "
+                 "the per-shape join is not published. A filter that silently returns "
+                 "everything reads as a filter that found everything")
+
+    # ---- each journey page carries the region its script renders into
+    for page, region, what in [
+        ("next/cart/index.html", 'id="order"', "the order"),
+        ("next/pay/index.html", 'id="checkout"', "what is due"),
+        ("next/paid/index.html", 'id="receipt"', "the receipt"),
+        ("next/policies/index.html", 'id="panel"', "the selected policy"),
+    ]:
+        body = (OUT / page).read_text()
+        if region not in body:
+            fail(f"{page}: has no {region} for assets/next.js to render {what} into")
+        # and something true before the script runs, rather than a blank
+        if "n-empty" not in body and "n-panel__empty" not in body:
+            fail(f"{page}: renders nothing at all without JavaScript. Every other page "
+                 "here is served true and then switched; this one is served blank")
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2962,6 +3176,7 @@ def main():
     for fn in [
         # the estate's usual gate
         check_version_agreement, check_links, check_relative_urls, check_canonical_host,
+        check_every_anchor_a_page_points_at_is_there,
         check_cname, check_markdown_twins, check_licence_stamp, check_shortcodes,
         check_no_unrendered_markdown, check_no_network, check_the_embed_is_what_it_says,
         check_no_credentials_in_output,
@@ -2996,7 +3211,7 @@ def main():
         check_the_concept_critique_shows_what_it_says,
         check_the_design_brief_points_at_pages_that_exist,
         check_the_brochure_has_not_drifted,
-        check_next_is_the_offer_data,
+        check_next_is_the_offer_data, check_the_next_journey_is_one_order,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

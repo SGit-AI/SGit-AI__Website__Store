@@ -1,0 +1,75 @@
+{
+  "_what_this_is": "The five audiences, from data/audiences.yml. Every level is reachable from every audience; what changes is which one leads and what is said about it. A build check refuses display:none on an offer in an audience view.",
+  "audiences": [
+    {
+      "id": "founder",
+      "order": "1",
+      "short": "A founder",
+      "name": "You are a founder",
+      "door": "Shipping with agents, and somebody is going to ask.",
+      "arrives_with": "We are shipping with agents and somebody is going to ask what they can reach.",
+      "what_changes": "Speed and evidence, in that order. A founder needs the document to exist before the conversation that needs it, and needs it to survive being read by somebody more senior than them.",
+      "leads_with": "t2",
+      "quiet": "[t4]",
+      "why": "A vault you hold the keys to is the level that turns a question into an artefact you own. The pack below it is the same material if you would rather not run anything; the correction above it is for when the template's assumptions are not yours.",
+      "evidence": "licence-to-operate",
+      "evidence_why": "One agent, its grant, its mandate and the delta between them, run end to end. It is the shape of the thing you would be holding."
+    },
+    {
+      "id": "investor",
+      "order": "2",
+      "short": "An investor",
+      "name": "You are backing a company",
+      "door": "Backing a company, and need somebody to look.",
+      "arrives_with": "I need somebody to look at what this company's agents can actually do, and I need it to be somebody's work.",
+      "what_changes": "Independence, and repeatability across a portfolio. The point is not that a document exists — it is that somebody who is not the founder wrote it and will stand behind it.",
+      "leads_with": "t4",
+      "quiet": "[t1]",
+      "why": "The two upper levels are the ones where a person does the work and signs it. The levels below are the same document produced without anybody looking at your situation, which is fine for a founder and is not what a review is.",
+      "evidence": "riskmandate-file-security",
+      "evidence_why": "An eleven-step risk-acceptance walk over one evolving register — a worked example of the thing at the top of this ladder, published rather than described."
+    },
+    {
+      "id": "exec",
+      "order": "3",
+      "short": "A C-level exec",
+      "name": "You have to answer for it",
+      "door": "Have to answer for it, to a board.",
+      "arrives_with": "Can I have this in a form my board can read?",
+      "what_changes": "Who the document is written for. The material is the same; what an executive needs is the version that survives a board pack, and the store is explicit that this is being built rather than already sitting there.",
+      "leads_with": "t3",
+      "quiet": "[t1]",
+      "why": "Corrected for your situation is the first level where the assumptions are yours rather than a template's, which is the difference between a document you can put in front of a board and one you have to explain first.",
+      "evidence": "aiuc-1-conformance",
+      "evidence_why": "A standard turned into rows a position can be measured against, with what is attested kept permanently apart from what is evidenced. That separation is the thing a board actually needs."
+    },
+    {
+      "id": "security",
+      "order": "4",
+      "short": "A security professional",
+      "name": "You do this for a living",
+      "door": "Do this for a living, and want the method.",
+      "arrives_with": "I can write the policy. What I want is the structure and the vocabulary, and I want to see how you compute the delta.",
+      "what_changes": "Nothing is explained that you already know. What is worth your time here is the method and the fifteen published templates — and, if you run reviews, the list of people who run the upper two levels.",
+      "leads_with": "t1",
+      "quiet": "[]",
+      "why": "The pack is every file, downloaded, under a commercial licence — which is the level that makes sense when you are going to do the work yourself and put it in front of a client.",
+      "evidence": "risk-graph-explorer",
+      "evidence_why": "The estate, the role risk map, the risk chains, the register and the acceptance gate. If the method is wrong, this is the page where you will see it."
+    },
+    {
+      "id": "governance",
+      "order": "5",
+      "short": "Risk and governance",
+      "name": "You own the register",
+      "door": "Own the register, and need the mapping.",
+      "arrives_with": "Where does this sit against the frameworks we already report on?",
+      "what_changes": "The mapping, and what the store refuses to claim about it. Nothing here is a compliance assessment and nothing claims conformity to any standard — what exists is a document that can be cited a row of.",
+      "leads_with": "t3",
+      "quiet": "[t1]",
+      "why": "A corrected mandate is the version that can go on a register, because the assumptions in it are yours and the delta is computed against them rather than against a starting guess.",
+      "evidence": "regulation-graph",
+      "evidence_why": "A regulation parsed into a graph you can cite a row of, hash-verified to the official source bytes. What a mapping looks like when it is done properly."
+    }
+  ]
+}

@@ -19,7 +19,7 @@ On a phone the headline lands at 334px against the live store's 358, the first r
 One section of the design is not built and it is named. The v3 pages carry a mission line using a word this site bars absolutely on every page carrying a price, and their own notes record that the project lead asked for it. TK-11 is the ruling.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `94fe9dc7fbe888e18087cad453164165eebfb8a7`
 - Reconstructed: no
 
 ---

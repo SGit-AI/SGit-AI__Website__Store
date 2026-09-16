@@ -1490,6 +1490,27 @@ if _orphans:
     raise SystemExit(f"build: data/products.yml carries SKU codes for {', '.join(_orphans)}, "
                      "which are not in the promoted catalogue. Either the shape was withdrawn "
                      "upstream or the code is stale.")
+SHAPE_EVIDENCE = PRODUCTS["shape_evidence"]
+
+# The evidence join, held to the same standard as the SKU codes: every promoted
+# shape has a line, no line names a shape that is not promoted, and the state is
+# one this site already has a badge for. A shape arriving upstream with no line
+# would otherwise render on the picker with whatever default was written last.
+_unevidenced = [s["slug"] for s in ABP["shapes"] if s["slug"] not in SHAPE_EVIDENCE]
+if _unevidenced:
+    raise SystemExit(
+        f"build: {', '.join(_unevidenced)} arrived in the promoted catalogue with no line in "
+        "shape_evidence in data/products.yml. Read what the upstream summary actually claims "
+        "about that shape and write it down: the picker filters on this.")
+_stale_evidence = [s for s in SHAPE_EVIDENCE if s not in {x["slug"] for x in ABP["shapes"]}]
+if _stale_evidence:
+    raise SystemExit(f"build: shape_evidence carries {', '.join(_stale_evidence)}, which is not "
+                     "in the promoted catalogue.")
+_bad_evidence = sorted({v for v in SHAPE_EVIDENCE.values() if v not in STATES})
+if _bad_evidence:
+    raise SystemExit(f"build: shape_evidence uses state(s) {', '.join(_bad_evidence)}, which this "
+                     f"site has no badge for: {', '.join(sorted(STATES))}")
+
 _dupes = [c for c in set(SHAPE_CODES.values()) if list(SHAPE_CODES.values()).count(c) > 1]
 if _dupes:
     raise SystemExit(f"build: duplicate SKU code(s) {', '.join(_dupes)} — two shapes sharing a "
@@ -4901,8 +4922,12 @@ def _unit_row(t):
     st = t["status"]
     rank = {"done": 4, "in-progress": 3, "next": 2, "queued": 3}[st]
     lab = {"done": "done", "in-progress": "in progress", "next": "next", "queued": "queued"}[st]
+    # The row carries its own id so a unit can be linked to from the page that
+    # raised it. Every unit renders exactly once on the board, which the build
+    # already guarantees by counting each one once across the whole thing.
     return (
-        f'<tr class="st-{st}"><td class="u-id"><code>{html.escape(t["id"])}</code></td>'
+        f'<tr class="st-{st}" id="{html.escape(t["id"])}">'
+        f'<td class="u-id"><code>{html.escape(t["id"])}</code></td>'
         f'<td class="u-t"><b>{html.escape(t["title"])}</b>'
         + (f'<span class="u-block">Blocked on {t["blocked"]}</span>' if t.get("blocked") else "")
         + (f'<span class="u-who">yours</span>' if t.get("owner") == "lead" else "")
@@ -5599,6 +5624,11 @@ def _next_offers():
         if state not in STATES:
             raise SystemExit(f"next: offer {o['id']} has state {state!r}, which is not one "
                              f"this site has: {', '.join(sorted(STATES))}")
+        lvl = LEVEL_BY_OFFER.get(o["id"])
+        if not lvl:
+            raise SystemExit(f"next: offer {o['id']} is one of the four levels these pages "
+                             "sell, but no level in data/products.yml names it. The order "
+                             "engine keys on the level id, so there is nothing to add.")
         pay_now = int(o.get("pay_now_pct", 100))
         split = ""
         if pay_now < 100:
@@ -5632,6 +5662,18 @@ def _next_offers():
             "url": f"{NEXT_ROOT}product/?level={o['id']}",
             "included": o.get("next_included") or [],
             "excluded": o.get("next_excluded") or [],
+            # ---- what the order engine needs, joined from data/products.yml.
+            # The cart id and the one-letter code are the LIVE STORE'S: an order
+            # built here has to be the same record shop.js would have built, down
+            # to the SKU, or the two sides of this design round disagree about
+            # what somebody bought.
+            "cart_id": lvl["id"],
+            "cart_code": lvl["code"],
+            "pence": o["price_min"],
+            "pay_now_pct": pay_now,
+            "post_when": lvl["post_when"], "post_does": lvl["post_does"],
+            "post_key": lvl["post_key"], "post_done": lvl["post_done"],
+            "post_check": lvl["post_check"], "post_carries": lvl["post_carries"],
         })
     if len(out) != 4:
         raise SystemExit(f"next: expected four levels, shaped {len(out)}")
@@ -5688,10 +5730,12 @@ def next_html(url, fm, body, model):
     def _navlink(text, href):
         cur = ' aria-current="page"' if href == url else ""
         return f'<a href="{href}"{cur}>{html.escape(text)}</a>'
+    order_cur = ' aria-current="page"' if url == NEXT_CART else ""
+
 
     nav = "".join(_navlink(t, h) for t, h in [
         ("The four levels", NEXT_ROOT + "#levels"),
-        ("Which agent you run", NEXT_ROOT + "#agents"),
+        ("Which agent you run", NEXT_PICKER),
         ("What is inside one", "/what-is-in-one/")])
     return relativise(f"""<!doctype html>
 <html lang="en" data-root="{prefix}">
@@ -5723,7 +5767,7 @@ def next_html(url, fm, body, model):
 <header class="n-header">
   <a class="n-mark" href="{NEXT_ROOT}"><b>sgit</b><span>/ store</span></a>
   <nav class="n-nav" aria-label="Primary">{nav}
-    <a href="{NEXT_ROOT}product/">Your order</a>
+    <a href="{NEXT_CART}"{order_cur}>Your order<span data-order-count></span></a>
   </nav>
 </header>
 
@@ -5749,8 +5793,10 @@ def next_html(url, fm, body, model):
       authorised.</p>
     </div>
     <div><b>Buy</b>
-      <a href="{NEXT_ROOT}#levels">The four levels</a>
-      <a href="{NEXT_ROOT}product/">The product page</a>
+      <a href="{NEXT_PICKER}">Which agent you run</a>
+      <a href="{NEXT_ROOT}product/">The four levels, side by side</a>
+      <a href="{NEXT_CART}">Your order</a>
+      <a href="{NEXT_PAID}">What lands, and when</a>
       <a href="/compare/">Compare what arrives</a>
     </div>
     <div><b>Evidence</b>
@@ -6225,12 +6271,74 @@ def _next_admin(out_dir, ctx_shared, levels):
         f'<th class="num">Weight</th><th>From</th></tr></thead><tbody>{artrows}</tbody>'
         '</table></div>'
 
+        '<h2 id="journey">The journey, wired end to end</h2>'
+        '<p>The v4 handback supplied the picker, the cart, the checkout and the '
+        'post-purchase screens. All four are built here, from the store’s own data:'
+        f' <a href="{NEXT_PICKER}">which agent you run</a>,'
+        f' <a href="{NEXT_CART}">your order</a>,'
+        f' <a href="{NEXT_PAY}">checkout</a>, and'
+        f' <a href="{NEXT_PAID}">what lands afterwards</a>.</p>'
+
+        '<div class="cx-verdict"><b>It is the live store’s order, not a second one.</b>'
+        '<p>The store that sells today keeps an order in the browser under one key. '
+        '/next/ reads and writes <em>that record</em> — same key, same schema, same '
+        'line shape, same reference alphabet, same SKUs — so an order started in this '
+        'design round is still there on the current store, and back. Two carts under two '
+        'keys would be a bug that only appears for the one person who uses both, which is '
+        'the worst kind. A check compares the two models field by field on every '
+        'build.</p></div>'
+
+        '<p>What it does not share is the rendering. <code>assets/shop.js</code> draws the '
+        'current design’s markup, so the order engine in <code>assets/next.js</code> is '
+        'a second renderer over one record rather than a second record.</p>'
+        '<p><b>Still no typing surface.</b> Quantities are buttons, the behaviour filter is '
+        'a <code>&lt;details&gt;</code>, and the picker’s search holds no field at all: '
+        'the query lives on the body element and characters are read off the keyboard, so '
+        'there is no input to submit and nothing to submit it to. The cost is that a phone '
+        'with no hardware keyboard cannot type there, and the dialog says so and points at '
+        'the chips. The handback drew an on-screen keyboard out of buttons to solve the '
+        'same problem; twenty-six buttons to filter fifteen things is worse than the '
+        'fifteen things.</p>'
+
+        '<h2 id="behaviour">The filter that cannot run, and the five grants that do not '
+        'add up</h2>'
+        '<p><b>The picker offers a filter by behaviour and it narrows nothing.</b> The '
+        'capability vocabulary is promoted here — 23 named behaviours in the form '
+        '<code>verb.object.reach</code> — and every shape publishes how many of them '
+        'its grant contains. Which behaviours those are is not published for any shape. So '
+        'the menu lists all 23, choosing one says the join is missing, and the list is left '
+        'unchanged rather than narrowed on a guess. The design team reached the same answer '
+        'independently on the same gap.</p>'
+        '<p><b>The panel’s capability strip is one uncoloured cell per capability, and '
+        'that is the second half of the same finding.</b> The first version painted the '
+        'first <em>wanted</em> cells green and the last <em>unbounded</em> ones amber, which '
+        'reads as a decomposition of the grant. For five of the fifteen shapes it is not '
+        'one: wanted plus not-asked overshoots the grant by exactly one, every time. Ten are '
+        'exact. Off by one on five and exact on ten is a convention somewhere upstream '
+        'rather than noise. The panel says so on those five, says nothing on the ten, and a '
+        'check refuses it either way round.</p>'
+        '<p class="small dim">Both are on the board as '
+        '<a href="/admin/status/#TK-14">TK-14</a> and '
+        '<a href="/admin/status/#TK-13">TK-13</a>, for the team that publishes the '
+        'catalogue.</p>'
+
+        '<h2 id="evidence">Why the evidence state is typed out rather than derived</h2>'
+        '<p>The picker filters on what stands behind a shape’s numbers: measured on the '
+        'thing itself, or read from published sources. The obvious way to get that is to '
+        'look for the word <em>measured</em> in each upstream summary. That marks four '
+        'shapes, and one of the four is <code>chatgpt-web</code>, whose summary calls it '
+        '“the baseline every other shape is measured against” — the shape '
+        'others were measured against, not one that was measured. A regex cannot read a '
+        'preposition. The join is fifteen typed lines in <code>data/products.yml</code>, and '
+        'a check refuses a catalogue shape with no line, a line naming no catalogue shape, '
+        'and a state this site has no badge for.</p>'
+
         '<h2 id="next">What is not there yet</h2>'
-        '<p>Two pages exist: the homepage and the product page. The cart, the checkout, the '
-        'post-purchase page, the policy picker and the comparison are waiting on the next '
-        'design round, and the buying flow is not wired at all. That is the order the work '
-        'was asked for in.</p>'
+        '<p>The comparison table, the five audience views, the generic template, the '
+        'reviewer page and the ledger in this design. The v4 pack supplies all five; they '
+        'are the next piece of work rather than a blocked one.</p>'
         f'<p><b><a href="{NEXT_ROOT}">Open the next store &rarr;</a></b> &middot; '
+        f'<a href="{NEXT_PICKER}">the picker</a> &middot; '
         f'<a href="{NEXT_ROOT}product/">the product page</a> &middot; '
         '<a href="/admin/concepts/">how the direction was chosen</a> &middot; '
         '<a href="/admin/design-brief/">the brief that produced it</a></p>')
@@ -6254,6 +6362,18 @@ def _next_admin(out_dir, ctx_shared, levels):
               f"{len(src['files'])} files hashed.\n")
     for f in src["files"]:
         md.append(f"- `{f['path']}` — {f['what']} — `{f['sha256'][:16]}`")
+    md.append("\n## The journey\n\nThe picker, the order, the checkout and the page "
+              "after it are built from the store's own data. The order they share is the "
+              "live store's order: the same local-storage key, the same schema, the same "
+              "line shape, the same reference alphabet and the same SKUs, so an order "
+              "started in this design round is still there on the store that sells today. "
+              "A check compares the two models field by field.\n")
+    md.append("## The filter that cannot run\n\nThe capability vocabulary has 23 named "
+              "behaviours and every shape publishes how many of them its grant contains. "
+              "Which ones is not published for any shape, so the behaviour filter narrows "
+              "nothing and says why, and the capability strip in the panel is one "
+              "uncoloured cell per capability. For five of the fifteen shapes, wanted plus "
+              "not-asked overshoots the grant by exactly one; ten are exact.\n")
     md.append("\n## Artwork\n")
     for a in art["art"]:
         md.append(f"- `{a['file']}` — {a['label']} — {a['source_size']} "
@@ -6271,14 +6391,564 @@ def _next_admin(out_dir, ctx_shared, levels):
         ' / <a href="/admin/">admin</a> / next', body, "\n".join(md))}
 
 
+# ---------------------------------------------------------------------------
+# THE JOURNEY: the picker, the order, the hand-off and what lands afterwards.
+#
+# Added for the v4 handback, which supplied those four screens. They mirror the
+# routes the store that sells today already uses — /policies/, /cart/, /pay/,
+# /paid/ — because the point of this round is to replace a design, not to rename
+# a shop somebody has already learned.
+#
+# THE ORDER IS THE LIVE STORE'S ORDER. assets/next.js reads and writes the same
+# localStorage record under the same key and in the same shape as assets/shop.js,
+# so an order started on one side of the round is still there on the other. The
+# model below is what makes that possible: the schema number, the key, the two
+# prefixes and the per-level cart id all come off the same data the live store's
+# island is built from.
+NEXT_PICKER = NEXT_ROOT + "policies/"
+NEXT_CART = NEXT_ROOT + "cart/"
+NEXT_PAY = NEXT_ROOT + "pay/"
+NEXT_PAID = NEXT_ROOT + "paid/"
+
+# The families the promoted catalogue uses, given names a reader can scan. The
+# ids are upstream's; only the labels are ours, and a family arriving without one
+# stops the build rather than rendering a heading that says "microsoft".
+NEXT_FAMILIES = {
+    "code": "Coding agents",
+    "chat": "Chat assistants",
+    "desktop": "Desktop apps",
+    "browser": "Browser extensions",
+    "ci": "Pipelines and runners",
+    "service": "Services and scheduled jobs",
+    "google": "Google Workspace",
+    "mail": "Mail",
+    "files": "File stores",
+    "microsoft": "Microsoft 365",
+    "other": "Not on the list",
+}
+_next_unnamed = sorted({s["family"] for s in SHOP_SHAPES} - set(NEXT_FAMILIES))
+if _next_unnamed:
+    raise SystemExit(f"build: policy famil(y/ies) {', '.join(_next_unnamed)} arrived with no "
+                     "label in NEXT_FAMILIES. The picker groups on this and a group heading "
+                     "that reads as an id is a heading nobody wrote.")
+
+LEVEL_BY_OFFER = {l["offer"]: l for l in LEVELS}
+
+
+def _next_claim_chip(claim_id, ctx, url):
+    """A claim chip for a claim this page is making, by id. _next_claim above does
+    the same for an OFFER, whose state is on the offer; this one reads the state
+    off the ledger entry, because these pages cite claims that are not about a
+    product at all."""
+    c = ctx["claims_by_id"].get(claim_id)
+    if not c:
+        raise SystemExit(f"next: a journey page cites claim {claim_id!r}, which is not in "
+                         "data/claims.yml")
+    ctx["claim_uses"].setdefault(claim_id, set()).add(url)
+    return (f'<a class="n-claim n-claim--{c["state"]}" href="/ledger/#claim-{claim_id}">'
+            f'{html.escape(STATES[c["state"]][0])} &#8599;</a>')
+
+
+def _next_sum_note(counts):
+    """One sentence when the four published totals do not partition the grant,
+    and nothing at all when they do. Silence is the honest default here: a note
+    on every shape saying "these add up" trains a reader to skip it."""
+    if not counts:
+        return ""
+    can, wanted, unasked = counts["grant"], counts["wanted"], counts["excess"]
+    if wanted + unasked == can:
+        return ""
+    return (f"{wanted} wanted and {unasked} not asked come to {wanted + unasked}, and the "
+            f"grant is {can}. The two are counted on different bases upstream and this page "
+            "does not reconcile them, so read them as two separate readings of the same "
+            "grant rather than as a split of it.")
+
+
+def _next_shapes():
+    """Every shape the picker picks between, plus the one nobody has profiled.
+
+    Everything is read from the promoted catalogue and from the evidence join in
+    data/products.yml. The one thing this site would like to have and does not is
+    WHICH of the 23 capability primitives each shape was granted: the vocabulary
+    is promoted and the counts are promoted, but the join between them is not
+    published. The behaviour filter therefore reports that rather than guessing,
+    which is the handback's own answer to the same gap and is the right one."""
+    out = []
+    for s in SHOP_SHAPES:
+        counts = s.get("counts") or {}
+        ev = SHAPE_EVIDENCE.get(s["slug"], "")
+        out.append({
+            "slug": s["slug"], "code": s["code"], "title": s["title"],
+            "summary": s["summary"], "glyph": s["glyph"],
+            "family": s["family"], "family_label": NEXT_FAMILIES[s["family"]],
+            "evidence": ev,
+            "evidence_state": ev,
+            "evidence_label": STATES[ev][0] if ev else "",
+            "open": int(s.get("open_questions") or 0),
+            "can": counts.get("grant"), "wanted": counts.get("wanted"),
+            "unasked": counts.get("excess"), "unbounded": counts.get("unbounded"),
+            "levels": s["levels"],
+            # WHETHER THE PUBLISHED TOTALS ADD UP, AND WHAT TO SAY WHEN THEY DO
+            # NOT. Upstream publishes four numbers per shape: the size of the
+            # grant, how much of it was wanted, how much was not asked for, and
+            # how much has nothing real in the way of it. For ten of the fifteen,
+            # wanted + not-asked is exactly the grant. For five it is not, and
+            # those five are the ones whose capability strip was being painted as
+            # though it were. A reader looking at the tiles will do this addition
+            # themselves, so the page does it first and says which it is.
+            "sum_note": _next_sum_note(counts),
+            # A shape with no profile behind it cannot be opened in the panel,
+            # because the panel is nothing but the profile.
+            "pickable": bool(counts) and bool(ev),
+            "search": " ".join([s["slug"], s["title"], s["summary"],
+                                s["family"], NEXT_FAMILIES[s["family"]]]).lower(),
+        })
+    return out
+
+
+def _next_order_model():
+    """What assets/next.js needs to share one order with assets/shop.js."""
+    return {"schema": 1, "key": "sgit.store.order.v1",
+            "sku_prefix": PRODUCTS["meta"]["sku_prefix"],
+            "order_prefix": PRODUCTS["meta"]["order_prefix"]}
+
+
+def _next_policy_card(s, ctx):
+    """One card in the grid. The claim chip is a link to the ledger entry that
+    says where the catalogue came from, because a count with no provenance is the
+    thing every reader on the panel said they discount."""
+    ctx["claim_uses"].setdefault("abp-catalogue-promoted", set()).add(NEXT_PICKER)
+    pct = (100 * s["unbounded"] // s["can"]) if s["can"] else 0
+    # SHORT, BECAUSE THE ROW IS SHORT. "no open questions" is the honest phrase
+    # and it wrapped to two lines beside the glyph and the chip in a 238px card,
+    # which broke both of the things next to it. The full phrase is the title.
+    openq = (f'<span class="n-policy__open" title="{s["open"]} open question'
+             f'{"" if s["open"] == 1 else "s"} about this grant">{s["open"]} open</span>')
+    return (f'<button class="n-policy" type="button" data-policy="{s["slug"]}" '
+            f'aria-pressed="false">'
+            f'<span class="n-policy__top">'
+            f'<span class="n-policy__glyph">{html.escape(s["glyph"])}</span>'
+            f'<span class="n-claim n-claim--{s["evidence_state"]}">'
+            f'{html.escape(s["evidence_label"])}</span>{openq}</span>'
+            f'<h4>{html.escape(s["title"])}</h4>'
+            f'<p>{html.escape(s["summary"])}</p>'
+            f'<span class="n-policy__counts"><b>{s["can"]}</b> it can do'
+            f'<span class="n-bar"><i style="width:{pct}%"></i></span>'
+            f'<b>{s["unbounded"]}</b> unbounded</span>'
+            '</button>')
+
+
+def _next_till(levels, shapes):
+    """The four levels at the foot of the panel. Every one of them adds a line to
+    the order this browser is holding; none of them takes a payment, because no
+    payment link has been issued on any level and the page says so where the
+    money would be taken rather than here."""
+    rows = ""
+    for l in levels:
+        rows += (f'<button type="button" data-add="{l["cart_id"]}" disabled '
+                 f'aria-label="Add ABP {html.escape(l["short_name"])} for the selected policy '
+                 f'to your order">'
+                 f'<b>{html.escape(l["price"])}</b>ABP {html.escape(l["short_name"])}</button>')
+    return ('<div class="n-panel__foot">'
+            '<p class="n-fine n-dim">Buy this policy at</p>'
+            f'<div class="n-panel__ladder">{rows}</div>'
+            f'<p class="n-fine" id="panel-added" hidden><a href="{NEXT_CART}">'
+            f'Added &mdash; open your order {_OUT}</a></p>'
+            '<p class="n-fine n-dim">These add a line to the order held in this browser. '
+            'No payment link has been issued on any level, so nothing here takes money '
+            f'&mdash; <a href="{NEXT_PAY}">what would happen when one is {_OUT}</a></p>'
+            '</div>')
+
+
+def _next_picker(out_dir, ctx_shared, levels, shapes, model):
+    pickable = [s for s in shapes if s["pickable"]]
+    families = []
+    for s in pickable:
+        if s["family"] not in [f[0] for f in families]:
+            families.append((s["family"], s["family_label"],
+                             len([x for x in pickable if x["family"] == s["family"]])))
+    families.sort(key=lambda f: (-f[2], f[1]))
+
+    fam_chips = (f'<button class="n-fchip" type="button" data-filter="family" '
+                 f'data-value="all" aria-pressed="true">Every kind'
+                 f'<span class="n-fchip__n">{len(pickable)}</span></button>')
+    for fid, label, n in families:
+        fam_chips += (f'<button class="n-fchip" type="button" data-filter="family" '
+                      f'data-value="{fid}" aria-pressed="false">{html.escape(label)}'
+                      f'<span class="n-fchip__n">{n}</span></button>')
+
+    ev_chips = ('<button class="n-fchip" type="button" data-filter="evidence" '
+                'data-value="all" aria-pressed="true">Any evidence</button>')
+    for state in ("measured", "docs"):
+        n = len([s for s in pickable if s["evidence"] == state])
+        ev_chips += (f'<button class="n-fchip" type="button" data-filter="evidence" '
+                     f'data-value="{state}" aria-pressed="false">'
+                     f'{html.escape(STATES[state][0].capitalize())}'
+                     f'<span class="n-fchip__n">{n}</span></button>')
+
+    behaviours = "".join(
+        f'<button type="button" data-filter="behaviour" data-value="{c["id"]}" '
+        f'aria-pressed="false" title="{html.escape(c["gloss"])}">{c["id"]}</button>'
+        for c in CAPABILITIES["capabilities"])
+    behaviours = ('<button type="button" data-filter="behaviour" data-value="all" '
+                  'aria-pressed="true">Any behaviour</button>' + behaviours)
+
+    groups = ""
+    for fid, label, n in families:
+        cards = "".join(_next_policy_card(s, ctx_shared)
+                        for s in pickable if s["family"] == fid)
+        groups += (f'<section class="n-group" data-group="{fid}">'
+                   f'<div class="n-group__head"><h3>{html.escape(label)}</h3>'
+                   f'<span data-group-count>&middot; {n}</span></div>'
+                   f'<div class="n-picker__grid">{cards}</div></section>')
+
+    own = next(s for s in shapes if not s["pickable"])
+    own_levels = [l for l in levels if l["cart_id"] in own["levels"]]
+    ctx_shared["claim_uses"].setdefault(own_levels[0]["claim"], set()).add(NEXT_PICKER)
+    groups += ('<section class="n-group"><div class="n-object">'
+               f'<h3>{html.escape(own["title"])}?</h3>'
+               f'<p class="n-dim n-mt">{html.escape(own["summary"])}</p>'
+               f'<p class="n-mt"><a class="n-btn" href="{NEXT_ROOT}product/'
+               f'?level={own_levels[0]["id"]}">'
+               f'Start from {html.escape(own_levels[0]["price"])} {_ARROW}</a></p>'
+               '<p class="n-fine n-dim n-mt">The first two levels deliver a template and for '
+               'a shape nobody has profiled there is not one, so this starts at the level '
+               'where a person does the work. That is a fact about the product rather than '
+               'a packaging decision.</p>'
+               '</div></section>')
+
+    panel = (
+        '<aside class="n-panel" id="panel" aria-label="The selected policy">'
+        '<div class="n-panel__empty" id="panel-empty">'
+        '<p><b>Choose a policy shape</b></p>'
+        '<p class="n-mt">Its grant, what was actually wanted and what has nothing real in '
+        'the way of it open here, with the four levels you can buy it at underneath.</p>'
+        '</div>'
+        '<div class="n-panel__body" id="panel-body" hidden>'
+        '<div class="n-panel__head"><div>'
+        '<h3 id="panel-title"></h3>'
+        '<p class="n-panel__slug" id="panel-slug"></p>'
+        '</div><a class="n-claim" id="panel-claim" '
+        'href="/ledger/#claim-abp-catalogue-promoted"></a></div>'
+        '<p class="n-fine n-dim n-mt" id="panel-summary"></p>'
+        '<div class="n-panel__stats">'
+        '<div class="n-stat"><b id="panel-can"></b><span>it can do</span></div>'
+        '<div class="n-stat"><b id="panel-wanted"></b><span>wanted</span></div>'
+        '<div class="n-stat"><b id="panel-unasked"></b><span>not asked</span></div>'
+        '<div class="n-stat"><b id="panel-unbounded"></b><span>unbounded</span></div>'
+        '</div>'
+        '<p class="n-fine n-dim" id="panel-sums" hidden></p>'
+        '<p class="n-fine n-dim n-mt">One cell per capability in the grant.</p>'
+        '<div class="n-cells" id="panel-cells" role="img" '
+        'aria-label="One cell per capability in this grant"></div>'
+        '<p class="n-fine n-dim">Which of the 23 named behaviours each cell is has not been '
+        'published for any shape, so the cells are counted rather than classified and none '
+        f'of them is coloured in. <a href="{NEXT_ADMIN}#behaviour">Why that matters '
+        f'{_OUT}</a></p>'
+        '</div>'
+        + _next_till(levels, shapes) +
+        '</aside>')
+
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-head"><div class="n-head__text">'
+        f'<p class="n-eyebrow">{len(pickable)} published shapes</p>'
+        '<h1>Which agent do you run?</h1>'
+        '<p class="n-mt">Pick the shape closest to your deployment, read what its grant '
+        'actually contains, then pick the level you want it at. Every number on this page '
+        'is read from the published catalogue and none of it was written here.</p>'
+        '</div>'
+        f'<p class="n-head__aside"><a href="/policies/">The same fifteen on the store that '
+        f'sells today {_OUT}</a></p></div>'
+
+        '<div class="n-filters">'
+        '<div class="n-filters__row">'
+        '<button class="n-fchip" type="button" data-search-open aria-expanded="false">'
+        'Search these shapes <kbd>/</kbd></button>'
+        '<span class="n-filters__row--end">'
+        '<button class="n-fchip" type="button" data-filter="view" data-value="grid" '
+        'aria-pressed="true">Grid</button>'
+        '<button class="n-fchip" type="button" data-filter="view" data-value="list" '
+        'aria-pressed="false">List</button>'
+        '</span></div>'
+        f'<div class="n-filters__row" aria-label="Kind of agent">{fam_chips}</div>'
+        '<div class="n-filters__row" aria-label="What evidences the numbers">'
+        + ev_chips +
+        '<details class="n-behaviour"><summary class="n-fchip">By behaviour</summary>'
+        f'<div class="n-behaviour__menu">{behaviours}</div></details>'
+        '</div></div>'
+
+        '<div class="n-search" id="search" hidden role="status">'
+        '<p class="n-eyebrow">Filtering on</p>'
+        '<div class="n-search__q" id="search-q" data-empty="true"></div>'
+        '<p>Type to narrow the list. <kbd>Esc</kbd> clears it, <kbd>Enter</kbd> closes this. '
+        'There is no field here and there is not one anywhere on this site: what you type '
+        'goes nowhere and is read straight off the keyboard. On a phone, use the chips '
+        'above &mdash; a keyboard drawn out of buttons to filter fifteen things is worse '
+        'than the fifteen things.</p></div>'
+
+        '<div class="n-picker">'
+        '<div>'
+        f'<p class="n-picker__count" id="picker-count" aria-live="polite">'
+        f'{len(pickable)} policy shapes</p>'
+        '<p class="n-note n-note--hold" id="picker-behaviour-note" hidden>'
+        '<b>Nothing is filtered by <code id="picker-behaviour-name"></code>.</b> '
+        'The 23-behaviour vocabulary is published and every shape’s totals are '
+        'published, but which behaviours make up a particular grant is not. The list '
+        'below is unchanged rather than narrowed on a guess.</p>'
+        + groups +
+        '</div>'
+        + panel +
+        '</div></section>')
+
+    md = ["# Which agent do you run?\n",
+          f"{len(pickable)} published policy shapes, promoted from "
+          f"{ABP['source']} on {ABP['retrieved'][:10]}.\n",
+          "| Shape | Kind | Evidence | Can do | Wanted | Not asked | Unbounded | Open |",
+          "|---|---|---|---|---|---|---|---|"]
+    for s in pickable:
+        md.append(f"| {s['title']} | {s['family_label']} | {s['evidence_label']} | "
+                  f"{s['can']} | {s['wanted']} | {s['unasked']} | {s['unbounded']} | "
+                  f"{s['open']} |")
+    md.append("\n## What this page cannot filter on\n\nThe capability vocabulary has 23 "
+              "named behaviours and every shape above carries a count of how many it was "
+              "granted, but the join between the two — which behaviours are in a "
+              "particular grant — is not published. The behaviour filter says so and "
+              "narrows nothing rather than returning a confident wrong answer.\n")
+    md.append("## What it costs\n")
+    md.append("| Level | Price | Deposit | Arrives |")
+    md.append("|---|---|---|---|")
+    for l in levels:
+        md.append(f"| ABP {l['short_name']} | {l['price']} | {_strip(l['split']) or '—'} | "
+                  f"{l['clock']} |")
+
+    return _next_emit(out_dir, NEXT_PICKER, {
+        "title": "Which agent do you run?",
+        "description": (f"{len(pickable)} published Agent Behaviour Policy shapes, what each "
+                        "grant contains, and the four levels you can buy one at."),
+    }, body, model, "\n".join(md))
+
+
+def _next_cart(out_dir, ctx_shared, levels, model):
+    """Your order. The whole of it lives in this browser: there is no account,
+    nothing is sent anywhere, and the reference is generated here."""
+    ctx_shared["claim_uses"].setdefault("checkout-links-not-issued", set()).add(NEXT_CART)
+
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-narrow">'
+        '<p class="n-eyebrow">Your order</p>'
+        '<h1>A clear record of what you chose.</h1>'
+        '<p class="n-lede n-mt">Kept in this browser and nowhere else. No account, no '
+        'email, nothing sent anywhere &mdash; the reference below was generated on this '
+        'page and has never left it.</p>'
+
+        # The server renders the empty state; assets/next.js replaces it with the
+        # order this browser is holding. A reader with no JavaScript sees a page
+        # that is true rather than a page that is blank.
+        '<div class="n-mt-lg" id="order">'
+        '<div class="n-empty"><h2>Your order is empty</h2>'
+        '<p>Choose a policy shape and the level you want it at.</p>'
+        f'<a class="n-btn" href="{NEXT_PICKER}">Pick an agent {_ARROW}</a></div>'
+        '</div>'
+
+        '<div class="n-handoff n-mt-lg">'
+        '<div><h3>What leaves this page</h3>'
+        '<p>The amount and the order reference, when a payment link exists. That is the '
+        'whole of it. No name, no address and no card details are typed here, because '
+        'there is no field on this site to type one into.</p></div>'
+        '<div><h3>What is in this browser</h3>'
+        '<p>The lines above, the quantities and the reference, under one key in local '
+        'storage. Clear your browser data and the order goes with it; open the store on '
+        'another device and it is not there.</p></div>'
+        '</div>'
+
+        '<p class="n-note n-note--hold n-mt-lg"><b>No payment link has been issued on any '
+        'level.</b> An order can be built here in full, and the step that takes money is '
+        'the one that does not exist yet. The next page says exactly what would happen '
+        'and where.</p>'
+        f'<p class="n-mt">{_next_claim_chip("checkout-links-not-issued", ctx_shared, NEXT_CART)}</p>'
+        '</div></section>')
+
+    md = ["# Your order\n",
+          "The order is held in this browser under one local-storage key and is not sent "
+          "anywhere. There is no account and no field to type into.\n",
+          "## What can be ordered\n",
+          "| Level | SKU | Price | Deposit | Arrives |", "|---|---|---|---|---|"]
+    for l in levels:
+        md.append(f"| ABP {l['short_name']} | "
+                  f"`{PRODUCTS['meta']['sku_prefix']}-&lt;shape&gt;-{l['cart_code']}` | "
+                  f"{l['price']} | {_strip(l['split']) or '—'} | {l['clock']} |")
+    md.append("\n## What leaves the page\n\nThe amount and the order reference, when a "
+              "payment link exists. No payment link has been issued on any level.\n")
+    return _next_emit(out_dir, NEXT_CART, {
+        "title": "Your order",
+        "description": ("The order you have built, held in this browser: what you chose, "
+                        "what is due now, what is due on delivery."),
+    }, body, model, "\n".join(md))
+
+
+def _next_pay(out_dir, ctx_shared, levels, model):
+    """The hand-off. The one page on this site where money would change hands, and
+    the one page that has to be exact about what this store never sees."""
+    for cid in ("checkout-links-not-issued", "marketplace-no-customer-payment"):
+        ctx_shared["claim_uses"].setdefault(cid, set()).add(NEXT_PAY)
+
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-narrow">'
+        '<p class="n-eyebrow">Checkout</p>'
+        '<h1>Check what is due, and when.</h1>'
+        '<p class="n-lede n-mt">Your policy and your level stay attached to one order '
+        'reference. That reference and an amount are the only two things that would '
+        'reach a payment provider.</p>'
+
+        '<div class="n-mt-lg" id="checkout">'
+        '<div class="n-empty"><h2>Nothing to check out</h2>'
+        '<p>Your order is empty.</p>'
+        f'<a class="n-btn" href="{NEXT_PICKER}">Pick an agent {_ARROW}</a></div>'
+        '</div>'
+
+        '<div class="n-handoff n-mt-lg">'
+        '<div><h3>What the provider asks for</h3>'
+        '<p>Your name, your email address and your card details, on the provider’s own '
+        'page, under the provider’s own terms. Those fields are theirs and they stay '
+        'on their domain.</p></div>'
+        '<div><h3>What this store never sees</h3>'
+        '<p>All of it. This site has no form, no input and no field anywhere in its '
+        'output, makes no network request from any page that sells anything, and has no '
+        'server to receive one. A build check holds each of those three.</p></div>'
+        '</div>'
+
+        '<p class="n-note n-note--hold n-mt-lg"><b>No payment link has been issued on any '
+        'level.</b> The control above carries that reason instead of a price, and it is a '
+        'disabled control rather than a button that quietly does nothing. The day a link '
+        'is recorded against a level in the store’s own data, that button turns on by '
+        f'itself. <a href="/paying/">The two rails, and why they never meet {_OUT}</a></p>'
+        f'<p class="n-mt">{_next_claim_chip("checkout-links-not-issued", ctx_shared, NEXT_PAY)}</p>'
+        '</div></section>')
+
+    md = ["# Checkout\n",
+          "No payment link has been issued on any level, so nothing can be paid for here. "
+          "What follows is what would happen when one is.\n",
+          "## The hand-off\n",
+          "- **What the provider asks for:** name, email address, card details, on its own "
+          "page and under its own terms.\n"
+          "- **What this store sends:** an amount and an order reference.\n"
+          "- **What this store receives:** nothing. There is no form, no input and no field "
+          "anywhere in this site's output, no network request from any page that sells "
+          "anything, and no server to receive one.\n"]
+    return _next_emit(out_dir, NEXT_PAY, {
+        "title": "Checkout",
+        "description": ("What is due now, what is due on delivery, and exactly which two "
+                        "things would reach a payment provider."),
+    }, body, model, "\n".join(md))
+
+
+def _next_paid(out_dir, ctx_shared, levels, model):
+    """What lands after a payment, for each of the four levels.
+
+    Nothing has been paid for: no payment link has been issued on any level. So
+    this page shows the order THIS BROWSER is holding rather than dressing an
+    example as a purchase, and the four panels below it are what the store's own
+    data says happens next at each level."""
+    for cid in ("post-sale-pages-exist", "receipt-reference-untested"):
+        ctx_shared["claim_uses"].setdefault(cid, set()).add(NEXT_PAID)
+
+    switch = "".join(
+        f'<button class="n-fchip" type="button" data-step="{l["id"]}" '
+        f'aria-pressed="false">ABP {html.escape(l["short_name"])}</button>'
+        for l in levels)
+
+    panels = ""
+    for l in levels:
+        rows = "".join(
+            f'<tr><th>{html.escape(label)}</th><td>{inline(value, ctx_shared)}</td></tr>'
+            for label, value in [
+                ("When", l["post_when"]),
+                ("What you do", l["post_does"]),
+                ("How the key reaches you", l["post_key"]),
+                ("Done means", l["post_done"]),
+                ("How you check", l["post_check"]),
+            ] if value)
+        carries = ", ".join(l["post_carries"]) or "nothing"
+        panels += (
+            f'<div data-step-panel="{l["id"]}" hidden>'
+            f'<h3>ABP {html.escape(l["short_name"])} &mdash; {html.escape(l["clock_full"])}</h3>'
+            f'<table class="n-specs n-mt">{rows}</table>'
+            f'<p class="n-fine n-dim n-mt">The landing page for this level carries: '
+            f'{html.escape(carries)}.</p>'
+            f'<p class="n-mt"><a href="{PAID_ROOT}{l["id"]}/">'
+            f'The live page for this level, with its example vault {_OUT}</a></p>'
+            '</div>')
+
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-narrow">'
+        '<p class="n-eyebrow">After the payment</p>'
+        '<h1>What lands, and when.</h1>'
+        '<p class="n-lede n-mt">This is the page a payment would return to. No payment '
+        'link has been issued on any level, so what it can show is the order this browser '
+        'is holding &mdash; with its real reference, its real SKUs and its real totals '
+        '&mdash; and not a receipt for something nobody bought.</p>'
+
+        '<div class="n-mt-lg" id="receipt">'
+        '<div class="n-empty"><h2>This browser is not holding an order</h2>'
+        '<p>Build one and it appears here, reference and all.</p>'
+        f'<a class="n-btn" href="{NEXT_PICKER}">Pick an agent {_ARROW}</a></div>'
+        '</div>'
+
+        '<h2 class="n-mt-lg">What happens next</h2>'
+        '<p class="n-dim n-mt">Every line below is read from the same file the live '
+        'store’s own post-sale pages are built from.</p>'
+        f'<div class="n-switch">{switch}</div>'
+        f'<div class="n-mt">{panels}</div>'
+
+        '<p class="n-note n-note--hold n-mt-lg"><b>The reference has never been through a '
+        'real sale.</b> It is generated in the browser, it is the same shape the store '
+        'that sells today generates, and no order carrying one has been placed &mdash; so '
+        'nothing has confirmed that a reference read off this page matches a reference on '
+        'a provider’s record.</p>'
+        f'<p class="n-mt">{_next_claim_chip("receipt-reference-untested", ctx_shared, NEXT_PAID)} '
+        f'{_next_claim_chip("post-sale-pages-exist", ctx_shared, NEXT_PAID)}</p>'
+        '</div></section>')
+
+    md = ["# What lands, and when\n",
+          "The page a payment would return to. No payment link has been issued on any "
+          "level, so this page shows the order held in this browser and nothing else.\n"]
+    for l in levels:
+        md.append(f"\n## ABP {l['short_name']} — {l['clock_full']}\n")
+        for label, value in [("When", l["post_when"]), ("What you do", l["post_does"]),
+                             ("How the key reaches you", l["post_key"]),
+                             ("Done means", l["post_done"]),
+                             ("How you check", l["post_check"])]:
+            if value:
+                md.append(f"- **{label}:** {_strip(value)}")
+    md.append("\n## The reference has never been through a real sale\n\nIt is generated in "
+              "the browser and nothing has confirmed that one read off this page matches a "
+              "reference on a payment provider's record.\n")
+    return _next_emit(out_dir, NEXT_PAID, {
+        "title": "What lands, and when",
+        "description": ("The page a payment would return to: your order, your reference, "
+                        "and what the store does next at each of the four levels."),
+    }, body, model, "\n".join(md))
+
+
 def next_pages(out_dir, ctx_shared):
     levels = _next_offers()
     auds = _next_audiences()
-    model = {"levels": levels, "audiences": auds,
+    shapes = _next_shapes()
+    model = {"levels": levels, "audiences": auds, "shapes": shapes,
+             "order": _next_order_model(),
+             "picker_url": NEXT_PICKER, "checkout_url": NEXT_PAY,
              "default_level": NEXT_LEAD, "default_audience": auds[0]["id"]}
     pages = {}
     pages[NEXT_ROOT] = _next_home(out_dir, ctx_shared, levels, auds, model)
     pages[NEXT_ROOT + "product/"] = _next_product(out_dir, ctx_shared, levels, auds, model)
+    pages[NEXT_PICKER] = _next_picker(out_dir, ctx_shared, levels, shapes, model)
+    pages[NEXT_CART] = _next_cart(out_dir, ctx_shared, levels, model)
+    pages[NEXT_PAY] = _next_pay(out_dir, ctx_shared, levels, model)
+    pages[NEXT_PAID] = _next_paid(out_dir, ctx_shared, levels, model)
     pages.update(_next_admin(out_dir, ctx_shared, levels))
     return pages
 

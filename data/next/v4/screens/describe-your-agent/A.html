@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Describe your agent · A · sgit / store V4</title>
+    <meta name="description" content="Agent Behaviour Policies from RiskMandate. Marketplace V4 design handback.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23142c42'/%3E%3Ctext x='6' y='24' font-family='Arial' font-weight='bold' font-size='25' fill='%23f5ae42'%3Es%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../../tokens.css">
+    <link rel="stylesheet" href="../../assets/system.css">
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="../../index.html">sgit<span> / store</span>
+      </a>
+      <nav aria-label="Main">
+        <a href="../../screens/pricing/A.html">Levels</a>
+        <a href="../../screens/picker/C.html">Which agent</a>
+        <a href="../../screens/generic/A.html">What is inside one</a>
+        <a href="../../screens/cart/A.html">Your order <span data-cart-count>
+          </span>
+        </a>
+      </nav>
+      <a class="version" href="../../index.html#review">V4 · brief 2</a>
+    </header>
+    <aside class="disclosure" aria-label="Disclosure">Produced with model assistance. <span class="disc-more">Human review: [PLACEHOLDER — reviewer approval]. Nothing here is a compliance assessment.</span>
+      <a href="../../screens/generic/A.html#disclosures">Read the disclosure</a>
+    </aside>
+    <main id="main">
+      <section class="section" data-describe="A">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">DESCRIBE YOUR AGENT</p>
+            <h1>Make its reach visible.</h1>
+            <p class=lede>Choose what your agent can do. Export a description to use in a model session.</p>
+          </div>
+        </div>
+        <div class="agent-canvas">
+          <div class="capability-bank">
+            <section>
+              <h3>Files And Directories</h3>
+              <button class="button " data-capability="read.file.project" draggable="true" aria-pressed="false">Read the project it is working on<code>read.file.project</code>
+              </button>
+              <button class="button " data-capability="write.file.project" draggable="true" aria-pressed="false">Change the project it is working on<code>write.file.project</code>
+              </button>
+              <button class="button " data-capability="read.file.host" draggable="true" aria-pressed="false">Read any file the account can reach<code>read.file.host</code>
+              </button>
+              <button class="button " data-capability="write.file.host" draggable="true" aria-pressed="false">Change any file the account can reach<code>write.file.host</code>
+              </button>
+              <button class="button " data-capability="delete.file.host" draggable="true" aria-pressed="false">Delete files anywhere the account can reach<code>delete.file.host</code>
+              </button>
+              <button class="button " data-capability="read.record.history" draggable="true" aria-pressed="false">Read a retained record: shell history, past sessions<code>read.record.history</code>
+              </button>
+            </section>
+            <section>
+              <h3>Programs And Their Execution</h3>
+              <button class="button " data-capability="execute.process.host" draggable="true" aria-pressed="false">Run programs as the account<code>execute.process.host</code>
+              </button>
+              <button class="button " data-capability="execute.process.self" draggable="true" aria-pressed="false">Run programs inside its own sandbox only<code>execute.process.self</code>
+              </button>
+            </section>
+            <section>
+              <h3>Endpoints And Hosts</h3>
+              <button class="button " data-capability="send.endpoint.allowed" draggable="true" aria-pressed="false">Reach a permitted list of hosts<code>send.endpoint.allowed</code>
+              </button>
+              <button class="button " data-capability="send.endpoint.world" draggable="true" aria-pressed="false">Reach any host on the internet<code>send.endpoint.world</code>
+              </button>
+            </section>
+            <section>
+              <h3>Credentials And Who The Agent Can Act As</h3>
+              <button class="button " data-capability="read.credential.host" draggable="true" aria-pressed="false">Read credentials stored where it runs<code>read.credential.host</code>
+              </button>
+              <button class="button " data-capability="authenticate-as.credential.tenant" draggable="true" aria-pressed="false">Act in accounts with the credentials it holds<code>authenticate-as.credential.tenant</code>
+              </button>
+              <button class="button " data-capability="grant.credential.self" draggable="true" aria-pressed="false">Change its own permission settings<code>grant.credential.self</code>
+              </button>
+            </section>
+            <section>
+              <h3>Messages To People</h3>
+              <button class="button " data-capability="send.message.world" draggable="true" aria-pressed="false">Send a message to anyone<code>send.message.world</code>
+              </button>
+              <button class="button " data-capability="read.message.tenant" draggable="true" aria-pressed="false">Read mail or chat it is connected to<code>read.message.tenant</code>
+              </button>
+            </section>
+            <section>
+              <h3>Repositories And What Lands In Them</h3>
+              <button class="button " data-capability="write.repository.project" draggable="true" aria-pressed="false">Commit to the repository it was pointed at<code>write.repository.project</code>
+              </button>
+              <button class="button " data-capability="write.repository.tenant" draggable="true" aria-pressed="false">Push to a code host (any branch it can reach)<code>write.repository.tenant</code>
+              </button>
+              <button class="button " data-capability="authenticate-as.credential.signing" draggable="true" aria-pressed="false">Sign commits with the key it holds<code>authenticate-as.credential.signing</code>
+              </button>
+              <button class="button " data-capability="create.record.world" draggable="true" aria-pressed="false">Publish packages, images or pages under the name it holds<code>create.record.world</code>
+              </button>
+            </section>
+            <section>
+              <h3>Budgets And Spend</h3>
+              <button class="button " data-capability="write.budget.tenant" draggable="true" aria-pressed="false">Spend money or tokens against an account it holds<code>write.budget.tenant</code>
+              </button>
+            </section>
+            <section>
+              <h3>Things That Outlive The Turn</h3>
+              <button class="button " data-capability="create.schedule.host" draggable="true" aria-pressed="false">Create something that outlives the turn where it runs (a cron, a service)<code>create.schedule.host</code>
+              </button>
+              <button class="button " data-capability="create.schedule.tenant" draggable="true" aria-pressed="false">Create something that outlives the session, on the platform (a routine, a scheduled trigger, a new session)<code>create.schedule.tenant</code>
+              </button>
+            </section>
+            <section>
+              <h3>What A Browser Extension Or Automation Can See And Do In Your Browser</h3>
+              <button class="button " data-capability="read.record.browsing" draggable="true" aria-pressed="false">Read every page you visit<code>read.record.browsing</code>
+              </button>
+            </section>
+          </div>
+          <div class="agent-centre" data-drop-agent>
+            <span class="abp-mark">ABP</span>
+            <h2>Your agent</h2>
+            <p>Click a capability or drag it here.</p>
+            <div data-selected-caps>
+            </div>
+          </div>
+        </div>
+        <section class="description-output">
+          <h2>Your plain-words description</h2>
+          <p data-description>Select capabilities to build a description.</p>
+          <p class="meta">Self-described; not measured.</p>
+          <div class="button-row">
+            <button class="button primary" data-export-agent>Export for a model session</button>
+            <button class="button " data-clear-agent>Clear selection</button>
+          </div>
+        </section>
+      </section>
+    </main>
+    <footer>
+      <div>
+        <a class="brand" href="../../index.html">sgit<span> / store</span>
+        </a>
+        <p>Agent Behaviour Policies by RiskMandate.<br>One agent. One deployment.</p>
+      </div>
+      <nav aria-label="Evidence">
+        <a href="../../screens/ledger/A.html">Evidence ledger</a>
+        <a href="../../screens/generic/A.html#disclosures">Disclosures &amp; boundary</a>
+        <a href="../../screens/product/A.html#reviews">Reviews</a>
+        <a href="../../index.html#review">V4 release &amp; handback</a>
+      </nav>
+      <div>
+        <a href="../../screens/reviewer/A.html">Who does the work</a>
+        <p>Public material: CC BY.<br>Paid levels: commercial licence.</p>
+        <a href="../../components/index.html">Component sheet</a>
+      </div>
+    </footer>
+    <div class="toast" role="status" aria-live="polite">
+    </div>
+    <script src="../../assets/data.js">
+    </script>
+    <script src="../../assets/app.js">
+    </script>
+  </body>
+</html>

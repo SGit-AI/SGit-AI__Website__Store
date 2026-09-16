@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Policy picker · C · sgit / store V4</title>
+    <meta name="description" content="Agent Behaviour Policies from RiskMandate. Marketplace V4 design handback.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23142c42'/%3E%3Ctext x='6' y='24' font-family='Arial' font-weight='bold' font-size='25' fill='%23f5ae42'%3Es%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../../tokens.css">
+    <link rel="stylesheet" href="../../assets/system.css">
+  </head>
+  <body class="picker-C">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="../../index.html">sgit<span> / store</span>
+      </a>
+      <nav aria-label="Main">
+        <a href="../../screens/pricing/A.html">Levels</a>
+        <a href="../../screens/picker/C.html">Which agent</a>
+        <a href="../../screens/generic/A.html">What is inside one</a>
+        <a href="../../screens/cart/A.html">Your order <span data-cart-count>
+          </span>
+        </a>
+      </nav>
+      <a class="version" href="../../index.html#review">V4 · brief 2</a>
+    </header>
+    <aside class="disclosure" aria-label="Disclosure">Produced with model assistance. <span class="disc-more">Human review: [PLACEHOLDER — reviewer approval]. Nothing here is a compliance assessment.</span>
+      <a href="../../screens/generic/A.html#disclosures">Read the disclosure</a>
+    </aside>
+    <main id="main">
+      <section class="section picker-section" data-picker="C">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">FIFTEEN PUBLISHED SHAPES</p>
+            <h1>Which agent do you run?</h1>
+            <p class=lede>Choose a policy shape, inspect the evidence, then choose a level.</p>
+          </div>
+        </div>
+        <div class="picker-filter-bar">
+          <div class="button-row">
+            <button class="button " data-search-open>Search policies <kbd>/</kbd>
+            </button>
+            <button class="button " data-view="grid" aria-pressed="true">Grid</button>
+            <button class="button " data-view="list" aria-pressed="false">List</button>
+          </div>
+          <div class="filter-row" aria-label="Categories">
+            <button class="button " data-category="all" aria-pressed="true">All · 15</button>
+            <button class="button " data-category="code" aria-pressed="false">Coding agents</button>
+            <button class="button " data-category="chat" aria-pressed="false">Chat assistants</button>
+            <button class="button " data-category="automation" aria-pressed="false">Automation & CI</button>
+            <button class="button " data-category="connectors" aria-pressed="false">Mail & files connectors</button>
+          </div>
+          <div class="filter-row" aria-label="Evidence state">
+            <button class="button " data-state="all" aria-pressed="true">Any evidence</button>
+            <button class="button " data-state="measured" aria-pressed="false">Measured</button>
+            <button class="button " data-state="docs" aria-pressed="false">Documented</button>
+            <details class="behaviour">
+              <summary>By behaviour</summary>
+              <div class="behaviour-options">
+                <button class="button " data-behaviour="read.file.project">read.file.project</button>
+                <button class="button " data-behaviour="write.file.project">write.file.project</button>
+                <button class="button " data-behaviour="read.file.host">read.file.host</button>
+                <button class="button " data-behaviour="write.file.host">write.file.host</button>
+                <button class="button " data-behaviour="delete.file.host">delete.file.host</button>
+                <button class="button " data-behaviour="execute.process.host">execute.process.host</button>
+                <button class="button " data-behaviour="execute.process.self">execute.process.self</button>
+                <button class="button " data-behaviour="send.endpoint.allowed">send.endpoint.allowed</button>
+                <button class="button " data-behaviour="send.endpoint.world">send.endpoint.world</button>
+                <button class="button " data-behaviour="read.credential.host">read.credential.host</button>
+                <button class="button " data-behaviour="authenticate-as.credential.tenant">authenticate-as.credential.tenant</button>
+                <button class="button " data-behaviour="grant.credential.self">grant.credential.self</button>
+                <button class="button " data-behaviour="send.message.world">send.message.world</button>
+                <button class="button " data-behaviour="read.message.tenant">read.message.tenant</button>
+                <button class="button " data-behaviour="write.repository.project">write.repository.project</button>
+                <button class="button " data-behaviour="write.repository.tenant">write.repository.tenant</button>
+                <button class="button " data-behaviour="authenticate-as.credential.signing">authenticate-as.credential.signing</button>
+                <button class="button " data-behaviour="create.record.world">create.record.world</button>
+                <button class="button " data-behaviour="write.budget.tenant">write.budget.tenant</button>
+                <button class="button " data-behaviour="create.schedule.host">create.schedule.host</button>
+                <button class="button " data-behaviour="read.record.history">read.record.history</button>
+                <button class="button " data-behaviour="create.schedule.tenant">create.schedule.tenant</button>
+                <button class="button " data-behaviour="read.record.browsing">read.record.browsing</button>
+              </div>
+            </details>
+          </div>
+          <div class="active-query" aria-live="polite">
+          </div>
+        </div>
+        <div class="picker-layout">
+          <div>
+            <p class="result-count" aria-live="polite">15 policy shapes</p>
+            <div class="policy-results" data-policy-results>
+              <article class="policy-card  " data-slug="claude-code-web">
+                <div class="policy-top">
+                  <span class="glyph">CC</span>
+                  <a class="claim measured" href="../../screens/ledger/A.html#claude-code-web">measured ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>Claude Code on the web</h3>
+                <p class="clamp">A managed, ephemeral container with one repository attached and an egress proxy above it. The shape this site is maintained from; 13 of 20 rows measured on the thing itself.</p>
+                <div class="countline">
+                  <strong>15 it can do</strong>
+                  <span>7 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="7 of 15 capabilities unbounded">
+                  <span style="--portion:46.666666666666664%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="claude-code-web">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="claude-code-cli">
+                <div class="policy-top">
+                  <span class="glyph">CC</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#claude-code-cli">read, not run ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>Claude Code on your machine</h3>
+                <p class="clamp">The coding agent on a developer&#x27;s own machine with confirmation prompts enabled. Read this one beside the confirmations-off shape: one setting moves one barrier and not one number changes.</p>
+                <div class="countline">
+                  <strong>16 it can do</strong>
+                  <span>12 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="12 of 16 capabilities unbounded">
+                  <span style="--portion:75.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="claude-code-cli">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="claude-code-cli-confirmations-off">
+                <div class="policy-top">
+                  <span class="glyph">CC</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#claude-code-cli-confirmations-off">read, not run ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>Claude Code, confirmations off</h3>
+                <p class="clamp">The same agent, the same machine, the same account, with the confirmation prompt switched off. The prompt was the only thing between an authorised capability and the whole machine, and it was a switch the agent&#x27;s account could flip.</p>
+                <div class="countline">
+                  <strong>16 it can do</strong>
+                  <span>12 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="12 of 16 capabilities unbounded">
+                  <span style="--portion:75.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="claude-code-cli-confirmations-off">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="claude-desktop">
+                <div class="policy-top">
+                  <span class="glyph">CD</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#claude-desktop">read, not run ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>Claude Desktop</h3>
+                <p class="clamp">The desktop app with local tools on: files, processes and the network of the machine it sits on. Ten capabilities, three wanted, eight with nothing real in the way.</p>
+                <div class="countline">
+                  <strong>10 it can do</strong>
+                  <span>8 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="8 of 10 capabilities unbounded">
+                  <span style="--portion:80.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="claude-desktop">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="claude-web-connectors">
+                <div class="policy-top">
+                  <span class="glyph">CW</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#claude-web-connectors">read, not run ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>Claude in the browser, connectors on</h3>
+                <p class="clamp">Chat with connectors enabled: the tenant&#x27;s accounts are in reach through whatever was connected. The two excess rows here both sit behind a boundary, which is the exception in this directory.</p>
+                <div class="countline">
+                  <strong>5 it can do</strong>
+                  <span>0 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="0 of 5 capabilities unbounded">
+                  <span style="--portion:0.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="claude-web-connectors">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="chatgpt-web">
+                <div class="policy-top">
+                  <span class="glyph">GP</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#chatgpt-web">read, not run ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>ChatGPT in the browser</h3>
+                <p class="clamp">The smallest grant in the set: one capability, one wanted, no excess. The baseline every other shape is measured against, and the proof that a template can be empty and still be right.</p>
+                <div class="countline">
+                  <strong>1 it can do</strong>
+                  <span>0 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="0 of 1 capabilities unbounded">
+                  <span style="--portion:0.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="chatgpt-web">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="browser-extension">
+                <div class="policy-top">
+                  <span class="glyph">EX</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#browser-extension">read, not run ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>A browser extension</h3>
+                <p class="clamp">Other people&#x27;s data, and the mandate nobody wrote down. Three capabilities, all three irreversible; the shortest policy in the directory and not the mildest.</p>
+                <div class="countline">
+                  <strong>3 it can do</strong>
+                  <span>2 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="2 of 3 capabilities unbounded">
+                  <span style="--portion:66.66666666666667%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="browser-extension">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="github-actions">
+                <div class="policy-top">
+                  <span class="glyph">GA</span>
+                  <a class="claim measured" href="../../screens/ledger/A.html#github-actions">measured ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>GitHub Actions</h3>
+                <p class="clamp">A hosted runner under a service account: persistence, and reach beyond the turn. Eight of eight rows measured, the only fully measured shape besides the web container.</p>
+                <div class="countline">
+                  <strong>8 it can do</strong>
+                  <span>3 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="3 of 8 capabilities unbounded">
+                  <span style="--portion:37.5%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="github-actions">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="scheduled-job">
+                <div class="policy-top">
+                  <span class="glyph">SJ</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#scheduled-job">read, not run ↗</a>
+                  <span class="open-count">0 open</span>
+                </div>
+                <h3>A scheduled job</h3>
+                <p class="clamp">A job that outlives the person who made it, running as a service account nobody logs in as. Seven capabilities, four wanted, four with nothing in the way.</p>
+                <div class="countline">
+                  <strong>7 it can do</strong>
+                  <span>4 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="4 of 7 capabilities unbounded">
+                  <span style="--portion:57.142857142857146%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="scheduled-job">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="google-workspace-mcp">
+                <div class="policy-top">
+                  <span class="glyph">G</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#google-workspace-mcp">read, not run ↗</a>
+                  <span class="open-count">4 open</span>
+                </div>
+                <h3>Google Workspace MCP servers</h3>
+                <p class="clamp">Gmail, Drive, Docs, Sheets, Slides, Calendar and Chat, one server each. The page advertises drafting mail and scheduling meetings; the scopes it asks for send mail and cannot touch a calendar.</p>
+                <div class="countline">
+                  <strong>6 it can do</strong>
+                  <span>1 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="1 of 6 capabilities unbounded">
+                  <span style="--portion:16.666666666666668%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="google-workspace-mcp">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="gmail-readonly">
+                <div class="policy-top">
+                  <span class="glyph">M</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#gmail-readonly">read, not run ↗</a>
+                  <span class="open-count">3 open</span>
+                </div>
+                <h3>Gmail, read-only scope</h3>
+                <p class="clamp">The narrowest scope that reads one message reads every message. Lab 03 asked the model site for this shape first; here it is, read from Google&#x27;s scope page.</p>
+                <div class="countline">
+                  <strong>4 it can do</strong>
+                  <span>2 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="2 of 4 capabilities unbounded">
+                  <span style="--portion:50.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="gmail-readonly">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="google-drive-readonly">
+                <div class="policy-top">
+                  <span class="glyph">D</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#google-drive-readonly">read, not run ↗</a>
+                  <span class="open-count">3 open</span>
+                </div>
+                <h3>Google Drive, read-only scope</h3>
+                <p class="clamp">The default corpus is &quot;files owned by or shared to the user&quot;: everything anybody ever shared, on day one, without anyone choosing it.</p>
+                <div class="countline">
+                  <strong>3 it can do</strong>
+                  <span>1 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="1 of 3 capabilities unbounded">
+                  <span style="--portion:33.333333333333336%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="google-drive-readonly">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="claude-m365-connector">
+                <div class="policy-top">
+                  <span class="glyph">MS</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#claude-m365-connector">read, not run ↗</a>
+                  <span class="open-count">4 open</span>
+                </div>
+                <h3>Microsoft 365 connector (Claude)</h3>
+                <p class="clamp">Delegated permissions, consented once by a Global Administrator. Shared mailboxes are in scope; site-specific narrowing is unsupported because the search is tenant-wide; and the page that says &quot;read-only access&quot; also lists the tools that send mail as the user.</p>
+                <div class="countline">
+                  <strong>5 it can do</strong>
+                  <span>1 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="1 of 5 capabilities unbounded">
+                  <span style="--portion:20.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="claude-m365-connector">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="dropbox-mcp">
+                <div class="policy-top">
+                  <span class="glyph">Db</span>
+                  <a class="claim docs" href="../../screens/ledger/A.html#dropbox-mcp">read, not run ↗</a>
+                  <span class="open-count">4 open</span>
+                </div>
+                <h3>Dropbox MCP server</h3>
+                <p class="clamp">Eight scopes, two of them write and two of them sharing, and no folder-scoped variant. It reads, creates, moves, deletes and makes shared links; the page says files are not deleted permanently and that recovery depends on your plan.</p>
+                <div class="countline">
+                  <strong>5 it can do</strong>
+                  <span>0 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="0 of 5 capabilities unbounded">
+                  <span style="--portion:0.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="dropbox-mcp">Open the behaviour policy →</button>
+              </article>
+              <article class="policy-card  " data-slug="n8n-owner-api-key">
+                <div class="policy-top">
+                  <span class="glyph">n8n</span>
+                  <a class="claim measured" href="../../screens/ledger/A.html#n8n-owner-api-key">measured ↗</a>
+                  <span class="open-count">4 open</span>
+                </div>
+                <h3>n8n, owner API key</h3>
+                <p class="clamp">The first grant here measured on a live instance, by an early beta user&#x27;s agent: full control of every automation, an outbound node with no restriction on target, every account visible, and credential metadata open through one door and shut through another.</p>
+                <div class="countline">
+                  <strong>8 it can do</strong>
+                  <span>4 unbounded</span>
+                </div>
+                <div class="proportion" role="img" aria-label="4 of 8 capabilities unbounded">
+                  <span style="--portion:50.0%">
+                  </span>
+                </div>
+                <small>Scenario detail: [PLACEHOLDER]</small>
+                <button class="button " data-policy="n8n-owner-api-key">Open the behaviour policy →</button>
+              </article>
+            </div>
+            <div class="callout ruling">
+              <h3>Something not on this list?</h3>
+              <p>A mandate corrected for your situation, from £500.</p>
+              <a class="button primary" href="../../screens/product/A.html?level=t3&policy=custom" >Choose a tailored policy →</a>
+              <a class="claim person" href="../../screens/ledger/A.html#t3">delivered by a person ↗</a>
+            </div>
+          </div>
+          <aside class="policy-panel" aria-label="Selected behaviour policy">
+            <div class="panel-top">
+              <button class="panel-close" aria-label="Close policy" data-panel-close>×</button>
+              <span class="glyph" data-panel-glyph>CC</span>
+              <h2 data-panel-title>Claude Code on the web</h2>
+              <code data-panel-path>claude-code-web/</code>
+              <p class="meta">Grant date: [PLACEHOLDER]<br>Source snapshot: 15 September 2026</p>
+              <div data-panel-chip>
+                <a class="claim measured" href="../../screens/ledger/A.html#claude-code-web">measured ↗</a>
+              </div>
+            </div>
+            <div class="panel-body">
+              <p data-panel-summary>A managed, ephemeral container with one repository attached and an egress proxy above it. The shape this site is maintained from; 13 of 20 rows measured on the thing itself.</p>
+              <h3>Scenario</h3>
+              <p>Changes the mandate, never the grant.</p>
+              <div class="scenario-buttons">
+                <button class="button " data-scenario="normal" aria-pressed="true">Normal use</button>
+                <button class="button " data-scenario="advanced" aria-pressed="false">Advanced</button>
+              </div>
+              <div class="scenario-tile" data-scenario-copy>
+                <strong>Published starting mandate</strong>
+                <p>
+                  <span data-wanted>6</span> wanted · <span data-unbounded>7</span> unbounded<br>Shortfall: [PLACEHOLDER]</p>
+              </div>
+              <div class="stat-grid" data-stats>
+                <div>
+                  <strong>15</strong>
+                  <span>it can do</span>
+                </div>
+                <div>
+                  <strong>6</strong>
+                  <span>wanted</span>
+                </div>
+                <div>
+                  <strong>9</strong>
+                  <span>not asked</span>
+                </div>
+                <div>
+                  <strong>7</strong>
+                  <span>unbounded</span>
+                </div>
+                <div>
+                  <strong>[—]</strong>
+                  <span>shortfall</span>
+                </div>
+              </div>
+              <h3>One cell per capability</h3>
+              <div class="capability-bar" data-capability-bar>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+                <i aria-hidden="true">
+                </i>
+              </div>
+              <p class="meta">Outlined = capability counted; classification not supplied. [PLACEHOLDER: per-capability mapping]</p>
+              <h3>What this agent could do to you</h3>
+              <details open>
+                <summary>Not asked for, nothing stops it</summary>
+                <div class="placeholder">[PLACEHOLDER]<span>Side-effects and their capability ids from the selected vault.</span>
+                </div>
+              </details>
+              <details>
+                <summary>Told not to, only told</summary>
+                <div class="placeholder">[PLACEHOLDER]<span>Instruction-only barriers from the selected scenario.</span>
+                </div>
+              </details>
+              <div class="callout caveat">
+                <strong>Lethal trifecta</strong>
+                <p>[PLACEHOLDER] Per-policy evidence for private data, untrusted content and external communication.</p>
+              </div>
+              <h3>The files you hand the agent</h3>
+              <div class="file-row">
+                <code>AGENTS.md</code>
+                <span>Guidance</span>
+              </div>
+              <div class="file-row">
+                <code>SKILL.md</code>
+                <span>Method</span>
+              </div>
+              <a class="button " href="../../screens/post-purchase/A.html?example=1" >Open the example vault</a>
+            </div>
+            <div class="panel-dock">
+              <button class="button primary" data-toggle-till>Buy this policy →</button>
+              <div class="dock-ladder" hidden>
+                <div class="compact-ladder">
+                  <a href="../../screens/product/A.html?level=t1&policy=claude-code-web" data-level-link="t1">
+                    <span>01</span>
+                    <strong>£10</strong>
+                  </a>
+                  <a href="../../screens/product/A.html?level=t2&policy=claude-code-web" data-level-link="t2">
+                    <span>02</span>
+                    <strong>£50</strong>
+                  </a>
+                  <a href="../../screens/product/A.html?level=t3&policy=claude-code-web" data-level-link="t3">
+                    <span>03</span>
+                    <strong>£500</strong>
+                  </a>
+                  <a href="../../screens/product/A.html?level=t4&policy=claude-code-web" data-level-link="t4">
+                    <span>04</span>
+                    <strong>£1,500</strong>
+                  </a>
+                </div>
+                <p>Levels 03/04: a fifth now, the rest on delivery.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div>
+        <a class="brand" href="../../index.html">sgit<span> / store</span>
+        </a>
+        <p>Agent Behaviour Policies by RiskMandate.<br>One agent. One deployment.</p>
+      </div>
+      <nav aria-label="Evidence">
+        <a href="../../screens/ledger/A.html">Evidence ledger</a>
+        <a href="../../screens/generic/A.html#disclosures">Disclosures &amp; boundary</a>
+        <a href="../../screens/product/A.html#reviews">Reviews</a>
+        <a href="../../index.html#review">V4 release &amp; handback</a>
+      </nav>
+      <div>
+        <a href="../../screens/reviewer/A.html">Who does the work</a>
+        <p>Public material: CC BY.<br>Paid levels: commercial licence.</p>
+        <a href="../../components/index.html">Component sheet</a>
+      </div>
+    </footer>
+    <div class="toast" role="status" aria-live="polite">
+    </div>
+    <script src="../../assets/data.js">
+    </script>
+    <script src="../../assets/app.js">
+    </script>
+  </body>
+</html>

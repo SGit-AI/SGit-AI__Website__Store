@@ -37,12 +37,22 @@ https://abp-marketplace-v3.diniscruz.chatgpt.site, retrieved 2026-09-16, 10 file
 - `assets/toolkit-marketplace.png` — ABP Tailored artwork — `6a5438806a34c308`
 - `assets/reviewed-marketplace.png` — ABP Reviewed artwork — `4a91f746d9bd03d3`
 
+## The journey
+
+The picker, the order, the checkout and the page after it are built from the store's own data. The order they share is the live store's order: the same local-storage key, the same schema, the same line shape, the same reference alphabet and the same SKUs, so an order started in this design round is still there on the store that sells today. A check compares the two models field by field.
+
+## The filter that cannot run
+
+The capability vocabulary has 23 named behaviours and every shape publishes how many of them its grant contains. Which ones is not published for any shape, so the behaviour filter narrows nothing and says why, and the capability strip in the panel is one uncoloured cell per capability. For five of the fifteen shapes, wanted plus not-asked overshoots the grant by exactly one; ten are exact.
+
+
 ## Artwork
 
 - `pack.jpg` — ABP Pack — 1536×1024 → 720×480, 2024KB → 39KB
 - `vault.jpg` — ABP Vault — 1536×1024 → 720×480, 1980KB → 28KB
 - `tailored.jpg` — ABP Tailored — 1536×1024 → 720×480, 1825KB → 33KB
 - `reviewed.jpg` — ABP Reviewed — 1536×1024 → 720×480, 1847KB → 25KB
+- `audiences.jpg` — The five audiences, illustrated — 2172×724 → 1400×467, 1280KB → 42KB
 
 ---
 

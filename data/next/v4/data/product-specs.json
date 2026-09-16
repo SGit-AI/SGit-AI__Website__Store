@@ -1,0 +1,75 @@
+{
+  "_what_this_is": "The product page prototype's data, from data/product-page.yml: the specifications table and the media slots — three real screenshots and four labelled empty frames. Draw both states.",
+  "subject": "t2",
+  "specs": [
+    {
+      "what": "Product code",
+      "value": "ABP-T2"
+    },
+    {
+      "what": "What it is",
+      "value": "One encrypted vault, licensed to you"
+    },
+    {
+      "what": "Shapes to choose from",
+      "value": "Fifteen published, plus a catch-all for anything not on the list"
+    },
+    {
+      "what": "Delivered",
+      "value": "1 to 2 days from your payment"
+    },
+    {
+      "what": "Licence",
+      "value": "Commercial, to you. The same files are public under CC BY"
+    },
+    {
+      "what": "Public key",
+      "value": "Removed. Yours is not readable by anybody you have not handed a key to"
+    },
+    {
+      "what": "Formats inside",
+      "value": "Markdown and JSON, plus the two files you hand the agent"
+    },
+    {
+      "what": "Needs an account",
+      "value": "No. A vault is opened by its key and nothing else"
+    }
+  ],
+  "media": [
+    {
+      "id": "catalogue",
+      "kind": "real",
+      "value": "/assets/shots/01-catalogue.png"
+    },
+    {
+      "id": "levels",
+      "kind": "real",
+      "value": "/assets/shots/02-levels.png"
+    },
+    {
+      "id": "order",
+      "kind": "real",
+      "value": "/assets/shots/05-order.png"
+    },
+    {
+      "id": "vault-app",
+      "kind": "empty-labelled",
+      "value": "The vault open in its own app — the grant, the mandate and the delta as the buyer sees them."
+    },
+    {
+      "id": "grant-table",
+      "kind": "empty-labelled",
+      "value": "MAP-A-GRANT run against a live deployment, printing the table of what the credential actually permits."
+    },
+    {
+      "id": "board-cut",
+      "kind": "empty-labelled",
+      "value": "The version written for a board: the same policy, re-cut for the people who have to sign it off."
+    },
+    {
+      "id": "history",
+      "kind": "empty-labelled",
+      "value": "The vault's own history — every change dated, which is the property that does not survive an email."
+    }
+  ]
+}

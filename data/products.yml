@@ -131,6 +131,43 @@ shape_codes:
   dropbox-mcp: DBX
   n8n-owner-api-key: N8N
 
+# ------------------------------------------------------------ what evidences one
+# WHAT KIND OF EVIDENCE STANDS BEHIND EACH SHAPE'S NUMBERS. The picker filters on
+# this, so it has to be a fact rather than a guess, and it is written down here
+# rather than derived because deriving it got it wrong.
+#
+# The obvious derivation is to look for the word "measured" in the upstream
+# summary. That marks four shapes, and one of the four is chatgpt-web, whose
+# summary says it is "the baseline every other shape is measured against" — the
+# shape others were measured against, not one that was measured. The same trap
+# sits in custom_shape below. A regex cannot read a preposition, so the join is
+# typed out, one line per shape, and a build check refuses a catalogue shape with
+# no line and a line naming no catalogue shape.
+#
+#   measured  the upstream summary says this shape's own rows were measured
+#   docs      read from published sources; never executed by us or by them
+#
+shape_evidence:
+  # "13 of 20 rows measured on the thing itself"
+  claude-code-web: measured
+  claude-code-cli: docs
+  claude-code-cli-confirmations-off: docs
+  claude-desktop: docs
+  claude-web-connectors: docs
+  # says "measured AGAINST": the baseline, not a measurement
+  chatgpt-web: docs
+  browser-extension: docs
+  # "Eight of eight rows measured"
+  github-actions: measured
+  scheduled-job: docs
+  google-workspace-mcp: docs
+  gmail-readonly: docs
+  google-drive-readonly: docs
+  claude-m365-connector: docs
+  dropbox-mcp: docs
+  # "measured on a live instance, by an early beta user's agent"
+  n8n-owner-api-key: measured
+
 # ----------------------------------------------------------- not in the list
 # The shape nobody has profiled yet. It cannot be sold at the first two levels,
 # because both of those deliver an existing template and there is not one — which

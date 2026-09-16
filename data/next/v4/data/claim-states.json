@@ -1,0 +1,65 @@
+{
+  "_what_this_is": "The claim states a chip can carry, from build.py STATES. Only 'exists' is the fully-earned one. Two share a CSS class today (spec and partial both use st-s) and render identically — the chip component should give them enough range to stay distinct.",
+  "states": [
+    {
+      "id": "exists",
+      "label": "exists and runs",
+      "css_today": "st-v",
+      "means": "Built, and it runs today."
+    },
+    {
+      "id": "measured",
+      "label": "measured",
+      "css_today": "st-m",
+      "means": "Measured by our own pipeline on a named workload and date."
+    },
+    {
+      "id": "docs",
+      "label": "read, not run",
+      "css_today": "st-d",
+      "means": "Read from a published source on this date. Never executed by us."
+    },
+    {
+      "id": "projected",
+      "label": "projected",
+      "css_today": "st-p",
+      "means": "Arithmetic, not an invoice. The workings are shown."
+    },
+    {
+      "id": "spec",
+      "label": "specified, not built",
+      "css_today": "st-s",
+      "means": "A specification. The thing it specifies does not exist yet."
+    },
+    {
+      "id": "person",
+      "label": "delivered by a person",
+      "css_today": "st-n",
+      "means": "A named security professional does this work and signs it off. It is somebody's time rather than a pipeline, which is why its delivery estimate depends on availability."
+    },
+    {
+      "id": "unlocated",
+      "label": "built, not located",
+      "css_today": "st-u",
+      "means": "It was built. It has not been found since, and until it is, nothing here promises it."
+    },
+    {
+      "id": "booking",
+      "label": "a booking, not a download",
+      "css_today": "st-b",
+      "means": "What is bought is a person's time, not a file."
+    },
+    {
+      "id": "partial",
+      "label": "part exists",
+      "css_today": "st-s",
+      "means": "One half of it runs. The half that carries the guarantee does not."
+    },
+    {
+      "id": "absent",
+      "label": "does not exist yet",
+      "css_today": "st-x",
+      "means": "It does not exist. It is listed so that nobody proposes it as new."
+    }
+  ]
+}
