@@ -34,6 +34,7 @@ A check that only fires on the source, or only on a page somebody remembered to
 list, is not a gate. Every one below walks all of docs/.
 """
 import hashlib
+import html
 import json
 import os
 import re
@@ -3169,6 +3170,99 @@ def check_the_next_journey_is_one_order():
             fail(f"{page}: renders nothing at all without JavaScript. Every other page "
                  "here is served true and then switched; this one is served blank")
 
+def check_the_next_supporting_pages_are_the_same_data():
+    """The comparison, the five doors, the ledger and the reviewer, in the new
+    design, against the files the current store is built from.
+
+    THE RISK THESE FOUR CARRY IS DIFFERENT FROM THE JOURNEY'S. The journey could
+    lose an order; these can lose a fact. A comparison table missing a row, a
+    ledger missing a claim, an audience view that quietly drops a level or a
+    reviewer page that grows a sentence nobody published are all pages that still
+    look right. So each one is counted and compared against its source."""
+    compare = OUT / "next" / "compare" / "index.html"
+    aud = OUT / "next" / "audiences" / "index.html"
+    ledger = OUT / "next" / "ledger" / "index.html"
+    who = OUT / "next" / "who" / "index.html"
+    for f in (compare, aud, ledger, who):
+        if not f.exists():
+            fail(f"/next/: {f.relative_to(OUT)} is not in the build")
+            return
+
+    # ---- the comparison carries every row, every column and every cell
+    src = (ROOT / "data" / "comparison.yml").read_text()
+    labels = re.findall(r"^      - label: (.+)$", src, re.M)
+    body = compare.read_text()
+    missing = [l for l in labels if html.escape(l.strip().strip('"')) not in body]
+    if missing:
+        fail(f"next/compare/: {len(missing)} row(s) of data/comparison.yml are not on the "
+             f"page, starting with {missing[0]!r}. A comparison with a row missing is a "
+             "comparison somebody would act on")
+    groups = re.findall(r"^  - name: (.+)$", src, re.M)
+    for g in groups:
+        if html.escape(g.strip().strip('"')) not in body:
+            fail(f"next/compare/: the row group {g!r} is not on the page")
+    # free is the first column and stays there
+    heads = re.findall(r'<th scope="col">.*?</th>', body, re.S)
+    if len(heads) != 5:
+        fail(f"next/compare/: renders {len(heads)} columns and the table has five")
+    elif "£0" not in heads[0]:
+        fail("next/compare/: the free column is not first. It leads on purpose — what a "
+             "paid step adds only means anything next to a column that does not have it")
+
+    # ---- every audience is on the page, and no level is hidden from any of them
+    asrc = (ROOT / "data" / "audiences.yml").read_text()
+    aids = re.findall(r"^- id: (\S+)$", asrc, re.M)
+    abody = aud.read_text()
+    for aid in aids:
+        if f'data-step="aud-{aid}"' not in abody:
+            fail(f"next/audiences/: {aid} has no lens on the page")
+        if f'data-step-panel="aud-{aid}"' not in abody:
+            fail(f"next/audiences/: {aid} has a lens and no panel behind it")
+    offers = {m.group(1) for m in re.finditer(r"^- id: (t\d)$",
+                                              (ROOT / "data" / "offers.yml").read_text(), re.M)}
+    for panel in re.findall(r'<div data-step-panel="aud-[a-z]+" hidden>.*?(?=<div data-step-panel|</div></section>)',
+                            abody, re.S):
+        if "display:none" in panel.replace(" ", "") or "visibility:hidden" in panel.replace(" ", ""):
+            fail("next/audiences/: a lens hides something. A door changes the sentence and "
+                 "what is recommended first; it has never been allowed to change what a "
+                 "reader is permitted to see")
+
+    # ---- the ledger is every claim, not a selection
+    claims = re.findall(r"^- id: (\S+)$", (ROOT / "data" / "claims.yml").read_text(), re.M)
+    lbody = ledger.read_text()
+    shown = set(re.findall(r'class="n-claimrow" id="claim-([a-z0-9-]+)"', lbody))
+    if shown != set(claims):
+        missing = sorted(set(claims) - shown)
+        extra = sorted(shown - set(claims))
+        fail(f"next/ledger/: shows {len(shown)} of {len(claims)} claims"
+             + (f"; missing {missing[:4]}" if missing else "")
+             + (f"; invented {extra[:4]}" if extra else "")
+             + ". A ledger that is a selection is a brochure")
+    # and every chip on a /next/ page lands on a row that is there
+    for page in NEXT_PAGES + ("next/compare/index.html", "next/audiences/index.html",
+                              "next/who/index.html", "next/ledger/index.html"):
+        for cid in re.findall(r'next/ledger/index\.html#claim-([a-z0-9-]+)',
+                              (OUT / page).read_text()):
+            if cid not in shown:
+                fail(f"{page}: a claim chip points at #claim-{cid}, which the ledger in "
+                     "this design does not carry")
+
+    # ---- the reviewer page says nothing the sources do not
+    rsrc = (ROOT / "data" / "reviewers.yml").read_text()
+    wbody = who.read_text()
+    for url in re.findall(r'url: "(\S+)"', rsrc):
+        if url not in wbody:
+            fail(f"next/who/: does not carry the source {url}. Every line of the record is "
+                 "read off a published page and the page has to be on it")
+    for name in re.findall(r"^    name: (.+)$", rsrc, re.M):
+        if html.escape(name.strip()) not in wbody:
+            fail(f"next/who/: {name!r} is in data/reviewers.yml and not on the page")
+    # the number this store deliberately does not publish
+    if re.search(r"\b(twenty|20)\+?\s*years\b", wbody, re.I):
+        fail("next/who/: carries a count of years. What is published is a record starting "
+             "in 2008 that a reader can check; a round number nobody can verify is weaker "
+             "than a date that anybody can, and data/reviewers.yml says so at length")
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -3212,6 +3306,7 @@ def main():
         check_the_design_brief_points_at_pages_that_exist,
         check_the_brochure_has_not_drifted,
         check_next_is_the_offer_data, check_the_next_journey_is_one_order,
+        check_the_next_supporting_pages_are_the_same_data,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

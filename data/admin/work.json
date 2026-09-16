@@ -1443,8 +1443,21 @@
     {
      "id": "TK-12",
      "title": "Build the rest of the next store, and wire the flow",
-     "status": "in-progress",
-     "description": "<b>The flow is wired end to end; the supporting pages are not.</b> The picker, the order, the hand-off and the page after it are built from the store's own data at <a href=\"/next/policies/\">/next/policies/</a>, <a href=\"/next/cart/\">/next/cart/</a>, <a href=\"/next/pay/\">/next/pay/</a> and <a href=\"/next/paid/\">/next/paid/</a>, and the order they share is <em>the live store's order</em> — the same local-storage key, the same record shape, the same reference and SKU. An order built in this round shows up on the store that sells today, and back; a check compares the two models field by field so they cannot drift apart.<br><br>Still to come from the v4 pack: the comparison table, the five audience views, the generic template, the reviewer page and the ledger in this design."
+     "status": "done",
+     "description": "<b>The next store is a whole store.</b> Ten pages at /next/, all rendered from the files the current store is already built from: the homepage, the product page, <a href=\"/next/policies/\">the policy picker</a>, <a href=\"/next/cart/\">your order</a>, <a href=\"/next/pay/\">checkout</a>, <a href=\"/next/paid/\">what lands afterwards</a>, <a href=\"/next/compare/\">what arrives at every level</a>, <a href=\"/next/audiences/\">who this is for</a>, <a href=\"/next/ledger/\">the claim ledger</a> and <a href=\"/next/who/\">who does the work</a>.<br><br>The order is <em>the live store's order</em>: same local-storage key, same schema, same line shape, same reference alphabet, same SKUs, so an order built in this round is still there on the store that sells today, and back. Two build checks hold that and hold every page to the file it renders from.<br><br>The one screen from the pack deliberately not built is the generic template. It is a reading column already exercised by the ledger and the reviewer page; re-rendering an existing content page at a second URL to demonstrate it would put the same paragraphs in two places. Recorded at <a href=\"/admin/next/#generic\">/admin/next/</a>.",
+     "shipped": {
+      "version": "v0.3.15",
+      "urls": [
+       "/next/policies/",
+       "/next/cart/",
+       "/next/pay/",
+       "/next/paid/",
+       "/next/compare/",
+       "/next/audiences/",
+       "/next/ledger/",
+       "/next/who/"
+      ]
+     }
     },
     {
      "id": "TK-13",

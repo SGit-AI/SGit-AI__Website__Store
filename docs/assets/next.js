@@ -143,7 +143,7 @@
       // ledger entry, and dropping it on a switch made it look like a label
       claim.textContent = level.state_label + ' \u2197';
       claim.className = 'n-claim n-claim--' + level.state;
-      claim.href = '/ledger/#claim-' + level.claim;
+      claim.href = (MODEL.ledger_url || '/ledger/') + '#claim-' + level.claim;
     }
 
     var art = byId('p-art');
@@ -368,7 +368,7 @@
 
     var claim = el('a', 'n-claim n-claim--' + l.lvl.state,
       l.lvl.state_label + ' ↗');
-    claim.href = '/ledger/#claim-' + l.lvl.claim;
+    claim.href = (MODEL.ledger_url || '/ledger/') + '#claim-' + l.lvl.claim;
     claim.style.marginTop = '10px';
     mid.appendChild(claim);
 
@@ -521,7 +521,7 @@
       left.appendChild(sku);
       var claim = el('a', 'n-claim n-claim--' + l.lvl.state,
         l.lvl.state_label + ' ↗');
-      claim.href = '/ledger/#claim-' + l.lvl.claim;
+      claim.href = (MODEL.ledger_url || '/ledger/') + '#claim-' + l.lvl.claim;
       left.appendChild(claim);
 
       var right = el('div');

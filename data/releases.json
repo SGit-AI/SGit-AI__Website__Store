@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.14",
+  "current": "v0.3.15",
   "releases": [
+    {
+      "version": "v0.3.15",
+      "date": "2026-09-16",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the rest of the next store: the comparison, the doors, the ledger and the person",
+      "summary": "Four more pages at /next/, each rendered from the file the current store is\nalready rendered from: what arrives at every level, who this is for, the claim\nledger, and who does the work at the two levels a person does.\n\n**The ledger is here so a claim chip stops throwing the reader out of the\nround.** Every chip on every /next/ page now lands on a row in this design.\nIt is the same 52 claims from the same file \u2014 there is no second copy \u2014 and it\nprints which pages say each one.\n\nThe fifth screen in the pack, the generic template, is deliberately not a page:\nit is a reading column already exercised by the ledger and the reviewer page,\nand re-rendering an existing content page at a second URL to demonstrate it\nwould put the same paragraphs in two places on one site.\n\n**A claim now registers the URL of the page that says it, not that page's\ninternal label.** Several generated pages carry a label that does not match\ntheir route \u2014 /admin/reviews/ registers \"reviews\" \u2014 and resolving one from the\nother produced ten dead links on the ledger's first build.\n\nTen deliberate breaks across the two new checks, each naming its own thing: a\ncomparison row, a row group, the free column's position, an audience lens\nwithout a panel, a lens that hides something, the ledger as a selection, a\ntruncated reviewer name, a dropped source, and a round number of years the\nreviewer file says at length must never be published.\n\nAlso: `img { max-width: 100% }` in the reset silently won the cascade against\n`width: 500%`, so four of the five audience cards showed an empty box with the\nartwork pushed off it.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.14",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "de2d735b5a9b01f5dc13e7c436aaa7d519db991b",
       "site": "store.sgit.ai",
       "title": "the buying flow, end to end, and one order across both designs",
       "summary": "The v4 handback supplied the policy picker, the cart, the checkout and the\npost-purchase screens. All four are built at /next/ from the store's own data:\n/next/policies/, /next/cart/, /next/pay/ and /next/paid/, mirroring the routes\nthe store that sells today already uses.\n\n**It is the live store's order, not a second one.** The current store keeps an\norder in the browser under one key; /next/ reads and writes that record \u2014 same\nkey, same schema, same line shape, same reference alphabet, same SKUs \u2014 so an\norder started in this design round is still there on the current store, and\nback. Two carts under two keys would be a bug that only appears for the one\nperson who uses both. A check compares the two models field by field on every\nbuild.\n\n**Still no typing surface anywhere.** Quantities are buttons, the behaviour\nfilter is a `<details>`, and the picker's search holds no field at all: the\nquery lives on the body element and characters are read off the keyboard. The\ncost is that a phone with no hardware keyboard cannot type there, and the\ndialog says so and points at the chips.\n\n**Two findings about the published catalogue, both on the board.** The picker\noffers a filter by behaviour that narrows nothing: the 23-behaviour vocabulary\nis published and every shape's totals are published, but which behaviours make\nup a particular grant is not. And for five of the fifteen shapes, wanted plus\nnot-asked overshoots the grant by exactly one \u2014 ten are exact. The panel's\ncapability strip was being painted green and amber as though those numbers\npartitioned the grant; it is now one uncoloured cell per capability, and the\nfive shapes say so.\n\nThe evidence state behind each shape is typed out in data/products.yml rather\nthan derived, because deriving it got it wrong: `chatgpt-web`'s summary calls it\n\"the baseline every other shape is measured against\", and a regex cannot read a\npreposition.\n\nNew rule: check_every_anchor_a_page_points_at_is_there. check_links has always\nheld the file half of a link and never looked past the #. The site was clean\nwhen the rule was added, which is the only comfortable moment to add one.",

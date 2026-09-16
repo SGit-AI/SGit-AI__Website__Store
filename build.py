@@ -650,7 +650,7 @@ def shortcodes_inline(text, ctx):
         c = ctx["claims_by_id"].get(cid)
         if not c:
             raise SystemExit(f"build: unknown claim id {cid!r} referenced by {ctx['page']}")
-        ctx["claim_uses"].setdefault(cid, set()).add(ctx["page"])
+        ctx["claim_uses"].setdefault(cid, set()).add(ctx["page_url"])
         return chip(c["state"], c.get("date_label"), cid)
 
     text = re.sub(r"\{\{claim:([a-z0-9-]+)\}\}", claim_ref, text)
@@ -792,7 +792,7 @@ def offer_card(o, ctx, link=True, anchor_prefix=""):
     # The state chip is built from the offer record rather than from a {{claim:}}
     # shortcode, so nothing registered it as used and the ledger's "where it is
     # said" column stayed blank for every offer claim. Register it here.
-    ctx["claim_uses"].setdefault(o["claim"], set()).add(ctx["page"])
+    ctx["claim_uses"].setdefault(o["claim"], set()).add(ctx["page_url"])
     tier = o["tier"]
     label = f"Tier {tier}" if tier != "add-on" else "Add-on"
     rail_name, rail_why = RAILS[o["rail"]]
@@ -919,7 +919,7 @@ def block_offers_by_buyer(ctx):
         # ledger's "where it is said" column joins on a page a reader can click
         # rather than on a data file they cannot.
         cid = b["opportunity_claim"]
-        ctx["claim_uses"].setdefault(cid, set()).add(ctx["page"])
+        ctx["claim_uses"].setdefault(cid, set()).add(ctx["page_url"])
         rows.append(
             f'<tr><td><a href="/for/{b["id"]}/"><b>{html.escape(b["short"])}</b></a>'
             f'<br><span class="small dim">&ldquo;{html.escape(b["arrives_with"])}&rdquo;</span></td>'
@@ -3178,7 +3178,7 @@ def buyer_pages(out_dir, ctx_shared):
                      '{{claim:startup-offer-is-reverse-only}}</p></div>')
         market_chip = chip(ctx["claims_by_id"][b["opportunity_claim"]]["state"],
                            claim_id=b["opportunity_claim"])
-        ctx["claim_uses"].setdefault(b["opportunity_claim"], set()).add(ctx["page"])
+        ctx["claim_uses"].setdefault(b["opportunity_claim"], set()).add(ctx["page_url"])
 
         groups = []
         if b["primary"]:
@@ -5700,7 +5700,7 @@ def _next_claim(level, ctx):
                          "which is not in the ledger")
     ctx["claim_uses"].setdefault(level["claim"], set()).add(NEXT_ROOT)
     return (f'<a class="n-claim n-claim--{level["state"]}" '
-            f'href="/ledger/#claim-{level["claim"]}">'
+            f'href="{NEXT_LEDGER}#claim-{level["claim"]}">'
             f'{html.escape(STATES[level["state"]][0])} &#8599;</a>')
 
 
@@ -5795,12 +5795,14 @@ def next_html(url, fm, body, model):
     <div><b>Buy</b>
       <a href="{NEXT_PICKER}">Which agent you run</a>
       <a href="{NEXT_ROOT}product/">The four levels, side by side</a>
+      <a href="{NEXT_COMPARE}">Compare what arrives</a>
       <a href="{NEXT_CART}">Your order</a>
       <a href="{NEXT_PAID}">What lands, and when</a>
-      <a href="/compare/">Compare what arrives</a>
     </div>
     <div><b>Evidence</b>
-      <a href="/ledger/">The claim ledger</a>
+      <a href="{NEXT_LEDGER}">The claim ledger</a>
+      <a href="{NEXT_WHO}">Who does the work</a>
+      <a href="{NEXT_AUDIENCE}">Who this is for</a>
       <a href="/disclosures/">What we do not say</a>
       <a href="/admin/reviews/">Reviews, dated and kept</a>
       <a href="/boundary/">Who owns what</a>
@@ -5846,7 +5848,7 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
         for text, href in [
             ("Fifteen application templates", "/policies/"),
             ("A working vault from " + levels[1]["price"], NEXT_ROOT + "product/?level=t2"),
-            ("Six vaults open to read now", "/ledger/#claim-abp-templates-exist"),
+            ("Six vaults open to read now", NEXT_LEDGER + "#claim-abp-templates-exist"),
             ("The top two signed by a person", "/who/"),
         ])
 
@@ -6333,13 +6335,41 @@ def _next_admin(out_dir, ctx_shared, levels):
         'a check refuses a catalogue shape with no line, a line naming no catalogue shape, '
         'and a state this site has no badge for.</p>'
 
+        '<h2 id="supporting">The four supporting pages</h2>'
+        f'<p>The v4 pack supplied five more screens and four of them are built: '
+        f'<a href="{NEXT_COMPARE}">what arrives at every level</a>, '
+        f'<a href="{NEXT_AUDIENCE}">who this is for</a>, '
+        f'<a href="{NEXT_LEDGER}">the claim ledger</a> and '
+        f'<a href="{NEXT_WHO}">who does the work</a>. Each renders from the file the '
+        'current store already renders from, and a check counts what reaches the page '
+        'against what is in the file: a comparison missing a row, a ledger missing a '
+        'claim and an audience view that hides a level all still look right.</p>'
+        '<p><b>The ledger is here so a claim chip stops throwing the reader out of the '
+        'round.</b> Every chip on every /next/ page now lands on a row in this design '
+        'rather than on the design being replaced. It is the same 52 claims from the same '
+        'file — there is no second copy — and it prints which pages say each '
+        'one.</p>'
+
+        '<h2 id="generic">The generic template is not a page, deliberately</h2>'
+        '<p>The fifth screen in the pack is the generic template: a reading column with a '
+        'claim chip beside each heading, drawn as <em>what is inside one</em>. That '
+        'template is exercised here by the ledger and the reviewer page, which are reading '
+        'columns that sell nothing. Re-rendering an existing content page at a second URL '
+        'to demonstrate it would put the same paragraphs in two places on one site for the '
+        'sake of a mockup, and the markdown twin, the search index and every reader who '
+        'landed on the wrong one would carry that for as long as both existed. The nav’s '
+        'third link therefore leaves the round, and the strip at the top of every page '
+        'says the round is a round.</p>'
+
         '<h2 id="next">What is not there yet</h2>'
-        '<p>The comparison table, the five audience views, the generic template, the '
-        'reviewer page and the ledger in this design. The v4 pack supplies all five; they '
-        'are the next piece of work rather than a blocked one.</p>'
+        '<p>The two add-ons attach to a level and have no page in this design. The '
+        'admin console is untouched by the round: it is a different job for a different '
+        'reader and its design is not this one’s to spend on.</p>'
         f'<p><b><a href="{NEXT_ROOT}">Open the next store &rarr;</a></b> &middot; '
         f'<a href="{NEXT_PICKER}">the picker</a> &middot; '
         f'<a href="{NEXT_ROOT}product/">the product page</a> &middot; '
+        f'<a href="{NEXT_COMPARE}">the comparison</a> &middot; '
+        f'<a href="{NEXT_LEDGER}">the ledger</a> &middot; '
         '<a href="/admin/concepts/">how the direction was chosen</a> &middot; '
         '<a href="/admin/design-brief/">the brief that produced it</a></p>')
 
@@ -6445,7 +6475,7 @@ def _next_claim_chip(claim_id, ctx, url):
         raise SystemExit(f"next: a journey page cites claim {claim_id!r}, which is not in "
                          "data/claims.yml")
     ctx["claim_uses"].setdefault(claim_id, set()).add(url)
-    return (f'<a class="n-claim n-claim--{c["state"]}" href="/ledger/#claim-{claim_id}">'
+    return (f'<a class="n-claim n-claim--{c["state"]}" href="{NEXT_LEDGER}#claim-{claim_id}">'
             f'{html.escape(STATES[c["state"]][0])} &#8599;</a>')
 
 
@@ -6629,7 +6659,7 @@ def _next_picker(out_dir, ctx_shared, levels, shapes, model):
         '<h3 id="panel-title"></h3>'
         '<p class="n-panel__slug" id="panel-slug"></p>'
         '</div><a class="n-claim" id="panel-claim" '
-        'href="/ledger/#claim-abp-catalogue-promoted"></a></div>'
+        f'href="{NEXT_LEDGER}#claim-abp-catalogue-promoted"></a></div>'
         '<p class="n-fine n-dim n-mt" id="panel-summary"></p>'
         '<div class="n-panel__stats">'
         '<div class="n-stat"><b id="panel-can"></b><span>it can do</span></div>'
@@ -6934,13 +6964,416 @@ def _next_paid(out_dir, ctx_shared, levels, model):
     }, body, model, "\n".join(md))
 
 
-def next_pages(out_dir, ctx_shared):
+# ---------------------------------------------------------------------------
+# THE SUPPORTING PAGES: what arrives at each level, who each level is for, every
+# claim, and who does the work at the two levels a person does.
+#
+# THE GENERIC TEMPLATE IS NOT ONE OF THEM, DELIBERATELY. The handback's generic
+# screen is /what-is-in-one/ redrawn: a reading column, four headings, a claim
+# chip beside each. That template is exercised here by the ledger and the
+# reviewer page, which are reading columns that sell nothing. Re-rendering an
+# existing content page at a second URL to demonstrate a template would put the
+# same paragraphs in two places on one site for the sake of a mockup, and the
+# markdown twin, the search index and every reader who lands on the wrong one
+# would carry that cost long after the round is over.
+NEXT_COMPARE = NEXT_ROOT + "compare/"
+NEXT_AUDIENCE = NEXT_ROOT + "audiences/"
+NEXT_LEDGER = NEXT_ROOT + "ledger/"
+NEXT_WHO = NEXT_ROOT + "who/"
+
+
+def _next_cmp_cell(v):
+    if v == "yes":
+        return '<td><span class="is-yes" aria-label="yes">✓</span></td>'
+    if v == "no":
+        return '<td><span class="is-no" aria-label="no">—</span></td>'
+    return f'<td class="is-txt">{html.escape(str(v))}</td>'
+
+
+def _next_compare(out_dir, ctx_shared, levels, model):
+    """What arrives at each level, side by side, with the free column first.
+
+    The free column leads because it is the argument rather than an objection:
+    the fifteen templates are published and anybody can take one, and what each
+    paid step adds is only legible next to a column that does not have it."""
+    cols = COMPARISON["columns"]
+    head = ""
+    for c in cols:
+        offer = OFFERS_BY_ID.get(c.get("offer") or "")
+        name = c["name"]
+        price = c.get("price") or (offer["price_label"] if offer else "")
+        sub = c.get("sub") or (offer["eta"] if offer else "")
+        link = (f'<a class="n-cmp__name" href="{NEXT_ROOT}product/?level={offer["id"]}">'
+                f'ABP {html.escape(offer["short_name"])}</a>'
+                if offer else f'<span class="n-cmp__name">{html.escape(name)}</span>')
+        head += (f'<th scope="col">{link}'
+                 f'<span class="n-cmp__price">{html.escape(price)}</span>'
+                 f'<span class="n-cmp__sub">{html.escape(sub)}</span></th>')
+
+    body, nrows = [], 0
+    for g in COMPARISON["groups"]:
+        body.append(f'<tr class="n-cmp__group"><th scope="rowgroup" '
+                    f'colspan="{len(cols) + 1}">{html.escape(g["name"])}</th></tr>')
+        for r in g["rows"]:
+            nrows += 1
+            body.append(f'<tr><th scope="row"><span class="n-cmp__row">'
+                        f'{html.escape(r["label"])}</span>'
+                        f'<span class="n-cmp__why">{html.escape(r["why"])}</span></th>'
+                        + "".join(_next_cmp_cell(r[c["id"]]) for c in cols) + "</tr>")
+
+    dl = next((x for x in DOWNLOADS["downloads"] if x["url"] == "/compare/"), None)
+    if not dl:
+        raise SystemExit("next: no brochure in data/downloads.json \u2014 "
+                         "run node tools/make_pdfs.mjs")
+    stale = dl["version"] != SITE["version"]
+    paper = ('<p class="n-note n-mt-lg"><b>The same table on paper.</b> '
+             f'<a href="/assets/downloads/{dl["file"]}" download>'
+             f'{html.escape(dl["title"])} \u2014 PDF</a>. '
+             f'{dl["columns"] - 1} columns, {dl["rows"]} rows, {dl["bytes"] // 1024}KB, '
+             'A4 landscape, rendered from the live table through this site\u2019s own '
+             'print stylesheet rather than retyped. '
+             + (f'Taken at {html.escape(dl["version"])}; the site is now '
+                f'{html.escape(SITE["version"])}, so the rows may have moved since.'
+                if stale else f'Taken at {html.escape(dl["version"])}.')
+             + "</p>")
+
+    body_html = (
+        '<section class="n-sect">'
+        '<div class="n-head"><div class="n-head__text">'
+        f'<p class="n-eyebrow">{nrows} rows, five columns</p>'
+        '<h1>What arrives, at every level.</h1>'
+        '<p class="n-mt">Free first, because it is the argument rather than an objection: '
+        'the fifteen templates are published with read keys and anybody can take one. What '
+        'each paid step adds only means anything next to a column that does not have '
+        'it.</p></div>'
+        f'<p class="n-head__aside"><a href="/compare/">The same table on the store that '
+        f'sells today {_OUT}</a></p></div>'
+
+        f'<div class="n-cmpwrap"><table class="n-cmp">'
+        f'<thead><tr><th></th>{head}</tr></thead>'
+        f'<tbody>{"".join(body)}</tbody></table></div>'
+
+        '<p class="n-fine n-dim n-mt">Every cell is read off something: a price in '
+        '<code>data/offers.yml</code>, a sentence about what a level delivers, a line about '
+        'what it does not, or a licence that has been ruled. A row whose five cells cannot '
+        'each be pointed at is not in the file, which is why some things a reader might '
+        'expect are missing rather than hedged.</p>'
+        + paper +
+        f'<p class="n-mt-lg"><a class="n-btn" href="{NEXT_PICKER}">'
+        f'Pick the agent you run {_ARROW}</a></p>'
+        '</section>')
+
+    md = ["# What arrives, at every level\n",
+          "Free first. The fifteen templates are published with read keys; what each paid "
+          "step adds is only legible next to a column that does not have it.\n",
+          "| " + " | ".join([""] + [c["name"] for c in cols]) + " |",
+          "|" + "---|" * (len(cols) + 1)]
+    for g in COMPARISON["groups"]:
+        md.append(f"| **{g['name']}** |" + " |" * len(cols))
+        for r in g["rows"]:
+            cells = ["yes" if r[c["id"]] == "yes" else
+                     "no" if r[c["id"]] == "no" else str(r[c["id"]]) for c in cols]
+            md.append("| " + " | ".join([r["label"]] + cells) + " |")
+    return _next_emit(out_dir, NEXT_COMPARE, {
+        "title": "What arrives, at every level",
+        "description": (f"{nrows} rows across five columns, free first: what the published "
+                        "templates give you and what each paid level adds."),
+    }, body_html, model, "\n".join(md))
+
+
+def _next_audience_page(out_dir, ctx_shared, levels, auds, model):
+    """The five doors, and what changes behind each one.
+
+    WHAT CHANGES IS THE SENTENCE. Not the price, not the product, not which
+    levels are visible: every offer is in the markup for every reader and a
+    build check refuses a page that hides one. What a lens does is lead with a
+    different level and say why — which is a recommendation, and is marked as
+    one rather than dressed as a personalised store."""
+    art = next((a for a in NEXT_ART["art"] if a["file"] == "audiences.jpg"), None)
+
+    doors = ""
+    for i, a in enumerate(AUDIENCES):
+        aud = next(x for x in auds if x["id"] == a["id"])
+        shift = f"{-i * 100}%" if art else "0"
+        pic = (f'<span class="n-aud__art"><img src="/assets/next/art/audiences.jpg" '
+               f'alt="" aria-hidden="true" style="margin-left:{shift}"></span>'
+               if art else "")
+        doors += (f'<a href="{aud["url"]}">{pic}<span class="n-aud__body">'
+                  f'<b>{html.escape(aud["label"])}</b>'
+                  f'<span>{html.escape(a["door"])}</span></span></a>')
+
+    lens = "".join(
+        f'<button class="n-fchip" type="button" data-step="aud-{a["id"]}" '
+        f'aria-pressed="false">{html.escape(next(x for x in auds if x["id"] == a["id"])["label"])}'
+        f'</button>' for a in AUDIENCES)
+
+    panels = ""
+    for a in AUDIENCES:
+        lead = next(l for l in levels if l["id"] == a["leads_with"])
+        quiet = ", ".join("ABP " + next(l for l in levels if l["id"] == q)["short_name"]
+                          for q in (a.get("quiet") or []))
+        panels += (
+            f'<div data-step-panel="aud-{a["id"]}" hidden>'
+            f'<h3>{html.escape(a["name"])}</h3>'
+            f'<p class="n-lede n-mt">{html.escape(a["arrives_with"])}</p>'
+            f'<p class="n-mt"><b>What changes:</b> {html.escape(a["what_changes"])}</p>'
+            f'<p class="n-mt"><b>Where this reader is pointed first:</b> '
+            f'ABP {html.escape(lead["short_name"])}, {html.escape(lead["price"])}. '
+            f'{html.escape(a["why"])}</p>'
+            + (f'<p class="n-fine n-dim n-mt">Drawn quieter for this reader, and still on '
+               f'the page at the same price: {html.escape(quiet)}.</p>' if quiet else "")
+            + f'<p class="n-mt"><a class="n-btn" href="{NEXT_ROOT}product/'
+              f'?level={lead["id"]}&amp;audience={a["id"]}">'
+              f'See ABP {html.escape(lead["short_name"])} {_ARROW}</a> '
+              f'<a class="n-btn n-btn--ghost" href="/are/{a["id"]}/">'
+              f'Everything written for this reader {_OUT}</a></p>'
+            '</div>')
+
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-head"><div class="n-head__text">'
+        f'<p class="n-eyebrow">{len(AUDIENCES)} readers, one store</p>'
+        '<h1>Who is this for?</h1>'
+        '<p class="n-mt">Five people arrive here with five different questions and leave '
+        'with the same four products. What a door changes is the sentence and which level '
+        'it points at first — never the price, never the product, and never which '
+        'levels you are allowed to see.</p></div>'
+        f'<p class="n-head__aside"><a href="/audiences/">The five doors on the store that '
+        f'sells today {_OUT}</a></p></div>'
+        f'<div class="n-aud">{doors}</div>'
+        + (f'<p class="n-fine n-dim n-mt">{html.escape(art["label"])} &mdash; illustrative '
+           'artwork for a digital deliverable, not a photograph of anybody.</p>'
+           if art else "")
+        + '</section>'
+
+        '<section class="n-sect n-sect--tint">'
+        '<div class="n-head"><div class="n-head__text">'
+        '<h2>Read the same four levels as somebody else</h2>'
+        '<p class="n-mt">Every offer stays on the page for every reader. This changes the '
+        'explanation and what is recommended first, which is an opinion and is labelled as '
+        'one.</p></div></div>'
+        f'<div class="n-switch">{lens}</div>'
+        f'<div class="n-mt n-measure">{panels}</div>'
+        '</section>')
+
+    md = ["# Who is this for?\n",
+          "Five doors onto the same four products. A door changes the sentence and which "
+          "level is recommended first. It never changes a price, never removes a level "
+          "from the page, and a build check refuses a page that hides one.\n"]
+    for a in AUDIENCES:
+        lead = next(l for l in levels if l["id"] == a["leads_with"])
+        md.append(f"\n## {a['name']}\n")
+        md.append(f"{_strip(a['arrives_with'])}\n")
+        md.append(f"- **What changes:** {_strip(a['what_changes'])}")
+        md.append(f"- **Pointed first at:** ABP {lead['short_name']}, {lead['price']}. "
+                  f"{_strip(a['why'])}")
+    return _next_emit(out_dir, NEXT_AUDIENCE, {
+        "title": "Who is this for?",
+        "description": ("Five readers, five questions, the same four products: what each "
+                        "door changes and what it never changes."),
+    }, body, model, "\n".join(md))
+
+
+def _next_ledger(out_dir, ctx_shared, model, built):
+    """Every claim this site makes, in this design.
+
+    It is here so that a claim chip on a /next/ page does not throw the reader
+    back into the design being replaced. It renders the same 52 claims from the
+    same file the live ledger is built from — there is no second copy."""
+    claims = ctx_shared["claims"]
+    counts = {}
+    for c in claims:
+        counts[c["state"]] = counts.get(c["state"], 0) + 1
+    tiles = "".join(
+        f'<div class="n-stat"><b>{counts[k]}</b><span>{html.escape(STATES[k][0])}</span></div>'
+        for k in STATES if counts.get(k))
+
+    def _resolve(key):
+        """A claim-use key as a URL, or None.
+
+        Every page registers the URL it is served at, so this is almost always a
+        lookup that succeeds. It is still allowed to fail: a claim registered by
+        something that never became a page would otherwise render as a link to
+        nowhere, and a citation this page cannot stand behind is not one it
+        prints."""
+        url = ctx_shared["page_urls"].get(key)
+        if url:
+            return url
+        return key if key in built else None
+
+
+    def _label(url):
+        # /next/policies/ and /policies/ both end in "policies", and a list that
+        # prints that word twice is telling a reader the same page twice. The
+        # design round says so in the label.
+        if url == NEXT_ROOT:
+            return "next"
+        if url.startswith(NEXT_ROOT):
+            return "next/" + short_label(url)
+        return short_label(url)
+
+    def _where(c):
+        out, dropped = [], 0
+        for u in sorted(ctx_shared["claim_uses"].get(c["id"], set())):
+            url = _resolve(u)
+            if not url:
+                dropped += 1
+                continue
+            label = ctx_shared["page_titles"].get(u) or built.get(url) or url
+            out.append(f'<a href="{url}" title="{html.escape(str(label))}">'
+                       f'{html.escape(_label(url))}</a>')
+        if not out:
+            return '<span class="n-dim">not cited on any page</span>'
+        return ", ".join(out) + (f' <span class="n-dim">and {dropped} more</span>'
+                                 if dropped else "")
+
+    groups = {}
+    for c in claims:
+        groups.setdefault(c.get("group", "Other"), []).append(c)
+
+    sections = ""
+    for group, items in groups.items():
+        rows = ""
+        for c in items:
+            rows += (
+                f'<div class="n-claimrow" id="claim-{c["id"]}">'
+                f'<div><span class="n-claim n-claim--{c["state"]}">'
+                f'{html.escape(STATES[c["state"]][0])}</span>'
+                f'<span class="n-claimrow__date">{html.escape(c.get("date_label") or "")}'
+                f'</span></div>'
+                f'<div><p>{inline(c["claim"], ctx_shared)}</p>'
+                f'<p class="n-claimrow__cites"><b>How we know:</b> '
+                f'{html.escape(str(c.get("source", "")))}</p>'
+                f'<p class="n-claimrow__cites"><b>Said on:</b> {_where(c)}</p></div>'
+                f'<code class="n-claimrow__date">{html.escape(c["id"])}</code>'
+                '</div>')
+        sections += (f'<h2 class="n-mt-lg" id="{slugify(group)}">{html.escape(group)}</h2>'
+                     f'<div class="n-ledger n-mt">{rows}</div>')
+
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-head"><div class="n-head__text">'
+        f'<p class="n-eyebrow">{len(claims)} claims</p>'
+        '<h1>Everything this store says, and how it knows.</h1>'
+        '<p class="n-mt">Every chip on every page in this design round links to a row '
+        'below. A claim that cannot be pointed at something is not a claim this site '
+        'makes — it is either marked as absent or it is not on a page.</p></div>'
+        f'<p class="n-head__aside"><a href="/ledger/">The same ledger on the store that '
+        f'sells today {_OUT}</a></p></div>'
+        f'<div class="n-panel__stats">{tiles}</div>'
+        '<p class="n-fine n-dim n-mt">Ten states, and only <b>exists and runs</b> is fully '
+        'earned. The rest say what kind of thing stands behind a sentence: read from a '
+        'published source, measured on a named workload, arithmetic with the workings '
+        'shown, a specification for something not built, or a person’s time.</p>'
+        + sections +
+        '</section>')
+
+    md = [f"# Everything this store says, and how it knows\n",
+          f"{len(claims)} claims. Every chip on a page links to one of these rows.\n"]
+    for group, items in groups.items():
+        md.append(f"\n## {group}\n")
+        for c in items:
+            md.append(f"- **{STATES[c['state']][0]}** — {_strip(c['claim'])} "
+                      f"*(how we know: {c.get('source', '')})* `{c['id']}`")
+    return _next_emit(out_dir, NEXT_LEDGER, {
+        "title": "Everything this store says, and how it knows",
+        "description": (f"The claim ledger in this design: {len(claims)} claims, the state "
+                        "of each, how it is evidenced and which pages say it."),
+    }, body, model, "\n".join(md))
+
+
+def _next_who(out_dir, ctx_shared, levels, model):
+    """Who does the work at the two levels a person does it.
+
+    Asking £500 and £1,500 for somebody's time and not saying whose is a worse
+    problem than any price on this site. Nothing here is written from what
+    anybody said about themselves: every line carries the published page it was
+    read from and the date it was read."""
+    src_rows = "".join(
+        f'<li><a href="{s["url"]}" rel="nofollow">{html.escape(s["url"])}</a> '
+        f'&mdash; read {html.escape(s["read"])}. {html.escape(s["what"])}</li>'
+        for s in REVIEWERS_FILE["_sources"])
+    for s in REVIEWERS_FILE["_sources"]:
+        ctx_shared["external_links"].add(s["url"])
+
+    people = ""
+    for r in REVIEWERS:
+        ctx_shared["external_links"].add(r["contact"])
+        does = [l for l in levels if l["id"] in r["does"]]
+        rec = "".join(f'<li><b>{inline(x["what"], ctx_shared)}</b>'
+                      f'<cite>{inline(x["detail"], ctx_shared)}</cite></li>'
+                      for x in r["record"])
+        buys = "".join(
+            f'<a class="n-btn n-btn--ghost" href="{NEXT_ROOT}product/?level={l["id"]}">'
+            f'ABP {html.escape(l["short_name"])}, {html.escape(l["price"])} {_ARROW}</a> '
+            for l in does)
+        people += (
+            '<div class="n-reviewer">'
+            f'<div><div class="n-reviewer__face" aria-hidden="true">'
+            f'{html.escape("".join(w[0] for w in r["name"].split()[:2]).upper())}</div>'
+            f'<p class="n-fine n-dim n-mt">On this list since {html.escape(r["since"])}.'
+            '</p></div>'
+            f'<div><h2>{html.escape(r["name"])}</h2>'
+            f'<p class="n-lede n-mt">{inline(r["one_line"], ctx_shared)}</p>'
+            f'<p class="n-mt">{inline(r["lede"], ctx_shared)}</p>'
+            f'<p class="n-note n-mt"><b>Why them:</b> {inline(r["why_them"], ctx_shared)}</p>'
+            f'<h3 class="n-mt-lg">The record</h3><ul class="n-mt">{rec}</ul>'
+            f'<p class="n-mt-lg">{buys}</p>'
+            f'<p class="n-fine n-mt"><a href="{r["contact"]}" rel="nofollow">'
+            f'{html.escape(r["contact_label"])} {_OUT}</a> &middot; '
+            f'<a href="/who/{r["id"]}/">the full record, with the work {_OUT}</a></p>'
+            '</div></div>')
+
+    body = (
+        '<section class="n-sect">'
+        '<div class="n-head"><div class="n-head__text">'
+        '<p class="n-eyebrow">Delivered by a person</p>'
+        '<h1>Who does the work.</h1>'
+        '<p class="n-mt">Two of the four levels are somebody’s time rather than a '
+        'pipeline, which is why their delivery estimates depend on a calendar. This is '
+        'who.</p></div>'
+        f'<p class="n-head__aside"><a href="/who/">The register on the store that sells '
+        f'today {_OUT}</a></p></div>'
+
+        '<p class="n-note n-note--hold"><b>Nothing below was written from what anybody told '
+        'us.</b> Every line is read off a published page, and the page and the date it was '
+        'read are here. A biography this store composed is the one thing that should not '
+        'stand next to a price this size.</p>'
+        f'<ul class="n-fine n-dim n-mt">{src_rows}</ul>'
+        f'<div class="n-mt-lg">{people}</div>'
+
+        '<p class="n-note n-mt-lg"><b>One name, and the list is built for more.</b> Adding '
+        'a second person is adding a record to one file: this page, its markdown twin, the '
+        'register and the links from every level page are generated from it.</p>'
+        '</section>')
+
+    md = ["# Who does the work\n",
+          "Two of the four levels are somebody's time rather than a pipeline. Nothing here "
+          "was written from what anybody told us: every line is read off a published page, "
+          "with the page and the date it was read.\n", "## Sources\n"]
+    for s in REVIEWERS_FILE["_sources"]:
+        md.append(f"- {s['url']} — read {s['read']}. {s['what']}")
+    for r in REVIEWERS:
+        md.append(f"\n## {r['name']}\n\n{_strip(r['one_line'])}\n\n{_strip(r['lede'])}\n")
+        md.append(f"**Why them:** {_strip(r['why_them'])}\n")
+        for x in r["record"]:
+            md.append(f"- **{_strip(x['what'])}** — {_strip(x['detail'])}")
+    return _next_emit(out_dir, NEXT_WHO, {
+        "title": "Who does the work",
+        "description": ("The named security professional who delivers the two levels a "
+                        "person delivers, and the published pages every line of the record "
+                        "was read from."),
+    }, body, model, "\n".join(md))
+
+
+def next_pages(out_dir, ctx_shared, built=None):
     levels = _next_offers()
     auds = _next_audiences()
     shapes = _next_shapes()
     model = {"levels": levels, "audiences": auds, "shapes": shapes,
              "order": _next_order_model(),
              "picker_url": NEXT_PICKER, "checkout_url": NEXT_PAY,
+             "ledger_url": NEXT_LEDGER,
              "default_level": NEXT_LEAD, "default_audience": auds[0]["id"]}
     pages = {}
     pages[NEXT_ROOT] = _next_home(out_dir, ctx_shared, levels, auds, model)
@@ -6949,6 +7382,13 @@ def next_pages(out_dir, ctx_shared):
     pages[NEXT_CART] = _next_cart(out_dir, ctx_shared, levels, model)
     pages[NEXT_PAY] = _next_pay(out_dir, ctx_shared, levels, model)
     pages[NEXT_PAID] = _next_paid(out_dir, ctx_shared, levels, model)
+    pages[NEXT_COMPARE] = _next_compare(out_dir, ctx_shared, levels, model)
+    pages[NEXT_AUDIENCE] = _next_audience_page(out_dir, ctx_shared, levels, auds, model)
+    pages[NEXT_WHO] = _next_who(out_dir, ctx_shared, levels, model)
+    # LAST, AND THAT IS THE POINT. The ledger prints where each claim is said,
+    # and it can only print the pages that have already registered a citation.
+    pages[NEXT_LEDGER] = _next_ledger(out_dir, ctx_shared, model,
+                                      dict(built or {}, **pages))
     pages.update(_next_admin(out_dir, ctx_shared, levels))
     return pages
 
@@ -6966,8 +7406,16 @@ def build(out_dir):
 
     pages = sorted((read_page(p) for p in CONTENT.rglob("*.md")),
                    key=lambda p: (p["fm"].get("order", 500), p["url"]))
+    # KEYED BOTH WAYS, ON PURPOSE. A claim registers the URL of the page that says
+    # it, which is the only key that works for a generated page: the label those
+    # carry is a slug for their own bookkeeping and several of them do not match
+    # their route — /admin/reviews/ registers "reviews". Resolving a URL from a
+    # label produced ten dead links on the ledger's first build in the new design.
+    # The path keys stay because the rest of the build reads pages by path.
     page_urls = {str(p["path"]): p["url"] for p in pages}
+    page_urls.update({p["url"]: p["url"] for p in pages})
     page_titles = {str(p["path"]): p["fm"]["title"] for p in pages}
+    page_titles.update({p["url"]: p["fm"]["title"] for p in pages})
 
     ctx_shared = {
         "claims": claims,
@@ -7052,10 +7500,13 @@ def build(out_dir):
     extra.update(status_page(out_dir, ctx_shared))
     extra.update(concepts_page(out_dir, ctx_shared))
     extra.update(design_brief_page(out_dir, ctx_shared))
-    extra.update(next_pages(out_dir, ctx_shared))
     extra.update(audience_pages(out_dir, ctx_shared))
     extra.update(reviewer_pages(out_dir, ctx_shared))
     extra.update(paid_pages(out_dir, ctx_shared))
+    # LAST. /next/ carries its own copy of the claim ledger, and that page prints
+    # which pages say each claim. It can only name the ones that have already
+    # registered a citation, so it goes after everything that makes one.
+    extra.update(next_pages(out_dir, ctx_shared, extra))
 
     # The pack manifest, machine-readable, beside the page that renders it. The
     # documents are held; the hashes are not, so a reader holding the pack can

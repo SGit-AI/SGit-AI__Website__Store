@@ -798,6 +798,11 @@ code { font-family: var(--n-mono); font-size: .88em; }
                    letter-spacing: .08em; text-transform: uppercase;
                    color: var(--n-dim); padding: 11px 12px; }
 .n-cmp__row { font-weight: 600; color: var(--n-fg); }
+.n-cmp .is-yes { color: #15803d; font-size: 17px; }
+.n-cmp .is-no  { color: var(--n-dim-2); }
+.n-cmp .is-txt { font-size: var(--n-fine); color: var(--n-dim); line-height: 1.45;
+                 text-align: left; }
+.n-cmp tbody th { text-align: left; font-weight: 400; max-width: 340px; }
 .n-cmp__why { display: block; font-weight: 400; font-size: var(--n-fine);
               color: var(--n-dim); line-height: 1.5; margin-top: 4px; }
 .n-yes { color: #1f7a4d; font-weight: 700; }
@@ -812,8 +817,15 @@ code { font-family: var(--n-mono); font-size: .88em; }
 .n-aud a:hover { border-color: var(--n-fg); text-decoration: none; }
 .n-aud a[aria-current] { border-color: var(--n-cta);
                          box-shadow: inset 0 0 0 1px var(--n-cta); }
-.n-aud__art { height: 116px; background: var(--n-tint); overflow: hidden; }
-.n-aud__art img { width: 500%; height: 100%; object-fit: cover; object-position: left top; }
+/* ONE STRIP, FIVE CARDS. The artwork is a single 1400x467 image with one object
+   per audience in it, and each card shows its own fifth of it: the image is laid
+   out five card-widths wide and pulled left by a whole card per position.
+     max-width: none is load-bearing. The reset above gives every image
+   max-width: 100%, which silently won the cascade against width: 500% and left
+   four of the five cards showing an empty box with the strip pushed off it. */
+.n-aud__art { height: 116px; background: var(--n-tint); overflow: hidden;
+              display: flex; align-items: center; }
+.n-aud__art img { flex: none; width: 500%; max-width: none; height: auto; }
 .n-aud__body { padding: 15px 16px 17px; display: flex; flex-direction: column; gap: 5px; }
 .n-aud b { font-size: 15.5px; }
 .n-aud span { font-size: var(--n-fine); color: var(--n-dim); line-height: 1.45; }

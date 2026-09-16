@@ -38,7 +38,7 @@ held the file half of a link and never looked past the #. The site was clean
 when the rule was added, which is the only comfortable moment to add one.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `de2d735b5a9b01f5dc13e7c436aaa7d519db991b`
 - Reconstructed: no
 
 ---
