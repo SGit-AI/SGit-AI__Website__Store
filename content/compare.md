@@ -9,6 +9,8 @@ wide: true
 
 {{comparison}}
 
+{{brochure}}
+
 ## How to read it
 
 **Every cell is read off something.** A price comes from `data/offers.yml`, a

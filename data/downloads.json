@@ -1,0 +1,17 @@
+{
+  "_what_this_is": "The printable forms, and what each one was rendered from. Written by tools/make_pdfs.mjs, never by hand — the hash is what makes a PDF that has drifted from the page impossible to miss.",
+  "_how_to_refresh": "python3 build.py && node tools/make_pdfs.mjs",
+  "downloads": [
+    {
+      "file": "abp-comparison.pdf",
+      "url": "/compare/",
+      "title": "What each level actually gets you",
+      "bytes": 415224,
+      "sha256": "46d1801c609d552c962016240bba92846548f0fa1c29a62c770675d0560bd823",
+      "version": "v0.3.12",
+      "generated": "2026-09-16",
+      "columns": 6,
+      "rows": 18
+    }
+  ]
+}

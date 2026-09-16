@@ -2,7 +2,7 @@
 
 The units of work for this store, as a board. Two levels, like the board this one is modelled on at sgraph.ai/en-gb/dev/workstreams/: the top board has one card per workstream and the column it sits in is derived from its own tasks, and opening a card gives that workstream's tasks in the same four columns. A workstream is never dragged — it moves because a task in it moved, which means the summary cannot disagree with the detail.
 
-**18 workstreams · 111 units of work · 63 not done.**
+**18 workstreams · 111 units of work · 62 not done.**
 
 
 ## Take money at all — next
@@ -145,7 +145,7 @@ Features down the left, five columns across — free, £10, £50, £500, £1,500
 - **CT-3 · Settle whether £10 includes a vault** — `done` — Settled by reading what the level already says. £10 is explicitly not a vault — its own page has said so since it was written — and £50 is where a vault starts. It was never a proposal; it was already true.
 - **CT-4 · Decide what support means, and who answers** — `next` — Deliberately kept off the comparison table until it is decided. Email support on the paid levels was floated in the memo and never scoped. What is true today and could be said instead: every purchase is managed directly by the person who does the work. That is stronger than a support tier and it is also a different promise, so it needs saying on purpose rather than by default.
 - **CT-5 · Build the page, free column first** — `done` — Shipped in v0.2.8 at /compare/, free column first.
-- **CT-6 · Render it as a PDF** — `queued` — Asked for as a brochure. The store already generates PDFs from built HTML, so this is a build target rather than a second artefact. _Blocked on: CT-5._
+- **CT-6 · Render it as a PDF** — `done` — Done. tools/make_pdfs.mjs renders the real page through the real print stylesheet, so nothing is retyped — a row added to data/comparison.yml is in the brochure on the next run. A4 landscape, because five columns and a wide row label do not fit portrait without shrinking the body copy past reading at arm's length. Six sheets: four of table, two of the explanation under it.It is not in the gate, for the same reason as the walkthrough and the concept screenshots — it needs a browser, and the gate is Python and node --check with nothing installed. So the drift is checked instead: the file still has to hash to what the tool recorded, its version has to be one this site really released, and a copy that lags the current release is a note rather than a failure, with the page printing the version beside the link. _Blocked on: CT-5._
 
 
 ## Product pages that show the product — next

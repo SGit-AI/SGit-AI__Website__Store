@@ -913,3 +913,53 @@ a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
 .leak p{margin:.5rem 0 0;font-size:.92rem;line-height:1.55}
 .leak-go{display:flex;flex-direction:column;gap:.5rem;align-items:flex-start;margin-top:.9rem}
 .leak-go code{font-size:.78rem}
+
+/* ---------------- the comparison table, on paper ----------------
+   "This would also make really good brochures and PDFs." The table is the one
+   page on this site whose whole value is seeing five columns at once, and that
+   is exactly what a phone cannot give and a sheet of A4 can. So the printed
+   form is a build target rather than a second artefact: tools/make_pdfs.mjs
+   renders THIS page, through these rules, with nothing retyped.
+
+   Landscape, because five columns and a wide row label do not fit portrait
+   without shrinking the body copy below the point of being readable at arm's
+   length. */
+@media print{
+  @page{size:A4 landscape;margin:11mm 10mm}
+
+  /* the chrome goes; the disclosure does NOT — it is required above main on
+     every surface this site produces, paper included */
+  .pagenav,.crumb,.tocbox,footer.site .fnav,.backtop{display:none!important}
+
+  body{background:#fff;font-size:10pt}
+  main.doc{max-width:none;padding:0}
+  h1{font-size:19pt;margin:0 0 .3rem}
+  .lead{font-size:10.5pt;margin:0 0 .7rem;max-width:none}
+
+  /* a row split across a page break loses the tick from its label, which is the
+     one thing the table exists to show */
+  .cmpt{font-size:8.6pt;page-break-inside:auto}
+  .cmpt tr{page-break-inside:avoid;break-inside:avoid}
+  .cmpt thead{display:table-header-group}   /* repeat the prices on every sheet */
+  .cmpt tbody th[scope="row"] b{font-size:8.8pt}
+  .cmpt .c-why{font-size:7.4pt;line-height:1.38}
+  .cmpt .c-sub{font-size:6.8pt}
+  .cmpt .c-price{font-size:12pt}
+  .cmpt .c-txt{font-size:7.4pt}
+  .cmpt thead th:first-child{width:30%}
+  .cmpt tbody tr:not(.c-group):hover th,.cmpt tbody tr:not(.c-group):hover td{background:none}
+  .cmpt .c-no span{color:#999}              /* --line2 is invisible on paper */
+  .cmpt tr.c-group th{background:#f2f0e9;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  /* a chip prints as a word rather than as a pill, which at 7pt is illegible.
+     (This comment was worded differently and tripped hard rule 13, which scans
+     the built CSS too and does not care that a stylesheet comment is not copy.
+     Rephrasing cost one word; a carve-out would have cost the rule.) */
+  .chip{border:0;padding:0;background:none!important;font-size:7pt;letter-spacing:.02em}
+
+  a{text-decoration:none;color:inherit}
+}
+.broch{margin:1.4rem 0 0;padding:1rem 1.1rem;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel)}
+.broch p{margin:.6rem 0 0}
+@media print{.broch{display:none}}

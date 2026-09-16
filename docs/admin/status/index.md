@@ -1,6 +1,6 @@
 # What happened to each memo
 
-**48 units done · 63 open · 19 waiting on the project lead · 8 memos.**
+**49 units done · 62 open · 19 waiting on the project lead · 8 memos.**
 
 
 ## 2026-09-16 — Stripe end to end, with their SKUs — and a customer even at 100% off (14/27 done)
@@ -97,7 +97,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-one-site-one-flow/
 - `WO-3` **Mark the files that are on the wrong side** — done — https://store.sgit.ai/boundary/#debt-marked-as-debt (v0.3.2)
 - `WO-4` **Agree the contract for the shared files** — next
 
-## 2026-09-16 — One table, five columns, and the free one first (4/6 done)
+## 2026-09-16 — One table, five columns, and the free one first (5/6 done)
 
 The comparison table every pricing page has and this store does not: features down the left, five columns across — free, £10, £50, £500, £1,500 — and a cell for every one. New page, so it can be reviewed before it is wired in.  
 https://store.sgit.ai/admin/memos/2026-09-16-the-comparison-table/
@@ -107,7 +107,7 @@ https://store.sgit.ai/admin/memos/2026-09-16-the-comparison-table/
 - `CT-3` **Settle whether £10 includes a vault** — done — https://store.sgit.ai/compare/ (v0.2.8)
 - `CT-4` **Decide what support means, and who answers** — next
 - `CT-5` **Build the page, free column first** — done — https://store.sgit.ai/compare/ (v0.2.8)
-- `CT-6` **Render it as a PDF** — queued
+- `CT-6` **Render it as a PDF** — done — https://store.sgit.ai/compare/#the-brochure, https://store.sgit.ai/assets/downloads/abp-comparison.pdf (v0.3.12)
 
 ## 2026-09-16 — Make a product page feel like a product page (4/6 done)
 

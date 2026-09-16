@@ -934,11 +934,18 @@
         {
           "id": "CT-6",
           "title": "Render it as a PDF",
-          "status": "queued",
-          "description": "Asked for as a brochure. The store already generates PDFs from built HTML, so this is a build target rather than a second artefact.",
+          "status": "done",
+          "description": "<b>Done.</b> tools/make_pdfs.mjs renders the real page through the real print stylesheet, so nothing is retyped — a row added to data/comparison.yml is in the brochure on the next run. A4 landscape, because five columns and a wide row label do not fit portrait without shrinking the body copy past reading at arm's length. Six sheets: four of table, two of the explanation under it.<br><br><b>It is not in the gate</b>, for the same reason as the walkthrough and the concept screenshots — it needs a browser, and the gate is Python and <code>node --check</code> with nothing installed. So the drift is checked instead: the file still has to hash to what the tool recorded, its version has to be one this site really released, and a copy that lags the current release is a note rather than a failure, with the page printing the version beside the link.",
           "blocked": "CT-5.",
           "source": "lead",
-          "memo": "2026-09-16-the-comparison-table"
+          "memo": "2026-09-16-the-comparison-table",
+          "shipped": {
+            "version": "v0.3.12",
+            "urls": [
+              "/compare/#the-brochure",
+              "/assets/downloads/abp-comparison.pdf"
+            ]
+          }
         }
       ]
     },

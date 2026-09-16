@@ -2550,6 +2550,14 @@ def check_every_done_unit_points_at_something():
             for u in urls:
                 path = u.split("#")[0].strip("/")
                 f = (OUT / path / "index.html") if path else (OUT / "index.html")
+                # NOT EVERY UNIT PRODUCES A PAGE. This only looked for an index.html,
+                # which is right for almost every unit and wrong for the one that
+                # produced a brochure: the PDF is emitted, downloadable and linked
+                # from the page it was rendered from, and the check called it a 404.
+                # The rule is unchanged — point at something a reader can open — and
+                # what widened is this function's idea of what the build emits.
+                if not f.exists() and path and (OUT / path).is_file():
+                    continue
                 if not f.exists():
                     fail(f"unit {task['id']}: says it landed at {u!r} and this build emits no page "
                          "there. A done unit pointing at a 404 is worse than no status page, "
@@ -2759,6 +2767,76 @@ def check_the_design_brief_points_at_pages_that_exist():
              "tell a designer which ones have checks behind them")
 
 
+
+# ------------------------------ a brochure that has drifted is worse than none --
+# The comparison table is the one page here whose value is seeing five columns at
+# once, which is why the memo asked for it on paper. tools/make_pdfs.mjs renders
+# the real page through the real print stylesheet, so nothing is retyped — but a
+# PDF is a FILE, and a file does not rebuild when the table does.
+#
+# Three things are asserted and a fourth is noted.
+#
+# The file still hashes to what the tool recorded: a PDF edited or replaced by
+# hand is the one way the "nothing is retyped" claim quietly becomes false.
+#
+# Its version is one this site has actually released, because the page prints
+# that version beside the download and a made-up one is worse than silence.
+#
+# It is published where the page says, and the walkthrough PDFs — which print
+# discount codes — are not. That split is decided by whether a file is recorded
+# in data/downloads.json, so a file dropped into assets/downloads/ by hand cannot
+# quietly reach a selling page. Unvouched-for means restricted, not published.
+#
+# And a brochure lagging the current release is a NOTE, not a failure. Forcing a
+# browser render on every release would put Playwright in the gate, which this
+# repository deliberately refuses; the page prints the version it was taken at,
+# so a stale copy is stale on its face rather than silently.
+def check_the_brochure_has_not_drifted():
+    rec_path = ROOT / "data" / "downloads.json"
+    if not rec_path.exists():
+        fail("data/downloads.json: missing — run node tools/make_pdfs.mjs")
+        return
+    rec = json.loads(rec_path.read_text())
+    released = {r["version"]
+                for r in json.loads((ROOT / "data" / "releases.json").read_text())["releases"]}
+    current = (ROOT / "admin" / "build" / "version.txt").read_text().strip()
+
+    vouched = set()
+    for d in rec["downloads"]:
+        vouched.add(d["file"])
+        src = ROOT / "assets" / "downloads" / d["file"]
+        if not src.exists():
+            fail(f"assets/downloads/{d['file']}: recorded in data/downloads.json and not on disk")
+            continue
+        got = hashlib.sha256(src.read_bytes()).hexdigest()
+        if got != d["sha256"]:
+            fail(f"assets/downloads/{d['file']}: sha256 is {got[:12]}, the record says "
+                 f"{d['sha256'][:12]} — the file has been changed without the tool")
+        if d["version"] not in released:
+            fail(f"assets/downloads/{d['file']}: says it was rendered from {d['version']}, "
+                 "which this site has never released")
+        if not (OUT / "assets" / "downloads" / d["file"]).exists():
+            fail(f"assets/downloads/{d['file']}: recorded as buyer-facing and not published "
+                 "at /assets/downloads/")
+        if d["version"] != current:
+            note(f"{d['file']} was rendered from {d['version']} and the site is now "
+                 f"{current}. The page says so beside the link. Re-run "
+                 "node tools/make_pdfs.mjs to refresh it.")
+
+    dl = ROOT / "assets" / "downloads"
+    if dl.is_dir():
+        for f in sorted(dl.iterdir()):
+            if f.name in vouched:
+                continue
+            if (OUT / "assets" / "downloads" / f.name).exists():
+                fail(f"assets/downloads/{f.name}: not recorded in data/downloads.json and "
+                     "published to a selling path anyway — unvouched-for files belong "
+                     "under /admin/downloads/")
+            if not (OUT / "admin" / "downloads" / f.name).exists():
+                fail(f"assets/downloads/{f.name}: in the repository and in neither "
+                     "published downloads directory")
+
+
 def main():
     if not OUT.exists():
         print("docs/ not built — run python3 build.py first", file=sys.stderr)
@@ -2799,6 +2877,7 @@ def main():
         check_every_done_unit_points_at_something,
         check_the_concept_critique_shows_what_it_says,
         check_the_design_brief_points_at_pages_that_exist,
+        check_the_brochure_has_not_drifted,
         check_the_evidence_is_real,
         check_the_board_is_whole, check_the_board_pages_agree_with_the_board,
         check_the_stripe_catalogue_is_the_offers, check_a_withheld_term_is_declared,

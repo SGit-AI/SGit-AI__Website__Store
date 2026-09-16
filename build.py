@@ -4486,6 +4486,36 @@ def block_comparison(ctx):
 BLOCKS["comparison"] = block_comparison
 
 
+def block_brochure(ctx):
+    """The printable form of this page, with what it was rendered from.
+
+    A brochure that has drifted from the page is worse than no brochure, so the
+    version and the date it was taken are printed beside the link rather than
+    left for a reader to wonder about."""
+    d = next((x for x in DOWNLOADS["downloads"] if x["url"] == "/compare/"), None)
+    if not d:
+        raise SystemExit("compare: no brochure in data/downloads.json — "
+                         "run node tools/make_pdfs.mjs")
+    stale = d["version"] != SITE["version"]
+    note = ("" if not stale else
+            f' <span class="dim">This copy was taken at {html.escape(d["version"])} and the '
+            f'page is now {html.escape(SITE["version"])} — the rows may have moved '
+            "since.</span>")
+    return (
+        '<div class="broch" id="the-brochure">'
+        f'<a class="buy" href="/assets/downloads/{d["file"]}" download>'
+        'Download the comparison &mdash; PDF</a>'
+        f'<p class="small dim"><b>{d["columns"] - 1} columns, {d["rows"]} rows, '
+        f'{d["bytes"] // 1024}KB, A4 landscape.</b> Rendered from this page at '
+        f'{html.escape(d["version"])} on {html.escape(d["generated"])} — not '
+        "retyped, so a row added here is in the brochure on the next run."
+        f'{note}</p></div>')
+
+
+BLOCKS["brochure"] = block_brochure
+
+
+
 # ---------------------------------------------------------- who runs the work ----
 # THE TWO UPPER LEVELS ARE SOMEBODY'S WORK AND THIS STORE HAD NEVER SAID WHOSE.
 # Asking £1,500 for a security review from nobody in particular is a worse problem
@@ -5300,6 +5330,7 @@ def concepts_page(out_dir, ctx_shared):
 
 BRIEF_URL = "/admin/design-brief/"
 DESIGN_BRIEF = json.loads((DATA / "design-brief.json").read_text())
+DOWNLOADS = json.loads((DATA / "downloads.json").read_text())
 
 
 def _brief_tokens():
@@ -5575,15 +5606,28 @@ def build(out_dir):
 
     # static assets, verbatim
     shutil.copytree(ASSETS, out_dir / "assets")
-    # The two walkthrough PDFs live under /admin/ rather than /assets/ for one
-    # reason: they print the walkthrough discount codes, and the check that keeps
-    # those codes off every other file in the built site exempts /admin/ alone.
-    # Their names carry the version they were taken at, so a stale copy is stale
-    # on its face rather than silently.
+    # WHERE A DOWNLOAD LANDS DEPENDS ON WHETHER ANYTHING VOUCHES FOR IT.
+    #
+    # The two walkthrough PDFs live under /admin/ for one reason: they print the
+    # walkthrough discount codes, and the check that keeps those codes off every
+    # other file in the built site exempts /admin/ alone. Their names carry the
+    # version they were taken at, so a stale copy is stale on its face.
+    #
+    # The comparison brochure is a different animal: it is a selling document,
+    # it carries no codes, and a buyer being sent to /admin/ to fetch it would be
+    # absurd. So the rule is the safe way round — a file RECORDED in
+    # data/downloads.json was produced by tools/make_pdfs.mjs from a named page
+    # and is buyer-facing; anything else in the folder is unvouched-for and stays
+    # behind /admin/. Adding a file to that directory by hand does not quietly
+    # publish it.
     _dl = ASSETS / "downloads"
     if _dl.is_dir():
-        shutil.copytree(_dl, out_dir / "admin" / "downloads")
-        shutil.rmtree(out_dir / "assets" / "downloads")
+        vouched = {d["file"] for d in DOWNLOADS["downloads"]}
+        (out_dir / "admin" / "downloads").mkdir(parents=True, exist_ok=True)
+        for f in sorted(_dl.iterdir()):
+            if f.name not in vouched:
+                shutil.copy2(f, out_dir / "admin" / "downloads" / f.name)
+                (out_dir / "assets" / "downloads" / f.name).unlink()
     if FILES.exists():
         shutil.copytree(FILES, out_dir / "files")
 
