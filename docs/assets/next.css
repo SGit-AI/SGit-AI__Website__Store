@@ -977,6 +977,24 @@ code { font-family: var(--n-mono); font-size: .88em; }
 .n-totals .is-total { border-top: 1px solid var(--n-line-2); padding-top: 12px;
                       color: var(--n-dim); font-size: var(--n-small); }
 
+/* THE HAND-OFF. One row per line of the order, because one payment link sells
+   one fixed set of lines and an order here may be several. The rows are a list
+   rather than a grid: a two-line order and a five-line order should read the
+   same way, and the button is the thing the eye is looking for in both. */
+.n-buys { display: grid; gap: 14px; }
+.n-buys__row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px;
+               border: 1px solid var(--n-line); border-radius: var(--n-r-card);
+               padding: 16px 20px; }
+.n-buys__row > div { display: grid; gap: 2px; margin-right: auto; }
+.n-buys__row b { font-size: 17px; letter-spacing: -.01em; }
+.n-buys__row span { color: var(--n-dim); font-size: var(--n-small); }
+/* A line with no link says which of the six reasons, in the row where its button
+   would be. Not a greyed rectangle: there is nothing to press, and a control that
+   looks pressable and is not is the thing this store keeps refusing to ship. */
+.n-buys__off { color: var(--n-dim); font-size: var(--n-small); max-width: 42ch;
+               text-align: right; }
+.n-buys + p, .n-buys p { margin-top: 6px; }
+
 .n-empty { border: 1px solid var(--n-line); border-radius: var(--n-r-card);
            background: var(--n-tint-2); padding: 56px 24px; text-align: center; }
 .n-empty h2 { font-size: 30px; margin-bottom: 10px; }

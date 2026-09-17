@@ -947,6 +947,129 @@ def check_checkout_links():
                  "to a payment API, so there is no reason for one to be here")
 
 
+# ---------------------------------------- the till, and which state it is in ---
+# FOURTEEN SENTENCES THAT WERE TRUE AND WOULD BECOME LIES.
+#
+# data/offers.yml promises that pasting one URL into a `checkout_url` is the whole
+# of turning a checkout on. It was not: seventeen sentences across these pages said
+# "no payment link has been issued on any level", and every one of them would have
+# survived the paste. A store that tells a buyer nothing can be bought here while
+# taking their money is worse than a store with no checkout at all.
+#
+# So build.py's till() switch writes each of them twice and this check holds the
+# output to whichever state the data is actually in. Both directions, because both
+# are a lie in the other state: an off-state sentence after the paste, and an
+# on-state sentence before it.
+OFF_STATE_SAYINGS = (
+    "No payment link has been issued",
+    "no payment link has been issued",
+    "Nothing here can be bought",
+    "Nothing can be bought here",
+    "never been through a real sale",
+    "nothing can be paid for here",
+)
+ON_STATE_SAYINGS = (
+    "One button per line",
+    "The till is on",
+    "This page cannot tell you a payment cleared",
+)
+# Pages that are a RECORD rather than a shop front. A release note or an archived
+# design has to be able to quote what was true when it was written; correcting the
+# past is the failure this site has a whole section about.
+TILL_EXEMPT = ("versions/", "v1/", "ledger/", "disclosures/", "admin/")
+
+
+def check_the_till_says_which_state_it_is_in():
+    index = json.loads((OUT / "assets" / "site-index.json").read_text())
+    live = [o["id"] for o in index["offers"] if (o.get("checkout_url") or "")]
+    banned = ON_STATE_SAYINGS if not live else OFF_STATE_SAYINGS
+    why = ("no offer carries a checkout_url, so nothing here can be paid for"
+           if not live else
+           f"{', '.join(live)} carries a checkout link, so something here CAN be paid for")
+    seen = set()
+    for rel, text in texts():
+        if not rel.endswith(".html") or rel.startswith(TILL_EXEMPT):
+            continue
+        seen.add(rel)
+        flat = " ".join(strip_tags(text).split())
+        for saying in banned:
+            if saying in flat:
+                fail(f"{rel}: says {saying!r}, and {why}. build.py's till() writes both "
+                     "states and this page is rendering the wrong one")
+    # A check over a set that the exemptions have quietly emptied passes forever. The
+    # six pages of the journey are the ones this is actually about, so they are named
+    # rather than counted: if an exemption ever swallows one, this says which.
+    missing = [p for p in NEXT_PAGES if p not in seen]
+    if missing:
+        fail(f"the till's state was not checked on {missing} — those are the pages that "
+             "sell, and an exemption that reaches them makes this check ornamental")
+    if len(seen) < 60:
+        fail(f"only {len(seen)} pages were read for the till's state; the store is most "
+             "of this site, so this check is not looking at it")
+
+
+# ------------------------------------------- what travels to the payment page ---
+# A CHECKOUT URL IS A URL A STRANGER'S PHONE OPENS, and the query on it is the only
+# thing this site ever sends anywhere. Two parameters, built in one function, and
+# nothing else:
+#
+#   client_reference_id   the six-character order reference this browser generated.
+#                         It is what makes the several links of one order find each
+#                         other again on the provider's side.
+#   prefilled_promo_code  the discount code, and ONLY while it is still in hand from
+#                         the address. It is never read back out of storage, because
+#                         it is never put there.
+#
+# What is NOT on that URL is the point of the check: no email, no name, no shape, no
+# quantity, no page this browser has been on, no amount. A third parameter added
+# without a ruling is this store sending something nobody decided to send.
+HANDOVER_KEYS = ("client_reference_id", "prefilled_promo_code")
+
+
+def check_the_handover_sends_only_the_reference():
+    js = (OUT / "assets" / "next.js").read_text()
+
+    m = re.search(r"function payHref\(l\) \{(.*?)\n  \}", js, re.S)
+    if not m:
+        fail("assets/next.js: has no payHref — the one place a checkout URL is built")
+        return
+    body = m.group(1)
+
+    built = set(re.findall(r"'(?:&|\?)?([a-z_]+)='", body))
+    extra = built - set(HANDOVER_KEYS)
+    if extra:
+        fail(f"assets/next.js: payHref puts {sorted(extra)} on a checkout URL. The "
+             f"contract is {list(HANDOVER_KEYS)} and nothing else, because that URL is "
+             "the only thing this site sends anywhere")
+    for k in HANDOVER_KEYS:
+        if k not in body:
+            fail(f"assets/next.js: payHref does not carry {k!r} — "
+                 + ("an order whose lines cannot be joined up on the provider's side"
+                    if k == "client_reference_id" else
+                    "a buyer who is shown a discounted price and charged the full one"))
+
+    # The reference must survive the field it is being put in. Stripe accepts
+    # letters, digits, hyphen and underscore in client_reference_id; the generator's
+    # alphabet is letters and digits with one hyphen, and that has to stay true or
+    # the reference silently arrives mangled or not at all.
+    alpha = re.search(r"var a = '([^']+)', out = '';", js)
+    if not alpha:
+        fail("assets/next.js: the reference generator's alphabet is not where it was")
+    elif re.search(r"[^A-Za-z0-9]", alpha.group(1)):
+        fail(f"assets/next.js: the reference alphabet {alpha.group(1)!r} has a character "
+             "outside letters and digits. client_reference_id takes letters, digits, "
+             "hyphen and underscore, and a reference that does not survive the field is "
+             "an order nobody can join back up")
+
+    # The plaintext code is held in a variable and never written anywhere. A store
+    # that keeps it has to say so, and this store says it does not.
+    for bad in (r"setItem\(\s*[^)]*CODE_PLAIN", r"CODE_PLAIN\s*\)?\s*;?\s*\/\/\s*store",
+                r"sessionStorage[^\n]*CODE_PLAIN", r"document\.cookie[^\n]*CODE_PLAIN"):
+        if re.search(bad, js):
+            fail("assets/next.js: the plaintext discount code reaches storage. It is held "
+                 "for the life of one page and nowhere else, and the pages say so")
+
+
 # THE RULE THAT MOVED, AND EXACTLY HOW FAR.
 #
 # Until v0.1.15 there was no form, input, textarea or select anywhere in docs/, full
@@ -3574,6 +3697,8 @@ def main():
         check_the_build_reads_nothing_git_ignores,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_the_disclosure_strip_stays_one_line,
+        check_the_till_says_which_state_it_is_in,
+        check_the_handover_sends_only_the_reference,
         check_triage_not_raw_findings,
         check_pack_area_is_honest,
         check_delivery_estimates,

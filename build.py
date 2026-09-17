@@ -805,6 +805,56 @@ CHECKOUT_WHY = {
 }
 
 
+# ---------------------------------------------------------------- the till ---
+# WHETHER ANYTHING ON THIS SITE CAN BE PAID FOR, TODAY.
+#
+# Fourteen sentences across these pages said "no payment link has been issued on
+# any level". Every one of them was true and every one of them becomes a LIE the
+# moment a URL is pasted into data/offers.yml — and the file's own comment
+# promises that pasting one line is the whole of turning a checkout on. A store
+# that tells a buyer nothing can be bought here while taking their money is worse
+# than a store with no checkout at all, so the promise and the copy are held
+# together here rather than by whoever does the paste remembering fourteen places.
+#
+# check_the_till_says_which_state_it_is_in fails the release if a sentence from the
+# wrong state reaches the output.
+def till_is_off():
+    return not any((o.get("checkout_url") or "").strip() for o in OFFERS)
+
+
+def till(off, on):
+    """The same thing said twice: once while no link exists, once after one does."""
+    return off if till_is_off() else on
+
+
+def _the_ledger_must_move_with_the_till():
+    """THE ONE SENTENCE THE till() SWITCH CANNOT REACH.
+
+    The ledger is data. The claim `checkout-links-not-issued` says in so many
+    words that no payment link has been created for any offer on this site, it is
+    cited by chips on the order and the checkout, and it is the store's own
+    evidence for its most load-bearing promise. A pasted checkout_url makes it
+    false, and no amount of branching in this file can fix a sentence that lives
+    in data/claims.yml.
+
+    So the build stops rather than publishing a ledger entry that contradicts the
+    page citing it. An id is a key and stays; what has to move is its state and
+    its words. The message says exactly which."""
+    if till_is_off():
+        return
+    c = next((c for c in CLAIMS_ALL if c["id"] == "checkout-links-not-issued"), None)
+    if c and c["state"] == "absent":
+        raise SystemExit(
+            "build: a checkout_url is set in data/offers.yml, and data/claims.yml still "
+            "carries claim 'checkout-links-not-issued' with state: absent — a ledger "
+            "saying no payment link exists, cited by the very page that now has one.\n"
+            "  Edit that claim: set its state, rewrite its `claim:` to say which levels "
+            "carry a link and what the gate still holds them to, and date it today.\n"
+            "  The id does not change: it is a key, and every page that cites it and "
+            "every release that recorded it point at this one."
+        )
+
+
 def checkout_html(o, ctx):
     """The checkout control for one offer: a live button where a link exists, and
     a sentence saying which of the six reasons there is no button where it does
@@ -4105,16 +4155,29 @@ def _coupon_rank(c):
 
 
 def coupon_reconciliation():
-    """The three coupons, against the seven codes this store honours.
+    """The three coupons, against the eight codes this store honours.
 
-    THE SHAPE IS THREE-TO-SEVEN AND THAT IS CORRECT. A coupon carries a
+    MOST OF THE SHAPE IS MANY-TO-FEW AND THAT IS CORRECT. A coupon carries a
     percentage; a promotion code is the string a person is handed and is a
-    separate object attached to one. Five of this store's seven codes are at a
-    hundred per cent, and they exist as five rather than one so that an order
+    separate object attached to one. Six of this store's eight codes are at a
+    hundred per cent, and they exist as six rather than one so that an order
     record says WHICH of them produced it — a beta tester, an agent driving a
     script, somebody at a stand. That distinction lives in the promotion code, not
-    in the coupon, which is why three coupons is the right number and why zero
-    promotion codes is the thing still missing."""
+    in the coupon.
+
+    THE EXCEPTION IS DOORSOPEN AND IT NEEDS A COUPON OF ITS OWN. It is
+    `levels: [pack, vault]`, and a promotion code cannot carry that restriction:
+    a promotion code restricts by first transaction and by minimum amount, and
+    scoping a discount to particular products is a property of the COUPON, through
+    applies_to.products. On the shared hundred-per-cent coupon it would take the
+    whole of a level-four deposit off — which is exactly what that record's own
+    comment says must never be possible, because what a published code gives away
+    has to be a thing that costs nobody a day.
+
+    This function groups by percentage because that is what a coupon is. The
+    product scoping is not visible in that grouping and so it is said here and on
+    the rail page rather than being left to be discovered by whoever creates the
+    codes."""
     live = {c["pct"]: c for c in STRIPE_PRODUCTS.get("coupons", [])}
     rows = []
     for pct in sorted({d["pct"] for d in DISCOUNTS}, reverse=True):
@@ -5752,6 +5815,22 @@ def _next_offers():
             # with its reason on it rather than as a button that does nothing. The
             # day a link is issued in data/offers.yml the button turns on by itself.
             "buyable": bool((o.get("checkout_url") or "").strip()),
+            # THE LINK ITSELF, or null — never a placeholder. The engine appends
+            # the order reference and, when it has one, the promotion code; it
+            # appends nothing else and a check holds it to that. What the link
+            # takes is `pay_now_pct` of the price, because that is the half the
+            # provider has a product for: at level 3 and 4 the DEPOSIT product is
+            # exactly a fifth, and the balance is invoiced rather than linked.
+            "checkout_url": (o.get("checkout_url") or "").strip() or None,
+            "checkout_mode": o["checkout_mode"],
+            # Two different sentences and they are not interchangeable. `checkout_off`
+            # answers "why is there no button here", which is what somebody looking at
+            # the gap in a checkout row is asking. `checkout_why` answers "why can this
+            # kind of offer have one at all", which belongs on a page read with a card
+            # in hand. Showing the second where the first belongs reads as a non-sequitur
+            # — "one price means one standing payment link" under a level that has none.
+            "checkout_off": CHECKOUT[o["checkout_mode"]][1],
+            "checkout_why": CHECKOUT_WHY[o["checkout_mode"]],
             "art": f"/assets/next/art/{NEXT_ART_BY_OFFER[o['id']]}",
             "url": f"{NEXT_ROOT}product/?level={o['id']}",
             "included": o.get("next_included") or [],
@@ -6108,10 +6187,15 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
         f'<p class="n-head__aside"><a href="/compare/">Compare what arrives {_OUT}</a></p>'
         '</div>'
         f'<div class="n-grid n-grid--4">{cards}</div>'
-        '<p class="n-note n-note--hold n-mt"><b>Nothing here can be bought yet.</b> No '
-        'payment link has been issued on any level, so every action on these four cards '
-        'opens the product rather than a checkout. That is true of the store selling '
-        'today as well; it is not a property of this design.</p>'
+        '<p class="n-note n-note--hold n-mt">' + till(
+            '<b>Nothing here can be bought yet.</b> No payment link has been issued on any '
+            'level, so every action on these four cards opens the product rather than a '
+            'checkout. That is true of the store selling today as well; it is not a '
+            'property of this design.',
+            '<b>These cards open the product, not a checkout.</b> A line is added to the '
+            'order this browser holds, and the money is taken later, on the payment '
+            'provider\u2019s own page. Nothing is typed on this site at any point.')
+        + '</p>'
         '<p class="n-note n-mt"><b>Artwork represents digital deliverables.</b> Every '
         'price here is read from the same file the live store is built from, and '
         f'<a href="{NEXT_ROOT}product/?level={lead["id"]}">ABP '
@@ -6176,9 +6260,13 @@ def _next_home(out_dir, ctx_shared, levels, auds, model):
         md.append(f"- **{a['name']}** — {a['door']} ({SITE['base']}/are/{a['id']}/)")
     md.append("\n## What an ABP is\n\nGrant, mandate, delta and barrier, for one deployment. "
               "It describes and does not judge, so it carries no score.\n")
-    md.append("\n## What this page is not\n\nIt is not the shop. Nothing here can be bought "
-              "— no payment link has been issued on any level, so every buying action is "
-              f"a disabled control that says so. See {SITE['base']}/admin/next/.\n")
+    md.append("\n## What this page is not\n\n" + till(
+        "It is not the shop. Nothing here can be bought — no payment link has been issued "
+        "on any level, so every buying action is a disabled control that says so.",
+        "It is not the checkout. Every buying action here opens the product page, where a "
+        "line is added to the order this browser holds; the money is taken on the payment "
+        "provider's own page, from the checkout.")
+        + f" See {SITE['base']}/admin/next/.\n")
 
     return _next_emit(out_dir, NEXT_ROOT, {
         # ON A PHONE THE DOORS COME FIRST. The hero alone is 1.8 screens at 390px
@@ -6337,9 +6425,11 @@ def _next_product(out_dir, ctx_shared, levels, auds, model):
         'Add ABP ' + html.escape(lead["short_name"]) + ' to your order ' + _ARROW + '</button>'
         f'<p class="n-buy__added" id="p-added" hidden><a href="{NEXT_CART}">'
         f'Added &mdash; open your order {_OUT}</a></p>'
-        '<p class="n-buy__note">Kept in this browser. No payment link has been issued on any '
-        'level, so nothing here takes money; the checkout says what would happen when one '
-        'is.</p>'
+        '<p class="n-buy__note">Kept in this browser. ' + till(
+            'No payment link has been issued on any level, so nothing here takes money; '
+            'the checkout says what would happen when one is.',
+            'Nothing here takes money: the checkout hands you to the payment provider, on '
+            'their page, carrying your order reference and nothing else.') + '</p>'
         '<details class="n-buy__change"><summary>Change level</summary>'
         '<div class="n-switch n-mt" role="group" aria-label="Choose a level">' + level_rows
         + '</div></details>'
@@ -6370,10 +6460,13 @@ def _next_product(out_dir, ctx_shared, levels, auds, model):
             md.append("Included: " + "; ".join(l["included"]))
         if l["excluded"]:
             md.append("Outside this level: " + "; ".join(l["excluded"]))
-    md.append("\n## Nothing can be bought here\n\nNo payment link has been issued on any "
-              "level, so every buying action on this page is a disabled control carrying "
-              "its own reason. There is no form, input or field anywhere in this site's "
-              "output and a build check holds that line.\n")
+    md.append(till(
+        "\n## Nothing can be bought here\n\nNo payment link has been issued on any level, "
+        "so every buying action on this page is a disabled control carrying its own reason. ",
+        "\n## Nothing is typed here\n\nA buying action on this page adds a line to the "
+        "order this browser holds. The card is typed on the payment provider's page. ")
+        + "There is no form, input or field anywhere in this site's output and a build "
+          "check holds that line.\n")
 
     return _next_emit(out_dir, NEXT_ROOT + "product/", {
         "title": "ABP Pack, Vault, Tailored and Reviewed",
@@ -6418,10 +6511,17 @@ def _next_admin(out_dir, ctx_shared, levels):
         f'replaced is kept at <a href="{V1_ROOT}">the previous design</a> — nine pages, '
         'noindex, each saying above the fold that it is not the live one.</p>'
 
-        '<div class="cx-verdict"><b>Nothing here can be bought yet.</b>'
-        '<p>No payment link has been issued on any level, so every buying action renders as '
-        'a disabled control carrying its own reason. That was true of the design this '
-        'replaced too; it is a property of the till, not of the design.</p></div>'
+        '<div class="cx-verdict">' + till(
+            '<b>Nothing here can be bought yet.</b>'
+            '<p>No payment link has been issued on any level, so every buying action renders '
+            'as a disabled control carrying its own reason. That was true of the design this '
+            'replaced too; it is a property of the till, not of the design.</p>',
+            '<b>The till is on.</b>'
+            '<p>At least one level carries a payment link, so the checkout renders one button '
+            'per line of the order and each hands the buyer to the provider carrying the '
+            'order reference. Nothing comes back: there is no server here to receive a '
+            'webhook, so this site can say a line was sent and never that it was paid.</p>')
+        + '</div>'
 
         '<h2 id="swap">What moved, and what did not</h2>'
         '<p><b>Nine pages existed in both designs</b>, so the new one took the address and '
@@ -6636,7 +6736,9 @@ def _next_admin(out_dir, ctx_shared, levels):
         'checkout (<em>load example order</em>, <em>show 100% code applied</em>) are '
         'design states, not store controls. v4’s checkout button reads as live and '
         'says <em>preview</em> in a callout underneath; this one is a disabled control '
-        'that carries its reason, because no payment link has been issued and a button '
+        'that carries its reason ' + till('while no payment link has been issued',
+                                            'on any level that has no link yet')
+        + ', because a button '
         'that looks live and does nothing is the one thing a store must never ship. The '
         'panel’s scenario selector and side-effect ladder are placeholders in the '
         'pack itself and stay out until the data exists. The post-purchase vault frame '
@@ -6663,8 +6765,12 @@ def _next_admin(out_dir, ctx_shared, levels):
     md = ["# /next/ — the next store\n",
           "The v3 design direction **01 / ABP first**, built here. It runs beside the store "
           "that sells today rather than replacing it.\n",
-          "\n## Nothing on /next/ can be bought\n\nNo payment link has been issued on any "
-          "level, so every buying action renders as a disabled control carrying its reason.\n",
+          till("\n## Nothing on /next/ can be bought\n\nNo payment link has been issued on "
+               "any level, so every buying action renders as a disabled control carrying "
+               "its reason.\n",
+               "\n## The till is on\n\nAt least one level carries a payment link. The "
+               "checkout renders one button per line and each hands the buyer to the "
+               "provider carrying the order reference and nothing else.\n"),
           "\n## One section of the design is not built\n\nThe v3 pages carry a mission line "
           "that uses a word this site bars absolutely, on every page, with no allowlist and "
           "no carve-out for a quotation. Their own notes record that the project lead asked "
@@ -6875,8 +6981,11 @@ def _next_till(levels, shapes):
             f'<p class="n-fine" id="panel-added" hidden><a href="{NEXT_CART}">'
             f'Added &mdash; open your order {_OUT}</a></p>'
             '<p class="n-fine n-dim">These add a line to the order held in this browser. '
-            'No payment link has been issued on any level, so nothing here takes money '
-            f'&mdash; <a href="{NEXT_PAY}">what would happen when one is {_OUT}</a></p>'
+            + till('No payment link has been issued on any level, so nothing here takes money '
+                   f'&mdash; <a href="{NEXT_PAY}">what would happen when one is {_OUT}</a>',
+                   'Nothing here takes money '
+                   f'&mdash; <a href="{NEXT_PAY}">the checkout, and what it sends {_OUT}</a>')
+            + '</p>'
             '</div>')
 
 
@@ -7093,10 +7202,13 @@ def _next_cart(out_dir, ctx_shared, levels, model):
         'another device and it is not there.</p></div>'
         '</div>'
 
-        '<p class="n-note n-note--hold n-mt-lg"><b>No payment link has been issued on any '
-        'level.</b> An order can be built here in full, and the step that takes money is '
-        'the one that does not exist yet. The next page says exactly what would happen '
-        'and where.</p>'
+        '<p class="n-note n-note--hold n-mt-lg">' + till(
+            '<b>No payment link has been issued on any level.</b> An order can be built here '
+            'in full, and the step that takes money is the one that does not exist yet. The '
+            'next page says exactly what would happen and where.',
+            '<b>Nothing is typed on this site.</b> The order is built here and the step that '
+            'takes money is on the payment provider\u2019s own page. The next page says '
+            'exactly what reaches them, and what does not.') + '</p>'
         f'<p class="n-mt">{_next_claim_chip("checkout-links-not-issued", ctx_shared, NEXT_CART)}</p>'
         '</div></section>')
 
@@ -7109,8 +7221,15 @@ def _next_cart(out_dir, ctx_shared, levels, model):
         md.append(f"| ABP {l['short_name']} | "
                   f"`{PRODUCTS['meta']['sku_prefix']}-&lt;shape&gt;-{l['cart_code']}` | "
                   f"{l['price']} | {_strip(l['split']) or '—'} | {l['clock']} |")
-    md.append("\n## What leaves the page\n\nThe amount and the order reference, when a "
-              "payment link exists. No payment link has been issued on any level.\n")
+    # WHAT LEAVES IS THE REFERENCE, NOT THE AMOUNT — and this line used to say both.
+    # The amount is on the provider's own product; a payment link carries its price
+    # and this store cannot set it in a URL. Saying "the amount" implied a control
+    # over the charge that does not exist, which is the wrong half to be vague about.
+    md.append("\n## What leaves the page\n\nYour order reference, and the discount code "
+              "when you arrived with one \u2014 nothing else. The amount is the provider's, "
+              "on the provider's own product. " + till(
+                  "No payment link has been issued on any level.",
+                  "At least one level carries a payment link.") + "\n")
     return _next_emit(out_dir, NEXT_CART, {
         "title": "Your order",
         "description": ("The order you have built, held in this browser: what you chose, "
@@ -7130,8 +7249,12 @@ def _next_pay(out_dir, ctx_shared, levels, model):
         '<p class="n-eyebrow">Checkout</p>'
         '<h1>Check what is due, and when.</h1>'
         '<p class="n-lede n-mt">Your policy and your level stay attached to one order '
-        'reference. That reference and an amount are the only two things that would '
-        'reach a payment provider.</p>'
+        'reference. ' + till(
+            'That reference is the only thing that would reach a payment provider \u2014 '
+            'the amount is theirs, on their own product.',
+            'That reference is the only thing that reaches the payment provider, with your '
+            'discount code when you arrived with one. The amount is theirs, on their own '
+            'product.') + '</p>'
 
         '<div class="n-mt-lg" id="checkout">'
         '<div class="n-empty"><h2>Nothing to check out</h2>'
@@ -7150,21 +7273,34 @@ def _next_pay(out_dir, ctx_shared, levels, model):
         'server to receive one. A build check holds each of those three.</p></div>'
         '</div>'
 
-        '<p class="n-note n-note--hold n-mt-lg"><b>No payment link has been issued on any '
-        'level.</b> The control above carries that reason instead of a price, and it is a '
-        'disabled control rather than a button that quietly does nothing. The day a link '
-        'is recorded against a level in the store’s own data, that button turns on by '
-        f'itself. <a href="/paying/">The two rails, and why they never meet {_OUT}</a></p>'
+        '<p class="n-note n-note--hold n-mt-lg">' + till(
+            '<b>No payment link has been issued on any level.</b> The control above carries '
+            'that reason instead of a price, and it is a disabled control rather than a '
+            'button that quietly does nothing. The day a link is recorded against a level in '
+            'the store\u2019s own data, that button turns on by itself.',
+            '<b>One button per line, because one payment link sells one line.</b> Each one '
+            'opens the provider\u2019s own page carrying your order reference, which is how '
+            'the lines of one order find each other again on their side. Nothing comes back: '
+            'there is no server here to receive it, so this store can tell you a line was '
+            'sent and can never tell you it was paid.')
+        + f' <a href="/paying/">The two rails, and why they never meet {_OUT}</a></p>'
         f'<p class="n-mt">{_next_claim_chip("checkout-links-not-issued", ctx_shared, NEXT_PAY)}</p>'
         '</div></section>')
 
     md = ["# Checkout\n",
-          "No payment link has been issued on any level, so nothing can be paid for here. "
-          "What follows is what would happen when one is.\n",
+          till("No payment link has been issued on any level, so nothing can be paid for "
+               "here. What follows is what would happen when one is.\n",
+               "One button per line of your order, because one payment link sells one "
+               "line. Each opens the provider's own page.\n"),
           "## The hand-off\n",
           "- **What the provider asks for:** name, email address, card details, on its own "
           "page and under its own terms.\n"
-          "- **What this store sends:** an amount and an order reference.\n"
+          "- **What this store sends:** an order reference, and the discount code when you "
+          "arrived with one. Not the amount \u2014 that is the provider's, on the "
+          "provider's own product.\n"
+          "- **What comes back:** the provider's own session identifier, if their page is "
+          "set to return one. Not a confirmation. There is no server here to ask whether "
+          "the payment cleared, so this store never says that it did.\n"
           "- **What this store receives:** nothing. There is no form, no input and no field "
           "anywhere in this site's output, no network request from any page that sells "
           "anything, and no server to receive one.\n"]
@@ -7178,10 +7314,19 @@ def _next_pay(out_dir, ctx_shared, levels, model):
 def _next_paid(out_dir, ctx_shared, levels, model):
     """What lands after a payment, for each of the four levels.
 
-    Nothing has been paid for: no payment link has been issued on any level. So
-    this page shows the order THIS BROWSER is holding rather than dressing an
-    example as a purchase, and the four panels below it are what the store's own
-    data says happens next at each level."""
+    THIS PAGE SHOWS THE ORDER THIS BROWSER IS HOLDING, and never an example
+    dressed as a purchase. That was the right shape while no payment link existed
+    and it is still the right shape now that one can: a payment link's return
+    address is set once in the provider's dashboard and is the same for every
+    buyer, so the store's reference cannot survive the round trip. It does not
+    need to — the browser that built the order still has it.
+
+    What the provider CAN put in the address is its own session identifier, and
+    the engine reads it. That is evidence the buyer came back through a session.
+    It is not evidence the money moved, and confirming it would take a server
+    call this site has no server to make, so the page says "you came back" and
+    never "you paid". The four panels below are what the store's own data says
+    happens next at each level."""
     for cid in ("post-sale-pages-exist", "receipt-reference-untested"):
         ctx_shared["claim_uses"].setdefault(cid, set()).add(NEXT_PAID)
 
@@ -7217,10 +7362,16 @@ def _next_paid(out_dir, ctx_shared, levels, model):
         '<div class="n-narrow">'
         '<p class="n-eyebrow">After the payment</p>'
         '<h1>What lands, and when.</h1>'
-        '<p class="n-lede n-mt">This is the page a payment would return to. No payment '
-        'link has been issued on any level, so what it can show is the order this browser '
-        'is holding &mdash; with its real reference, its real SKUs and its real totals '
-        '&mdash; and not a receipt for something nobody bought.</p>'
+        '<p class="n-lede n-mt">' + till(
+            'This is the page a payment would return to. No payment link has been issued on '
+            'any level, so what it can show is the order this browser is holding &mdash; '
+            'with its real reference, its real SKUs and its real totals &mdash; and not a '
+            'receipt for something nobody bought.',
+            'This is the page a payment returns to. What it shows is the order this browser '
+            'is holding &mdash; a payment link\u2019s return address is set once and is the '
+            'same for every buyer, so your reference cannot travel back in it, and it does '
+            'not need to. Your receipt comes from the provider.')
+        + '</p>'
 
         '<p class="n-mt-lg"><button class="n-btn n-btn--ghost n-print" type="button" '
         'data-print>Print this page</button></p>'
@@ -7243,18 +7394,27 @@ def _next_paid(out_dir, ctx_shared, levels, model):
         'mandate, the recomputed delta and the sign-off are things in your own history that '
         'you can go and look at.</p>'
 
-        '<p class="n-note n-note--hold n-mt-lg"><b>The reference has never been through a '
-        'real sale.</b> It is generated in the browser, it is the same shape the store '
-        'that sells today generates, and no order carrying one has been placed &mdash; so '
-        'nothing has confirmed that a reference read off this page matches a reference on '
-        'a provider’s record.</p>'
+        '<p class="n-note n-note--hold n-mt-lg">' + till(
+            '<b>The reference has never been through a real sale.</b> It is generated in the '
+            'browser, it is the same shape the store that sells today generates, and no '
+            'order carrying one has been placed &mdash; so nothing has confirmed that a '
+            'reference read off this page matches a reference on a provider\u2019s record.',
+            '<b>This page cannot tell you a payment cleared.</b> It shows the order this '
+            'browser holds, and the provider\u2019s own session identifier when you came '
+            'back through one. Confirming a payment would mean asking the provider, and '
+            'there is no server here to ask from \u2014 so this page never says you paid, '
+            'only that you came back.')
+        + '</p>'
         f'<p class="n-mt">{_next_claim_chip("receipt-reference-untested", ctx_shared, NEXT_PAID)} '
         f'{_next_claim_chip("post-sale-pages-exist", ctx_shared, NEXT_PAID)}</p>'
         '</div></section>')
 
     md = ["# What lands, and when\n",
-          "The page a payment would return to. No payment link has been issued on any "
-          "level, so this page shows the order held in this browser and nothing else.\n"]
+          till("The page a payment would return to. No payment link has been issued on any "
+               "level, so this page shows the order held in this browser and nothing else.\n",
+               "The page a payment returns to. It shows the order held in this browser, "
+               "because a payment link's return address is the same for every buyer and "
+               "cannot carry your reference back.\n")]
     for l in levels:
         md.append(f"\n## ABP {l['short_name']} — {l['clock_full']}\n")
         for label, value in [("When", l["post_when"]), ("What you do", l["post_does"]),
@@ -7263,12 +7423,19 @@ def _next_paid(out_dir, ctx_shared, levels, model):
                              ("How you check", l["post_check"])]:
             if value:
                 md.append(f"- **{label}:** {_strip(value)}")
-    md.append("\n## The reference has never been through a real sale\n\nIt is generated in "
-              "the browser and nothing has confirmed that one read off this page matches a "
-              "reference on a payment provider's record.\n")
+    md.append(till(
+        "\n## The reference has never been through a real sale\n\nIt is generated in the "
+        "browser and nothing has confirmed that one read off this page matches a reference "
+        "on a payment provider's record.\n",
+        "\n## What this page can tell you, and what it cannot\n\nIt shows the order this "
+        "browser holds, and the provider's own session identifier when you came back "
+        "through one. It cannot tell you a payment cleared: there is no server here to ask, "
+        "and your receipt comes from the provider rather than from this site.\n"))
     return _next_emit(out_dir, NEXT_PAID, {
         "title": "What lands, and when",
-        "description": ("The page a payment would return to: your order, your reference, "
+        "description": (till("The page a payment would return to", "The page a payment "
+                             "returns to")
+                        + ": your order, your reference, "
                         "and what the store does next at each of the four levels."),
     }, body, model, "\n".join(md))
 
@@ -7945,6 +8112,7 @@ NEXT_TITLES = {}
 
 
 def next_pages(out_dir, ctx_shared, built=None):
+    _the_ledger_must_move_with_the_till()
     levels = _next_offers()
     auds = _next_audiences()
     shapes = _next_shapes()

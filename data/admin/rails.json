@@ -46,7 +46,7 @@
       "name": "Stripe",
       "url": "/admin/rails/stripe/",
       "rank": 3,
-      "state": "Six products priced and reconciling, three coupons live. No promotion code, no link, no webhook.",
+      "state": "Six products priced and reconciling, three coupons live, and the store's side of the hand-off built. No payment link, no promotion code, no webhook.",
       "one_line": "The rail for everything bought from a screen, and the one that turns a buyer into a customer — including a buyer who pays nothing.",
       "why": [
         "<b>The point of this rail is not the money. It is the customer record.</b> A hundred-per-cent discount code taken on this rail produces a Stripe Customer with an email, a name, a country and a completed checkout against a named product at a stated price — for £0. That is the whole shape of what the event needs: hand somebody a code, they go through the real purchase, and at the end of it there is a person in a system rather than a business card in a pocket.",
@@ -91,19 +91,19 @@
           null
         ],
         [
-          "Create the promotion codes over the three coupons",
-          "<b>The coupons are done — 25, 50 and 100 per cent, created 16 September. The promotion codes are the gap.</b> A coupon carries the percentage; a promotion code is the string a person is actually handed, and it is what a link can carry pre-applied. Until one exists there is nothing to give anybody. The seven strings in <code>data/discounts.yml</code> are the ones to create and they map onto the three coupons — five of them at a hundred per cent, kept separate so an order record says <em>which</em> one produced it. <b>Put a redemption cap and an expiry on every one, and a cap on the hundred-per-cent coupon itself</b>, before the first one is printed rather than after the first one is screenshotted.",
+          "Create the promotion codes — and a fourth coupon for DOORSOPEN",
+          "<b>The coupons are done — 25, 50 and 100 per cent, created 16 September. The promotion codes are the gap.</b> A coupon carries the percentage; a promotion code is the string a person is actually handed, and it is what a link can carry pre-applied. Until one exists there is nothing to give anybody. <b>There are eight strings in <code>data/discounts.yml</code>, not seven</b> — <code>DOORSOPEN</code> was added after that count was written. Seven of the eight map onto the three existing coupons; five of those seven are at a hundred per cent and are kept separate so an order record says <em>which</em> one produced it.<br><br><b>The eighth needs a coupon of its own, and this is the trap.</b> <code>DOORSOPEN</code> is <code>levels: [pack, vault]</code> in the store's data, and <b>that restriction cannot be expressed on a promotion code</b>: a promotion code restricts by first transaction and by minimum amount, and scoping a discount to particular products is a property of the <b>coupon</b>, through <code>applies_to.products</code>. Attached to the shared hundred-per-cent coupon it would take the whole of a level-four deposit off — £300 of somebody's day, from a code published on a page on purpose. So: a fourth coupon, 100 per cent, <code>applies_to</code> the level-one and level-two products only, and <code>DOORSOPEN</code> attached to that one.<br><br><b>No redemption caps</b>, by ruling on 16 September — purchases are managed directly and what a hundred-per-cent code skips paying for is already published free. <b>Expiries yes</b>: every code carries an <code>until:</code> date in the store's data and the promotion code should carry the same one, or the two disagree and the store is the one that looks wrong.",
           null
         ],
         [
-          "Enable promotion codes on every link, and prefill where a code was leaked deliberately",
-          "A link with the promotion-code field switched off refuses a valid code with no explanation, which is the worst failure available here — the buyer blames themselves. Where the store publishes a code on a page as part of a journey, the link on that page should carry it already applied rather than ask the buyer to re-type what they just read.",
+          "Switch promotion codes ON on every link — the store already prefills them",
+          "A link with the promotion-code field switched off <b>refuses a valid code with no explanation</b>, which is the worst failure available here: the buyer blames themselves. It is one checkbox per link and it is not optional, because the store's checkout now builds <code>prefilled_promo_code</code> onto every button when the buyer arrived with a code, and a prefill into a field that is switched off is silently dropped.<br><br><b>One limitation, stated rather than hidden.</b> The store keeps the discount record's id and never the code itself — what ships is a sha256, and a build check greps the whole tree to keep that true. So the plaintext is in hand for the life of one page and no longer. Open the checkout by a route that does not carry the code and the price shown is still discounted but the button cannot prefill; the page says so in as many words and tells the buyer to reopen from their link or type it at the provider. <b>That warning is the only thing standing between a buyer and being charged a price they were not shown</b>, which is why it is a callout and not a footnote.",
           null
         ],
         [
-          "Put the reference in <code>client_reference_id</code> and settle the return address",
-          "The reference is already in the URL the pay page builds. What is unsettled is the landing: the <code>?order=</code> contract cannot be filled by a standing link. Resolve it with the RiskMandate team before a first sale, not after — a buyer who lands on a page that cannot name what they bought has been failed at the one moment they were paying attention.",
-          "Blocked on another team. Everything above it is not."
+          "Create the four payment links, and set the return address",
+          "<b>Four links, not six.</b> <code>ABP-T1</code> £10 · <code>ABP-T2</code> £50 · <code>ABP-T3-DEPOSIT</code> £100 · <code>ABP-T4-DEPOSIT</code> £300. The two <code>DELIVERY</code> halves get no link, because the store's own copy says the balance is invoiced; adding them later is one line each in <code>data/offers.yml</code>.<br><br><b>Per link:</b> confirmation page set to redirect to <code>https://store.sgit.ai/paid/&lt;id&gt;/?cs={CHECKOUT_SESSION_ID}</code> — that placeholder is literal and the provider substitutes it; promotion codes on; adjustable quantity on for the two lower levels and <b>off</b> for the two deposits, because a deposit is not a thing anybody buys two of.<br><br><b>The <code>?order=</code> question is settled and the answer is that it cannot be done.</b> A payment link's return address is configured once and is the same for every buyer, so the store's reference cannot ride back in it. It does not need to: the browser that built the order still holds it, and the page after paying renders from that. What travels the other way is <code>client_reference_id</code>, which the checkout already appends, and which is how the several links of one order find each other in the dashboard. What comes back is the provider's own session id, which is a string to search on and <b>not a receipt</b> — the page says you came back, and never that you paid.<br><br>Then paste the four URLs into <code>checkout_url</code> in <code>data/offers.yml</code>. The gate pins each to <code>buy.stripe.com</code> or <code>checkout.stripe.com</code>, and the build refuses to run until the claim ledger's <code>checkout-links-not-issued</code> entry is corrected in the same commit.",
+          null
         ],
         [
           "Stand up the webhook",
@@ -117,8 +117,8 @@
         ],
         [
           "Retire the browser-side discount arithmetic",
-          "A code is recognised in the browser today, which is a demonstration and the page says so. The moment a promotion code exists on the rail there are two implementations of one rule, and the browser one is the one that can be edited by the person it is discounting. It comes out; the code field becomes a thing that carries a string to Stripe rather than a thing that computes.",
-          "Blocked on the coupons above."
+          "A code is recognised in the browser today, which is a demonstration and the page says so. The moment a promotion code exists on the rail there are <b>two implementations of one rule, and the browser one is the one that can be edited by the person it is discounting</b>. Worse than editable: the two can simply disagree, and the buyer sees the browser's number and is charged the provider's. It comes out; the code field becomes a thing that carries a string to the provider rather than a thing that computes.",
+          "Blocked on the promotion codes above."
         ]
       ],
       "open": [
@@ -141,6 +141,14 @@
         [
           "Eight rows in two places. What catches the drift?",
           "Nothing yet. The generated catalogue file makes the copy mechanical; it does not make it checked, because this site cannot read Stripe. The candidate is a small script run by hand at release that lists prices from the dashboard and diffs them against the file — out of the build, because the build opens no connection and that rule is not moving for this."
+        ],
+        [
+          "Is VAT on, and is the price inclusive?",
+          "<b>Nobody has ruled on this and the rail cannot be turned on without it.</b> These are digital goods sold to consumers and to businesses, in the United Kingdom and outside it. With the provider's tax handling off, £10 is £10 and what it is inclusive of is whatever is declared elsewhere. With it on, tax is added at the checkout and <b>the total the buyer is charged stops matching the total this store showed them</b> — and every price on this site is frozen by the gate against <code>data/offers.yml</code>, so the store cannot quietly follow. It is a ruling about what the published number means, not a setting, and the answer changes copy on the checkout either way."
+        ],
+        [
+          "Nothing tells anybody a sale happened",
+          "<b>This is the same gap the webhook step names, said from the buyer's side.</b> The store hands a buyer to the provider and cannot know what happened next: there is no server here and nowhere to receive a callback. So a £50 order that completes produces a Stripe Customer and an email receipt from the provider, and <b>no signal at all to the person who owes them a vault within twenty-four hours</b>. Until the webhook exists that person is reading the dashboard. That is workable at the volume this store has and it should be a decision rather than a thing discovered on the first Monday somebody misses."
         ]
       ]
     },

@@ -10,7 +10,7 @@ job. A new check holds both halves — the strip cannot grow back past 80
 characters, and the footer cannot lose the sentences the strip gave up.
 
 - Released: 2026-09-17
-- Built from commit: ``
+- Built from commit: `2c92a1928c22046de276dfc657478f4a95ecbff1`
 - Reconstructed: no
 
 ---

@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.20",
+  "current": "v0.3.21",
   "releases": [
+    {
+      "version": "v0.3.21",
+      "date": "2026-09-17",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the checkout hands over to the provider",
+      "summary": "The store's side of the payment rail, built. The checkout renders one button\nper line of the order \u2014 a payment link sells one fixed set of lines, so a cart\nof several cannot be one link \u2014 and each carries client_reference_id, which is\nhow the lines of one order find each other on the provider's side. A discount\ncode travels as prefilled_promo_code, but only while the plaintext is still in\nhand from the address: the store keeps the record id and never the code, so a\ncheckout opened without it says the code must be re-applied rather than\ncharging a price nobody was shown. The page after paying reads the provider's\nsession id and says you came back, never that you paid \u2014 there is no server\nhere to ask.\n\nSeventeen sentences saying nothing can be bought here now have a second half\nthat is true after a link is pasted, held by a check in both directions, and\nthe build refuses to run while the claim ledger still says no link exists.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.20",
       "date": "2026-09-17",
-      "commit": "",
+      "commit": "2c92a1928c22046de276dfc657478f4a95ecbff1",
       "site": "store.sgit.ai",
       "title": "the disclosure moves off the top of the page",
       "summary": "The strip above the fold carried the whole paragraph, two links and a version\nbadge: 251 characters and 71px of a phone screen before anything the reader\ncame for. It now carries the sentence and one link \u2014 51 characters, 30px \u2014 and\nthe body, the compliance denial, the three links and the version moved into the\nfooter. Hard rule 5 is unchanged: the phrase still sits above main on every\npage, because a disclosure found only at the bottom does the opposite of its\njob. A new check holds both halves \u2014 the strip cannot grow back past 80\ncharacters, and the footer cannot lose the sentences the strip gave up.",

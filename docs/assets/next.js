@@ -438,6 +438,25 @@
   var CKEY = MODEL.code_storage || 'sgit.store.code.v1';
   var CODE_NOTE = null;
 
+  /* THE PLAINTEXT CODE, FOR THE LIFE OF THIS PAGE AND NOWHERE ELSE.
+   *
+   * What is kept is the record's id; the code itself is hashed and dropped, and a
+   * build check greps the whole tree to keep that true. That rule does not move.
+   *
+   * But the provider applies the discount, not us: a checkout link has to carry
+   * `prefilled_promo_code` or the buyer pays the full price the provider's own
+   * product carries, whatever this page has been showing them. The code is in
+   * hand for exactly one moment — when it arrives in the address — so it is held
+   * in a variable from there until this page is navigated away from.
+   *
+   * IN A VARIABLE, NOT IN STORAGE. It never reaches localStorage, sessionStorage
+   * or a cookie, it is never written into a link on this site, and a reload loses
+   * it. Losing it is not silent: the checkout says the code has to be re-applied
+   * at the provider, and offers the way to get it back. A wrong price is the
+   * failure worth engineering against, and a code the buyer has to type once is
+   * cheaper than one they never find out did not apply. */
+  var CODE_PLAIN = null;
+
   function held() {
     var id;
     try { id = window.localStorage.getItem(CKEY); } catch (e) { return null; }
@@ -454,6 +473,7 @@
 
   function dropCode() {
     try { window.localStorage.removeItem(CKEY); } catch (e) { /* as above */ }
+    CODE_PLAIN = null;
     CODE_NOTE = null;
     render();
   }
@@ -473,6 +493,7 @@
       CODE_NOTE = { ok: false, text: hit.label + ' ran out on ' + hit.until + '.' };
     } else {
       try { window.localStorage.setItem(CKEY, hit.id); } catch (e) { /* as above */ }
+      CODE_PLAIN = m[1].toUpperCase();
       CODE_NOTE = { ok: true, text: hit.pct + '% off, applied to your order.' };
     }
     if (window.history && window.history.replaceState) {
@@ -483,6 +504,60 @@
       window.history.replaceState(null, '',
         window.location.pathname + (q ? '?' + q : '') + hash);
     }
+  }
+
+  /* ------------------------------------------------- the hand-off to the till */
+  /* WHAT TRAVELS, AND WHAT CANNOT.
+   *
+   * A payment link is somebody else's page. It sells a fixed set of lines at a
+   * fixed price, and this site has no server, so three things follow and they are
+   * not workarounds, they are the shape of the thing:
+   *
+   *   1. AN ORDER OF SEVERAL LINES IS SEVERAL LINKS. One link cannot carry a cart.
+   *      Each line gets its own button, and each carries the same reference, so
+   *      the provider's dashboard groups them back into one order.
+   *   2. THE REFERENCE GOES, THE ORDER DOES NOT. `client_reference_id` takes the
+   *      six-character reference this browser generated — letters, digits and one
+   *      hyphen, which is exactly what that field accepts. Nothing else is sent:
+   *      not the shape, not the quantity, not an email, not a page this browser
+   *      has been on.
+   *   3. NOTHING COMES BACK. There is no webhook and nowhere to receive one, so
+   *      this store can say a line was SENT to the provider and can never say it
+   *      was paid. Every word on the page after this one is written to that.
+   *
+   * The query is built here and only here, and a build check holds it to these
+   * two parameters. A checkout URL that could carry anything else is a URL that
+   * eventually carries something somebody did not decide to send. */
+  var HANDOVER_KEYS = ['client_reference_id', 'prefilled_promo_code'];
+
+  /* Whether ANY level can be paid for today. Several sentences on these pages are
+     true only while no link exists, and the day one is pasted into data/offers.yml
+     they become false. They are written as a branch rather than left to be found
+     by a reader who paid and was told nothing can be bought here. */
+  function anyBuyable() {
+    return Object.keys(LEVELS).some(function (k) { return !!LEVELS[k].checkout_url; });
+  }
+
+  function payHref(l) {
+    var base = l.lvl.checkout_url;
+    if (!base) return null;
+    var q = 'client_reference_id=' + encodeURIComponent(ref());
+    /* Only when the code is still in hand AND it actually applies to this level.
+       Prefilling a code the provider will refuse for this product is worse than
+       prefilling none: it puts an error on the page where the card is typed. */
+    if (CODE_PLAIN && pctFor(l.lvl.cart_id)) {
+      q += '&prefilled_promo_code=' + encodeURIComponent(CODE_PLAIN);
+    }
+    return base + (base.indexOf('?') < 0 ? '?' : '&') + q;
+  }
+
+  /* True when a discount is applied to this order but cannot travel with it: the
+     page was reloaded, or opened from a link of its own, and the plaintext went
+     with it. The price shown here would then be right and the price charged would
+     not, which is the one failure this flow must never make quietly. */
+  function codeCannotTravel() {
+    var d = discount();
+    return !!(d && !CODE_PLAIN);
   }
 
   function pctFor(level) {
@@ -700,21 +775,124 @@
     totals.appendChild(row('Your order reference', ref(), 'is-total'));
     host.appendChild(totals);
 
-    var note = el('p', 'n-note n-note--hold n-mt');
-    note.innerHTML = '<b>The payment link has not been issued yet.</b> When it is, ' +
-      'this button opens the provider’s own page, which is where a card is typed. ' +
-      'The amount and the reference are all that reach it.';
-    host.appendChild(note);
+    /* ONE CONTROL PER LINE, because one payment link sells one fixed set of
+       lines and this order may be several. Each button is a line, each carries
+       the same reference, and the dashboard groups them back together. */
+    var live = ls.filter(function (l) { return !!l.lvl.checkout_url; });
 
-    /* NOT FULL WIDTH. A pale, full-width, left-aligned bordered box on a page
-       whose whole argument is that this site has no fields reads as a field.
-       Sized to its own text it reads as what it is: a button that is off. */
-    var btn = el('button', 'n-btn n-mt',
-      'The payment link has not been issued yet');
-    btn.type = 'button';
-    btn.setAttribute('aria-disabled', 'true');
-    host.appendChild(btn);
+    if (!live.length) {
+      var note = el('p', 'n-note n-note--hold n-mt');
+      note.innerHTML = '<b>The payment link has not been issued yet.</b> When it is, '
+        + 'a button here opens the provider’s own page, which is where a card is '
+        + 'typed. The amount and the reference are all that reach it.';
+      host.appendChild(note);
+
+      /* NOT FULL WIDTH. A pale, full-width, left-aligned bordered box on a page
+         whose whole argument is that this site has no fields reads as a field.
+         Sized to its own text it reads as what it is: a button that is off. */
+      var off = el('button', 'n-btn n-mt', 'The payment link has not been issued yet');
+      off.type = 'button';
+      off.setAttribute('aria-disabled', 'true');
+      host.appendChild(off);
+      badge();
+      return;
+    }
+
+    if (codeCannotTravel()) {
+      var warn = el('p', 'n-note n-note--hold n-mt');
+      warn.innerHTML = '<b>Your code cannot travel with these buttons.</b> The prices '
+        + 'above have it taken off, but the code itself is never kept in this browser '
+        + '— only the fact that you have one — and this page was opened without '
+        + 'it in the address. Open the store again from the link or the card the code '
+        + 'came on, or type it on the provider’s page, or you will be charged the '
+        + 'full price.';
+      host.appendChild(warn);
+    }
+
+    var buys = el('div', 'n-buys n-mt');
+    ls.forEach(function (l) {
+      var row2 = el('div', 'n-buys__row');
+      var what = el('div');
+      what.appendChild(el('b', null, 'ABP ' + l.lvl.short_name));
+      what.appendChild(el('span', null, l.shape.title
+        + (l.qty > 1 ? ' \u00d7 ' + l.qty : '')));
+      row2.appendChild(what);
+
+      var href = payHref(l);
+      if (href) {
+        var a2 = el('a', 'n-btn', 'Pay ' + money(l.now) + ' \u2192');
+        a2.href = href;
+        a2.rel = 'noopener';
+        row2.appendChild(a2);
+      } else {
+        row2.appendChild(el('span', 'n-buys__off', l.lvl.checkout_off));
+      }
+      buys.appendChild(row2);
+
+      if (href && l.qty > 1) {
+        var q = el('p', 'n-fine n-dim');
+        q.textContent = 'This button takes one. Set the quantity to ' + l.qty
+          + ' on the provider\u2019s page \u2014 this site sends no quantity.';
+        buys.appendChild(q);
+      }
+      if (href && l.later) {
+        var later = el('p', 'n-fine n-dim');
+        later.textContent = money(l.later) + ' is not on this button. It is invoiced '
+          + 'when the work is in your hands.';
+        buys.appendChild(later);
+      }
+    });
+    host.appendChild(buys);
+
+    /* "Due now" is the true total due now, and it is NOT the same as what these
+       buttons can take when a line has no link. Leaving the two to look like one
+       number is how somebody presses every button on the page and believes they
+       have finished. */
+    var unpayable = ls.filter(function (l) { return !l.lvl.checkout_url; })
+                      .reduce(function (t, l) { return t + l.now; }, 0);
+    if (unpayable) {
+      var gap = el('p', 'n-fine n-dim');
+      gap.textContent = money(unpayable) + ' of that total has no button here: '
+        + ls.filter(function (l) { return !l.lvl.checkout_url; })
+            .map(function (l) { return 'ABP ' + l.lvl.short_name; })
+            .filter(function (v, i, a) { return a.indexOf(v) === i; }).join(', ')
+        + ' is arranged with a person, and the rest of this order can be paid now.';
+      host.appendChild(gap);
+    }
+
+    /* THE ONE SENTENCE THIS PAGE EXISTS TO BE HONEST ABOUT. */
+    var says = el('p', 'n-fine n-dim n-mt');
+    says.textContent = 'Each button opens the provider\u2019s own page. Your reference, '
+      + ref() + ', is the only thing this site sends with it \u2014 no name, no address, '
+      + 'nothing about what you have read. Nothing comes back: this site has no server, '
+      + 'so it can tell you a line was sent and can never tell you it was paid.';
+    host.appendChild(says);
     badge();
+  }
+
+  /* --------------------------------------------- what came back, and what not */
+  /* THE PROVIDER'S SESSION ID, IF THE BUYER CAME BACK THROUGH IT.
+   *
+   * A payment link's redirect is set once, in the dashboard, and is the same for
+   * every buyer — so this store's order reference cannot survive the round trip.
+   * It does not need to: the browser still holds the order. What the provider CAN
+   * put in the address is its own session id, through the {CHECKOUT_SESSION_ID}
+   * placeholder, and that is worth having for one reason and not the other:
+   *
+   *   IT IS WORTH HAVING because it is the string a person types into the
+   *   provider's dashboard to find this exact attempt, and because it is evidence
+   *   the browser came back from a session rather than typed this URL in.
+   *
+   *   IT IS NOT A RECEIPT. Confirming it would mean asking the provider, and that
+   *   is a server call this site has no server to make. A session can be opened
+   *   and abandoned. So the page says the buyer CAME BACK, which is all it saw,
+   *   and never that money moved, which it did not see.
+   *
+   * Shape only: cs_ then the provider's own alphabet. Anything else is ignored
+   * rather than printed, because whatever is in an address bar is a stranger's. */
+  function sessionFromAddress() {
+    var m = /[?&]cs=(cs_[A-Za-z0-9_]{8,80})(?:&|$)/.exec(window.location.search);
+    return m ? m[1] : null;
   }
 
   /* ---------------------------------------------------------------- receipt */
@@ -728,10 +906,13 @@
     if (!ls.length) {
       var empty = el('div', 'n-empty');
       empty.appendChild(el('h2', null, 'This browser is not holding an order'));
-      empty.appendChild(el('p', null,
-        'Nothing has been bought here — no payment link has been issued on any level. '
-        + 'Build an order and it appears on this page, reference and all, the way it '
-        + 'will when a link exists.'));
+      empty.appendChild(el('p', null, anyBuyable()
+        ? 'An order lives in the browser that built it. If you paid from another '
+          + 'device, or cleared this one, the order is not here \u2014 your reference '
+          + 'and the provider\u2019s receipt are what identify it.'
+        : 'Nothing has been bought here \u2014 no payment link has been issued on any '
+          + 'level. Build an order and it appears on this page, reference and all, '
+          + 'the way it will when a link exists.'));
       var a = el('a', 'n-btn', 'Pick an agent →');
       a.href = MODEL.picker_url || '/next/policies/';
       empty.appendChild(a);
@@ -779,8 +960,29 @@
     host.appendChild(foot);
 
     var says = el('p', 'n-fine n-dim n-mt');
-    says.textContent = 'This reference is in this browser and nowhere else. It has never '
-      + 'been sent anywhere, because there is nowhere to send it to yet.';
+    var cs = sessionFromAddress();
+    if (cs) {
+      /* CAME BACK, NOT PAID. The distinction is the whole sentence. */
+      var back = el('p', 'n-note n-note--hold n-mt');
+      back.innerHTML = '<b>You came back from the provider\u2019s page.</b> That is all '
+        + 'this site saw: it has no server, so it cannot ask whether the payment '
+        + 'cleared, and it will never tell you it did. Your receipt comes from the '
+        + 'provider by email. If you need to ask about this one, the provider\u2019s '
+        + 'reference for it is below and ours is above.';
+      host.appendChild(back);
+      var idp = el('p', 'n-fine n-mt');
+      idp.appendChild(el('code', null, cs));
+      host.appendChild(idp);
+    }
+
+    says.textContent = cs
+      ? 'Your order reference travelled to the provider with the line you paid; '
+        + 'nothing else did, and nothing about you came back.'
+      : (anyBuyable()
+        ? 'This reference is in this browser and nowhere else until you open a '
+          + 'payment link, which is the only thing that sends it anywhere.'
+        : 'This reference is in this browser and nowhere else. It has never been '
+          + 'sent anywhere, because there is nowhere to send it to yet.');
     host.appendChild(says);
     badge();
   }
