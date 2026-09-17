@@ -43,9 +43,9 @@ Two half-hour sessions with your team, the behaviour policy built from the inter
 Included: Everything in ABP Tailored; Two half-hour sessions with the professional doing the work; A custom vault, reviewed and signed off
 Outside this level: Ongoing monitoring, or anything recurring; Any guarantee about a particular outcome
 
-## Nothing can be bought here
+## Nothing is typed here
 
-No payment link has been issued on any level, so every buying action on this page is a disabled control carrying its own reason. There is no form, input or field anywhere in this site's output and a build check holds that line.
+A buying action on this page adds a line to the order this browser holds. The card is typed on the payment provider's page. There is no form, input or field anywhere in this site's output and a build check holds that line.
 
 ---
 

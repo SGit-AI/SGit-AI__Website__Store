@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.21",
+  "current": "v0.3.22",
   "releases": [
+    {
+      "version": "v0.3.22",
+      "date": "2026-09-17",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "level one can be paid for",
+      "summary": "The first payment link exists. It is level one's, created on 17 September 2026,\nand the checkout renders a real button against it carrying the order reference\nand, where the buyer arrived with one, the discount code. Levels two, three and\nfour still carry an empty checkout_url and render the reason rather than a\nbutton. The claim ledger moved with it, which the build refused to proceed\nwithout.\n\nTwo things the first real link taught the store. A payment link has no quantity\nparameter, so a button opens at one unit: two packs rendered Pay \u00a320 against a\nlink that charges \u00a310, and the button now names the unit with the line total\nbeside it. And whether a buyer may change the quantity at all is the provider's\nsetting, which this site cannot ask about, so it is a field in the offer data\nand false unless somebody has confirmed otherwise.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.21",
       "date": "2026-09-17",
-      "commit": "",
+      "commit": "39585a99b452d789112368f615a75843a62a00ce",
       "site": "store.sgit.ai",
       "title": "the checkout hands over to the provider",
       "summary": "The store's side of the payment rail, built. The checkout renders one button\nper line of the order \u2014 a payment link sells one fixed set of lines, so a cart\nof several cannot be one link \u2014 and each carries client_reference_id, which is\nhow the lines of one order find each other on the provider's side. A discount\ncode travels as prefilled_promo_code, but only while the plaintext is still in\nhand from the address: the store keeps the record id and never the code, so a\ncheckout opened without it says the code must be re-applied rather than\ncharging a price nobody was shown. The page after paying reads the provider's\nsession id and says you came back, never that you paid \u2014 there is no server\nhere to ask.\n\nSeventeen sentences saying nothing can be bought here now have a second half\nthat is true after a link is pasted, held by a check in both directions, and\nthe build refuses to run while the claim ledger still says no link exists.",

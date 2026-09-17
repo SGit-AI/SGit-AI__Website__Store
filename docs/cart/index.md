@@ -13,7 +13,7 @@ The order is held in this browser under one local-storage key and is not sent an
 
 ## What leaves the page
 
-Your order reference, and the discount code when you arrived with one — nothing else. The amount is the provider's, on the provider's own product. No payment link has been issued on any level.
+Your order reference, and the discount code when you arrived with one — nothing else. The amount is the provider's, on the provider's own product. At least one level carries a payment link.
 
 ---
 

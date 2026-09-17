@@ -1,6 +1,6 @@
 # What lands, and when
 
-The page a payment would return to. No payment link has been issued on any level, so this page shows the order held in this browser and nothing else.
+The page a payment returns to. It shows the order held in this browser, because a payment link's return address is the same for every buyer and cannot carry your reference back.
 
 
 ## ABP Pack — Immediately, the moment the payment goes through
@@ -35,9 +35,9 @@ The page a payment would return to. No payment link has been issued on any level
 - **Done means:** Both sessions have been held, the record of what was asked and answered is committed, and the sign-off file is committed with the professional's name and the date.
 - **How you check:** Three files in the tree, and the sessions dated in the record.
 
-## The reference has never been through a real sale
+## What this page can tell you, and what it cannot
 
-It is generated in the browser and nothing has confirmed that one read off this page matches a reference on a payment provider's record.
+It shows the order this browser holds, and the provider's own session identifier when you came back through one. It cannot tell you a payment cleared: there is no server here to ask, and your receipt comes from the provider rather than from this site.
 
 ---
 

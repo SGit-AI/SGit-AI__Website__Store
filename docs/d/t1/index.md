@@ -5,7 +5,7 @@ Every file in the vault for the shape you picked, downloaded by you — the beha
 - Offer id: `t1`
 - Price: £10
 - How it is paid: Payment link
-- Checkout: One price means one standing payment link, printable on a card.
+- Checkout: https://buy.stripe.com/dRmbITfDa7E31Z8fY15os03
 - What is true of it today: Built, and it runs today. Fifteen template shapes are published, and the pack for any of them is what this level sends.
 
 ## What arrives

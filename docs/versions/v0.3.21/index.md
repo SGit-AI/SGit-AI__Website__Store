@@ -16,7 +16,7 @@ that is true after a link is pasted, held by a check in both directions, and
 the build refuses to run while the claim ledger still says no link exists.
 
 - Released: 2026-09-17
-- Built from commit: ``
+- Built from commit: `39585a99b452d789112368f615a75843a62a00ce`
 - Reconstructed: no
 
 ---

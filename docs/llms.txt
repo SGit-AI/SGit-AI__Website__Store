@@ -1,5 +1,5 @@
 # store.sgit.ai
-> site v0.3.21
+> site v0.3.22
 
 > Every agent needs a licence to operate. This is where you buy one.
 > Six offers: four tiers with a price and a code, and two add-ons priced by depth band.
@@ -55,7 +55,7 @@ grouping is a second index over the same six offers: it adds no offer and no pri
 - `startups` — You are a startup, and diligence is coming — asks "What is diligence going to find before it finds it?" — built for them: NOTHING — every offer shown there was built for another buyer — also shown: t3, t4, t2, add-formats — https://store.sgit.ai/for/startups/
 
 ## Offers, and where each code lands
-- `t1` — £10 — Can I just have the pack? — for: agents — https://store.sgit.ai/d/t1/ — checkout: no payment link (fixed) — One price means one standing payment link, printable on a card.
+- `t1` — £10 — Can I just have the pack? — for: agents — https://store.sgit.ai/d/t1/ — checkout: https://buy.stripe.com/dRmbITfDa7E31Z8fY15os03
 - `t2` — £50 — Can I have a vault I hold the keys to? — for: agents — https://store.sgit.ai/d/t2/ — checkout: no payment link (fixed) — One price means one standing payment link, printable on a card.
 - `t3` — £500 — Can you correct it for my situation? — for: startups — https://store.sgit.ai/d/t3/ — checkout: no payment link (fixed) — One price means one standing payment link, printable on a card.
 - `t4` — £1,500 — Can somebody go through it with my team? — for: investors — https://store.sgit.ai/d/t4/ — checkout: no payment link (fixed) — One price means one standing payment link, printable on a card.

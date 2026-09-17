@@ -1,6 +1,6 @@
 # Checkout
 
-No payment link has been issued on any level, so nothing can be paid for here. What follows is what would happen when one is.
+One button per line of your order, because one payment link sells one line. Each opens the provider's own page.
 
 ## The hand-off
 

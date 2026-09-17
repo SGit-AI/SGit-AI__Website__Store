@@ -3,9 +3,9 @@
 The v3 design direction **01 / ABP first**, built here. It runs beside the store that sells today rather than replacing it.
 
 
-## Nothing on /next/ can be bought
+## The till is on
 
-No payment link has been issued on any level, so every buying action renders as a disabled control carrying its reason.
+At least one level carries a payment link. The checkout renders one button per line and each hands the buyer to the provider carrying the order reference and nothing else.
 
 
 ## One section of the design is not built

@@ -5822,6 +5822,10 @@ def _next_offers():
             # provider has a product for: at level 3 and 4 the DEPOSIT product is
             # exactly a fifth, and the balance is invoiced rather than linked.
             "checkout_url": (o.get("checkout_url") or "").strip() or None,
+            # Whether the link lets a buyer change the quantity. False unless the
+            # data says otherwise: the store cannot ask the provider, so an unset
+            # field must not promise a control nobody has confirmed is there.
+            "checkout_qty": bool(o.get("checkout_qty")),
             "checkout_mode": o["checkout_mode"],
             # Two different sentences and they are not interchangeable. `checkout_off`
             # answers "why is there no button here", which is what somebody looking at

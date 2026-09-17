@@ -107,13 +107,37 @@
 # different things about the same follow-up is exactly the drift these two files
 # are meant to stop. The number that stands is theirs, because it is theirs to keep.
 #
-# `checkout_url` is the payment link itself. EVERY ONE IS EMPTY, and that is the
-# state of this rail rather than a placeholder somebody forgot: no payment link
-# has been created for any offer on this site. The build renders a live button
-# where a URL exists and says the link has not been issued where it does not, so
-# pasting one line here is the whole of turning a checkout on. The gate holds each
-# URL to the payment provider's own host, so a link cannot quietly become a
-# redirect through anything else.
+# `checkout_url` is the payment link itself. THE FIRST ONE WAS CREATED ON
+# 17 SEPTEMBER 2026 and it is level one's. The other three are still empty, and
+# that is the state of the rail rather than a placeholder somebody forgot.
+#
+# The build renders a live button where a URL exists and says the link has not
+# been issued where it does not, and the copy across the whole store now has two
+# halves — one for a store that cannot take money and one for a store that can —
+# so pasting one line here really is the whole of turning a checkout on. The gate
+# holds each URL to the payment provider's own host, so a link cannot quietly
+# become a redirect through anything else, and the build refuses to run while the
+# claim ledger still says no link exists.
+#
+# WHAT IS ON LEVEL ONE'S LINK AND WHAT IS NOT. Promotion codes are enabled, which
+# is what lets the checkout prefill a code the buyer arrived with. Tax collection
+# is off and addresses are not collected. The confirmation page is STRIPE'S OWN
+# and not this site's — the mobile flow that created this link has no redirect
+# field — so the `?cs={CHECKOUT_SESSION_ID}` return address is still to be set
+# from a desktop. Until it is, /paid/t1/ is somewhere the buyer navigates to
+# rather than somewhere they land, and the page is written to work either way.
+#
+# `checkout_qty` IS WHETHER THE LINK LETS A BUYER CHANGE THE QUANTITY, and it
+# exists because the store cannot ask. A payment link's settings live in the
+# provider's dashboard and this site opens no connection to it, so a field that
+# only the person who made the link can fill in is the honest way to know.
+#
+# It matters because of what the checkout says when somebody orders two. With
+# this true it says to set the quantity on the provider's page; with it false it
+# says to open the button once per copy — and the failure it prevents is the one
+# worth the field, because telling a buyer to press a control that is not there
+# is worse than not mentioning quantity at all. It defaults to false: an unset
+# field should not promise a control nobody has confirmed exists.
 #
 # `state` is what is true about the thing being sold TODAY. Two of the six do not
 # exist yet and the pack says so; those sentences are not marketing copy to be
@@ -146,7 +170,8 @@
   buyer: agents
   also_for: [startups, investors]
   checkout_mode: fixed
-  checkout_url: ""
+  checkout_url: "https://buy.stripe.com/dRmbITfDa7E31Z8fY15os03"
+  checkout_qty: false
   pay_now_pct: 100
   eta: "Immediately"
   eta_from: "the moment the payment goes through"

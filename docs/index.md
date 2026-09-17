@@ -30,7 +30,7 @@ Grant, mandate, delta and barrier, for one deployment. It describes and does not
 
 ## What this page is not
 
-It is not the shop. Nothing here can be bought — no payment link has been issued on any level, so every buying action is a disabled control that says so. See https://store.sgit.ai/admin/next/.
+It is not the checkout. Every buying action here opens the product page, where a line is added to the order this browser holds; the money is taken on the payment provider's own page, from the checkout. See https://store.sgit.ai/admin/next/.
 
 ---
 

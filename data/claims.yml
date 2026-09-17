@@ -214,11 +214,16 @@
   claim: "Marketplace registration is **the long pole: four to eight weeks**. The listing is therefore **a November surface**, not an event surface, and nothing on this site depends on it."
   source: "01__WHAT-TO-BUILD.md, the surface table"
 
+# THE ID IS NOW A HISTORICAL NAME AND IT STAYS. It read true from 11 to 17
+# September and it reads as its own opposite today. An id is a key: pages cite
+# this one by it, releases recorded it by it, and renaming it would break the
+# link between what was claimed then and what is claimed now — which is the whole
+# job of a ledger. The STATE and the WORDS move; the key does not.
 - id: checkout-links-not-issued
-  state: absent
-  date: 11 Sep 2026
+  state: partial
+  date: 17 Sep 2026
   group: How paying works, and why it works that way
-  claim: "**No payment link has been created for any offer on this site.** Every offer carries a `checkout_url` in `data/offers.yml` and **every one of them is empty**, so each offer shows its code and its delivery page rather than a button. Issuing a checkout is one pasted line; **the gate holds whatever lands there to `buy.stripe.com` or `checkout.stripe.com` over HTTPS**, so a checkout cannot quietly become a redirect through somewhere else."
+  claim: "**One of the four levels can be paid for. Level one carries a payment link, created on 17 September 2026; levels two, three and four carry an empty `checkout_url` and render the reason rather than a button.** Every link lives in `data/offers.yml` and nowhere else, and **the gate holds whatever lands there to `buy.stripe.com` or `checkout.stripe.com` over HTTPS**, so a checkout cannot quietly become a redirect through somewhere else. What the store sends with a buyer is the order reference, and the discount code when they arrived with one \u2014 never an amount, which is the provider's own. **What comes back is nothing:** this site has no server and no webhook, so it can say a line was sent to the provider and can never say it was paid."
   source: "data/offers.yml, and check_checkout_links in tools/check_site.py"
 
 - id: checkout-bands-have-no-standing-link

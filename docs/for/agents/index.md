@@ -14,7 +14,7 @@ The **delta**: the union of what a credential permits, against what its holder i
 
 ## The offers you are shown
 
-- `t1` — Tier 1 — £10 — Can I just have the pack? — One price means one standing payment link, printable on a card.
+- `t1` — Tier 1 — £10 — Can I just have the pack? — https://buy.stripe.com/dRmbITfDa7E31Z8fY15os03
 - `t2` — Tier 2 — £50 — Can I have a vault I hold the keys to? — One price means one standing payment link, printable on a card.
 - `add-formats` — Add-on — By depth band — Can I have the same result in a form the board will read? — This attaches to another offer and is priced against its depth band, so it has no checkout of its own.
 

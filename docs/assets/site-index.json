@@ -1,5 +1,5 @@
 {
- "version": "v0.3.21",
+ "version": "v0.3.22",
  "domain": "store.sgit.ai",
  "licence": "CC BY 4.0",
  "pages": [
@@ -297,7 +297,7 @@
    ],
    "checkout_mode": "fixed",
    "pay_now_pct": 100,
-   "checkout_url": null,
+   "checkout_url": "https://buy.stripe.com/dRmbITfDa7E31Z8fY15os03",
    "deposit": null,
    "delivery": "/d/t1/"
   },
@@ -625,9 +625,9 @@
   },
   {
    "id": "checkout-links-not-issued",
-   "state": "absent",
-   "date": "11 Sep 2026",
-   "claim": "No payment link has been created for any offer on this site. Every offer carries a checkout_url in data/offers.yml and every one of them is empty, so each offer shows its code and its delivery page rather than a button. Issuing a checkout is one pasted line; the gate holds whatever lands there to buy.stripe.com or checkout.stripe.com over HTTPS, so a checkout cannot quietly become a redirect through somewhere else."
+   "state": "partial",
+   "date": "17 Sep 2026",
+   "claim": "One of the four levels can be paid for. Level one carries a payment link, created on 17 September 2026; levels two, three and four carry an empty checkout_url and render the reason rather than a button. Every link lives in data/offers.yml and nowhere else, and the gate holds whatever lands there to buy.stripe.com or checkout.stripe.com over HTTPS, so a checkout cannot quietly become a redirect through somewhere else. What the store sends with a buyer is the order reference, and the discount code when they arrived with one \\u2014 never an amount, which is the provider's own. What comes back is nothing: this site has no server and no webhook, so it can say a line was sent to the provider and can never say it was paid."
   },
   {
    "id": "checkout-bands-have-no-standing-link",

@@ -1061,6 +1061,30 @@ def check_the_handover_sends_only_the_reference():
              "hyphen and underscore, and a reference that does not survive the field is "
              "an order nobody can join back up")
 
+    # THE BUTTON'S AMOUNT IS WHAT THE LINK WILL CHARGE, NOT WHAT THE LINE COSTS.
+    #
+    # A payment link has no quantity parameter. It opens at one unit, and only the
+    # provider's own page can change that — where the link allows it at all, which
+    # is their setting and not ours. So a button labelled with the LINE total puts
+    # a number in front of a buyer that the provider is not going to take, and it
+    # does it in the one place on the site where a number has to be right.
+    #
+    # This shipped wrong once: two packs rendered "Pay £20" against a link that
+    # charges £10. It was caught by ordering two of something, which is not a thing
+    # anybody does twice, so it is a check now.
+    # [\w.] rather than \w: the wrong expression here is `l.now`, and a capture
+    # that cannot match it would report "not where it was" for the one case this
+    # check exists to name. A break proved that, which is the point of breaks.
+    m2 = re.search(r"var a2 = el\('a', 'n-btn', 'Pay ' \+ money\(([\w.]+)\)", js)
+    if not m2:
+        fail("assets/next.js: the checkout button's label is not where it was, so "
+             "nothing is holding it to the amount the link actually charges")
+    elif m2.group(1) != "unitNow":
+        fail(f"assets/next.js: the checkout button is labelled from {m2.group(1)!r}. "
+             "A payment link takes ONE unit and has no quantity parameter, so the "
+             "button must name the unit — a button labelled with the line total "
+             "names a number the provider is not going to charge")
+
     # The plaintext code is held in a variable and never written anywhere. A store
     # that keeps it has to say so, and this store says it does not.
     for bad in (r"setItem\(\s*[^)]*CODE_PLAIN", r"CODE_PLAIN\s*\)?\s*;?\s*\/\/\s*store",

@@ -818,9 +818,16 @@
         + (l.qty > 1 ? ' \u00d7 ' + l.qty : '')));
       row2.appendChild(what);
 
+      /* THE BUTTON TAKES ONE, SO IT NAMES ONE. A payment link has no quantity
+         parameter — the link opens at a quantity of one and only the provider's
+         own page can change it, where the link allows that at all. Labelling the
+         button with the LINE total would put a number on it that the provider is
+         not going to charge, which is the one thing a button next to a price may
+         not do. So it names the unit, and the note underneath does the rest. */
+      var unitNow = Math.round(l.now / l.qty);
       var href = payHref(l);
       if (href) {
-        var a2 = el('a', 'n-btn', 'Pay ' + money(l.now) + ' \u2192');
+        var a2 = el('a', 'n-btn', 'Pay ' + money(unitNow) + ' \u2192');
         a2.href = href;
         a2.rel = 'noopener';
         row2.appendChild(a2);
@@ -829,10 +836,20 @@
       }
       buys.appendChild(row2);
 
+      /* A LINK SELLS ONE, AND WHETHER THAT CAN BE CHANGED IS THEIR SETTING.
+         The store sends no quantity and cannot: a payment link has no quantity
+         parameter. Where the link allows the buyer to adjust it, saying so is
+         the shortest route. Where it does not, saying so anyway would be
+         pointing at a control that is not on the page they are about to open. */
       if (href && l.qty > 1) {
         var q = el('p', 'n-fine n-dim');
-        q.textContent = 'This button takes one. Set the quantity to ' + l.qty
-          + ' on the provider\u2019s page \u2014 this site sends no quantity.';
+        q.textContent = l.lvl.checkout_qty
+          ? 'This button takes one of the ' + l.qty + '. Set the quantity to '
+            + l.qty + ' on the provider\u2019s page \u2014 this site sends no '
+            + 'quantity, so the button can only ever open at one.'
+          : 'This button takes one of the ' + l.qty + ' (' + money(unitNow) + ' of '
+            + money(l.now) + '), and the quantity cannot be changed on the '
+            + 'provider\u2019s page. Open it ' + l.qty + ' times.';
         buys.appendChild(q);
       }
       if (href && l.later) {
