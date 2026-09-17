@@ -15,7 +15,7 @@ setting, which this site cannot ask about, so it is a field in the offer data
 and false unless somebody has confirmed otherwise.
 
 - Released: 2026-09-17
-- Built from commit: ``
+- Built from commit: `a01342cf4f963844636082dfcc92277f543b4587`
 - Reconstructed: no
 
 ---

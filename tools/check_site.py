@@ -3527,6 +3527,40 @@ def _sha256_source(js):
     return None
 
 
+def check_the_two_engines_read_a_session_the_same_way():
+    """One reader, two files, held identical.
+
+    A payment link's return address is configured once in the provider's dashboard
+    and every buyer gets the same one, so which engine reads it depends only on
+    which page the link was pointed at: shop.js on /paid/<level>/, next.js on
+    /paid/. Both pull the provider's session id out of the address by shape, and
+    both have to agree about what that shape is.
+
+    If they drift, the failure is silent and lands on somebody who has just paid:
+    one landing page acknowledges their return and the other does not, and nobody
+    finds out until a buyer says the page looked like it had not noticed. Worse in
+    the other direction — a reader that is loose where the other is strict prints
+    whatever was in the address bar, and an address bar is a stranger's.
+
+    The shape is deliberately narrow: cs_ then the provider's own alphabet, at
+    most eighty characters, anchored on a query parameter. Anything else is
+    ignored rather than shown."""
+    want = ("""function sessionFromAddress() {
+    var m = /[?&]cs=(cs_[A-Za-z0-9_]{8,80})(?:&|$)/.exec(window.location.search);
+    return m ? m[1] : null;
+  }""")
+    for name in ("shop.js", "next.js"):
+        js = (OUT / "assets" / name).read_text()
+        if "sessionFromAddress" not in js:
+            fail(f"assets/{name}: has no sessionFromAddress. Both landing pages read the "
+                 "provider's session id, and an engine that does not is a page that "
+                 "cannot tell a buyer their payment attempt was seen")
+        elif want not in js:
+            fail(f"assets/{name}: reads the provider's session id differently from the "
+                 "other engine. One reader, two files, held identical — or a buyer's "
+                 "return is acknowledged on one landing page and ignored on the other")
+
+
 def check_the_two_engines_hash_a_code_the_same_way():
     """One algorithm, two files, held identical.
 
@@ -3722,6 +3756,7 @@ def main():
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
         check_model_generated_disclosure, check_the_disclosure_strip_stays_one_line,
         check_the_till_says_which_state_it_is_in,
+        check_the_two_engines_read_a_session_the_same_way,
         check_the_handover_sends_only_the_reference,
         check_triage_not_raw_findings,
         check_pack_area_is_honest,

@@ -121,11 +121,21 @@
 #
 # WHAT IS ON LEVEL ONE'S LINK AND WHAT IS NOT. Promotion codes are enabled, which
 # is what lets the checkout prefill a code the buyer arrived with. Tax collection
-# is off and addresses are not collected. The confirmation page is STRIPE'S OWN
-# and not this site's — the mobile flow that created this link has no redirect
-# field — so the `?cs={CHECKOUT_SESSION_ID}` return address is still to be set
-# from a desktop. Until it is, /paid/t1/ is somewhere the buyer navigates to
-# rather than somewhere they land, and the page is written to work either way.
+# is off and addresses are not collected. The confirmation page is SET TO REDIRECT
+# to https://store.sgit.ai/paid/t1/?cs={CHECKOUT_SESSION_ID} — done on 17
+# September from a desktop, because the mobile flow that created the link has no
+# redirect field at all.
+#
+# THAT REDIRECT IS WHAT FOUND THE BUG WORTH RECORDING HERE. It points at
+# /paid/t1/, which wears the previous design's chrome and runs shop.js — not the
+# store's own engine. shop.js looked for the reference under two keys that only
+# the old place-an-order step ever wrote, and the store that sells today has no
+# such step: a buyer goes from the checkout to the provider. So the page a buyer
+# lands on after paying could not find their reference, and said instead that
+# they must have ordered in a different browser. False, and told to the one
+# person least able to argue with it. shop.js now falls back to the shared order
+# record both engines read, and reads ?cs= the way the other engine does, held
+# identical by a check.
 #
 # `checkout_qty` IS WHETHER THE LINK LETS A BUYER CHANGE THE QUANTITY, and it
 # exists because the store cannot ask. A payment link's settings live in the

@@ -404,13 +404,42 @@
     window.location.href = M.post_sale;
   }
 
+  /* THE THIRD PLACE AN ORDER CAN BE, AND IT IS THE ONLY ONE THE STORE USES NOW.
+   *
+   * This read two keys: `lastorder`, written when the v1 flow placed an order,
+   * and the wallet behind it. The store that sells today has no place-an-order
+   * step — a buyer goes from the checkout to the payment provider — so neither
+   * of those is ever written, and the page a buyer lands on after paying could
+   * not show them their own reference. It said instead that the order must have
+   * been placed in a different browser, which was FALSE and was the worst kind
+   * of false: told to somebody who has just paid, about the one string they
+   * would need to ask about it.
+   *
+   * So the shared cart record is the last fallback. It is the order this browser
+   * is holding, it carries the reference the checkout sent to the provider, and
+   * it is the same record both engines read and write. The two older keys stay
+   * ahead of it: an order that was actually placed is a better answer than a
+   * cart, and a browser that has both should show the one that was placed. */
   function lastOrder() {
     try {
       var o = JSON.parse(window.localStorage.getItem('sgit.store.lastorder.v1') || 'null');
       if (o && o.ref) return o;
       var w = wallet();
-      return (w.orders && w.orders[0]) || null;
+      if (w.orders && w.orders[0]) return w.orders[0];
+      var c = JSON.parse(window.localStorage.getItem(KEY_ONLY) || 'null');
+      return (c && c.ref) ? c : null;
     } catch (e) { return null; }
+  }
+
+  /* The provider's own session id, when its page sent the buyer back through one.
+     Shape only — cs_ and their alphabet — because whatever is in an address bar
+     came from outside. It is a string to search their dashboard on and NOT a
+     receipt: confirming a payment would mean asking them, and this site has no
+     server to ask from. next.js carries the same reader for the other landing
+     page and a build check holds the two identical. */
+  function sessionFromAddress() {
+    var m = /[?&]cs=(cs_[A-Za-z0-9_]{8,80})(?:&|$)/.exec(window.location.search);
+    return m ? m[1] : null;
   }
 
   /* ------------------------------------------------------------------ dom */
@@ -453,12 +482,37 @@
     var box = document.getElementById('paid-order');
     if (!box) return;
     var o = lastOrder();
-    if (!o || !o.ref) return;
+    var cs = sessionFromAddress();
+    if (!o || !o.ref) {
+      /* No order here. If they came back through a session, say THAT rather than
+         leaving the static sentence to imply the only explanation is a different
+         browser — they may have cleared this one, or paid from a link somebody
+         sent them, and being told the wrong reason is worse than being told none. */
+      if (cs) {
+        box.textContent = '';
+        box.appendChild(el('b', null, 'You came back from the provider'));
+        box.appendChild(el('code', 'paid-code', cs));
+        box.appendChild(el('span', null,
+          'This browser is not holding the order, so the reference above is the '
+          + 'provider\u2019s rather than ours. Their receipt reaches you by email.'));
+        box.className = 'paid-ref paid-ref-has';
+      }
+      return;
+    }
     box.textContent = '';
-    box.appendChild(el('b', null, 'Your order reference'));
+    box.appendChild(el('b', null, cs ? 'You came back \u2014 your order reference'
+                                    : 'Your order reference'));
     box.appendChild(el('code', 'paid-code', String(o.ref)));
-    box.appendChild(el('span', null,
-      'It is on your receipt too. Quote it in any message about this order.'));
+    box.appendChild(el('span', null, cs
+      /* CAME BACK, NOT PAID, and the distinction is the whole sentence. This site
+         has no server, so it saw a browser return from the provider's page and
+         nothing else. A session can be opened and abandoned. */
+      ? 'Your browser came back from the provider\u2019s page, which is all this '
+        + 'site can see \u2014 it has no server and cannot ask whether the payment '
+        + 'cleared. Your receipt comes from them by email. Quote the reference '
+        + 'above in any message about this order.'
+      : 'It is on your receipt too. Quote it in any message about this order.'));
+    if (cs) box.appendChild(el('code', 'paid-code paid-code--dim', cs));
     box.className = 'paid-ref paid-ref-has';
   }
 

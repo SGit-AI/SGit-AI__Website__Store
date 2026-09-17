@@ -4932,8 +4932,9 @@ def paid_pages(out_dir, ctx_shared):
             # correct with no script: a buyer whose browser blocked it still gets
             # the page that tells them what happens next.
             + '<div id="paid-order" class="paid-ref"><b>Your order reference</b>'
-            '<span>It is on the page you came from and on your receipt. If you are reading this '
-            'in a different browser from the one you ordered in, it will not be here.</span></div>'
+            '<span>It is on the page you came from and on your receipt. An order lives in the '
+            'browser that built it, so if you are reading this on another device, or you have '
+            'cleared this one, it will not be here.</span></div>'
             f'<div class="paid-what"><div><b>You bought</b><span>{html.escape(l["name"])} '
             f'&mdash; {html.escape(o["price_label"])}</span></div>'
             f'<div><b>It arrives</b><span>{html.escape(o["eta"])}, '

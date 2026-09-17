@@ -891,6 +891,10 @@ a.who span{font-size:.8rem;line-height:1.45;color:var(--dim)}
   color:var(--dim2,var(--dim))}
 .paid-ref span{font-size:.85rem;line-height:1.5;color:var(--dim)}
 .paid-ref-has{border-color:var(--accent)}
+/* The provider's session id sits under the sentence that explains it, quieter
+   than our own reference: it is the string to search THEIR dashboard on, not
+   the one the buyer quotes to us. */
+.paid-code--dim{opacity:.65;font-size:.72rem;word-break:break-all}
 .paid-code{font-family:var(--mono);font-size:1.6rem;letter-spacing:.06em;color:var(--ink);
   background:none;padding:0}
 .paid-what{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;

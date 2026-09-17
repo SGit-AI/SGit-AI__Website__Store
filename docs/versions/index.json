@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.22",
+  "current": "v0.3.23",
   "releases": [
+    {
+      "version": "v0.3.23",
+      "date": "2026-09-17",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the page a buyer lands on after paying can find their order",
+      "summary": "The redirect on level one's payment link points at /paid/t1/, which wears the\nprevious design's chrome and runs shop.js. That engine looked for the order\nreference under two keys only the old place-an-order step ever wrote \u2014 and the\nstore that sells today has no such step, because a buyer goes from the checkout\nstraight to the provider. So the page a buyer lands on after paying could not\nfind their reference, and told them instead that they must have ordered in a\ndifferent browser: false, and said to the one person least able to argue.\n\nshop.js now falls back to the shared order record both engines read, and reads\nthe provider's session id out of the address the way the store's own engine\ndoes. A check holds the two readers identical.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.22",
       "date": "2026-09-17",
-      "commit": "",
+      "commit": "a01342cf4f963844636082dfcc92277f543b4587",
       "site": "store.sgit.ai",
       "title": "level one can be paid for",
       "summary": "The first payment link exists. It is level one's, created on 17 September 2026,\nand the checkout renders a real button against it carrying the order reference\nand, where the buyer arrived with one, the discount code. Levels two, three and\nfour still carry an empty checkout_url and render the reason rather than a\nbutton. The claim ledger moved with it, which the build refused to proceed\nwithout.\n\nTwo things the first real link taught the store. A payment link has no quantity\nparameter, so a button opens at one unit: two packs rendered Pay \u00a320 against a\nlink that charges \u00a310, and the button now names the unit with the line total\nbeside it. And whether a buyer may change the quantity at all is the provider's\nsetting, which this site cannot ask about, so it is a field in the offer data\nand false unless somebody has confirmed otherwise.",
