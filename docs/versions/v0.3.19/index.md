@@ -26,7 +26,7 @@ has to be the real sentence's own opening. It holds the load-bearing
 cards showing an empty box, with every other check passing.
 
 - Released: 2026-09-16
-- Built from commit: ``
+- Built from commit: `c77fa621c3d0311d9eff6d0c79b052e1c39eacd2`
 - Reconstructed: no
 
 ---

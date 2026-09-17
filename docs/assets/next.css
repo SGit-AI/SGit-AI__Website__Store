@@ -222,7 +222,14 @@ code { font-family: var(--n-mono); font-size: .88em; }
 
 /* The disclosure. Above main on every page, always — a build check refuses a
  * page without it, and the reader panel found it was one of the two things that
- * won the two readers who would spend the most. */
+ * won the two readers who would spend the most.
+ *
+ * It is ONE line here and nothing more. The strip used to carry the whole
+ * paragraph, two links and a version badge: 71px of a phone screen before the
+ * reader reached anything they came for. The article the check enforces wants
+ * the fact on the face of the page, not a paragraph in the way of it, so the
+ * sentence stays and the rest moved to .n-footer__disc. Shortening it is
+ * allowed; removing it is not. */
 .n-disclosure {
   background: #f5f7fa; border-bottom: 1px solid var(--n-line);
   padding: 7px var(--n-pad-x);
@@ -241,8 +248,25 @@ code { font-family: var(--n-mono); font-size: .88em; }
    the note below into "store.sgit.ai" on one line and ". Artwork on these pages"
    on the next, full stop and all, on every page in this round. */
 .n-footer__cols > div a { display: block; margin-bottom: 9px; }
-.n-footer__note { grid-column: 1 / -1; border-top: 1px solid var(--n-line-2);
+/* The long half of the disclosure, moved off the top of the page. The column
+   rules above turn every b into a heading and every a into a block; both are
+   wrong inside a sentence, so both are undone here. */
+.n-footer__disc { grid-column: 1 / -1; border-top: 1px solid var(--n-line-2);
                   margin-top: 34px; padding-top: 22px;
+                  color: var(--n-dim); font-size: var(--n-micro); max-width: 104ch; }
+.n-footer__disc p { margin: 0; line-height: 1.65; }
+.n-footer__disc b { display: inline; margin: 0; font-size: inherit;
+                    letter-spacing: normal; text-transform: none;
+                    color: var(--n-ink); }
+.n-footer__disc-links { margin-top: 10px !important; display: flex;
+                        flex-wrap: wrap; align-items: baseline; gap: 6px 20px; }
+/* Outspecifies `.n-footer__cols > div a`, which is (0,1,2) and would keep the
+   9px column gutter under links that sit on one row. */
+.n-footer__disc .n-footer__disc-links a { margin-bottom: 0;
+                          text-decoration: underline; text-underline-offset: 3px; }
+.n-footer__ver { margin-left: auto; opacity: .7; font-variant-numeric: tabular-nums; }
+
+.n-footer__note { grid-column: 1 / -1; margin-top: 18px;
                   color: var(--n-dim); font-size: var(--n-micro); max-width: 110ch; }
 .n-footer__note a { display: inline; }
 
@@ -622,10 +646,14 @@ code { font-family: var(--n-mono); font-size: .88em; }
   .n-nav::-webkit-scrollbar { display: none; }
   .n-nav a { white-space: nowrap; }
 
-  .n-disclosure { gap: 4px 12px; padding-block: 6px; font-size: 11px; }
-  .n-disclosure > span:first-child { display: -webkit-box; -webkit-line-clamp: 1;
-                                     -webkit-box-orient: vertical; overflow: hidden; }
-  .n-disclosure > span:last-child { margin-left: auto; opacity: .7; }
+  /* One line, and it fits: no clamp, no wrap, the link pushed to the edge. */
+  .n-disclosure { gap: 4px 12px; padding-block: 6px; font-size: 11px;
+                  flex-wrap: nowrap; white-space: nowrap; }
+  .n-disclosure > span:first-child { overflow: hidden; text-overflow: ellipsis; }
+  .n-disclosure a { margin-left: auto; }
+
+  .n-footer__disc-links { gap: 6px 14px; }
+  .n-footer__ver { margin-left: 0; }
 
   /* The hero stacks and the artwork stops being a half-screen. A founder's
      first look happens here, so the headline and the action come before it. */

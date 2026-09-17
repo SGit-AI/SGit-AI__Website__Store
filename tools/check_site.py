@@ -407,6 +407,57 @@ def check_model_generated_disclosure():
             fail(f"{rel}: hard rule 5 — the model-generated disclosure is below the fold")
 
 
+# The strip that carries hard rule 5 used to carry the whole paragraph, two links
+# and a version badge: 251 characters, 71px of a phone screen, above everything
+# the reader came for. It was cut to the sentence and one link, and the rest went
+# to the footer. Both halves need holding, and for opposite reasons:
+#
+#   · the strip must stay SHORT, or it grows back the next time someone has
+#     something else they would like every reader to see first;
+#   · the footer must keep the BODY, or the cut quietly becomes a deletion —
+#     the sentence alone does not say a person reviewed the page, and the
+#     compliance denial is hard rule 2's, not this one's.
+#
+# The phrase stays above <main> either way. That is the check above, and it does
+# not move: a disclosure found only at the bottom does the opposite of its job.
+DISCLOSURE_STRIP_MAX = 80
+DISCLOSURE_BODY = (
+    "reviewed by a person before publication",
+    "Nothing here is a compliance assessment",
+)
+
+
+def check_the_disclosure_strip_stays_one_line():
+    seen = 0
+    for p in pages():
+        rel = str(p.relative_to(OUT)).replace(os.sep, "/")
+        text = p.read_text()
+        m = re.search(r'<div class="n-disclosure">(.*?)</div>', text, re.S)
+        if not m:
+            continue                      # /v1/ and the console wear other chrome
+        seen += 1
+        flat = " ".join(strip_tags(m.group(1)).split())
+        if len(flat) > DISCLOSURE_STRIP_MAX:
+            fail(f"{rel}: the disclosure strip is {len(flat)} characters and the "
+                 f"limit is {DISCLOSURE_STRIP_MAX} — it sits above everything the "
+                 f"reader came for: {flat[:90]!r}")
+        if not flat.startswith("Produced with model assistance"):
+            fail(f"{rel}: the disclosure strip does not open with the disclosure: {flat[:60]!r}")
+        head, _, tail = text.partition("<main")
+        if not tail:
+            continue
+        # The footer's sentences wrap in the source and carry <b> mid-phrase, so
+        # compare against text with the tags out and the whitespace flattened.
+        below = " ".join(strip_tags(tail).split())
+        for sentence in DISCLOSURE_BODY:
+            if sentence not in below:
+                fail(f"{rel}: the strip was cut to one line but the footer does not "
+                     f"carry {sentence!r} — that is a deletion, not a move")
+    if seen < 100:
+        fail(f"only {seen} pages carry a disclosure strip; the store is the "
+             f"majority of the site, so this check is not looking at it")
+
+
 # ------------------------------------ hard rule 7 and 8: triage, and no verdict ---
 def check_triage_not_raw_findings():
     """0.388 precision means three findings in five are wrong. If this site ever
@@ -3522,7 +3573,8 @@ def main():
         check_the_shape_count_agrees_with_itself,
         check_the_build_reads_nothing_git_ignores,
         check_lab_is_marked, check_lab_bands, check_lab_model_is_shipped,
-        check_model_generated_disclosure, check_triage_not_raw_findings,
+        check_model_generated_disclosure, check_the_disclosure_strip_stays_one_line,
+        check_triage_not_raw_findings,
         check_pack_area_is_honest,
         check_delivery_estimates,
         check_every_claim_state_is_real,

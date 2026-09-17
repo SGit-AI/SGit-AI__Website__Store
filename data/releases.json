@@ -1,10 +1,26 @@
 {
-  "current": "v0.3.19",
+  "current": "v0.3.20",
   "releases": [
+    {
+      "version": "v0.3.20",
+      "date": "2026-09-17",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the disclosure moves off the top of the page",
+      "summary": "The strip above the fold carried the whole paragraph, two links and a version\nbadge: 251 characters and 71px of a phone screen before anything the reader\ncame for. It now carries the sentence and one link \u2014 51 characters, 30px \u2014 and\nthe body, the compliance denial, the three links and the version moved into the\nfooter. Hard rule 5 is unchanged: the phrase still sits above main on every\npage, because a disclosure found only at the bottom does the opposite of its\njob. A new check holds both halves \u2014 the strip cannot grow back past 80\ncharacters, and the footer cannot lose the sentences the strip gave up.",
+      "changes": [
+        "assets",
+        "build.py",
+        "data",
+        "tools"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.19",
       "date": "2026-09-16",
-      "commit": "",
+      "commit": "c77fa621c3d0311d9eff6d0c79b052e1c39eacd2",
       "site": "store.sgit.ai",
       "title": "the five doors, drawn the way v4 draws them",
       "summary": "\"What brings you here?\" on the front page was five paragraphs of text in a grid\nwith no picture in it. On a phone that was three rows, 549 pixels, and it landed\n1,185 pixels down \u2014 a section nobody meets. It is now the v4 handback's band: a\n64px thumbnail, a label, one short line and an arrow.\n\n**One strip, five cards.** The same five-up image already banner-cropped on\n/audiences/ is cropped square here: laid out five squares wide inside a 64px box\nand pulled left by a whole square per position, so each card shows its own fifth.\n\n**On a phone the band comes first and scrolls.** A flex row with scroll-snap,\n255px cards, 112px tall, the second card half-visible as the affordance \u2014 247px\ninstead of 549, above the hero instead of below it. At 1280 the hero and the four\nfacts are one screen and the band is already under them, so the order is left\nalone there; 1050 and below drops to three columns.\n\n**The labels are shorter.** \"Founder\" rather than \"You are a founder\", and\n\"Shipping with agents.\" \u2014 the door sentence cut at its first comma rather than a\nsixth field in the data, because the first clause is the same fact said shorter.\n\nNew rule: five doors, five thumbnails, five different fifths, and the short line\nhas to be the real sentence's own opening. It holds the load-bearing\n`max-width: none` too \u2014 the reset's `img { max-width: 100% }` silently beat\n`width: 500%` when this crop was first built on /audiences/ and left four of five\ncards showing an empty box, with every other check passing.",
