@@ -13,7 +13,7 @@ the provider's session id out of the address the way the store's own engine
 does. A check holds the two readers identical.
 
 - Released: 2026-09-17
-- Built from commit: ``
+- Built from commit: `5cbeb893aa350175544abea899b0720eb1195d54`
 - Reconstructed: no
 
 ---

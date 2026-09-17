@@ -1,10 +1,23 @@
 {
-  "current": "v0.3.23",
+  "current": "v0.3.24",
   "releases": [
+    {
+      "version": "v0.3.24",
+      "date": "2026-09-17",
+      "commit": "",
+      "site": "store.sgit.ai",
+      "title": "the emails nobody has turned on, and the one a free order cannot send",
+      "summary": "Neither side is emailed on a sale today. The buyer's receipt is a dashboard\nsetting rather than a property of the payment, and the seller's notification is\na per-person preference on the account; both are steps on the rail page now.\n\nThe half worth reading twice is that neither fires on a zero-total order. A\nhundred-per-cent code takes the total to zero, a zero total creates no charge,\nand both of those emails hang off a charge \u2014 so the exact journey this rail was\nbuilt for, handing somebody a code at an event and ending up with a person in a\nsystem, is the journey that notifies nobody by any route. It is on the board as\nan argument rather than a setting.",
+      "changes": [
+        "data"
+      ],
+      "reconstructed": false,
+      "basis": []
+    },
     {
       "version": "v0.3.23",
       "date": "2026-09-17",
-      "commit": "",
+      "commit": "5cbeb893aa350175544abea899b0720eb1195d54",
       "site": "store.sgit.ai",
       "title": "the page a buyer lands on after paying can find their order",
       "summary": "The redirect on level one's payment link points at /paid/t1/, which wears the\nprevious design's chrome and runs shop.js. That engine looked for the order\nreference under two keys only the old place-an-order step ever wrote \u2014 and the\nstore that sells today has no such step, because a buyer goes from the checkout\nstraight to the provider. So the page a buyer lands on after paying could not\nfind their reference, and told them instead that they must have ordered in a\ndifferent browser: false, and said to the one person least able to argue.\n\nshop.js now falls back to the shared order record both engines read, and reads\nthe provider's session id out of the address the way the store's own engine\ndoes. A check holds the two readers identical.",

@@ -106,6 +106,11 @@
           null
         ],
         [
+          "Turn the emails on — and understand which of them a £0 order will not send",
+          "<b>Neither side is emailed today, and one of them cannot be.</b><br><br><b>The buyer's receipt</b> is a dashboard setting, not a property of the payment: Settings → Business → Customer emails → <em>Successful payments</em>. With it off the buyer completes a checkout and hears nothing, which on a store whose whole argument is that it collects nothing means the buyer has no record from anybody. Turn it on.<br><br><b>The seller's notification</b> is a per-person preference on the Stripe account (Profile → Notifications), plus push from their mobile app. It is not part of the link and it is not part of the product, so it has to be set by whoever is going to act on a sale rather than assumed.<br><br><b>AND NEITHER FIRES ON A £0 ORDER, which is the half worth reading twice.</b> A hundred-per-cent code takes the total to zero, and a zero-total checkout creates no charge — the session completes with nothing to pay. Both of those emails hang off a successful <em>payment</em>. So the exact journey this rail was built for — hand somebody a code at an event, watch them go through a real purchase, end up with a person in a system — is the journey that notifies <b>nobody, by any route</b>, and the only place it shows up is the dashboard. The webhook below is not a nicety for that journey. It is the only thing that can see it.<br><br><b>A post-payment invoice PDF</b> (on the link, at 0.4% capped near $2) is the other built-in way to email a buyer, and it carries more than a receipt does. Whether it is raised and sent for a zero-total order has not been checked here and should be, on the £0 walkthrough, before it is relied on either way.",
+          null
+        ],
+        [
           "Stand up the webhook",
           "<b>This is the step that unblocks a first paid order at £50, £500 and £1,500.</b> Their pages promise a person within 24 hours and nothing carries a sale from here to that person. A <code>checkout.session.completed</code> handler that emails the follow-up mailbox the level, the reference, the customer and — at £500 — the template chosen is the smallest thing that closes it. <b>Listen to the session event, not to the payment.</b> A hundred-per-cent order creates no charge, so a handler keyed on a succeeded payment sees every paid order and none of the free ones, which is precisely the set this rail exists to capture.",
           "It does not run on this site. This site is static and opens no connection; the handler is somebody else's process holding the signing secret, and it never appears in this repository."
@@ -149,6 +154,10 @@
         [
           "Nothing tells anybody a sale happened",
           "<b>This is the same gap the webhook step names, said from the buyer's side.</b> The store hands a buyer to the provider and cannot know what happened next: there is no server here and nowhere to receive a callback. So a £50 order that completes produces a Stripe Customer and an email receipt from the provider, and <b>no signal at all to the person who owes them a vault within twenty-four hours</b>. Until the webhook exists that person is reading the dashboard. That is workable at the volume this store has and it should be a decision rather than a thing discovered on the first Monday somebody misses."
+        ],
+        [
+          "The journey this rail exists for is the one nothing can see",
+          "<b>Said once more here because it is an argument, not a setting.</b> The point of the rail was never the money — it is that somebody handed a code at an event goes through a real purchase and comes out the other side as a Customer with an email address. But a hundred-per-cent code means a zero total, a zero total means no charge, and every email Stripe sends by itself — to the buyer and to us — hangs off a charge. So the free journey produces a record and no signal, and the paid journey produces both. The store cannot close that gap from here: it is static, it opens no connection, and it has nowhere to receive a callback. Until `checkout.session.completed` is being listened to by something, a free order is a thing you find by looking rather than a thing you are told."
         ]
       ]
     },
